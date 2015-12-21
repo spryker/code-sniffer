@@ -1,0 +1,22 @@
+{
+  "name": "spryker/code-sniffer",
+  "description": "Spryker CodeSniffer Standards",
+  "type": "library",
+  "keywords": ["framework", "codesniffer"],
+  "homepage": "http://spryker.com",
+  "authors": [
+    {
+      "name": "Spryker",
+      "homepage": "http://spryker.com"
+    }
+  ],
+  "support": {
+    "source": "https://github.com/spryker/spryker-codesniffer"
+  },
+  "require": {
+    "squizlabs/php_codesniffer": "~2.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.1.*"
+  }
+}
