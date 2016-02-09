@@ -1,8 +1,9 @@
 {
   "name": "spryker/code-sniffer",
-  "description": "Spryker CodeSniffer Standards",
+  "description": "Spryker Code Sniffer Standards",
   "type": "library",
-  "keywords": ["framework", "codesniffer"],
+  "license": "BSD-3-Clause",
+  "keywords": ["framework", "codesniffer", "phpcs", "standards"],
   "homepage": "http://spryker.com",
   "authors": [
     {
@@ -17,6 +18,6 @@
     "squizlabs/php_codesniffer": "~2.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.1.*"
+    "phpunit/phpunit": "~5.2"
   }
 }
