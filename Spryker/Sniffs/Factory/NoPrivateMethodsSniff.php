@@ -1,10 +1,8 @@
 <?php
 
-/**
- * (c) Spryker Systems GmbH copyright protected
- */
+namespace Spryker\Sniffs\Factory;
 
-class Spryker__Sniffs__Architecture_OneNewPerMethodSniff implements \PHP_CodeSniffer_Sniff
+class NoPrivateMethodsSniff implements \PHP_CodeSniffer_Sniff
 {
 
     /**
@@ -25,30 +23,29 @@ class Spryker__Sniffs__Architecture_OneNewPerMethodSniff implements \PHP_CodeSni
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if ($this->isFactory($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
+        if ($this->isFactory($phpCsFile) && $this->isMethodPrivate($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
-            $phpCsFile->addError(
-                $classMethod . ' contains more then one new. Fix this by extract a method.',
-                $stackPointer
-            );
+            $fix = $phpCsFile->addFixableError($classMethod . ' is private.', $stackPointer);
+            if ($fix) {
+                $this->makePrivateMethodProtected($phpCsFile, $stackPointer);
+            }
         }
     }
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
      *
-     * @return string
+     * @return bool
      */
-    protected function getClassName(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isMethodPrivate(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        $fileName = $phpCsFile->getFilename();
-        $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
-        $sourceDirectoryPosition = array_search('src', array_values($fileNameParts));
-        $classNameParts = array_slice($fileNameParts, $sourceDirectoryPosition + 1);
-        $className = implode('\\', $classNameParts);
-        $className = str_replace('.php', '', $className);
+        $privateTokenPointer = $phpCsFile->findFirstOnLine(T_PRIVATE, $stackPointer);
+        if ($privateTokenPointer) {
+            return true;
+        }
 
-        return $className;
+        return false;
     }
 
     /**
@@ -80,22 +77,19 @@ class Spryker__Sniffs__Architecture_OneNewPerMethodSniff implements \PHP_CodeSni
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
      *
-     * @return bool
+     * @return string
      */
-    protected function hasMoreThenOneNewInMethod(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getClassName(\PHP_CodeSniffer_File $phpCsFile)
     {
-        $openPointer = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer);
-        $closePointer = $phpCsFile->findNext(T_CLOSE_CURLY_BRACKET, $openPointer);
+        $fileName = $phpCsFile->getFilename();
+        $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
+        $sourceDirectoryPosition = array_search('src', array_values($fileNameParts));
+        $classNameParts = array_slice($fileNameParts, $sourceDirectoryPosition + 1);
+        $className = implode('\\', $classNameParts);
+        $className = str_replace('.php', '', $className);
 
-        $firstNewPosition = $phpCsFile->findNext(T_NEW, $openPointer, $closePointer);
-        if ($firstNewPosition === false) {
-            return false;
-        }
-
-        $secondNewPosition = $phpCsFile->findNext(T_NEW, $firstNewPosition + 1, $closePointer);
-        return ($secondNewPosition !== false);
+        return $className;
     }
 
     /**
@@ -112,6 +106,19 @@ class Spryker__Sniffs__Architecture_OneNewPerMethodSniff implements \PHP_CodeSni
         $classMethod = $className . '::' . $methodName;
 
         return $classMethod;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function makePrivateMethodProtected(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
+        $phpCsFile->fixer->beginChangeset();
+        $phpCsFile->fixer->replaceToken($stackPointer - 2, 'protected');
+        $phpCsFile->fixer->endChangeset();
     }
 
 }

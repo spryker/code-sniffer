@@ -16,12 +16,12 @@ class TestHelper {
 		$this->_phpcs = new PHP_CodeSniffer_CLI();
 	}
 
-/**
- * Run PHPCS on a file.
- *
- * @param string $file to run.
- * @return string The output from phpcs.
- */
+	/**
+	 * Run PHPCS on a file.
+	 *
+	 * @param string $file to run.
+	 * @return string The output from phpcs.
+	 */
 	public function runPhpCs($file) {
 		$defaults = $this->_phpcs->getDefaults();
 		$standard = dirname(__FILE__) . '/ruleset.xml';
