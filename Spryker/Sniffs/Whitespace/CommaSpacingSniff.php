@@ -47,6 +47,9 @@ class CommaSpacingSniff implements PHP_CodeSniffer_Sniff
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
 
         if ($tokens[$previous]['code'] !== T_WHITESPACE && ($previous !== $stackPtr - 1)) {
+            if ($tokens[$previous]['code'] === T_COMMA) {
+                return;
+            }
             $error = 'Space before comma, expected none, though';
             $phpcsFile->addError($error, $next);
         }
