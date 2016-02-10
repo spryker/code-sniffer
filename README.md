@@ -1,4 +1,7 @@
 # Spryker Code Sniffer
+[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.4-8892BF.svg)](https://php.net/)
+[![License](https://poser.pugx.org/spryker/code-sniffer/license.svg)](https://packagist.org/packages/spryker/code-sniffer)
+[![Total Downloads](https://poser.pugx.org/spryker/code-sniffer/d/total.svg)](https://packagist.org/packages/spryker/code-sniffer)
 
 ## Documentation:
 https://github.com/squizlabs/PHP_CodeSniffer/wiki
