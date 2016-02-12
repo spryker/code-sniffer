@@ -29,17 +29,6 @@ You can also manually invoke the phpcs/phpcbf commands:
     
     vendor/bin/phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml    
 
-## Writing new sniffs
-Add them to the corresponding category inside Sniffs folder and add tests in `tests` with the same folder structure.
-
-To run all sniffs on themselves, use
-
-    vendor/bin/phpcs --standard=Spryker/ruleset.xml ./Spryker/Sniffs -v -s
-
-Don't forget to test your changes:
-
-    php phpunit.phar
-
 ## Using own project standard
 You can exchange or extend the Spryker coding standard by providing your own ruleset.xml.
 This can be configured in the Development bundle config:
@@ -71,3 +60,14 @@ You basically just append `- vendor/bin/console code:sniff` at the end.
 
 
 Please see the Spryker Demoshop repository for details. It is used there.
+
+## Writing new sniffs
+Add them to the corresponding category inside Sniffs folder and add tests in `tests` with the same folder structure.
+
+To run all sniffs on themselves, use
+
+    vendor/bin/phpcs --standard=Spryker/ruleset.xml ./Spryker/Sniffs -v -s
+
+Don't forget to test your changes:
+
+    php phpunit.phar
