@@ -3,7 +3,10 @@
 [![License](https://poser.pugx.org/spryker/code-sniffer/license.svg)](https://packagist.org/packages/spryker/code-sniffer)
 [![Total Downloads](https://poser.pugx.org/spryker/code-sniffer/d/total.svg)](https://packagist.org/packages/spryker/code-sniffer)
 
-## Documentation:
+This sniffer package follows [PSR-2](http://www.php-fig.org/psr/psr-2/) and ships with a lot of additional fixers on top.
+Please see the Spryker Coding conventions for details.
+
+## Documentation
 https://github.com/squizlabs/PHP_CodeSniffer/wiki
 
 ## Usage in Spryker projects
@@ -55,3 +58,16 @@ This can be configured in the Development bundle config:
         return '/path/to/your/ruleset.xml';
     }
 ```
+
+## Integrating into CI testing and PRs
+The following is an example for CircleCI but will also be compatible with any other CI system:
+```
+  override:
+    ...
+    - vendor/bin/console application:integration-check
+    - vendor/bin/console code:sniff
+```
+You basically just append `- vendor/bin/console code:sniff` at the end.
+
+
+Please see the Spryker Demoshop repository for details. It is used there.
