@@ -1,11 +1,13 @@
 <?php
 
-class SprykerStandardTest extends PHPUnit_Framework_TestCase {
+class SprykerStandardTest extends PHPUnit_Framework_TestCase
+{
 
     /**
      * @return void
      */
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         if (empty($this->helper)) {
             $this->helper = new TestHelper();
@@ -17,7 +19,8 @@ class SprykerStandardTest extends PHPUnit_Framework_TestCase {
      *
      * @return array
      */
-    public static function testProvider() {
+    public static function testProvider()
+    {
         $tests = array();
 
         $standard = dirname(__DIR__);
@@ -48,7 +51,8 @@ class SprykerStandardTest extends PHPUnit_Framework_TestCase {
      *
      * @return void
      */
-    public function testFile($file, $standard, $expectPass) {
+    public function testFile($file, $standard, $expectPass)
+    {
         $outputStr = $this->helper->runPhpCs($file);
         if ($expectPass) {
             $this->assertNotRegExp(

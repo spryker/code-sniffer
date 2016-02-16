@@ -8,7 +8,8 @@ namespace Spryker\Sniffs\PHP;
 /**
  * Casts should only be used in their short form.
  */
-class ShortCastSniff implements \PHP_CodeSniffer_Sniff {
+class ShortCastSniff implements \PHP_CodeSniffer_Sniff
+{
 
     /**
      * @var array
@@ -23,7 +24,8 @@ class ShortCastSniff implements \PHP_CodeSniffer_Sniff {
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [T_BOOL_CAST, T_INT_CAST, T_BOOLEAN_NOT];
     }
 
@@ -35,7 +37,8 @@ class ShortCastSniff implements \PHP_CodeSniffer_Sniff {
      *    in the stack passed in $tokens.
      * @return void
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
 
         if ($tokens[$stackPtr]['content'] === '!') {
