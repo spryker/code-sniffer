@@ -16,7 +16,7 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
      * @return array
      */
     public function register()
-	{
+    {
         return array_merge(PHP_CodeSniffer_Tokens::$castTokens, [T_BOOLEAN_NOT, T_NONE, T_ASPERAND, T_INC, T_DEC]);
     }
 
@@ -29,7 +29,7 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
      * @return void
      */
     public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-	{
+    {
         $tokens = $phpcsFile->getTokens();
 
         if ($tokens[$stackPtr]['code'] === T_INC || $tokens[$stackPtr]['code'] === T_DEC) {
@@ -53,7 +53,7 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
      * @return void
      */
     protected function processIncDec(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-	{
+    {
         $tokens = $phpcsFile->getTokens();
 
         $nextIndex = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
