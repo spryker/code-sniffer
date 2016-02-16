@@ -228,8 +228,8 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param $tokens
-     * @param $stackPointer
+     * @param array $tokens
+     * @param int $stackPointer
      *
      * @return bool
      */

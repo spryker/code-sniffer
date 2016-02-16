@@ -58,7 +58,7 @@ class ImplicitCastSpacingSniff implements \PHP_CodeSniffer_Sniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
-     * @param $stackPtr
+     * @param int $stackPtr
      *
      * @return void
      */
