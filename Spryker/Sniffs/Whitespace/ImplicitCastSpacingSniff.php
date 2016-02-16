@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * (c) Spryker Systems GmbH copyright protected.
+ */
 namespace Spryker\Sniffs\Whitespace;
 
 use PHP_CodeSniffer_Tokens;
