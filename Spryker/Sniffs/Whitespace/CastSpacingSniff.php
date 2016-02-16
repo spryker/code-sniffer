@@ -26,6 +26,7 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
      * @param \PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
      * @param int $stackPtr The position of the current token
      *    in the stack passed in $tokens.
+     *
      * @return void
      */
     public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -44,12 +45,17 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
         }
 
         $fix = $phpcsFile->addFixableError('No whitespace should be between cast and variable.', $stackPtr);
-        if ($fix) {
+        if ($fix && $phpcsFile->fixer->enabled) {
+            $phpcsFile->fixer->beginChangeset();
             $phpcsFile->fixer->replaceToken($stackPtr + 1, '');
+            $phpcsFile->fixer->endChangeset();
         }
     }
 
     /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param $stackPtr
+     *
      * @return void
      */
     protected function processIncDec(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -64,7 +70,9 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
 
             $fix = $phpcsFile->addFixableError('No whitespace should be between incrementor and variable.', $stackPtr);
             if ($fix) {
+                $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->replaceToken($stackPtr + 1, '');
+                $phpcsFile->fixer->endChangeset();
             }
             return;
         }
@@ -77,7 +85,9 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
 
             $fix = $phpcsFile->addFixableError('No whitespace should be between variable and incrementor.', $stackPtr);
             if ($fix) {
+                $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->replaceToken($stackPtr - 1, '');
+                $phpcsFile->fixer->endChangeset();
             }
             return;
         }
