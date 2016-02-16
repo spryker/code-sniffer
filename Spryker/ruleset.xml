@@ -55,6 +55,7 @@
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
 
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <rule ref="Generic.Formatting.NoSpaceAfterCast"/>
     <!-- Disabled for now.
     <rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops"/>
     -->

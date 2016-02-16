@@ -17,7 +17,7 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
      */
     public function register()
     {
-        return array_merge(PHP_CodeSniffer_Tokens::$castTokens, [T_BOOLEAN_NOT, T_NONE, T_ASPERAND, T_INC, T_DEC]);
+        return [T_BOOLEAN_NOT, T_NONE, T_ASPERAND, T_INC, T_DEC];
     }
 
     /**
