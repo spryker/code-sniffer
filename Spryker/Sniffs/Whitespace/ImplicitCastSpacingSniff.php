@@ -5,9 +5,10 @@ namespace Spryker\Sniffs\Whitespace;
 use PHP_CodeSniffer_Tokens;
 
 /**
- * No whitespace should be between cast and variable. Also account for implicit casts.
+ * No whitespace should be between implicit cast and variable, the same as with other casts.
+ * This includes incrementor and decrementor.
  */
-class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
+class ImplicitCastSpacingSniff implements \PHP_CodeSniffer_Sniff
 {
 
     /**
@@ -44,7 +45,7 @@ class CastSpacingSniff implements \PHP_CodeSniffer_Sniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('No whitespace should be between cast and variable.', $stackPtr);
+        $fix = $phpcsFile->addFixableError('No whitespace should be between ' . $tokens[$stackPtr]['content'] . ' and variable.', $stackPtr);
         if ($fix && $phpcsFile->fixer->enabled) {
             $phpcsFile->fixer->beginChangeset();
             $phpcsFile->fixer->replaceToken($stackPtr + 1, '');
