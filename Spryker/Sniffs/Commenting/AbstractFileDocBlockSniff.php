@@ -22,7 +22,7 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $stackPointer
      *
-     * @return bool|int
+     * @return bool
      */
     protected function existsFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
