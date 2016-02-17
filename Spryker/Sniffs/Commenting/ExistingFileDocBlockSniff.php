@@ -2,6 +2,9 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+/**
+ * Check if file has doc block comment and has the expected content
+ */
 class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
 {
 
@@ -16,6 +19,10 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
+        if (!$this->isSprykerNamespace($phpCsFile, $stackPointer)) {
+            return;
+        }
+
         if ($this->existsFileDocBlock($phpCsFile, $stackPointer)
             && ($this->hasNotExpectedLength($phpCsFile, $stackPointer) || $this->hasWrongContent($phpCsFile, $stackPointer))
         ) {

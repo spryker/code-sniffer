@@ -7,6 +7,7 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 
     const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © 2016 Spryker Systems GmbH. All rights reserved.';
     const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
+    const SPRYKER_NAMESPACE = 'Spryker';
 
     /**
      * @return array
@@ -16,6 +17,24 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
         return [
             T_NAMESPACE
         ];
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isSprykerNamespace(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
+        $sprykerNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $stackPointer);
+        if ($sprykerNamespaceTokenPosition) {
+            $sprykerNamespace = $phpCsFile->getTokens()[$sprykerNamespaceTokenPosition]['content'];
+
+            return ($sprykerNamespace === self::SPRYKER_NAMESPACE);
+        }
+
+        return false;
     }
 
     /**
