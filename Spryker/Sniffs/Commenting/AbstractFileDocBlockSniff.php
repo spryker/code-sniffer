@@ -5,8 +5,8 @@ namespace Spryker\Sniffs\Commenting;
 abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 {
 
-    const EXPECTED_COMMENT_FIRST_LINE_STRING = '(c) Spryker Systems GmbH copyright protected';
-    const EXPECTED_COMMENT_SECOND_LINE_STRING = 'CatFace';
+    const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © 2016 Spryker Systems GmbH. All rights reserved.';
+    const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
 
     /**
      * @return array
