@@ -39,7 +39,11 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
      */
     protected function addFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
+
         $phpCsFile->fixer->beginChangeset();
+
+        $this->clearFileDocBlock($phpCsFile, $stackPointer);
+
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, '/**');
         $phpCsFile->fixer->addNewline($stackPointer);
@@ -49,7 +53,26 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, ' */');
         $phpCsFile->fixer->addNewline($stackPointer);
+        $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    private function clearFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
+        $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_OPEN_TAG, $stackPointer) + 1;
+
+        $currentPosition = $fileDocBlockStartPosition;
+        $endPosition = $phpCsFile->findNext([T_NAMESPACE], $currentPosition);
+        do {
+            $phpCsFile->fixer->replaceToken($currentPosition, '');
+            $currentPosition++;
+        } while ($currentPosition < $endPosition);
     }
 
 }

@@ -84,27 +84,8 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
     {
         $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer);
         if ($fix) {
-            $this->removeExistingFileDocBlock($phpCsFile, $stackPointer);
             $this->addFileDocBlock($phpCsFile, 0);
         }
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
-    private function removeExistingFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
-    {
-        $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
-
-        $currentPosition = $fileDocBlockStartPosition;
-        $endPosition = $phpCsFile->findNext([T_NAMESPACE, T_CLASS, T_INTERFACE, T_ABSTRACT, T_FINAL], $currentPosition);
-        do {
-            $phpCsFile->fixer->replaceToken($currentPosition, '');
-            $currentPosition++;
-        } while ($currentPosition < $endPosition);
     }
 
 }
