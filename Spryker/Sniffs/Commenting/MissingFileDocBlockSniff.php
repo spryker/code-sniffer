@@ -20,7 +20,7 @@ class MissingFileDocBlockSniff extends AbstractFileDocBlockSniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param $stackPointer
+     * @param int $stackPointer
      *
      * @return void
      */

@@ -20,7 +20,7 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param $stackPointer
+     * @param int $stackPointer
      *
      * @return bool|int
      */
@@ -33,13 +33,12 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param $stackPointer
+     * @param int $stackPointer
      *
      * @return void
      */
     protected function addFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-
         $phpCsFile->fixer->beginChangeset();
 
         $this->clearFileDocBlock($phpCsFile, $stackPointer);
