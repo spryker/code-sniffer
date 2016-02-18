@@ -2,6 +2,10 @@
 
 namespace Spryker\Sniffs\Factory;
 
+/**
+ * Spryker Factory classes should not make use of private property
+ * as this forbids extension.
+ */
 class NoPrivateMethodsSniff implements \PHP_CodeSniffer_Sniff
 {
 

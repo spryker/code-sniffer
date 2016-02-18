@@ -2,10 +2,13 @@
 
 namespace Spryker\Sniffs\AbstractSniffs;
 
+use Spryker\Traits\BasicsTrait;
 use PHP_CodeSniffer_File;
 
 abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
 {
+
+    use BasicsTrait;
 
     const NAMESPACE_SPRYKER = 'Spryker';
 
@@ -147,32 +150,20 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      * Checks if the given token scope contains a single or multiple token codes/types.
      *
      * @param \PHP_CodeSniffer_File $phpcsFile
-     * @param string|array $tokens
+     * @param string|array $search
      * @param int $start
      * @param int $end
      * @return bool
      */
-    protected function contains(\PHP_CodeSniffer_File $phpcsFile, $tokens, $start, $end)
+    protected function contains(\PHP_CodeSniffer_File $phpcsFile, $search, $start, $end)
     {
-        $whitelistedCodes = $whitelistedTypes = [];
-        foreach ((array)$tokens as $token) {
-            if (is_int($token)) {
-                $whitelistedCodes[] = $token;
-            } else {
-                $whitelistedTypes[] = $token;
-            }
-        }
-
         $tokens = $phpcsFile->getTokens();
         for ($i = $start; $i <= $end; $i++) {
             if ($tokens[$i]['type'] === 'T_OPEN_PARENTHESIS') {
                 $i = $tokens[$i]['parenthesis_closer'];
                 continue;
             }
-            if (in_array($tokens[$i]['code'], $whitelistedCodes, true)) {
-                return true;
-            }
-            if (in_array($tokens[$i]['type'], $whitelistedTypes, true)) {
+            if ($this->isGivenKind($tokens[$i], $search)) {
                 return true;
             }
         }

@@ -2,6 +2,9 @@
 
 namespace Spryker\Sniffs\Facade;
 
+/**
+ * Spryker Facade classes should have a getFactory() annotation.
+ */
 class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
 {
 

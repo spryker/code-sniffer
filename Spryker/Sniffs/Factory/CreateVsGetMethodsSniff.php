@@ -2,6 +2,10 @@
 
 namespace Spryker\Sniffs\Factory;
 
+/**
+ * Spryker Factory classes should use create() to create classes and get()
+ * for everything else.
+ */
 class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
 {
 
@@ -259,4 +263,5 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
 
         return false;
     }
+
 }
