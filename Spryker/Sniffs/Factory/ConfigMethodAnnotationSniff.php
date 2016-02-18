@@ -2,6 +2,9 @@
 
 namespace Spryker\Sniffs\Factory;
 
+/**
+ * Spryker Factory classes should have a getConfig() annotation.
+ */
 class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
 {
 

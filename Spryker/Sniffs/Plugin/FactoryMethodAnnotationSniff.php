@@ -2,6 +2,9 @@
 
 namespace Spryker\Sniffs\Plugin;
 
+/**
+ * Spryker Plugin classes should have a getFactory() annotation.
+ */
 class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
 {
 

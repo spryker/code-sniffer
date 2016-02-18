@@ -2,6 +2,9 @@
 
 namespace Spryker\Sniffs\Plugin;
 
+/**
+ * Spryker Plugin classes should have a getFacade() annotation.
+ */
 class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
 {
 

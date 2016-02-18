@@ -2,6 +2,9 @@
 
 namespace Spryker\Sniffs\Factory;
 
+/**
+ * Spryker Factory classes may not contain multiple object instantiations.
+ */
 class OneNewPerMethodSniff implements \PHP_CodeSniffer_Sniff
 {
 

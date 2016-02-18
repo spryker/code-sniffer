@@ -2,6 +2,9 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+/**
+ * Doc blocks should typehint returning itself as $this for fluent interface to work.
+ */
 class DocBlockReturnSelfSniff implements \PHP_CodeSniffer_Sniff
 {
 

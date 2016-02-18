@@ -4,6 +4,9 @@ namespace Spryker\Sniffs\DependencyProvider;
 
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
+/**
+ * Spryker Locator should not return Facades directly, use a bridge instead.
+ */
 class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
 {
 
