@@ -19,10 +19,6 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if (!$this->isSprykerNamespace($phpCsFile, $stackPointer)) {
-            return;
-        }
-
         if ($this->existsFileDocBlock($phpCsFile, $stackPointer)
             && ($this->hasNotExpectedLength($phpCsFile, $stackPointer) || $this->hasWrongContent($phpCsFile, $stackPointer))
         ) {
@@ -56,7 +52,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
         $firstLineComment = $fileDockBlockTokens[self::FIRST_COMMENT_LINE_POSITION]['content'];
         $secondLineComment = $fileDockBlockTokens[self::SECOND_COMMENT_LINE_POSITION]['content'];
 
-        if ($firstLineComment !== self::EXPECTED_COMMENT_FIRST_LINE_STRING
+        if ($firstLineComment !== sprintf(self::EXPECTED_COMMENT_FIRST_LINE_STRING, date('Y'))
             || $secondLineComment !== self::EXPECTED_COMMENT_SECOND_LINE_STRING)
         {
             return true;

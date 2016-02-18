@@ -16,10 +16,6 @@ class MissingFileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if (!$this->isSprykerNamespace($phpCsFile, $stackPointer)) {
-            return;
-        }
-
         if (!$this->existsFileDocBlock($phpCsFile, $stackPointer)) {
             $this->addFixableMissingDocblock($phpCsFile, $stackPointer);
         }

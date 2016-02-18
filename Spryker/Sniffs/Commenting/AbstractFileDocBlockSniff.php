@@ -5,7 +5,7 @@ namespace Spryker\Sniffs\Commenting;
 abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 {
 
-    const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © 2016 Spryker Systems GmbH. All rights reserved.';
+    const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © %s-present Spryker Systems GmbH. All rights reserved.';
     const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
     const SPRYKER_NAMESPACE = 'Spryker';
 
@@ -65,7 +65,7 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, '/**');
         $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . self::EXPECTED_COMMENT_FIRST_LINE_STRING);
+        $phpCsFile->fixer->addContent($stackPointer, ' * ' . sprintf(self::EXPECTED_COMMENT_FIRST_LINE_STRING, date('Y')));
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, ' * ' . self::EXPECTED_COMMENT_SECOND_LINE_STRING);
         $phpCsFile->fixer->addNewline($stackPointer);
