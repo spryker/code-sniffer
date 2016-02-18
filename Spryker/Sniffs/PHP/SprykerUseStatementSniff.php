@@ -68,11 +68,6 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
             return;
         }
 
-        if (strpos($phpcsFile->getFilename(), '_bootstrap')) {
-        var_dump($phpcsFile->getFilename());
-        var_dump($namespaceStatement); echo 'XXX';
-        }
-
         $this->loadStatements($phpcsFile);
 
         if ($tokens[$stackPtr]['code'] === T_CLASS) {
