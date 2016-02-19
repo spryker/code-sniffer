@@ -59,13 +59,118 @@ class ConditionalExpressionOrderSniff implements \PHP_CodeSniffer_Sniff
             return;
         }
 
-        $phpCsFile->addError($error, $stackPointer);
-        /*
-        $fix = $phpCsFile->addFixableError($error, $stackPointer);
-        if ($fix) {
-            //TODO
+        //TODO
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $comparisonIndex
+     *
+     * @return int
+     */
+    protected function getComparisonValue($tokens, $comparisonIndex)
+    {
+        $comparisonIndexValue = $tokens[$comparisonIndex]->getContent();
+        $operatorsToMap = [T_GREATER_THAN, T_SMALLER_THAN, T_IS_GREATER_OR_EQUAL, T_IS_SMALLER_OR_EQUAL];
+        if (in_array($tokens[$comparisonIndex]->getId(), $operatorsToMap, true)) {
+            $mapping = [
+                T_GREATER_THAN => '<',
+                T_SMALLER_THAN => '>',
+                T_IS_GREATER_OR_EQUAL => '<=',
+                T_IS_SMALLER_OR_EQUAL => '>=',
+            ];
+            $comparisonIndexValue = $mapping[$tokens[$comparisonIndex]->getId()];
+
+            return $comparisonIndexValue;
         }
-        */
+
+        return $comparisonIndexValue;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $index
+     *
+     * @return int
+     */
+    protected function detectRightEnd($tokens, $index)
+    {
+        $rightEndIndex = $index;
+        $nextIndex = $index;
+        $max = null;
+        $braceCounter = 0;
+        if ($tokens[$index]->getContent() === '(') {
+            ++$braceCounter;
+            $braceEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+            return $braceEndIndex;
+        }
+
+        while (true) {
+            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+            if ($nextIndex === null) {
+                return $rightEndIndex;
+            }
+
+            $token = $tokens[$nextIndex];
+            $content = $token->getContent();
+
+            if (!$token->isCast()
+                && !$token->isGivenKind([T_VARIABLE, T_OBJECT_OPERATOR, T_STRING, T_CONST, T_DOUBLE_COLON, T_CONSTANT_ENCAPSED_STRING, T_LNUMBER])
+                && !in_array($content, ['(', ')', '[', ']'], true)
+            ) {
+                return $rightEndIndex;
+            }
+
+            if ($content === ')') {
+                --$braceCounter;
+            }
+            if ($braceCounter < 0) {
+                return $rightEndIndex;
+            }
+
+            if ($content === '(') {
+                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+            }
+
+            if ($max !== null && $nextIndex > $max) {
+                return $rightEndIndex;
+            }
+
+            $rightEndIndex = $nextIndex;
+        }
+
+        return $rightEndIndex;
+    }
+
+    /**
+     * @param int $index
+     * @param int $leftIndexStart
+     * @param int int $leftIndexEnd
+     * @param int $rightIndexStart
+     * @param int $rightIndexEnd
+     *
+     * @return void
+     */
+    protected function applyFix($tokens, $index, $leftIndexStart, $leftIndexEnd, $rightIndexStart, $rightIndexEnd)
+    {
+        // Check if we need to inverse comparison operator
+        $comparisonValue = $this->getComparisonValue($tokens, $index);
+
+        $leftValue = '';
+        for ($i = $leftIndexStart; $i <= $leftIndexEnd; ++$i) {
+            $leftValue .= $tokens[$i]->getContent();
+            $tokens[$i]->setContent('');
+        }
+        $rightValue = '';
+        for ($i = $rightIndexStart; $i <= $rightIndexEnd; ++$i) {
+            $rightValue .= $tokens[$i]->getContent();
+            $tokens[$i]->setContent('');
+        }
+
+        $tokens[$index]->setContent($comparisonValue);
+        $tokens[$leftIndexEnd]->setContent($rightValue);
+        $tokens[$rightIndexStart]->setContent($leftValue);
     }
 
 }
