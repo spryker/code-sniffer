@@ -186,14 +186,12 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         $type = 'void';
 
+        if (empty($tokens[$index]['scope_opener']) || empty($tokens[$index]['scope_closer'])) {
+            return null;
+        }
+
         $methodStartIndex = $tokens[$index]['scope_opener'];
-        if (!$methodStartIndex) {
-            return null;
-        }
         $methodEndIndex = $tokens[$index]['scope_closer'];
-        if (!$methodEndIndex) {
-            return null;
-        }
 
         for ($i = $methodStartIndex + 1; $i < $methodEndIndex; ++$i) {
             if ($this->isGivenKind([T_FUNCTION], $tokens[$i])) {
