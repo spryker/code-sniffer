@@ -10,7 +10,7 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 
     const SPRYKER_NAMESPACE = 'Spryker';
 
-    private $sprykerApplications = [
+    protected $sprykerApplications = [
         'Client',
         'Shared',
         'Yves',
@@ -96,7 +96,7 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    private function clearFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function clearFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_OPEN_TAG, $stackPointer) + 1;
 

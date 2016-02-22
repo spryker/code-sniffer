@@ -31,7 +31,7 @@ class MissingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return void
      */
-    private function addFixableMissingDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function addFixableMissingDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer);
         if ($fix) {

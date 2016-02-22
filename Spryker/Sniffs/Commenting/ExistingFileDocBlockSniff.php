@@ -36,7 +36,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    private function hasNotExpectedLength(\PHP_CodeSniffer_File $phpCsFile , $stackPointer)
+    protected function hasNotExpectedLength(\PHP_CodeSniffer_File $phpCsFile , $stackPointer)
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -49,7 +49,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    private function hasWrongContent(\PHP_CodeSniffer_File $phpCsFile , $stackPointer)
+    protected function hasWrongContent(\PHP_CodeSniffer_File $phpCsFile , $stackPointer)
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -71,7 +71,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return array
      */
-    private function getFileDocBlockTokens(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getFileDocBlockTokens(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
         $fileDocBlockEndPosition = $phpCsFile->findNext(T_DOC_COMMENT_CLOSE_TAG, $fileDocBlockStartPosition) + 1;
@@ -87,7 +87,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return void
      */
-    private function addFixableExistingDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function addFixableExistingDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer);
         if ($fix) {
