@@ -3,13 +3,13 @@
 namespace Spryker\Sniffs\Commenting;
 
 /**
- * Doc blocks should typehint returning itself as $this for fluent interface to work.
+ * Doc blocks should type-hint returning itself as $this for fluent interface to work.
  */
 class DocBlockReturnSelfSniff implements \PHP_CodeSniffer_Sniff
 {
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -23,10 +23,7 @@ class DocBlockReturnSelfSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {

@@ -14,7 +14,7 @@ class ConditionalExpressionOrderSniff implements \PHP_CodeSniffer_Sniff
     use BasicsTrait;
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -22,10 +22,7 @@ class ConditionalExpressionOrderSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
@@ -43,17 +40,16 @@ class ConditionalExpressionOrderSniff implements \PHP_CodeSniffer_Sniff
         if (!$prevIndex) {
             return;
         }
-        if ($this->isGivenKind($tokens[$prevIndex], PHP_CodeSniffer_Tokens::$arithmeticTokens)) {
+        if ($this->isGivenKind(PHP_CodeSniffer_Tokens::$arithmeticTokens, $tokens[$prevIndex])) {
             return;
         }
 
-        var_dump($tokens[$prevIndex]);
         $fixable = true;
         $error = 'Usage of Yoda conditions is not allowed. Switch the expression order.';
         $prevContent = $tokens[$prevIndex]['content'];
 
-        if (!$this->isGivenKind($tokens[$prevIndex], PHP_CodeSniffer_Tokens::$assignmentTokens)
-            && !$this->isGivenKind($tokens[$prevIndex], PHP_CodeSniffer_Tokens::$booleanOperators) && $prevContent !== '('
+        if (!$this->isGivenKind(PHP_CodeSniffer_Tokens::$assignmentTokens, $tokens[$prevIndex])
+            && !$this->isGivenKind(PHP_CodeSniffer_Tokens::$booleanOperators, $tokens[$prevIndex]) && $prevContent !== '('
         ) {
             // Not fixable
             $phpCsFile->addError($error, $stackPointer);

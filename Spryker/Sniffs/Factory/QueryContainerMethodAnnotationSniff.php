@@ -11,10 +11,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
     const LAYER_PERSISTENCE = 'Persistence';
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {

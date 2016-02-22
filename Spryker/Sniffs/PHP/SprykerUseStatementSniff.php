@@ -41,9 +41,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     protected $allStatements;
 
     /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -51,12 +49,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
-     * @param int $stackPtr The position of the current token
-     *    in the stack passed in $tokens.
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
@@ -110,13 +103,13 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $extractedUseStatement = '';
         $lastSeparatorIndex = null;
         while (true) {
-            if (!$this->isGivenKind($tokens[$i], [T_NS_SEPARATOR, T_STRING])) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$i])) {
                 break;
             }
             $lastIndex = $i;
             $extractedUseStatement .= $tokens[$i]['content'];
 
-            if ($this->isGivenKind($tokens[$i], [T_NS_SEPARATOR])) {
+            if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$i])) {
                 $lastSeparatorIndex = $i;
             }
             ++$i;
@@ -180,13 +173,13 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $extractedUseStatement = '';
         $firstSeparatorIndex = null;
         while (true) {
-            if (!$this->isGivenKind($tokens[$i], [T_NS_SEPARATOR, T_STRING])) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$i])) {
                 break;
             }
             $lastIndex = $i;
             $extractedUseStatement = $tokens[$i]['content'] . $extractedUseStatement;
 
-            if ($firstSeparatorIndex === null && $this->isGivenKind($tokens[$i], [T_NS_SEPARATOR])) {
+            if ($firstSeparatorIndex === null && $this->isGivenKind([T_NS_SEPARATOR], $tokens[$i])) {
                 $firstSeparatorIndex = $i;
             }
             --$i;
@@ -248,13 +241,13 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
             $extractedUseStatement = '';
             $lastSeparatorIndex = null;
             while (true) {
-                if (!$this->isGivenKind($tokens[$j], [T_NS_SEPARATOR, T_STRING])) {
+                if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$j])) {
                     break;
                 }
 
                 $lastIndex = $j;
                 $extractedUseStatement .= $tokens[$j]['content'];
-                if ($this->isGivenKind($tokens[$j], [T_NS_SEPARATOR])) {
+                if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$j])) {
                     $lastSeparatorIndex = $j;
                 }
                 ++$j;
@@ -345,38 +338,6 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $namespace = mb_substr($extractedUseStatement, 0, $firstSeparator);
 
         return in_array($namespace, self::$whiteListOfNamespaces);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
-     * @return array
-     */
-    protected function getNamespaceStatement(\PHP_CodeSniffer_File $phpcsFile)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $namespaceIndex = $phpcsFile->findNext(T_NAMESPACE, 0);
-        if (!$namespaceIndex) {
-            return [];
-        }
-
-        $endIndex = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], $namespaceIndex + 1);
-        if (!$endIndex) {
-            return [];
-        }
-
-        $namespace = '';
-        $namespaceStartIndex = $phpcsFile->findNext(\PHP_CodeSniffer_Tokens::$emptyTokens, $namespaceIndex + 1, null, true);
-        $namespaceEndIndex = $phpcsFile->findPrevious(\PHP_CodeSniffer_Tokens::$emptyTokens, $endIndex - 1, null, true);
-        for ($i = $namespaceStartIndex; $i <= $namespaceEndIndex; $i++) {
-            $namespace .= $tokens[$i]['content'];
-        }
-
-        return [
-            'start' => $namespaceIndex,
-            'namespace' => $namespace,
-            'end' => $endIndex
-        ];
     }
 
     /**

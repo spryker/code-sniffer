@@ -2,15 +2,17 @@
 
 namespace Spryker\Sniffs\Factory;
 
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+
 /**
  * Spryker Factory classes should use create() to create classes and get()
  * for everything else.
  */
-class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
+class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 {
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -20,10 +22,7 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
@@ -134,7 +133,7 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \Symfony\CS\Tokenizer\Tokens|\Symfony\CS\Tokenizer\Token[] $tokens
+     * @param array $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -156,7 +155,7 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \Symfony\CS\Tokenizer\Tokens|\Symfony\CS\Tokenizer\Token[] $tokens
+     * @param array $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -174,91 +173,6 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
                     return true;
                 }
             }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param \Symfony\CS\Tokenizer\Tokens|\Symfony\CS\Tokenizer\Token[] $tokens
-     * @param int $stackPointer
-     * @return bool
-     */
-    protected function isMarkedAsDeprecated(\PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
-    {
-        $begin = $tokens[$stackPointer]['scope_opener'] + 1;
-        $end = $tokens[$stackPointer]['scope_closer'] - 1;
-
-        for ($i = $begin; $i <= $end; $i++) {
-            $token = $tokens[$i];
-
-            if ($token['code'] === T_CONSTANT_ENCAPSED_STRING) {
-                if (strpos(strtolower($token['content']), 'deprecated') !== false) {
-                    return true;
-                }
-            }
-        }
-
-        if ($this->isMarkedDeprecatedInDocBlock($phpCsFile, $tokens, $stackPointer)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
-     */
-    protected function findRelatedDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
-    {
-        $tokens = $phpCsFile->getTokens();
-
-        $line = $tokens[$stackPointer]['line'];
-        $beginningOfLine = $stackPointer;
-        while (!empty($tokens[$beginningOfLine - 1]) && $tokens[$beginningOfLine - 1]['line'] === $line) {
-            $beginningOfLine--;
-        }
-
-        if (!empty($tokens[$beginningOfLine - 2]) && $tokens[$beginningOfLine - 2]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
-            return $beginningOfLine - 2;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param array $tokens
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function isMarkedDeprecatedInDocBlock(\PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
-    {
-        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
-
-        if (!$docBlockEndIndex) {
-            return false;
-        }
-
-        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
-
-        for ($i = $docBlockStartIndex + 1;
-             $i < $docBlockEndIndex;
-             $i++
-        ) {
-            if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
-                continue;
-            }
-            if (!in_array($tokens[$i]['content'], ['@deprecated'])) {
-                continue;
-            }
-
-            return true;
         }
 
         return false;
