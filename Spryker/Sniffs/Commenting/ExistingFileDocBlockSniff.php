@@ -36,7 +36,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function hasNotExpectedLength(\PHP_CodeSniffer_File $phpCsFile , $stackPointer)
+    protected function hasNotExpectedLength(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -49,7 +49,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function hasWrongContent(\PHP_CodeSniffer_File $phpCsFile , $stackPointer)
+    protected function hasWrongContent(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -57,8 +57,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
         $secondLineComment = $fileDockBlockTokens[self::SECOND_COMMENT_LINE_POSITION]['content'];
 
         if ($firstLineComment !== sprintf(self::EXPECTED_COMMENT_FIRST_LINE_STRING, date('Y'))
-            || $secondLineComment !== self::EXPECTED_COMMENT_SECOND_LINE_STRING)
-        {
+            || $secondLineComment !== self::EXPECTED_COMMENT_SECOND_LINE_STRING) {
             return true;
         }
 
