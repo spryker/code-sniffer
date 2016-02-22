@@ -13,6 +13,14 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @var array
      */
+    protected $sprykerTestNamespaces = [
+        'Unit',
+        'Functional',
+    ];
+
+    /**
+     * @var array
+     */
     protected $sprykerApplications = [
         'Client',
         'Shared',
@@ -38,18 +46,21 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
      */
     protected function isSprykerNamespace(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        $sprykerNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $stackPointer);
-        if ($sprykerNamespaceTokenPosition) {
-            $sprykerNamespace = $phpCsFile->getTokens()[$sprykerNamespaceTokenPosition]['content'];
-            $sprykerApplicationTokenPosition = $phpCsFile->findNext(T_STRING, $sprykerNamespaceTokenPosition + 1);
+        $firstNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $stackPointer);
+        if ($firstNamespaceTokenPosition) {
+            $firstNamespaceString = $phpCsFile->getTokens()[$firstNamespaceTokenPosition]['content'];
+            $secondNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $firstNamespaceTokenPosition + 1);
 
-            if (!$sprykerApplicationTokenPosition) {
+            if (!$secondNamespaceTokenPosition) {
                 return false;
             }
 
-            $sprykerApplication = $phpCsFile->getTokens()[$sprykerApplicationTokenPosition]['content'];
+            $secondNamespaceString = $phpCsFile->getTokens()[$secondNamespaceTokenPosition]['content'];
 
-            return ($sprykerNamespace === self::SPRYKER_NAMESPACE && in_array($sprykerApplication, $this->sprykerApplications));
+            $isSprykerClass = ($firstNamespaceString === self::SPRYKER_NAMESPACE && in_array($secondNamespaceString, $this->sprykerApplications));
+            $isSprykerTestClass = (in_array($firstNamespaceString, $this->sprykerTestNamespaces) && $secondNamespaceString === self::SPRYKER_NAMESPACE);
+
+            return ($isSprykerClass || $isSprykerTestClass);
         }
 
         return false;
