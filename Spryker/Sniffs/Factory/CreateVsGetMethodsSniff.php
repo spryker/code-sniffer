@@ -1,6 +1,7 @@
 <?php
 
 namespace Spryker\Sniffs\Factory;
+
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**

@@ -5,7 +5,6 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-
 use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
@@ -22,7 +21,8 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [T_FUNCTION];
     }
 
@@ -65,12 +65,11 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
-        $docBlockReturnIndex = $this->findDocBlockReturn($phpcsFile, $docBlockStartIndex,$docBlockEndIndex);
+        $docBlockReturnIndex = $this->findDocBlockReturn($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
         if (!$docBlockReturnIndex) {
             // For now
             $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
             //$this->addReturnAnnotation($docBlock, $returnType);
-            return;
         }
     }
 
@@ -79,7 +78,8 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      * @param int $index
      * @return void
      */
-    protected function checkConstructorAndDestructor(PHP_CodeSniffer_File $phpcsFile, $index) {
+    protected function checkConstructorAndDestructor(PHP_CodeSniffer_File $phpcsFile, $index)
+    {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $index);
         if (!$docBlockEndIndex) {
             return;
@@ -113,7 +113,8 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function findDocBlockReturn(PHP_CodeSniffer_File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex) {
+    protected function findDocBlockReturn(PHP_CodeSniffer_File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
+    {
         $tokens = $phpcsFile->getTokens();
 
         for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
@@ -131,7 +132,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param DocBlock $doc
+     * @param \DocBlock $doc
      *
      * @return void
      */

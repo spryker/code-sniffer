@@ -5,10 +5,12 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+
 /**
  * No alignment for @param, @throws, @return, @var, and @type phpdoc tags.
  */
-class DocBlockNoInlineAlignmentSniff
+class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
 {
 
     /**
@@ -16,7 +18,8 @@ class DocBlockNoInlineAlignmentSniff
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_DOC_COMMENT_TAG,
             T_DOC_COMMENT_STRING,
@@ -53,7 +56,13 @@ class DocBlockNoInlineAlignmentSniff
         $tokens = $phpcsFile->getTokens();
 
         $followingWhitespace = $phpcsFile->findNext(T_DOC_COMMENT_WHITESPACE, $stackPtr + 1, $stackPtr + 2);
-        if (!$followingWhitespace) {
+        if (!$followingWhitespace || $tokens[$followingWhitespace]['line'] !== $tokens[$stackPtr]['line']) {
+            return;
+        }
+
+        // Skip for file doc blocks
+        $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
+        if (!$namespaceStatement || $stackPtr < $namespaceStatement['start']) {
             return;
         }
 

@@ -4,8 +4,6 @@
  *
  * PHP version 5
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2014 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
@@ -28,13 +26,11 @@ if (class_exists('PEAR_Sniffs_Classes_ClassDeclarationSniff', true) === false) {
  *
  * Checks the declaration of the class and its inheritance is correct.
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
+ * @author Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2014 Squiz Pty Ltd (ABN 77 084 670 600)
- * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @version   Release: @package_version@
- * @link      http://pear.php.net/package/PHP_CodeSniffer
+ * @license https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ * @version Release: @package_version@
+ * @link http://pear.php.net/package/PHP_CodeSniffer
  */
 class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
 {
@@ -43,8 +39,8 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
      * Processes this test, when one of its tokens is encountered.
      *
      * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                         in the stack passed in $tokens.
+     * @param int $stackPtr The position of the current token
+     *   in the stack passed in $tokens.
      *
      * @return void
      */
@@ -64,15 +60,12 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
 
     }
 
-//end process()
-
-
     /**
      * Processes the opening section of a class declaration.
      *
      * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param int $stackPtr The position of the current token
+     *    in the stack passed in $tokens.
      *
      * @return void
      */
@@ -118,8 +111,8 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
                 if ($fix === true) {
                     $phpcsFile->fixer->replaceToken(($stackPtr - 1), ' ');
                 }
-            }//end if
-        }//end if
+            }
+        }
 
         // We'll need the indent of the class/interface declaration for later.
         $classIndent = 0;
@@ -207,9 +200,9 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
                             $phpcsFile->fixer->replaceToken(($keyword - 1), ' ');
                         }
                     }
-                }//end if
-            }//end if
-        }//end foreach
+                }
+            }
+        }
 
         // Check each of the extends/implements class names. If the extends/implements
         // keyword is the last content on the line, it means we need to check for
@@ -339,7 +332,7 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
                             }
                         }
                     }
-                }//end if
+                }
             } elseif ($tokens[($className - 1)]['code'] !== T_NS_SEPARATOR
                 || $tokens[($className - 2)]['code'] !== T_STRING
             ) {
@@ -373,8 +366,8 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
                             $phpcsFile->fixer->replaceToken($prev, ' ');
                         }
                     }
-                }//end if
-            }//end if
+                }
+            }
 
             if ($tokens[($className + 1)]['code'] !== T_NS_SEPARATOR
                 && $tokens[($className + 1)]['code'] !== T_COMMA
@@ -399,20 +392,17 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
                 $nextComma = $phpcsFile->findNext(T_COMMA, $className);
             } else {
                 $nextComma = ($className + 1);
-            }//end if
-        }//end foreach
+            }
+        }
 
     }
-
-//end processOpen()
-
 
     /**
      * Processes the closing section of a class declaration.
      *
      * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param int $stackPtr The position of the current token
+     *    in the stack passed in $tokens.
      *
      * @return void
      */
@@ -437,7 +427,4 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
 
     }
 
-//end processClose()
-
-
-}//end class
+}

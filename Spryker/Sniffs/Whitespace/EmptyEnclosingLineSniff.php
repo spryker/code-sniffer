@@ -6,14 +6,16 @@ namespace Spryker\Sniffs\Whitespace;
  * There should be an empty newline at the beginning and end of each body.
  * Unless it is empty.
  */
-class EmptyEnclosingLineSniff implements \PHP_CodeSniffer_Sniff {
+class EmptyEnclosingLineSniff implements \PHP_CodeSniffer_Sniff
+{
 
     /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_CLASS,
             T_INTERFACE,
@@ -29,7 +31,8 @@ class EmptyEnclosingLineSniff implements \PHP_CodeSniffer_Sniff {
      *                                        stack passed in $tokens.
      * @return void
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
         $errorData = [strtolower($tokens[$stackPtr]['content'])];
 

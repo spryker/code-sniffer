@@ -16,7 +16,8 @@ class DocBlockPipeSpacingSniff
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_DOC_COMMENT_STRING,
         ];
