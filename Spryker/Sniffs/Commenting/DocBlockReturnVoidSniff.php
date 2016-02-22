@@ -60,6 +60,10 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         $docBlockReturnIndex = $this->findDocBlockReturn($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
         if (!$docBlockReturnIndex) {
+            if ($this->findDocBlockInheritDoc($phpcsFile, $docBlockStartIndex, $docBlockEndIndex)) {
+                return;
+            }
+
             // For now
             $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
             //$this->addReturnAnnotation($docBlock, $returnType);
@@ -115,6 +119,31 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
                 continue;
             }
             if ($tokens[$i]['content'] !== '@return') {
+                continue;
+            }
+
+            return $i;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $docBlockStartIndex
+     * @param int $docBlockEndIndex
+     *
+     * @return int|null
+     */
+    protected function findDocBlockInheritDoc(PHP_CodeSniffer_File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
+            if (!$this->isGivenKind(T_DOC_COMMENT_TAG, $tokens[$i])) {
+                continue;
+            }
+            if (strtolower($tokens[$i]['content']) !== '@inheritdoc') {
                 continue;
             }
 
