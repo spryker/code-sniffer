@@ -10,6 +10,9 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 
     const SPRYKER_NAMESPACE = 'Spryker';
 
+    /**
+     * @var array
+     */
     protected $sprykerApplications = [
         'Client',
         'Shared',
