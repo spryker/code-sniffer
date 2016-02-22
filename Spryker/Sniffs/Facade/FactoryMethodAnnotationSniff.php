@@ -9,10 +9,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
 {
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {

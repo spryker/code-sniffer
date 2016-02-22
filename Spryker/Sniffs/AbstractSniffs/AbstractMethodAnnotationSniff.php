@@ -11,7 +11,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractSprykerSniff
     protected $fileExists = false;
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {

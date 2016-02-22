@@ -17,9 +17,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 {
 
     /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -27,12 +25,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
-     * @param int $stackPtr The position of the current token
-     *    in the stack passed in $tokens.
-     * @return void
+     * @inheritdoc
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {

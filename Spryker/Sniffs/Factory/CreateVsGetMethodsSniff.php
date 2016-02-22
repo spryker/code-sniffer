@@ -12,7 +12,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 {
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -22,10 +22,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {

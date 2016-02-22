@@ -9,10 +9,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
 {
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
@@ -37,7 +34,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
      *
      * @return bool
      */
-    private function hasConfigAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasConfigAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -62,7 +59,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
      *
      * @return void
      */
-    private function addConfigAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, $configName)
+    protected function addConfigAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, $configName)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -93,7 +90,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
      *
      * @return array
      */
-    private function getConfigClassName(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getConfigClassName(\PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

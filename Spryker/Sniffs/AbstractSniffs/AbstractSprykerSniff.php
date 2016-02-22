@@ -339,6 +339,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
         if ($tokens[$nextIndex]['line'] !== $tokens[$prevIndex]['line']) {
             return 0;
         }
+
         return $tokens[$nextIndex]['column'] - 1;
     }
 
@@ -376,9 +377,11 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
                 }
             }
         }
+
         if ($this->isMarkedDeprecatedInDocBlock($phpCsFile, $tokens, $stackPointer)) {
             return true;
         }
+
         return false;
     }
 
@@ -408,6 +411,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
             }
             return true;
         }
+
         return false;
     }
 

@@ -8,15 +8,13 @@ namespace Spryker\Sniffs\Commenting;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * No alignment for @param, @throws, @return, @var, and @type phpdoc tags.
+ * No inline alignment or additional whitespace for phpdoc tags.
  */
 class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
 {
 
     /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -27,12 +25,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token in the
-     *                                        stack passed in $tokens.
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
@@ -67,7 +60,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
         }
 
         $content = $tokens[$followingWhitespace]['content'];
-        if ($content === ' ') {
+        if (strpos($content, ' ') === false || $content === ' ') {
             return;
         }
 

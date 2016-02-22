@@ -11,7 +11,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
 {
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -21,10 +21,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
