@@ -131,7 +131,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \Symfony\CS\DocBlock\DocBlock $doc
+     * @param DocBlock $doc
      *
      * @return void
      */

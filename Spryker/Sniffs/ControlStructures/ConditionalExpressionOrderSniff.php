@@ -47,7 +47,6 @@ class ConditionalExpressionOrderSniff implements \PHP_CodeSniffer_Sniff
             return;
         }
 
-        var_dump($tokens[$prevIndex]);
         $fixable = true;
         $error = 'Usage of Yoda conditions is not allowed. Switch the expression order.';
         $prevContent = $tokens[$prevIndex]['content'];

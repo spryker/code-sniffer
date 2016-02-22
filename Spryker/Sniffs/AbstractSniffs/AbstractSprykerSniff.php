@@ -295,10 +295,9 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
         $char = "\t";
         $countTabs = $countSpaces = 0;
         foreach ($parts as $part) {
-            $countTabs += substr_count($content, $char);
-            $countSpaces += (int)(substr_count($content, ' ') / 4);
+            $countTabs += substr_count($part, $char);
+            $countSpaces += (int)(substr_count($part, ' ') / 4);
         }
-        var_dump($content);
 
         if ($countSpaces > $countTabs) {
             $char = $correctLength ? '    ' : ' ';
@@ -359,7 +358,6 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
 
         return $currentIndex;
     }
-
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
