@@ -43,6 +43,9 @@ class ConditionalExpressionOrderSniff implements \PHP_CodeSniffer_Sniff
         if ($this->isGivenKind(PHP_CodeSniffer_Tokens::$arithmeticTokens, $tokens[$prevIndex])) {
             return;
         }
+        if ($this->isGivenKind([T_STRING_CONCAT], $tokens[$prevIndex])) {
+            return;
+        }
 
         $fixable = true;
         $error = 'Usage of Yoda conditions is not allowed. Switch the expression order.';
