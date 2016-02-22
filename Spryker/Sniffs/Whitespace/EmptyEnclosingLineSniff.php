@@ -56,7 +56,6 @@ class EmptyEnclosingLineSniff implements \PHP_CodeSniffer_Sniff
                     $phpcsFile->fixer->addNewline($curlyBraceStartIndex);
                 } else {
                     $phpcsFile->fixer->replaceToken($curlyBraceStartIndex + 1, '');
-                    $phpcsFile->fixer->addNewline($curlyBraceStartIndex + 1);
                 }
 
                 $phpcsFile->fixer->endChangeset();
