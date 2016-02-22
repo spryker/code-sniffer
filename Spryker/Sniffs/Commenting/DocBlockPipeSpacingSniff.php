@@ -49,15 +49,15 @@ class DocBlockPipeSpacingSniff implements PHP_CodeSniffer_Sniff
             $hints[] = trim($piece);
         }
 
-        $desc = trim($description);
+        $desc = ltrim($description);
 
         while (!empty($desc) && mb_substr($desc, 0, 1) === '|') {
-            $desc = trim(mb_substr($desc, 1));
+            $desc = ltrim(mb_substr($desc, 1));
 
             $pos = mb_strpos($desc, ' ');
             if ($pos > 0) {
                 $hints[] = trim(mb_substr($desc, 0, $pos));
-                $desc = trim(mb_substr($desc, $pos));
+                $desc = ltrim(mb_substr($desc, $pos));
             } else {
                 $hints[] = $desc;
                 $desc = '';
