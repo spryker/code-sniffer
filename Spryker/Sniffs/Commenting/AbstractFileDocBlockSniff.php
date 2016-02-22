@@ -7,7 +7,15 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 
     const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © %s-present Spryker Systems GmbH. All rights reserved.';
     const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
+
     const SPRYKER_NAMESPACE = 'Spryker';
+
+    private $sprykerApplications = [
+        'Client',
+        'Shared',
+        'Yves',
+        'Zed',
+    ];
 
     /**
      * @return array
@@ -30,8 +38,15 @@ abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
         $sprykerNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $stackPointer);
         if ($sprykerNamespaceTokenPosition) {
             $sprykerNamespace = $phpCsFile->getTokens()[$sprykerNamespaceTokenPosition]['content'];
+            $sprykerApplicationTokenPosition = $phpCsFile->findNext(T_STRING, $sprykerNamespaceTokenPosition + 1);
 
-            return ($sprykerNamespace === self::SPRYKER_NAMESPACE);
+            if (!$sprykerApplicationTokenPosition) {
+                return false;
+            }
+
+            $sprykerApplication = $phpCsFile->getTokens()[$sprykerApplicationTokenPosition]['content'];
+
+            return ($sprykerNamespace === self::SPRYKER_NAMESPACE && in_array($sprykerApplication, $this->sprykerApplications));
         }
 
         return false;
