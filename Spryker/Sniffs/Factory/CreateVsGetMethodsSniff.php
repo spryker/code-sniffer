@@ -1,12 +1,13 @@
 <?php
 
 namespace Spryker\Sniffs\Factory;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Spryker Factory classes should use create() to create classes and get()
  * for everything else.
  */
-class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
+class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 {
 
     /**
@@ -134,7 +135,7 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \Symfony\CS\Tokenizer\Tokens|\Symfony\CS\Tokenizer\Token[] $tokens
+     * @param array $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -156,7 +157,7 @@ class CreateVsGetMethodsSniff implements \PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \Symfony\CS\Tokenizer\Tokens|\Symfony\CS\Tokenizer\Token[] $tokens
+     * @param array $tokens
      * @param int $stackPointer
      *
      * @return bool

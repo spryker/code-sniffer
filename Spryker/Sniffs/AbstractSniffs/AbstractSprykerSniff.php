@@ -360,4 +360,57 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
         return $currentIndex;
     }
 
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     * @return bool
+     */
+    protected function isMarkedAsDeprecated(\PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
+    {
+        $begin = $tokens[$stackPointer]['scope_opener'] + 1;
+        $end = $tokens[$stackPointer]['scope_closer'] - 1;
+        for ($i = $begin; $i <= $end; $i++) {
+            $token = $tokens[$i];
+            if ($token['code'] === T_CONSTANT_ENCAPSED_STRING) {
+                if (strpos(strtolower($token['content']), 'deprecated') !== false) {
+                    return true;
+                }
+            }
+        }
+        if ($this->isMarkedDeprecatedInDocBlock($phpCsFile, $tokens, $stackPointer)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param array $tokens
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isMarkedDeprecatedInDocBlock(\PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
+    {
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
+        if (!$docBlockEndIndex) {
+            return false;
+        }
+        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+        for ($i = $docBlockStartIndex + 1;
+             $i < $docBlockEndIndex;
+             $i++
+        ) {
+            if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
+                continue;
+            }
+            if (!in_array($tokens[$i]['content'], ['@deprecated'])) {
+                continue;
+            }
+            return true;
+        }
+        return false;
+    }
+
 }
