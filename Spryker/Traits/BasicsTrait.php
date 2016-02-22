@@ -8,13 +8,13 @@ trait BasicsTrait
 {
 
     /**
+     * @param string|array $search
      * @param array $token
-     * @param string|array $kind
      * @return bool
      */
-    public function isGivenKind(array $token, $kind)
+    public function isGivenKind($search, array $token)
     {
-        $kind = (array)$kind;
+        $kind = (array)$search;
 
         if (in_array($token['code'], $kind, true)) {
             return true;

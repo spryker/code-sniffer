@@ -36,7 +36,11 @@ class DocBlockPipeSpacingSniff
 
         $content = $tokens[$stackPtr]['content'];
 
-        list($hint, $description) = explode(' ', $content, 2);
+        $description = '';
+        $hint = $content;
+        if (strpos($hint, ' ') !== false) {
+            list($hint, $description) = explode(' ', $content, 2);
+        }
 
         if (strpos($hint, '|') === false) {
             return;

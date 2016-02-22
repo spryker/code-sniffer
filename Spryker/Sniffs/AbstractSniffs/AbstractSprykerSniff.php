@@ -163,7 +163,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
                 $i = $tokens[$i]['parenthesis_closer'];
                 continue;
             }
-            if ($this->isGivenKind($tokens[$i], $search)) {
+            if ($this->isGivenKind($search, $tokens[$i])) {
                 return true;
             }
         }

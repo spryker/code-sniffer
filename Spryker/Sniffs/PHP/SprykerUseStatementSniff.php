@@ -110,13 +110,13 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $extractedUseStatement = '';
         $lastSeparatorIndex = null;
         while (true) {
-            if (!$this->isGivenKind($tokens[$i], [T_NS_SEPARATOR, T_STRING])) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$i])) {
                 break;
             }
             $lastIndex = $i;
             $extractedUseStatement .= $tokens[$i]['content'];
 
-            if ($this->isGivenKind($tokens[$i], [T_NS_SEPARATOR])) {
+            if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$i])) {
                 $lastSeparatorIndex = $i;
             }
             ++$i;
@@ -180,13 +180,13 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $extractedUseStatement = '';
         $firstSeparatorIndex = null;
         while (true) {
-            if (!$this->isGivenKind($tokens[$i], [T_NS_SEPARATOR, T_STRING])) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$i])) {
                 break;
             }
             $lastIndex = $i;
             $extractedUseStatement = $tokens[$i]['content'] . $extractedUseStatement;
 
-            if ($firstSeparatorIndex === null && $this->isGivenKind($tokens[$i], [T_NS_SEPARATOR])) {
+            if ($firstSeparatorIndex === null && $this->isGivenKind([T_NS_SEPARATOR], $tokens[$i])) {
                 $firstSeparatorIndex = $i;
             }
             --$i;
@@ -248,13 +248,13 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
             $extractedUseStatement = '';
             $lastSeparatorIndex = null;
             while (true) {
-                if (!$this->isGivenKind($tokens[$j], [T_NS_SEPARATOR, T_STRING])) {
+                if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$j])) {
                     break;
                 }
 
                 $lastIndex = $j;
                 $extractedUseStatement .= $tokens[$j]['content'];
-                if ($this->isGivenKind($tokens[$j], [T_NS_SEPARATOR])) {
+                if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$j])) {
                     $lastSeparatorIndex = $j;
                 }
                 ++$j;
