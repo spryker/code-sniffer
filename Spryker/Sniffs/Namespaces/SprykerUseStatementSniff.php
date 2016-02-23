@@ -3,7 +3,7 @@
  * (c) Spryker Systems GmbH copyright protected.
  */
 
-namespace Spryker\Sniffs\PHP;
+namespace Spryker\Sniffs\Namespaces;
 
 use Spryker\Traits\BasicsTrait;
 
