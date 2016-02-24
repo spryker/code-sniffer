@@ -20,7 +20,8 @@ class NoInlineAssignment extends AbstractSprykerSniff
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         // We skip T_FOR, T_WHILE for now as they can have valid inline assignment
         return [T_FOREACH, T_IF, T_SWITCH];
     }
@@ -33,7 +34,8 @@ class NoInlineAssignment extends AbstractSprykerSniff
      *    in the stack passed in $tokens.
      * @return void
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
 
         $openingBraceIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
@@ -47,31 +49,7 @@ class NoInlineAssignment extends AbstractSprykerSniff
             return;
         }
 
-        return;
-        //die('C');
-
-        // Extract to own $var into line above
-        $string = '';
-        $var = '';
-        for ($i = $startIndex + 1; $i < $endIndex; ++$i) {
-            $string .= $tokens[$i]->getContent();
-            if ($i < $indexEqualSign) {
-                $var .= $tokens[$i]->getContent();
-            }
-
-            $tokens[$i]->clear();
-        }
-
-        $string .= ';';
-
-        $tokens[$i - 1]->setContent(trim($var));
-
-        $content = $tokens[$index]->getContent();
-        $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
-        $content = $indent . $content;
-
-        $content = $string . PHP_EOL . $content;
-        $tokens[$index]->setContent($content);
+        $phpcsFile->addError('Inline/Conditional assignment not allowed', $stackPtr);
     }
 
     /**

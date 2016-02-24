@@ -43,12 +43,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
             return;
         }
 
-        // We only look for void methods right now
-        $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
-        if ($returnType === null) {
-            return;
-        }
-
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $stackPtr);
         if (!$docBlockEndIndex) {
             $phpcsFile->addError('Method does not have a doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
@@ -59,6 +53,21 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
         $docBlockReturnIndex = $this->findDocBlockReturn($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
+
+        // If interface we will at least report it
+        if (empty($tokens[$stackPtr]['scope_opener']) || empty($tokens[$stackPtr]['scope_closer'])) {
+            if (!$docBlockReturnIndex) {
+                $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
+            }
+            return;
+        }
+
+        // We only look for void methods right now
+        $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
+        if ($returnType === null) {
+            return;
+        }
+
         if (!$docBlockReturnIndex) {
             if ($this->findDocBlockInheritDoc($phpcsFile, $docBlockStartIndex, $docBlockEndIndex)) {
                 return;
@@ -185,10 +194,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $type = 'void';
-
-        if (empty($tokens[$index]['scope_opener']) || empty($tokens[$index]['scope_closer'])) {
-            return null;
-        }
 
         $methodStartIndex = $tokens[$index]['scope_opener'];
         $methodEndIndex = $tokens[$index]['scope_closer'];

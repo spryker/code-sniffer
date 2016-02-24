@@ -22,7 +22,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [T_FUNCTION];
     }
 
@@ -76,8 +77,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      *
      * @return int|null
      */
@@ -101,7 +102,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
-     * @param int    $variableIndex
+     * @param int $variableIndex
      *
      * @return bool
      */
@@ -119,8 +120,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     protected function removeDefaultArgument(\PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
     {
@@ -134,7 +135,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
-     * @param int    $index  Index of "="
+     * @param int $index Index of "="
      *
      * @return bool
      */
@@ -146,17 +147,17 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
         $nextToken = $tokens[$nextIndex];
 
-        if (!$nextToken->equals(array(T_STRING, 'null'), false)) {
+        if (!$nextToken->equals([T_STRING, 'null'], false)) {
             return false;
         }
 
         $variableIndex = $tokens->getPrevMeaningfulToken($index);
 
-        $searchTokens = array(',', '(', array(T_STRING), array(CT_ARRAY_TYPEHINT));
-        $typehintKinds = array(T_STRING, CT_ARRAY_TYPEHINT);
+        $searchTokens = [',', '(', [T_STRING], [CT_ARRAY_TYPEHINT]];
+        $typehintKinds = [T_STRING, CT_ARRAY_TYPEHINT];
 
         if (defined('T_CALLABLE')) {
-            $searchTokens[] = array(T_CALLABLE);
+            $searchTokens[] = [T_CALLABLE];
             $typehintKinds[] = T_CALLABLE;
         }
 
@@ -167,7 +168,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
-     * @param int    $index
+     * @param int $index
      * @return void
      */
     protected function clearWhitespacesBeforeIndex(\PHP_CodeSniffer_File $phpcsFile, $index)
