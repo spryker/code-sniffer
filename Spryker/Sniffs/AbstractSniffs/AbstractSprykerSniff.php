@@ -2,8 +2,8 @@
 
 namespace Spryker\Sniffs\AbstractSniffs;
 
-use Spryker\Traits\BasicsTrait;
 use PHP_CodeSniffer_File;
+use Spryker\Traits\BasicsTrait;
 
 abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
 {
