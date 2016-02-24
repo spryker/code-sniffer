@@ -71,3 +71,14 @@ To run all sniffs on themselves, use
 Don't forget to test your changes:
 
     php phpunit.phar
+
+### Running own sniffs on this project
+There is a convenience script to run all sniffs for this repository:
+```
+sh phpcs.sh
+```
+If you want to fix the fixable errors, use
+```
+sh phpcs.sh -f
+```
+Once everything is green you can make a PR with your changes.
