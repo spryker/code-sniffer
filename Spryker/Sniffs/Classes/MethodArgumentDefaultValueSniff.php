@@ -39,8 +39,6 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        return;
-
         $startIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
 
         $endIndex = $tokens[$startIndex]['parenthesis_closer'];
@@ -63,7 +61,9 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fix = $phpcsFile->addFixableError('Invalid optional method argument default value for ' . $token['content'], $i);
+            $fix = $phpcsFile->addError('Invalid optional method argument default value for ' . $token['content'], $i);
+
+            /*
             if ($fix) {
                 $commaIndex = $phpcsFile->findPrevious(T_COMMA, $lastArgumentIndex - 1, $endIndex);
                 $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $commaIndex - 1);
@@ -72,6 +72,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
                 $this->removeDefaultArgument($phpcsFile, $i, $prevIndex);
                 $phpcsFile->fixer->endChangeset();
             }
+            */
         }
     }
 
@@ -111,7 +112,6 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $variableIndex - 1, null, true);
-//var_dump($prevIndex);die('EEE');
         if (!defined('T_ELLIPSIS')) {
             return $tokens[$prevIndex]['content'] === '.';
         }
@@ -122,6 +122,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @param int $startIndex
      * @param int $endIndex
+     *
+     * @return void
      */
     protected function removeDefaultArgument(\PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
     {
