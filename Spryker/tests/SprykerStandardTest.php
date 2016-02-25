@@ -39,6 +39,7 @@ class SprykerStandardTest extends PHPUnit_Framework_TestCase
                 $expectPass
             ];
         }
+
         return $tests;
     }
 
@@ -56,13 +57,13 @@ class SprykerStandardTest extends PHPUnit_Framework_TestCase
         $outputStr = $this->helper->runPhpCs($file);
         if ($expectPass) {
             $this->assertNotRegExp(
-                "/FOUND \d+ ERROR/",
+                "/FOUND \\d+ ERROR/",
                 $outputStr,
                 basename($file) . ' - expected to pass with no errors, some were reported. '
             );
         } else {
             $this->assertRegExp(
-                "/FOUND \d+ ERROR/",
+                "/FOUND \\d+ ERROR/",
                 $outputStr,
                 basename($file) . ' - expected failures, none reported. '
             );
