@@ -3,7 +3,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 /**
- * Checks if doc block contains @api annotation
+ * Checks if doc block of Spryker API classes (Client, Facade and QueryContainer) contain @api annotations
  */
 class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
 {
