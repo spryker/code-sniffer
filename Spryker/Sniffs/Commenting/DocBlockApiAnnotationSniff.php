@@ -107,7 +107,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param $stackPointer
+     * @param int $stackPointer
      *
      * @return string
      */
@@ -243,6 +243,5 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
             $phpCsFile->fixer->endChangeset();
         }
     }
-
 
 }
