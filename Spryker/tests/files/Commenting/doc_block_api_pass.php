@@ -26,4 +26,12 @@ class BundleFacade
 
     }
 
+    /**
+     * @return void
+     */
+    protected function doSomething()
+    {
+
+    }
+
 }

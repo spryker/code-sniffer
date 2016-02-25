@@ -26,7 +26,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if (!$this->isSprykerApiClass($phpCsFile, $stackPointer)) {
+        if (!$this->isSprykerApiClass($phpCsFile, $stackPointer) || !$this->isPublicMethod($phpCsFile, $stackPointer)) {
             return;
         }
 
@@ -51,6 +51,22 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
         $name = $this->getClassOrInterfaceName($phpCsFile, $stackPointer);
 
         if ($this->isFacade($namespace, $name) || $this->isClient($namespace, $name) || $this->isQueryContainer($namespace, $name)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isPublicMethod(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
+        $publicPosition = $phpCsFile->findFirstOnLine(T_PUBLIC, $stackPointer);
+        if ($publicPosition) {
             return true;
         }
 
@@ -210,6 +226,12 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
         if ($fix) {
             $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
             $firstDocCommentTagPosition = $phpCsFile->findNext(T_DOC_COMMENT_TAG, $docCommentOpenerPosition);
+
+            if (!$firstDocCommentTagPosition) {
+                $phpCsFile->addErrorOnLine('Cannot fix missing @api tag', $stackPointer);
+
+                return;
+            }
 
             $startPosition = $firstDocCommentTagPosition - 2;
             $phpCsFile->fixer->beginChangeset();
