@@ -42,7 +42,6 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         $startIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
 
         $endIndex = $tokens[$startIndex]['parenthesis_closer'];
-
         $lastArgumentIndex = $this->getLastNonDefaultArgumentIndex($phpcsFile, $startIndex, $endIndex);
         if (!$lastArgumentIndex) {
             return;
@@ -61,18 +60,15 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fix = $phpcsFile->addError('Invalid optional method argument default value for ' . $token['content'], $i);
+            $fix = $phpcsFile->addFixableError('Invalid optional method argument default value for ' . $token['content'], $i);
 
-            /*
             if ($fix) {
-                $commaIndex = $phpcsFile->findPrevious(T_COMMA, $lastArgumentIndex - 1, $endIndex);
-                $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $commaIndex - 1);
+                $commaIndex = $phpcsFile->findPrevious(T_COMMA, $lastArgumentIndex - 1, $startIndex);
 
                 $phpcsFile->fixer->beginChangeset();
-                $this->removeDefaultArgument($phpcsFile, $i, $prevIndex);
+                $this->removeDefaultArgument($phpcsFile, $i, $commaIndex - 1);
                 $phpcsFile->fixer->endChangeset();
             }
-            */
         }
     }
 
@@ -91,6 +87,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
             $token = $tokens[$i];
 
             if ($this->isGivenKind(T_EQUAL, $token)) {
+                $i = $phpcsFile->findPrevious(T_VARIABLE, $i - 1);
                 $i = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $i, $startIndex - 1, true);
                 continue;
             }
@@ -127,11 +124,9 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      */
     protected function removeDefaultArgument(\PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
     {
-        for ($i = $startIndex; $i <= $endIndex;) {
+        $this->clearWhitespacesBeforeIndex($phpcsFile, $startIndex);
+        for ($i = $startIndex; $i <= $endIndex; ++$i) {
             $phpcsFile->fixer->replaceToken($i, '');
-
-            $this->clearWhitespacesBeforeIndex($phpcsFile, $i);
-            $i = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $i + 1);
         }
     }
 
