@@ -25,7 +25,7 @@ To automatically fix fixable errors, use
     vendor/bin/console code:sniff -f
     
 `-v` is useful for more info output. 
-To run only a specific sniff, use the `-s` option.    
+To run only a specific sniff, use the `-s` option. See `-h` for help.   
 
 ### How to use in any project
 You can also manually invoke the phpcs/phpcbf commands:
