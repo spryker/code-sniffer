@@ -77,7 +77,7 @@ class EmptyEnclosingLineSniff implements \PHP_CodeSniffer_Sniff
                 if ($braceLine < $contentLine + 2) {
                     $phpcsFile->fixer->addNewlineBefore($curlyBraceEndIndex);
                 } else {
-                    for ($i = $lastContentIndex + 1; $i < $curlyBraceEndIndex - 1; $i++) {
+                    for ($i = $lastContentIndex + 2; $i < $curlyBraceEndIndex - 1; $i++) {
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
                 }

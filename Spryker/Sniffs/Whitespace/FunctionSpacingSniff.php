@@ -54,7 +54,7 @@ class FunctionSpacingSniff implements \PHP_CodeSniffer_Sniff
 
         $nextContentIndex = $phpCsFile->findNext(T_WHITESPACE, $closingBraceIndex + 1, null, true);
 
-        if ($tokens[$nextContentIndex]['line'] - $tokens[$closingBraceIndex]['line'] <= 1) {
+        if (!$nextContentIndex || $tokens[$nextContentIndex]['line'] - $tokens[$closingBraceIndex]['line'] <= 1) {
             $fix = $phpCsFile->addFixableError('Every function/method needs a newline afterwards', $closingBraceIndex, 'Concrete');
             if ($fix) {
                 $phpCsFile->fixer->addNewline($closingBraceIndex);
