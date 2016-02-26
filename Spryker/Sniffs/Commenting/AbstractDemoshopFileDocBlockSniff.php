@@ -94,7 +94,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, '/**');
         $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . sprintf(self::EXPECTED_COMMENT_FIRST_LINE_STRING, date('Y')));
+        $phpCsFile->fixer->addContent($stackPointer, ' * ' . self::EXPECTED_COMMENT_FIRST_LINE_STRING);
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, ' * ' . self::EXPECTED_COMMENT_SECOND_LINE_STRING);
         $phpCsFile->fixer->addNewline($stackPointer);
