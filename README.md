@@ -31,6 +31,9 @@ To run only a specific sniff, use the `-s` option.
 You can also manually invoke the phpcs/phpcbf commands:
 
     vendor/bin/phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml    
+    vendor/bin/phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml
+
+`phpcs` sniffs, `phpcbf` fixes.
 
 ## Using own project standard
 You can exchange or extend the Spryker coding standard by providing your own ruleset.xml.
