@@ -11,6 +11,9 @@ if (!class_exists('PHP_CodeSniffer_CLI')) {
 class TestHelper
 {
 
+    /**
+     * @var \PHP_CodeSniffer_CLI
+     */
     protected $phpcs;
 
     public function __construct()

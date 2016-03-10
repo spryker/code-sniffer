@@ -163,7 +163,8 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \DocBlock $doc
+     * @param DocBlock $doc
+     * @param string $returnType
      *
      * @return void
      */

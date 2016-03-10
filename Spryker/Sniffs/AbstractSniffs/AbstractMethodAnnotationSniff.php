@@ -6,7 +6,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractSprykerSniff
 {
 
     /**
-     * @var string
+     * @var bool
      */
     protected $fileExists = false;
 
