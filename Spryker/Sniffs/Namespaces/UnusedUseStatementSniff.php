@@ -22,7 +22,6 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
     public function register()
     {
         return [T_USE];
-
     }
 
     /**
@@ -48,7 +47,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
             true
         );
 
-     // Seek along the statement to get the last part, which is the class/interface name.
+        // Seek along the statement to get the last part, which is the class/interface name.
         while (isset($tokens[($classNameIndex + 1)]) === true
         && in_array($tokens[($classNameIndex + 1)]['code'], [T_STRING, T_NS_SEPARATOR])
         ) {
@@ -68,13 +67,12 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
                 null,
                 true
             );
-         // If a backslash is used before the class name then this is some other
-         // use statement.
+            // If a backslash is used before the class name then this is some other use statement.
             if ($tokens[$beforeUsage]['code'] !== T_USE && $tokens[$beforeUsage]['code'] !== T_NS_SEPARATOR) {
                 return;
             }
 
-         // Trait use statement within a class.
+            // Trait use statement within a class.
             if ($tokens[$beforeUsage]['code'] === T_USE && !empty($tokens[$beforeUsage]['conditions'])) {
                 return;
             }
@@ -93,7 +91,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
             $phpcsFile->fixer->replaceToken($i, '');
         }
 
-     // Also remove whitespace after the semicolon (new lines).
+        // Also remove whitespace after the semicolon (new lines).
         while (!empty($tokens[$i]) && $tokens[$i]['code'] === T_WHITESPACE) {
             $phpcsFile->fixer->replaceToken($i, '');
             if (strpos($tokens[$i]['content'], $phpcsFile->eolChar) !== false) {
