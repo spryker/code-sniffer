@@ -1,13 +1,11 @@
 <?php
-/**
- * (c) Spryker Systems GmbH copyright protected.
- */
 
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Tools\Traits\CommentingTrait;
 
 /**
  * Methods that may not return anything need to be declared as `@return void`.
@@ -16,8 +14,10 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 {
 
+    use CommentingTrait;
+
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function register()
     {
@@ -25,7 +25,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
@@ -45,8 +45,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $stackPtr);
         if (!$docBlockEndIndex) {
-            $phpcsFile->addError('Method does not have a doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
-            //$this->addNewDocBlock($tokens, $docBlockIndex, $returnType);
             return;
         }
 
@@ -54,29 +52,34 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         $docBlockReturnIndex = $this->findDocBlockReturn($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
 
+        $hasInheritDoc = $this->hasInheritDoc($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
+
         // If interface we will at least report it
         if (empty($tokens[$stackPtr]['scope_opener']) || empty($tokens[$stackPtr]['scope_closer'])) {
-            if (!$docBlockReturnIndex) {
+            if (!$docBlockReturnIndex && !$hasInheritDoc) {
                 $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
             }
+            return;
+        }
+
+        // If inheritdoc is present assume the parent contains it
+        if ($docBlockReturnIndex || !$docBlockReturnIndex && $hasInheritDoc) {
             return;
         }
 
         // We only look for void methods right now
         $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
         if ($returnType === null) {
+            $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
             return;
         }
 
-        if (!$docBlockReturnIndex) {
-            if ($this->findDocBlockInheritDoc($phpcsFile, $docBlockStartIndex, $docBlockEndIndex)) {
-                return;
-            }
-
-            // For now
-            $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
-            //$this->addReturnAnnotation($docBlock, $returnType);
+        $fix = $phpcsFile->addFixableError('Method does not have a return void statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
+        if (!$fix) {
+            return;
         }
+
+        $this->addReturnAnnotation($phpcsFile, $docBlockStartIndex, $docBlockEndIndex, $returnType);
     }
 
     /**
@@ -141,51 +144,28 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
-     *
-     * @return int|null
-     */
-    protected function findDocBlockInheritDoc(PHP_CodeSniffer_File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
-            if (!$this->isGivenKind(T_DOC_COMMENT_TAG, $tokens[$i])) {
-                continue;
-            }
-            if (strtolower($tokens[$i]['content']) !== '@inheritdoc') {
-                continue;
-            }
-
-            return $i;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param DocBlock $doc
      * @param string $returnType
      *
      * @return void
      */
-    protected function addReturnAnnotation(DocBlock $doc, $returnType = 'void')
+    protected function addReturnAnnotation(PHP_CodeSniffer_File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex, $returnType = 'void')
     {
-        $lines = $doc->getLines();
-        $count = count($lines);
+        $tokens = $phpcsFile->getTokens();
 
-        $lastLine = $doc->getLine($count - 1);
-        $lastLineContent = $lastLine['content'];
-        $whiteSpaceLength = strlen($lastLineContent) - 2;
+        $indentation = $this->getIndentationWhitespace($phpcsFile, $docBlockEndIndex);
 
-        $returnLine = str_repeat(' ', $whiteSpaceLength) . '* @return ' . $returnType;
-        $lastLineContent = $returnLine . "\n" . $lastLineContent;
+        $lastLineEndIndex = $phpcsFile->findPrevious([T_DOC_COMMENT_WHITESPACE], $docBlockEndIndex - 1, null, true);
 
-        $lastLine->setContent($lastLineContent);
+        $phpcsFile->fixer->beginChangeset();
+        $phpcsFile->fixer->addNewline($lastLineEndIndex);
+        $phpcsFile->fixer->addContent($lastLineEndIndex, $indentation . '* @return ' . $returnType);
+        $phpcsFile->fixer->endChangeset();
     }
 
     /**
      * For right now we only try to detect void.
      *
+     * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $index
      *
      * @return string|null
@@ -217,27 +197,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         return $type;
-    }
-
-    /**
-     * @param int $docBlockIndex
-     * @param string $returnType
-     *
-     * @return void
-     */
-    protected function addNewDocBlock(PHP_CodeSniffer_File $phpcsFile, $docBlockIndex, $returnType)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $docBlockTemplate = <<<TXT
-/**
-     * @return $returnType
-     */
-
-TXT;
-        $docBlockTemplate = $docBlockTemplate . '    ' . $tokens[$docBlockIndex]['content'];
-
-        $tokens[$docBlockIndex]->setContent($docBlockTemplate);
     }
 
 }
