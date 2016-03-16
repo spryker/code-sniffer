@@ -5,8 +5,6 @@
  */
 namespace Spryker\Sniffs\Whitespace;
 
-use PHP_CodeSniffer_Tokens;
-
 /**
  * No whitespace should be between implicit cast and variable, the same as with other casts.
  * This includes incrementor and decrementor.
