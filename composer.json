@@ -2,7 +2,7 @@
   "name": "spryker/code-sniffer",
   "description": "Spryker Code Sniffer Standards",
   "type": "library",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "keywords": ["framework", "codesniffer", "phpcs", "standards"],
   "homepage": "http://spryker.com",
   "authors": [
