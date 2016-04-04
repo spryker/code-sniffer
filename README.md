@@ -66,7 +66,7 @@ The following is an example for CircleCI but will also be compatible with any ot
 You basically just append `- vendor/bin/console code:sniff` at the end.
 
 
-Please see the Spryker Demoshop repository for details. It is used there.
+Please see the [Spryker Demoshop](https://github.com/spryker/demoshop) repository for details. It is used there.
 
 ## Writing new sniffs
 Add them to the corresponding category inside Sniffs folder and add tests in `tests` with the same folder structure.
