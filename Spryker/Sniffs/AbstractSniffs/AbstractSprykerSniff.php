@@ -35,6 +35,10 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
 
+        if (count($classNameParts) < 3) {
+            return '';
+        }
+
         return $classNameParts[2];
     }
 
@@ -47,6 +51,10 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
+
+        if (count($classNameParts) < 4) {
+            return '';
+        }
 
         return $classNameParts[3];
     }
