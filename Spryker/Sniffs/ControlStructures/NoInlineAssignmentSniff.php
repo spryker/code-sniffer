@@ -12,7 +12,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 /**
  * Inline/conditional assignment is not allowed. Extract into an own line above.
  */
-class NoInlineAssignment extends AbstractSprykerSniff
+class NoInlineAssignmentSniff extends AbstractSprykerSniff
 {
 
     /**
@@ -23,7 +23,7 @@ class NoInlineAssignment extends AbstractSprykerSniff
     public function register()
     {
         // We skip T_FOR, T_WHILE for now as they can have valid inline assignment
-        return [T_FOREACH, T_IF, T_SWITCH];
+        return [T_FOREACH, T_IF, T_SWITCH, T_OBJECT_OPERATOR, T_DOUBLE_COLON];
     }
 
     /**
@@ -37,12 +37,20 @@ class NoInlineAssignment extends AbstractSprykerSniff
     public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
+        if ($tokens[$stackPtr]['code'] === T_OBJECT_OPERATOR || $tokens[$stackPtr]['code'] === T_DOUBLE_COLON) {
+            $this->checkMethodCalls($phpcsFile, $stackPtr);
+            return;
+        }
 
         $openingBraceIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        if (!$openingBraceIndex) {
+            return;
+        }
+        if (empty($tokens[$openingBraceIndex]['parenthesis_closer'])) {
+            return;
+        }
 
-        //var_dump($tokens[$openingBraceIndex]); die();
-
-        $closingBraceIndex = $tokens[$openingBraceIndex]['close_parenthesis'];
+        $closingBraceIndex = $tokens[$openingBraceIndex]['parenthesis_closer'];
 
         $hasInlineAssignment = $this->contains($phpcsFile, $openingBraceIndex, $closingBraceIndex, T_EQUAL);
         if (!$hasInlineAssignment) {
@@ -91,6 +99,33 @@ class NoInlineAssignment extends AbstractSprykerSniff
         }
 
         return $hasInlineAssignment;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $stackPtr
+     * @return void
+     */
+    protected function checkMethodCalls(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $openingBraceIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($stackPtr + 1), $stackPtr + 4);
+        if (!$openingBraceIndex) {
+            return;
+        }
+        if (empty($tokens[$openingBraceIndex]['parenthesis_closer'])) {
+            return;
+        }
+
+        $closingBraceIndex = $tokens[$openingBraceIndex]['parenthesis_closer'];
+
+        $hasInlineAssignment = $this->contains($phpcsFile, T_EQUAL, $openingBraceIndex + 1, $closingBraceIndex - 1);
+        if (!$hasInlineAssignment) {
+            return;
+        }
+
+        $phpcsFile->addError('Inline assignment not allowed', $stackPtr);
     }
 
 }
