@@ -22,7 +22,7 @@ class RemoveFunctionAliasSniff implements \PHP_CodeSniffer_Sniff
         'is_real' => 'is_float',
         'is_double' => 'is_float',
         'is_writeable' => 'is_writable',
-        'join' => 'explode',
+        'join' => 'implode',
         'key_exists' => 'array_key_exists', // Deprecated function
         'sizeof' => 'count',
         'strchr' => 'strstr',
