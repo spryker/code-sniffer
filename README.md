@@ -30,10 +30,12 @@ To run only a specific sniff, use the `-s` option. See `-h` for help.
 ### How to use in any project
 You can also manually invoke the phpcs/phpcbf commands:
 
-    vendor/bin/phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml    
-    vendor/bin/phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml
+    vendor/bin/phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml ./
+    vendor/bin/phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml ./
 
 `phpcs` sniffs, `phpcbf` fixes.
+
+You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of your test fixture folders.
 
 ## Using own project standard
 You can exchange or extend the Spryker coding standard by providing your own ruleset.xml.
@@ -73,7 +75,7 @@ Add them to the corresponding category inside Sniffs folder and add tests in `te
 
 To run all sniffs on themselves, use
 
-    vendor/bin/phpcs --standard=Spryker/ruleset.xml Spryker/Sniffs/ -v -s
+    vendor/bin/phpcs --standard=Spryker/ruleset.xml Spryker/Sniffs/ -v -s ./
 
 Don't forget to test your changes:
 
