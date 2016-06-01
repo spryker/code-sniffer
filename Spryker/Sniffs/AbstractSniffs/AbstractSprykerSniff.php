@@ -161,16 +161,27 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      * @param string|array $search
      * @param int $start
      * @param int $end
+     * @param bool $skipNested
      * @return bool
      */
-    protected function contains(\PHP_CodeSniffer_File $phpcsFile, $search, $start, $end)
+    protected function contains(\PHP_CodeSniffer_File $phpcsFile, $search, $start, $end, $skipNested = true)
     {
         $tokens = $phpcsFile->getTokens();
+
         for ($i = $start; $i <= $end; $i++) {
-            if ($tokens[$i]['type'] === 'T_OPEN_PARENTHESIS') {
+            if ($skipNested && $tokens[$i]['code'] === T_OPEN_PARENTHESIS) {
                 $i = $tokens[$i]['parenthesis_closer'];
                 continue;
             }
+            if ($skipNested && $tokens[$i]['code'] === T_OPEN_SHORT_ARRAY) {
+                $i = $tokens[$i]['bracket_closer'];
+                continue;
+            }
+            if ($skipNested && $tokens[$i]['code'] === T_OPEN_CURLY_BRACKET) {
+                $i = $tokens[$i]['bracket_closer'];
+                continue;
+            }
+
             if ($this->isGivenKind($search, $tokens[$i])) {
                 return true;
             }
