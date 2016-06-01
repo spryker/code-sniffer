@@ -164,12 +164,12 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
 
         // Check positions of the extends and implements keywords.
         foreach (['extends', 'implements'] as $keywordType) {
-            $keyword = $phpcsFile->findNext(constant('T_'.strtoupper($keywordType)), ($stackPtr + 1), $openingBrace);
+            $keyword = $phpcsFile->findNext(constant('T_' . strtoupper($keywordType)), ($stackPtr + 1), $openingBrace);
             if ($keyword !== false) {
                 if ($tokens[$keyword]['line'] !== $tokens[$stackPtr]['line']) {
-                    $error = 'The '.$keywordType.' keyword must be on the same line as the %s name';
+                    $error = 'The ' . $keywordType . ' keyword must be on the same line as the %s name';
                     $data  = [$stackPtrType];
-                    $fix   = $phpcsFile->addFixableError($error, $keyword, ucfirst($keywordType).'Line', $data);
+                    $fix   = $phpcsFile->addFixableError($error, $keyword, ucfirst($keywordType) . 'Line', $data);
                     if ($fix === true) {
                         $phpcsFile->fixer->beginChangeset();
                         for ($i = ($stackPtr + 1); $i < $keyword; $i++) {
@@ -187,9 +187,9 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
                     // in the list.
                     $gap = strlen($tokens[($keyword - 1)]['content']);
                     if ($gap !== 1) {
-                        $error = 'Expected 1 space before '.$keywordType.' keyword; %s found';
+                        $error = 'Expected 1 space before ' . $keywordType . ' keyword; %s found';
                         $data  = [$gap];
-                        $fix   = $phpcsFile->addFixableError($error, $keyword, 'SpaceBefore'.ucfirst($keywordType), $data);
+                        $fix   = $phpcsFile->addFixableError($error, $keyword, 'SpaceBefore' . ucfirst($keywordType), $data);
                         if ($fix === true) {
                             $phpcsFile->fixer->replaceToken(($keyword - 1), ' ');
                         }
