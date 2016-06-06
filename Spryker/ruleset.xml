@@ -21,7 +21,6 @@
     <exclude-pattern>*.yml</exclude-pattern>
     <exclude-pattern>*.txt</exclude-pattern>
 
-
     <!-- Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting. -->
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
@@ -106,4 +105,11 @@
     <rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+
+    <rule ref="Spryker.Commenting.ExistingFileDocBlock">
+        <properties>
+            <property name="ignoreAbleBundles" type="array" value="Payolution"/>
+        </properties>
+    </rule>
+
 </ruleset>

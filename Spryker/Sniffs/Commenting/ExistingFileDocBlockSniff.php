@@ -14,6 +14,13 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
     const DATE_FULL_YEAR = 'Y';
 
     /**
+     * This property can be filled within the ruleset configuration file
+     *
+     * @var array
+     */
+    public $ignoreAbleBundles = [];
+
+    /**
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $stackPointer
      *
@@ -21,7 +28,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if (!$this->isSprykerNamespace($phpCsFile, $stackPointer)) {
+        if (!$this->isSprykerNamespace($phpCsFile, $stackPointer) || $this->ignoreBundle($phpCsFile)) {
             return;
         }
 
@@ -30,6 +37,16 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
         ) {
             $this->addFixableExistingDocBlock($phpCsFile, $stackPointer);
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function ignoreBundle(\PHP_CodeSniffer_File $phpCsFile)
+    {
+        return (in_array($this->getBundle($phpCsFile), $this->ignoreAbleBundles));
     }
 
     /**
