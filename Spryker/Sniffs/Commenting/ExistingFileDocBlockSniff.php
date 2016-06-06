@@ -18,7 +18,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @var array
      */
-    public $ignoreAbleBundles = [];
+    public $ignorableBundles = [];
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
@@ -46,7 +46,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     protected function ignoreBundle(\PHP_CodeSniffer_File $phpCsFile)
     {
-        return (in_array($this->getBundle($phpCsFile), $this->ignoreAbleBundles));
+        return (in_array($this->getBundle($phpCsFile), $this->ignorableBundles));
     }
 
     /**

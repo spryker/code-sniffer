@@ -108,7 +108,7 @@
 
     <rule ref="Spryker.Commenting.ExistingFileDocBlock">
         <properties>
-            <property name="ignoreAbleBundles" type="array" value="Payolution"/>
+            <property name="ignorableBundles" type="array" value="Payolution"/>
         </properties>
     </rule>
 
