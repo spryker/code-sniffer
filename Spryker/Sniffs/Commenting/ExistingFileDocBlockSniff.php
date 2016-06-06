@@ -28,7 +28,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if (!$this->isSprykerNamespace($phpCsFile, $stackPointer) || $this->ignoreBundle($phpCsFile)) {
+        if (!$this->isSprykerNamespace($phpCsFile, $stackPointer) || $this->isIgnorableBundle($phpCsFile)) {
             return;
         }
 
@@ -44,7 +44,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function ignoreBundle(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isIgnorableBundle(\PHP_CodeSniffer_File $phpCsFile)
     {
         return (in_array($this->getBundle($phpCsFile), $this->ignorableBundles));
     }
