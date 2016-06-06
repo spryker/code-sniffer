@@ -2,7 +2,9 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-abstract class AbstractFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+
+abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 {
 
     const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © %s-present Spryker Systems GmbH. All rights reserved.';
