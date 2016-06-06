@@ -68,8 +68,11 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
-        $sourceDirectoryPosition = array_search('src', array_values($fileNameParts));
-        $classNameParts = array_slice($fileNameParts, $sourceDirectoryPosition + 1);
+        $directoryPosition = array_search('src', array_values($fileNameParts));
+        if (!$directoryPosition) {
+            $directoryPosition = array_search('tests', array_values($fileNameParts)) + 1;
+        }
+        $classNameParts = array_slice($fileNameParts, $directoryPosition + 1);
         $className = implode('\\', $classNameParts);
         $className = str_replace('.php', '', $className);
 
