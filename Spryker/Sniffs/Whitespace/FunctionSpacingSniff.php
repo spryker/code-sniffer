@@ -24,6 +24,11 @@ class FunctionSpacingSniff implements \PHP_CodeSniffer_Sniff
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
+        
+        $level = $tokens[$stackPointer]['level'];
+        if ($level < 1) {
+            return;
+        }
 
         $openingBraceIndex = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer + 1);
         if (!$openingBraceIndex) {
