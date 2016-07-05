@@ -68,7 +68,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
                 $content = substr($content, 0, $spaceIndex);
             }
 
-            if (empty($content)) {
+            if (!$content) {
                 continue;
             }
 
