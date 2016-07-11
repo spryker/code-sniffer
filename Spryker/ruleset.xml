@@ -57,6 +57,8 @@
     <rule ref="Zend.Files.ClosingTag"/>
     <rule ref="Generic.Files.LineEndings"/>
 
+    <rule ref="Squiz.Classes.ClassFileName"/>
+
     <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
     <rule ref="Squiz.Functions.MultiLineFunctionDeclaration"/>
 
