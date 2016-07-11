@@ -9,7 +9,7 @@
 namespace Spryker\Sniffs\Classes;
 
 use PHP_CodeSniffer_Tokens;
-use \Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * In method arguments there must not be arguments with default values before non-default ones.
