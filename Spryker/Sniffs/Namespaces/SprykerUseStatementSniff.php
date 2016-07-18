@@ -5,6 +5,8 @@
 
 namespace Spryker\Sniffs\Namespaces;
 
+use PHP_CodeSniffer_Tokens;
+use RuntimeException;
 use Spryker\Traits\BasicsTrait;
 
 /**
@@ -99,7 +101,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $nextIndex = $phpcsFile->findNext(\PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $nextIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
         $lastIndex = null;
         $i = $nextIndex;
         $extractedUseStatement = '';
@@ -166,7 +168,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $prevIndex = $phpcsFile->findPrevious(\PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
+        $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
 
         $lastIndex = null;
         $i = $prevIndex;
@@ -381,7 +383,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
                 continue;
             }
 
-            $useStatementStartIndex = $phpcsFile->findNext(\PHP_CodeSniffer_Tokens::$emptyTokens, $index + 1, null, true);
+            $useStatementStartIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $index + 1, null, true);
 
             // Ignore function () use ($foo) {}
             if ($tokens[$useStatementStartIndex]['content'] === '(') {
@@ -389,7 +391,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
             }
 
             $semicolonIndex = $phpcsFile->findNext(T_SEMICOLON, $useStatementStartIndex + 1);
-            $useStatementEndIndex = $phpcsFile->findPrevious(\PHP_CodeSniffer_Tokens::$emptyTokens, $semicolonIndex - 1, null, true);
+            $useStatementEndIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $semicolonIndex - 1, null, true);
 
             $statement = '';
             for ($i = $useStatementStartIndex; $i <= $useStatementEndIndex; $i++) {
@@ -449,7 +451,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
 
         $alias = $this->generateUniqueAlias($shortName, $fullName);
         if (!$alias) {
-            throw new \RuntimeException('Could not generate unique alias.');
+            throw new RuntimeException('Could not generate unique alias.');
         }
 
         $result = [
@@ -473,8 +475,6 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      */
     protected function insertUseStatement(\PHP_CodeSniffer_File $phpcsFile, array $useStatement)
     {
-        //$tokens = $phpcsFile->getTokens();
-
         $existingStatements = $this->existingStatements;
         if ($existingStatements) {
             $lastOne = array_pop($existingStatements);
@@ -484,7 +484,6 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
             $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
 
             $lastUseStatementIndex = $namespaceStatement['end'];
-            //$phpcsFile->fixer->addNewline($lastUseStatementIndex);
         }
 
         $phpcsFile->fixer->addNewline($lastUseStatementIndex);

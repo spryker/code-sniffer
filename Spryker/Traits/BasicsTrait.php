@@ -4,6 +4,8 @@
  */
 namespace Spryker\Traits;
 
+use PHP_CodeSniffer_Tokens;
+
 trait BasicsTrait
 {
 
@@ -47,8 +49,8 @@ trait BasicsTrait
         }
 
         $namespace = '';
-        $namespaceStartIndex = $phpcsFile->findNext(\PHP_CodeSniffer_Tokens::$emptyTokens, $namespaceIndex + 1, null, true);
-        $namespaceEndIndex = $phpcsFile->findPrevious(\PHP_CodeSniffer_Tokens::$emptyTokens, $endIndex - 1, null, true);
+        $namespaceStartIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $namespaceIndex + 1, null, true);
+        $namespaceEndIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $endIndex - 1, null, true);
         for ($i = $namespaceStartIndex; $i <= $namespaceEndIndex; $i++) {
             $namespace .= $tokens[$i]['content'];
         }
