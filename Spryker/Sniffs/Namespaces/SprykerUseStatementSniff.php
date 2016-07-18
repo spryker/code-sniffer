@@ -383,7 +383,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
 
         $statements = [];
         foreach ($tokens as $index => $token) {
-            if ($token['code'] !== T_USE) {
+            if ($token['code'] !== T_USE || $token['level'] > 0) {
                 continue;
             }
 
