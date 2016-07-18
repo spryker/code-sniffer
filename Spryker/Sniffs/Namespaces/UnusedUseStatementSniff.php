@@ -90,7 +90,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $classNameIndex
      *
      * @return bool
@@ -125,7 +125,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer_File $phpcsFile
      *
      * @return bool
      */
