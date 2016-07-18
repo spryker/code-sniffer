@@ -2,6 +2,7 @@
 
 namespace Spryker\Sniffs\Factory;
 
+use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -24,7 +25,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -60,7 +61,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getMethodName(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getMethodName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
         $methodNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
@@ -74,7 +75,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFactory(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isFactory(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
 
@@ -91,7 +92,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassName(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getClassName(PHP_CodeSniffer_File $phpCsFile)
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -109,7 +110,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassMethod(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getClassMethod(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $className = $this->getClassName($phpCsFile);
         $methodName = $this->getMethodName($phpCsFile, $stackPointer);
@@ -125,7 +126,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function correctMethodName(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, $newMethodName)
+    protected function correctMethodName(PHP_CodeSniffer_File $phpCsFile, $stackPointer, $newMethodName)
     {
         $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->replaceToken($stackPointer, $newMethodName);

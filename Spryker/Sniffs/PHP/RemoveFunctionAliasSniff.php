@@ -5,6 +5,8 @@
 
 namespace Spryker\Sniffs\PHP;
 
+use PHP_CodeSniffer_File;
+
 /**
  * Do not use aliases or long forms of functions.
  */
@@ -44,7 +46,7 @@ class RemoveFunctionAliasSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

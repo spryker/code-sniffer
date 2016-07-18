@@ -2,6 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use PHP_CodeSniffer_File;
+
 /**
  * Doc blocks should type-hint returning itself as $this for fluent interface to work.
  */
@@ -25,7 +27,7 @@ class DocBlockReturnSelfSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -77,7 +79,7 @@ class DocBlockReturnSelfSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function fixParts(\PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array $parts, $appendix)
+    protected function fixParts(PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array $parts, $appendix)
     {
         $result = [];
         foreach ($parts as $key => $part) {
@@ -111,7 +113,7 @@ class DocBlockReturnSelfSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
-    protected function findRelatedDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function findRelatedDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 

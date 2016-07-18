@@ -5,6 +5,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -27,7 +28,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -45,7 +46,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkTag(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkTag(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -77,7 +78,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkDescription(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkDescription(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

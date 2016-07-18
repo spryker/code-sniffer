@@ -6,6 +6,7 @@
 
 namespace Spryker\Sniffs\ControlStructures;
 
+use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
@@ -35,7 +36,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         if ($tokens[$stackPtr]['code'] === T_OBJECT_OPERATOR || $tokens[$stackPtr]['code'] === T_DOUBLE_COLON) {
@@ -69,7 +70,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFixableInlineAssignment(\PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex, &$indexEqualSign)
+    protected function isFixableInlineAssignment(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex, &$indexEqualSign)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -108,7 +109,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkMethodCalls(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkMethodCalls(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

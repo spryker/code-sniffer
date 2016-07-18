@@ -17,7 +17,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getNamespace(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getNamespace(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
@@ -30,7 +30,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getBundle(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getBundle(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
@@ -47,7 +47,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getLayer(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getLayer(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
@@ -64,7 +64,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getClassName(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getClassName(PHP_CodeSniffer_File $phpCsFile)
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -86,7 +86,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function addUseStatements(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, array $missingUses)
+    protected function addUseStatements(PHP_CodeSniffer_File $phpCsFile, $stackPointer, array $missingUses)
     {
         $useStatements = $this->parseUseStatements($phpCsFile, $stackPointer);
         foreach ($missingUses as $missingUse) {
@@ -102,7 +102,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return array
      */
-    protected function parseUseStatements(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function parseUseStatements(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $useStatements = [];
         $tokens = $phpCsFile->getTokens();
@@ -146,7 +146,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function addMissingUse(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, $missingUse)
+    protected function addMissingUse(PHP_CodeSniffer_File $phpCsFile, $stackPointer, $missingUse)
     {
         $previousUsePosition = $phpCsFile->findPrevious(T_USE, $stackPointer);
         if ($previousUsePosition !== false) {
@@ -168,7 +168,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function contains(\PHP_CodeSniffer_File $phpcsFile, $search, $start, $end, $skipNested = true)
+    protected function contains(PHP_CodeSniffer_File $phpcsFile, $search, $start, $end, $skipNested = true)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -203,7 +203,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function needsBrackets(\PHP_CodeSniffer_File $phpcsFile, $openingBraceIndex, $closingBraceIndex)
+    protected function needsBrackets(PHP_CodeSniffer_File $phpcsFile, $openingBraceIndex, $closingBraceIndex)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -242,7 +242,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
-    protected function findRelatedDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function findRelatedDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -415,7 +415,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function isMarkedAsDeprecated(\PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
+    protected function isMarkedAsDeprecated(PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
     {
         $begin = $tokens[$stackPointer]['scope_opener'] + 1;
         $end = $tokens[$stackPointer]['scope_closer'] - 1;
@@ -442,7 +442,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function isMarkedDeprecatedInDocBlock(\PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
+    protected function isMarkedDeprecatedInDocBlock(PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
         if (!$docBlockEndIndex) {

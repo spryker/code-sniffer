@@ -5,6 +5,8 @@
  */
 namespace Spryker\Sniffs\Whitespace;
 
+use PHP_CodeSniffer_File;
+
 /**
  * No whitespace should be between implicit cast and variable, the same as with other casts.
  * This includes incrementor and decrementor.
@@ -23,7 +25,7 @@ class ImplicitCastSpacingSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -52,7 +54,7 @@ class ImplicitCastSpacingSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function processIncDec(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function processIncDec(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

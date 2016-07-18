@@ -5,6 +5,8 @@
  */
 namespace Spryker\Sniffs\PHP;
 
+use PHP_CodeSniffer_File;
+
 /**
  * Casts should only be used in their short form.
  */
@@ -30,7 +32,7 @@ class ShortCastSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

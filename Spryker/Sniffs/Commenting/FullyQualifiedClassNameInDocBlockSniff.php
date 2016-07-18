@@ -203,7 +203,21 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
             $result[$className . ($arrayOfObject ? '[]' : '')] = $classNames[$key];
         }
 
-        return $result;
+        if (!$result) {
+            return;
+        }
+
+        $message = [];
+        foreach ($result as $className => $useStatement) {
+            $message[] = $className . ' => ' . $useStatement;
+        }
+
+        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex);
+        if ($fix) {
+            $newContent = implode('|', $classNames);
+
+            $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);
+        }
     }
 
     /**

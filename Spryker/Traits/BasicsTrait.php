@@ -4,6 +4,7 @@
  */
 namespace Spryker\Traits;
 
+use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 
 trait BasicsTrait
@@ -34,7 +35,7 @@ trait BasicsTrait
      *
      * @return array
      */
-    protected function getNamespaceStatement(\PHP_CodeSniffer_File $phpcsFile)
+    protected function getNamespaceStatement(PHP_CodeSniffer_File $phpcsFile)
     {
         $tokens = $phpcsFile->getTokens();
 

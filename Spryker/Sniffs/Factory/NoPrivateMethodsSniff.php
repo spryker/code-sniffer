@@ -27,7 +27,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if (!$this->isSprykerNamespace($phpCsFile)) {
             return;
@@ -60,7 +60,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isMethodPrivate(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isMethodPrivate(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $privateTokenPointer = $phpCsFile->findFirstOnLine(T_PRIVATE, $stackPointer);
         if ($privateTokenPointer) {
@@ -76,7 +76,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getMethodName(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getMethodName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
         $methodNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
@@ -90,7 +90,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFactory(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isFactory(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
 
@@ -102,7 +102,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassName(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getClassName(PHP_CodeSniffer_File $phpCsFile)
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -120,7 +120,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassMethod(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getClassMethod(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $className = $this->getClassName($phpCsFile);
         $methodName = $this->getMethodName($phpCsFile, $stackPointer);
@@ -136,7 +136,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function makePrivateMethodProtected(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function makePrivateMethodProtected(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->replaceToken($stackPointer - 2, 'protected');

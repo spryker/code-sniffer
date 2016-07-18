@@ -5,6 +5,7 @@
 
 namespace Spryker\Sniffs\Namespaces;
 
+use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 use RuntimeException;
 use Spryker\Traits\BasicsTrait;
@@ -53,7 +54,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -84,7 +85,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function checkUseForClass(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForClass(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -97,7 +98,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function checkUseForNew(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForNew(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -164,7 +165,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function checkUseForStatic(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForStatic(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -228,14 +229,19 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function checkUseForSignature(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForSignature(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
         $openParenthesisIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
         $closeParenthesisIndex = $tokens[$openParenthesisIndex]['parenthesis_closer'];
 
+        $startIndex = $openParenthesisIndex;
         for ($i = $openParenthesisIndex + 1; $i < $closeParenthesisIndex; $i++) {
+            if ($this->isGivenKind(T_COMMA, $tokens[$i])) {
+                $startIndex = $i;
+            }
+
             $lastIndex = null;
             $j = $i;
             $extractedUseStatement = '';
@@ -271,7 +277,25 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
                 return;
             }
 
-            //TODO
+            $phpcsFile->fixer->beginChangeset();
+
+            $firstSeparatorIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $startIndex + 1, null, true);
+
+            $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
+
+            for ($k = $lastSeparatorIndex; $k > $firstSeparatorIndex; --$k) {
+                $phpcsFile->fixer->replaceToken($k, '');
+            }
+            $phpcsFile->fixer->replaceToken($firstSeparatorIndex, '');
+
+            if ($addedUseStatement['alias'] !== null) {
+                $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
+                for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+                    $phpcsFile->fixer->replaceToken($k, '');
+                }
+            }
+
+            $phpcsFile->fixer->endChangeset();
         }
     }
 
@@ -280,7 +304,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function loadStatements(\PHP_CodeSniffer_File $phpcsFile)
+    protected function loadStatements(PHP_CodeSniffer_File $phpcsFile)
     {
         if ($this->existingStatements !== null) {
             return;
@@ -297,7 +321,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function isBlacklistedFile(\PHP_CodeSniffer_File $phpcsFile)
+    protected function isBlacklistedFile(PHP_CodeSniffer_File $phpcsFile)
     {
         $file = $phpcsFile->getFilename();
         if (strpos($file, DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR) !== false) {
@@ -373,7 +397,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @return array
      */
-    protected function getUseStatements(\PHP_CodeSniffer_File $phpcsFile)
+    protected function getUseStatements(PHP_CodeSniffer_File $phpcsFile)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -441,7 +465,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return array
      */
-    protected function addUseStatement(\PHP_CodeSniffer_File $phpcsFile, $shortName, $fullName)
+    protected function addUseStatement(PHP_CodeSniffer_File $phpcsFile, $shortName, $fullName)
     {
         foreach ($this->allStatements as $useStatement) {
             if ($useStatement['fullName'] === $fullName) {
@@ -473,7 +497,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function insertUseStatement(\PHP_CodeSniffer_File $phpcsFile, array $useStatement)
+    protected function insertUseStatement(PHP_CodeSniffer_File $phpcsFile, array $useStatement)
     {
         $existingStatements = $this->existingStatements;
         if ($existingStatements) {

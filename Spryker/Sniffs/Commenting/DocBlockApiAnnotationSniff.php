@@ -2,6 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use PHP_CodeSniffer_File;
+
 /**
  * Checks if doc block of Spryker API classes (Client, Facade and QueryContainer) contain @api annotations
  */
@@ -24,7 +26,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if (!$this->isSprykerApiClass($phpCsFile, $stackPointer) || !$this->isPublicMethod($phpCsFile, $stackPointer)) {
             return;
@@ -41,7 +43,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function isSprykerApiClass(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isSprykerApiClass(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer) || !$this->hasClassOrInterfaceName($phpCsFile, $stackPointer)) {
             return false;
@@ -67,7 +69,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function isPublicMethod(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isPublicMethod(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $publicPosition = $phpCsFile->findFirstOnLine(T_PUBLIC, $stackPointer);
         if ($publicPosition) {
@@ -83,7 +85,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function hasNamespace(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         if (!$namespacePosition) {
@@ -99,7 +101,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function hasClassOrInterfaceName(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasClassOrInterfaceName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $classOrInterfaceNamePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
         if (!$classOrInterfaceNamePosition) {
@@ -115,7 +117,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getNamespace(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
@@ -137,7 +139,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getClassOrInterfaceName(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getClassOrInterfaceName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
@@ -211,7 +213,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function hasApiAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasApiAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
         if (!$docCommentOpenerPosition) {
@@ -238,7 +240,7 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function addFixableMissingApiAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function addFixableMissingApiAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fix = $phpCsFile->addFixableError('@api annotation is missing', $stackPointer);
 

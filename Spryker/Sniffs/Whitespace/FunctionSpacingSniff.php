@@ -5,6 +5,7 @@
 
 namespace Spryker\Sniffs\Whitespace;
 
+use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 
 /**
@@ -24,7 +25,7 @@ class FunctionSpacingSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
