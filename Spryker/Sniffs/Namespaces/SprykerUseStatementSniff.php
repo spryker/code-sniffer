@@ -122,9 +122,6 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         }
 
         $extractedUseStatement = ltrim($extractedUseStatement, '\\');
-        if (!$this->isValidNamespace($extractedUseStatement)) {
-            return;
-        }
 
         $className = '';
         for ($i = $lastSeparatorIndex + 1; $i <= $lastIndex; ++$i) {
@@ -193,9 +190,6 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         }
 
         $extractedUseStatement = ltrim($extractedUseStatement, '\\');
-        if (!$this->isValidNamespace($extractedUseStatement)) {
-            return;
-        }
 
         $className = '';
         for ($i = $firstSeparatorIndex + 1; $i <= $prevIndex; ++$i) {
@@ -263,10 +257,6 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
             }
 
             $extractedUseStatement = ltrim($extractedUseStatement, '\\');
-
-            if (!$this->isValidNamespace($extractedUseStatement)) {
-                continue;
-            }
 
             $className = '';
             for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
