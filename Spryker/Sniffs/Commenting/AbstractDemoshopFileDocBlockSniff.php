@@ -29,13 +29,46 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
     ];
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
         return [
             T_NAMESPACE
         ];
+    }
+
+    /**
+     * @var bool|null
+     */
+    protected static $isDemoshop = null;
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isDemoshop(\PHP_CodeSniffer_File $phpCsFile)
+    {
+        if (static::$isDemoshop !== null) {
+            return static::$isDemoshop;
+        }
+
+        $positionSprykerCore = strpos($phpCsFile->getFilename(), '/src/');
+        if (!$positionSprykerCore) {
+            return false;
+        }
+
+        $file = substr($phpCsFile->getFilename(), 0, $positionSprykerCore) . '/composer.json';
+        if (!is_file($file)) {
+            static::$isDemoshop = false;
+            return static::$isDemoshop;
+        }
+
+        $content = file_get_contents($file);
+        static::$isDemoshop = (bool)preg_match('#"name":\s*"spryker/(project|demoshop)"#', $content, $matches);
+
+        return static::$isDemoshop;
     }
 
     /**

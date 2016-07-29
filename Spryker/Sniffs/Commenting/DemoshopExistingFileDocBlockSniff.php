@@ -13,14 +13,11 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     const EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT = 14;
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if (!$this->isPyzNamespace($phpCsFile, $stackPointer)) {
+        if (!$this->isPyzNamespace($phpCsFile, $stackPointer) || !$this->isDemoshop($phpCsFile)) {
             return;
         }
 
