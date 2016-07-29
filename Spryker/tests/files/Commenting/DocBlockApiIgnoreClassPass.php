@@ -7,7 +7,7 @@
 
 namespace Spryker\Zed\Bundle\Business\Foo;
 
-class BundleSomething
+class DocBlockApiIgnoreClassPass
 {
 
     /**

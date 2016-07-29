@@ -7,7 +7,7 @@
 
 namespace Spryker\Zed\Bundle\Business;
 
-class BundleFacade
+class DocBlockApiPass
 {
 
     /**

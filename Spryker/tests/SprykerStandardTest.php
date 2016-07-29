@@ -32,7 +32,7 @@ class SprykerStandardTest extends PHPUnit_Framework_TestCase
             }
 
             $file = $dir->getPathname();
-            $expectPass = (substr($file, -8) === 'pass.php');
+            $expectPass = (substr($file, -8) === 'Pass.php');
             $tests[] = [
                 $file,
                 $standard,

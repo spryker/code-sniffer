@@ -20,6 +20,7 @@ before_script:
 script:
   - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
   - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=Spryker/ruleset.xml --ignore=vendor/,tests/files/ . ; fi"
+  - php phpunit.phar
 
 notifications:
   email: false
