@@ -7,9 +7,12 @@
 
 namespace Spryker\Zed\Bundle\Business;
 
-class BundleFacade
+class DocBlockApiAnnotationMissingInFacade
 {
 
+    /**
+     * @return void
+     */
     public function methodWithoutApiAnnotation()
     {
 
