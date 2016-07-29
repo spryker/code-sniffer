@@ -174,7 +174,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      * @param string|null $defaultValueType
      * @return void
      */
-    private function handleMissingVar(PHP_CodeSniffer_File $phpCsFile, $docBlockEndIndex, $docBlockStartIndex, $defaultValueType)
+    protected function handleMissingVar(PHP_CodeSniffer_File $phpCsFile, $docBlockEndIndex, $docBlockStartIndex, $defaultValueType)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -207,7 +207,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      * @param string|null $defaultValueType
      * @return void
      */
-    private function handleMissingVarType(PHP_CodeSniffer_File $phpCsFile, $varIndex, $defaultValueType)
+    protected function handleMissingVarType(PHP_CodeSniffer_File $phpCsFile, $varIndex, $defaultValueType)
     {
         $error = 'Doc Block type for annotation @var for variable missing';
         if ($defaultValueType === null) {

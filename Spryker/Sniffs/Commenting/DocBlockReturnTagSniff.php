@@ -36,7 +36,6 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
     {
         $tokens = $phpcsFile->getTokens();
 
-     // Type of method
         $method = $phpcsFile->findNext(T_STRING, ($stackPtr + 1));
         $returnRequired = !in_array($tokens[$method]['content'], ['__construct', '__destruct']);
 
@@ -48,7 +47,6 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
         T_OPEN_TAG,
         ];
 
-     //$commentEnd = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         $commentEnd = $phpcsFile->findPrevious($find, ($stackPtr - 1));
 
         if ($commentEnd === false) {
@@ -56,7 +54,6 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
         }
 
         if ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT) {
-         // Function doesn't have a comment. Let someone else warn about that.
             return;
         }
 
@@ -79,18 +76,18 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
             return;
         }
 
-     // A class method should have @return
+        // A class method should have @return
         if (!$commentWithReturn) {
             $error = 'Missing @return tag in function comment';
             $phpcsFile->addError($error, $stackPtr, 'Missing');
             return;
         }
 
-     // Constructor/destructor should not have @return
+        // Constructor/destructor should not have @return
         if ($commentWithReturn) {
             $error = 'Unexpected @return tag in constructor/destructor comment';
-            $phpcsFile->addFixableError($error, $commentWithReturn, 'Unexpected');
-            if ($phpcsFile->fixer->enabled === true) {
+            $fixable = $phpcsFile->addFixableError($error, $commentWithReturn, 'Unexpected');
+            if ($fixable) {
                 $phpcsFile->fixer->replaceToken($commentWithReturn, '');
             }
             return;
