@@ -3,7 +3,8 @@
 namespace Spryker\Sniffs\Commenting;
 
 /**
- * Check if file has doc block comment and has the expected content
+ * Checks if Spryker Demoshop's files have doc block comment and have the expected content.
+ * This sniff is skipped for customer's projects.
  */
 class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
 {
