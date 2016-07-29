@@ -6,6 +6,10 @@ php:
   - 5.6
   - 7.0
 
+env:
+  global:
+    - DEFAULT=1
+
 matrix:
   include:
     - php: 7.0
@@ -20,7 +24,6 @@ before_script:
 script:
   - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
   - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=Spryker/ruleset.xml --ignore=vendor/,tests/files/ . ; fi"
-  - php phpunit.phar
 
 notifications:
   email: false
