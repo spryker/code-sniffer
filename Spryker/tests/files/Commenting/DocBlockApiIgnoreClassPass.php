@@ -5,15 +5,17 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Bundle\Business;
+namespace Spryker\Zed\Bundle\Business\Foo;
 
-class BundleFacade
+class DocBlockApiIgnoreClassPass
 {
 
     /**
+     * @param int $foo
+     *
      * @return void
      */
-    public function methodWithoutApiAnnotation()
+    public function methodWithoutApiAnnotation($foo)
     {
 
     }
