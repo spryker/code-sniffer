@@ -13,27 +13,30 @@ https://github.com/squizlabs/PHP_CodeSniffer/wiki
 ## Usage
 ### How to use in Spryker projects
 Make sure you include the sniffer as `require-dev` dependency:
-
-    composer require --dev spryker/code-sniffer
+```
+composer require --dev spryker/code-sniffer
+```
 
 The Development bundle provides a convenience command:
+```
+vendor/bin/console code:sniff
+```
 
-    vendor/bin/console code:sniff
-    
 To automatically fix fixable errors, use
+```
+vendor/bin/console code:sniff -f
+```
 
-    vendor/bin/console code:sniff -f
-    
 `-v` is useful for more info output. 
 To run only a specific sniff, use the `-s` option. See `-h` for help.   
 
 ### How to use in any project
 You can also manually invoke the phpcs/phpcbf commands:
-
-    vendor/bin/phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml ./
-    vendor/bin/phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml ./
-
-`phpcs` sniffs, `phpcbf` fixes.
+```
+vendor/bin/phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml ./
+vendor/bin/phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml ./
+```
+The command `phpcs` just sniffs, `phpcbf` fixes.
 
 You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of your test fixture folders.
 
@@ -74,20 +77,23 @@ Please see the [Spryker Demoshop](https://github.com/spryker/demoshop) repositor
 Add them to the corresponding category inside Sniffs folder and add tests in `tests` with the same folder structure.
 
 To run all sniffs on themselves, use
-
-    vendor/bin/phpcs --standard=Spryker/ruleset.xml Spryker/Sniffs/ -v -s ./
+```
+vendor/bin/phpcs --standard=Spryker/ruleset.xml Spryker/Sniffs/ -v -s ./
+```
 
 Don't forget to test your changes:
-
-    php phpunit.phar
+```
+./setup.sh
+php phpunit.phar
+```
 
 ### Running own sniffs on this project
 There is a convenience script to run all sniffs for this repository:
 ```
-sh phpcs.sh
+./phpcs.sh
 ```
 If you want to fix the fixable errors, use
 ```
-sh phpcs.sh -f
+./phpcs.sh -f
 ```
 Once everything is green you can make a PR with your changes.
