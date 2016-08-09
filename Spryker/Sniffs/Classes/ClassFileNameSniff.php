@@ -85,7 +85,6 @@ class ClassFileNameSniff extends AbstractSprykerSniff
                      ];
             $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
         }
-
     }
 
 }
