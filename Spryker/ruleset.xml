@@ -102,7 +102,11 @@
 
     <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
     <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+
+    <!-- Disabled for now as it was buggy, using own MemberVarSpacingSniff
     <rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
+    -->
+
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
