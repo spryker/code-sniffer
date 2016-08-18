@@ -29,13 +29,13 @@ class SprykerNamespaceSniff implements \PHP_CodeSniffer_Sniff
     public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
-        if (!$namespaceStatement || $this->isBlacklistedFile($phpcsFile)) {
+        if (!$namespaceStatement) {
             return;
         }
 
         $filename = $phpcsFile->getFilename();
 
-        preg_match('#/(src|tests)/(Spryker|Unit/Spryker|Functional/Spryker)/(.*)#', $filename, $matches);
+        preg_match('#/(src|tests)/(Spryker|Unit/Spryker|Functional/Spryker)/(.+)#', $filename, $matches);
         if (!$matches) {
             return;
         }
@@ -51,21 +51,6 @@ class SprykerNamespaceSniff implements \PHP_CodeSniffer_Sniff
 
         $error = sprintf('Namespace `%s` does not fit to folder structure `%s`', $namespace, $pathToNamespace);
         $phpcsFile->addError($error, $namespaceStatement['start']);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
-     *
-     * @return bool
-     */
-    protected function isBlacklistedFile(\PHP_CodeSniffer_File $phpcsFile)
-    {
-        $file = $phpcsFile->getFilename();
-        if (strpos($file, DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR) !== false) {
-            return true;
-        }
-
-        return false;
     }
 
 }
