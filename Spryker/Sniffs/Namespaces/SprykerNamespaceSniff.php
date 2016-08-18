@@ -5,6 +5,7 @@
 
 namespace Spryker\Sniffs\Namespaces;
 
+use PHP_CodeSniffer_File;
 use Spryker\Traits\BasicsTrait;
 
 /**
@@ -26,7 +27,7 @@ class SprykerNamespaceSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
         if (!$namespaceStatement) {

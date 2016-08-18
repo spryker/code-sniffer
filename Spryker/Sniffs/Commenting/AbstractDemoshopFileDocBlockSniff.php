@@ -2,6 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use PHP_CodeSniffer_File;
+
 abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sniff
 {
 
@@ -48,7 +50,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
      *
      * @return bool
      */
-    protected function isDemoshop(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isDemoshop(PHP_CodeSniffer_File $phpCsFile)
     {
         if (static::$isDemoshop !== null) {
             return static::$isDemoshop;
@@ -77,7 +79,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
      *
      * @return bool
      */
-    protected function isPyzNamespace(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isPyzNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $firstNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $stackPointer);
         if ($firstNamespaceTokenPosition) {
@@ -105,7 +107,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
      *
      * @return bool
      */
-    protected function existsFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function existsFileDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
 
@@ -118,7 +120,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
      *
      * @return void
      */
-    protected function addFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function addFileDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -143,7 +145,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
      *
      * @return void
      */
-    protected function clearFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function clearFileDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_OPEN_TAG, $stackPointer) + 1;
 
