@@ -44,6 +44,11 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     protected $allStatements;
 
     /**
+     * @var string|null
+     */
+    protected $className;
+
+    /**
      * @inheritdoc
      */
     public function register()
@@ -59,8 +64,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $tokens = $phpcsFile->getTokens();
 
         $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
-        // Skip non-namespaces files for now
-        if (empty($namespaceStatement)) {
+        if (!$namespaceStatement) {
             return;
         }
 
@@ -306,6 +310,8 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      */
     protected function loadStatements(PHP_CodeSniffer_File $phpcsFile)
     {
+        $this->className = $this->findClassName($phpcsFile);
+
         if ($this->existingStatements !== null) {
             return;
         }
@@ -374,7 +380,12 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $pieces = array_reverse($pieces);
         array_shift($pieces);
 
-        while (isset($this->allStatements[$alias])) {
+        // To avoid collisions with PHP core classes we try to add this prefix for all root namespaced classes
+        if (count($pieces) < 1) {
+            array_unshift($pieces, 'Php');
+        }
+
+        while (isset($this->allStatements[$alias]) || $this->className && $alias === $this->className) {
             $alias = $shortName;
 
             if (count($pieces) - 1 < $count) {
@@ -529,6 +540,25 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $content = 'use ' . $useStatement['fullName'] . $alias . ';';
 
         return $content;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @return string|null
+     */
+    protected function findClassName(PHP_CodeSniffer_File $phpcsFile)
+    {
+        $index = $phpcsFile->findNext([T_CLASS, T_INTERFACE, T_TRAIT], 0);
+        if (!$index) {
+            return null;
+        }
+
+        $tokens = $phpcsFile->getTokens();
+
+        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, $index + 1, null, true);
+        $className = $tokens[$nextIndex]['content'];
+
+        return $className;
     }
 
 }
