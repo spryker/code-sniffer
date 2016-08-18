@@ -6,11 +6,12 @@
 namespace Spryker\Sniffs\PHP;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 
 /**
  * Casts should only be used in their short form.
  */
-class ShortCastSniff implements \PHP_CodeSniffer_Sniff
+class ShortCastSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**

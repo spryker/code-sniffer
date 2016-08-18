@@ -6,12 +6,13 @@
 namespace Spryker\Sniffs\Namespaces;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 use Spryker\Traits\BasicsTrait;
 
 /**
  * Makes sure the namespace declared in each class file fits to the folder structure.
  */
-class SprykerNamespaceSniff implements \PHP_CodeSniffer_Sniff
+class SprykerNamespaceSniff implements PHP_CodeSniffer_Sniff
 {
 
     use BasicsTrait;

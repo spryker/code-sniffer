@@ -6,11 +6,12 @@
 namespace Spryker\Sniffs\PHP;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 
 /**
  * Always use PHP_SAPI constant instead of php_sapi_name() function.
  */
-class PhpSapiConstantSniff implements \PHP_CodeSniffer_Sniff
+class PhpSapiConstantSniff implements PHP_CodeSniffer_Sniff
 {
 
     const PHP_SAPI = 'PHP_SAPI';

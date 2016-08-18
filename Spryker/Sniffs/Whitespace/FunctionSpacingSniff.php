@@ -6,12 +6,13 @@
 namespace Spryker\Sniffs\Whitespace;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 use PHP_CodeSniffer_Tokens;
 
 /**
  * There should always be newlines around functions/methods.
  */
-class FunctionSpacingSniff implements \PHP_CodeSniffer_Sniff
+class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**

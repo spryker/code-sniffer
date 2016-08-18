@@ -3,11 +3,12 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 
 /**
  * Doc blocks should type-hint returning itself as $this for fluent interface to work.
  */
-class DocBlockReturnSelfSniff implements \PHP_CodeSniffer_Sniff
+class DocBlockReturnSelfSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**

@@ -3,9 +3,10 @@
 namespace Spryker\Sniffs\AbstractSniffs;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 use Spryker\Traits\BasicsTrait;
 
-abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
+abstract class AbstractSprykerSniff implements PHP_CodeSniffer_Sniff
 {
 
     use BasicsTrait;

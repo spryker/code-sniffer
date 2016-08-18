@@ -3,11 +3,12 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 
 /**
  * Checks if doc block of Spryker API classes (Client, Facade and QueryContainer) contain @api annotations
  */
-class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
+class DocBlockApiAnnotationSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**

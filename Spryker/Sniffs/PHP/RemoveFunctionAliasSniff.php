@@ -6,11 +6,12 @@
 namespace Spryker\Sniffs\PHP;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 
 /**
  * Do not use aliases or long forms of functions.
  */
-class RemoveFunctionAliasSniff implements \PHP_CodeSniffer_Sniff
+class RemoveFunctionAliasSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**

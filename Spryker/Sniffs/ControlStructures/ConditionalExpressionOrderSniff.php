@@ -3,13 +3,14 @@
 namespace Spryker\Sniffs\ControlStructures;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 use PHP_CodeSniffer_Tokens;
 use Spryker\Traits\BasicsTrait;
 
 /**
  * Checks that no YODA conditions (reversed order of natural conditions) are being used.
  */
-class ConditionalExpressionOrderSniff implements \PHP_CodeSniffer_Sniff
+class ConditionalExpressionOrderSniff implements PHP_CodeSniffer_Sniff
 {
 
     use BasicsTrait;

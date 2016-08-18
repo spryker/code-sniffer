@@ -3,11 +3,12 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 
 /**
  * All doc blocks must use FQCN for class names.
  */
-class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
+class FullyQualifiedClassNameInDocBlockSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**
