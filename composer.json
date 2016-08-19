@@ -14,6 +14,11 @@
   "support": {
     "source": "https://github.com/spryker/code-sniffer"
   },
+  "autoload": {
+    "psr-4": {
+      "Spryker\\": "Spryker"
+    }
+  },
   "require": {
     "php": ">=5.4.16",
     "squizlabs/php_codesniffer": "~2.5"
