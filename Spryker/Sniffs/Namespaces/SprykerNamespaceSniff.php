@@ -35,7 +35,7 @@ class SprykerNamespaceSniff implements \PHP_CodeSniffer_Sniff
 
         $filename = $phpcsFile->getFilename();
 
-        preg_match('#/(src|tests)/(Spryker|Unit/Spryker|Functional/Spryker)/(.+)#', $filename, $matches);
+        preg_match('#/(src|tests)/(Spryker|Unit/Spryker|Functional/Spryker|Acceptance)/(.+)#', $filename, $matches);
         if (!$matches) {
             return;
         }
