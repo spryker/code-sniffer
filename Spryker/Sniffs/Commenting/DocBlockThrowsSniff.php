@@ -337,8 +337,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      */
     protected function getThrowAnnotationIndex(array $tokens, $docBlockStartIndex)
     {
-        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index)
-        {
+        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index) {
             if ($tokens[$index]['content'] !== '@throws') {
                 continue;
             }
@@ -352,8 +351,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             return $throwAnnotationIndex;
         }
 
-        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index)
-        {
+        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index) {
             if ($tokens[$index]['content'] !== '@return') {
                 continue;
             }
