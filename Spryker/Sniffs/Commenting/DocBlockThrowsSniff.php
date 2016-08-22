@@ -1,0 +1,371 @@
+<?php
+
+namespace Spryker\Sniffs\Commenting;
+
+use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Tokens;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+
+/**
+ * Ensures Doc Blocks for throws annotations are correct.
+ * We only ever declare them for the exceptions inside the own method.
+ *
+ * @author Mark Scherer
+ * @license MIT
+ */
+class DocBlockThrowsSniff extends AbstractSprykerSniff
+{
+
+    /**
+     * @inheritDoc
+     */
+    public function register()
+    {
+        return [
+            T_FUNCTION,
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
+
+        // We skip if no doc block found yet
+        if (!$docBlockEndIndex) {
+            return;
+        }
+
+        // We skip for interface methods
+        if (empty($tokens[$stackPointer]['scope_opener']) || empty($tokens[$stackPointer]['scope_closer'])) {
+            return;
+        }
+
+        $exceptions = $this->extractExceptions($phpCsFile, $stackPointer);
+
+        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+        $annotations = $this->extractExceptionAnnotations($phpCsFile, $docBlockStartIndex);
+
+        $this->compareExceptionsAndAnnotations($phpCsFile, $exceptions, $annotations, $docBlockEndIndex);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $docBlockEndIndex
+     * @param int $docBlockStartIndex
+     * @param string|null $defaultValueType
+     *
+     * @return void
+     */
+    protected function handleMissingVar(PHP_CodeSniffer_File $phpCsFile, $docBlockEndIndex, $docBlockStartIndex, $defaultValueType)
+    {
+        $error = 'Doc Block annotation @var for variable missing';
+        if ($defaultValueType === null) {
+            $phpCsFile->addError($error, $docBlockEndIndex);
+            return;
+        }
+
+        $error .= ', type `' . $defaultValueType . '` detected';
+        $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex);
+        if (!$fix) {
+            return;
+        }
+
+        $index = $phpCsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
+        if (!$index) {
+            $index = $docBlockStartIndex;
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+        $phpCsFile->fixer->addNewline($index);
+        $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
+        $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $varIndex
+     * @param string|null $defaultValueType
+     *
+     * @return void
+     */
+    protected function handleMissingThrowsAnnotation(PHP_CodeSniffer_File $phpCsFile, $varIndex, $defaultValueType)
+    {
+        $error = 'Doc Block annotation @throw missing';
+        $fix = $phpCsFile->addFixableError($error, $varIndex);
+        if (!$fix) {
+            return;
+        }
+
+        $phpCsFile->fixer->addContent($varIndex, ' ' . $defaultValueType);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return array
+     */
+    protected function extractExceptions($phpCsFile, $stackPointer)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $exceptions = [];
+
+        $scopeOpener = $tokens[$stackPointer]['scope_opener'];
+        $scopeCloser = $tokens[$stackPointer]['scope_closer'];
+
+        for ($i = $scopeOpener; $i < $scopeCloser; $i++) {
+            if ($tokens[$i]['code'] !== T_THROW) {
+                continue;
+            }
+
+            $newIndex = $phpCsFile->findNext(T_NEW, $i + 1, $scopeCloser);
+            if (!$newIndex) {
+                continue;
+            }
+
+            $contentIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $newIndex + 1, $scopeCloser, true);
+            if (!$contentIndex) {
+                continue;
+            }
+
+            $exceptions[] = $this->extractException($phpCsFile, $contentIndex);
+        }
+
+        return $exceptions;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $docBlockStartIndex
+     *
+     * @return array
+     */
+    protected function extractExceptionAnnotations(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $throwTags = [];
+        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index) {
+            if ($tokens[$index]['content'] !== '@throws') {
+                continue;
+            }
+
+            if ($tokens[($index + 2)]['code'] !== T_DOC_COMMENT_STRING) {
+                continue;
+            }
+
+            $fullClass = $tokens[($index + 2)]['content'];
+            $space = strpos($fullClass, ' ');
+            if ($space !== false) {
+                $fullClass = substr($fullClass, 0, $space);
+            }
+
+            $class = $fullClass;
+            $lastSeparator = strrpos($class, '\\');
+            if ($lastSeparator !== false) {
+                $class = substr($class, $lastSeparator + 1);
+            }
+
+            $throwTags[] = [
+                'index' => $index,
+                'fullClass' => $fullClass,
+                'class' => $class
+            ];
+        }
+
+        return $throwTags;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $contentIndex
+     *
+     * @return array
+     */
+    protected function extractException(PHP_CodeSniffer_File $phpCsFile, $contentIndex)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $fullClass = '';
+
+        $position = $contentIndex;
+        while ($this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$position])) {
+            $fullClass .= $tokens[$position]['content'];
+            ++$position;
+        }
+
+        $class = $fullClass;
+        $lastSeparator = strrpos($class, '\\');
+        if ($lastSeparator !== false) {
+            $class = substr($class, $lastSeparator + 1);
+        }
+
+        return [
+            'start' => $contentIndex,
+            'end' => $position - 1,
+            'fullClass' => $fullClass,
+            'class' => $class
+        ];
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param array $exceptions
+     * @param array $annotations
+     *
+     * @return array
+     */
+    protected function compareExceptionsAndAnnotations(PHP_CodeSniffer_File $phpCsFile, array $exceptions, array $annotations, $docBlockEndIndex)
+    {
+        $processed = [];
+
+        foreach ($annotations as $annotation) {
+            if (!$this->isInCode($annotation, $exceptions)) {
+                $error = '@throw annotation `' . $annotation['fullClass'] . '` superfluous and needs to be removed';
+                $fix = $phpCsFile->addFixableError($error, $annotation['index']);
+                if (!$fix) {
+                    continue;
+                }
+
+                $this->removeLine($phpCsFile, $annotation['index']);
+            }
+        }
+
+        foreach ($exceptions as $exception) {
+            if (!$this->isInAnnotation($exception, $annotations)) {
+                $error = 'Docb Block @throw annotation `' . $exception['fullClass'] . '` missing';
+                $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex);
+                if (!$fix) {
+                    continue;
+                }
+
+                $this->addAnnotationLine($phpCsFile, $exception, $docBlockEndIndex);
+            }
+        }
+    }
+
+    /**
+     * @param array $annotation
+     * @param array $exceptions
+     *
+     * @return bool
+     */
+    protected function isInCode(array $annotation, array $exceptions)
+    {
+        foreach ($exceptions as $exception) {
+            if ($annotation['class'] === $exception['class']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $exception
+     * @param array $annotations
+     *
+     * @return bool
+     */
+    protected function isInAnnotation(array $exception, array $annotations)
+    {
+        foreach ($annotations as $annotation) {
+            if ($exception['class'] === $annotation['class']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $position
+     *
+     * @return void
+     */
+    protected function removeLine(PHP_CodeSniffer_File $phpCsFile, $position)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $index = $this->getFirstTokenOfLine($tokens, $position);
+        while ($tokens[$index]['line'] === $tokens[$position]['line']) {
+            $phpCsFile->fixer->replaceToken($index, '');
+            $index++;
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param array $exception
+     * @param int $docBlockEndIndex
+     *
+     * @throws \Exception
+     *
+     * @return void
+     */
+    protected function addAnnotationLine(PHP_CodeSniffer_File $phpCsFile, array $exception, $docBlockEndIndex)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+
+        $throwAnnotationIndex = $this->getThrowAnnotationIndex($tokens, $docBlockStartIndex);
+        if (!$throwAnnotationIndex) {
+            throw new \Exception('Should not happen');
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+
+        $phpCsFile->fixer->addNewlineBefore($throwAnnotationIndex);
+        $phpCsFile->fixer->addContentBefore($throwAnnotationIndex, '     * @throws ' . $exception['fullClass']);
+
+        $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $docBlockStartIndex
+     *
+     * @return int
+     */
+    protected function getThrowAnnotationIndex(array $tokens, $docBlockStartIndex)
+    {
+        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index)
+        {
+            if ($tokens[$index]['content'] !== '@throws') {
+                continue;
+            }
+
+            $throwAnnotationIndex = $index;
+            while ($tokens[$throwAnnotationIndex + 1]['line'] === $tokens[$index]['line']) {
+                $throwAnnotationIndex++;
+            }
+            $throwAnnotationIndex++;
+
+            return $throwAnnotationIndex;
+        }
+
+        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index)
+        {
+            if ($tokens[$index]['content'] !== '@return') {
+                continue;
+            }
+
+            $throwAnnotationIndex = $this->getFirstTokenOfLine($tokens, $index);
+
+            return $throwAnnotationIndex;
+        }
+
+        $throwAnnotationIndex = $this->getFirstTokenOfLine($tokens, $tokens[$docBlockStartIndex]['comment_closer']);
+
+        return $throwAnnotationIndex;
+    }
+
+}

@@ -441,6 +441,8 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      * @param string $shortName
      * @param string $fullName
      *
+     * @throws \RuntimeException
+     *
      * @return array
      */
     protected function addUseStatement(\PHP_CodeSniffer_File $phpcsFile, $shortName, $fullName)
