@@ -21,7 +21,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
     public function register()
     {
         return [
-        T_VARIABLE,
+            T_VARIABLE,
         ];
     }
 
