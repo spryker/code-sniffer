@@ -40,6 +40,10 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             return;
         }
 
+        if ($phpCsFile->isAnonymousFunction($stackPointer)) {
+            return;
+        }
+
         // We skip for interface methods
         if (empty($tokens[$stackPointer]['scope_opener']) || empty($tokens[$stackPointer]['scope_closer'])) {
             return;
@@ -49,6 +53,17 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
         $annotations = $this->extractExceptionAnnotations($phpCsFile, $docBlockStartIndex);
+
+        $containsComplexThrowToken = $this->containsComplexThrowToken($tokens, $tokens[$stackPointer]['scope_opener'], $tokens[$stackPointer]['scope_closer']);
+
+        if ($containsComplexThrowToken) {
+            if ($annotations || !$this->containsThrowToken($tokens, $tokens[$stackPointer]['scope_opener'], $tokens[$stackPointer]['scope_closer'])) {
+                return;
+            }
+
+            $phpCsFile->addError('Throw token found, but no annotation for it.', $docBlockEndIndex);
+            return;
+        }
 
         $this->compareExceptionsAndAnnotations($phpCsFile, $exceptions, $annotations, $docBlockEndIndex);
     }
@@ -364,6 +379,48 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         $throwAnnotationIndex = $this->getFirstTokenOfLine($tokens, $tokens[$docBlockStartIndex]['comment_closer']);
 
         return $throwAnnotationIndex;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $scopeOpener
+     * @param int $scopeCloser
+     * @return bool
+     */
+    protected function containsComplexThrowToken(array $tokens, $scopeOpener, $scopeCloser)
+    {
+        for ($i = $scopeOpener + 1; $i < $scopeCloser; $i++) {
+            if ($tokens[$i]['code'] !== T_THROW) {
+                continue;
+            }
+
+            if ($tokens[$i + 2]['code'] !== T_VARIABLE) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $scopeOpener
+     * @param int $scopeCloser
+     * @return bool
+     */
+    protected function containsThrowToken(array $tokens, $scopeOpener, $scopeCloser)
+    {
+        for ($i = $scopeOpener + 1; $i < $scopeCloser; $i++) {
+            if ($tokens[$i]['code'] !== T_THROW) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
 }
