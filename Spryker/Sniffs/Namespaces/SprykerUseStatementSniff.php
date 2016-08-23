@@ -679,7 +679,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
      * @param int $startIndex
      * @param int $endIndex
      *
-     * @throws \Exception
+     * @throws \RuntimeException
      *
      * @return array
      */
