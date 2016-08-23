@@ -2,6 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use Exception;
 use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
@@ -345,7 +346,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
         $throwAnnotationIndex = $this->getThrowAnnotationIndex($tokens, $docBlockStartIndex);
         if (!$throwAnnotationIndex) {
-            throw new \Exception('Should not happen');
+            throw new Exception('Should not happen');
         }
 
         $phpCsFile->fixer->beginChangeset();

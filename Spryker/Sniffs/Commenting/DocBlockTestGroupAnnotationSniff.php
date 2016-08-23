@@ -2,6 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use Exception;
 use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
@@ -27,7 +28,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $filename = $phpCsFile->getFilename();
 
@@ -57,7 +58,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixGroupAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, array $namespaceParts)
+    protected function fixGroupAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer, array $namespaceParts)
     {
         $fix = $phpCsFile->addFixableError('@group annotation missing or incomplete', $stackPointer);
 
@@ -173,7 +174,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassOrInterfaceName(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getClassOrInterfaceName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
@@ -283,7 +284,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
             return $i;
         }
 
-        throw new \Exception('Not possible');
+        throw new Exception('Not possible');
     }
 
 }
