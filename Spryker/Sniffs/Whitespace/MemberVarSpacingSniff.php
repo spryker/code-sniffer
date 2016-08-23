@@ -22,7 +22,7 @@ class MemberVarSpacingSniff extends PHP_CodeSniffer_Standards_AbstractVariableSn
     {
         $tokens = $phpcsFile->getTokens();
 
-        $ignore   = PHP_CodeSniffer_Tokens::$methodPrefixes;
+        $ignore = PHP_CodeSniffer_Tokens::$methodPrefixes;
         $ignore[] = T_VAR;
         $ignore[] = T_WHITESPACE;
 

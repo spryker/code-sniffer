@@ -36,9 +36,7 @@ class ClassFileNameSniff extends AbstractSprykerSniff
 {
 
     /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function register()
     {
@@ -49,13 +47,7 @@ class ClassFileNameSniff extends AbstractSprykerSniff
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int $stackPtr The position of the current token in
-     *                                        the stack passed in $tokens.
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
@@ -66,7 +58,7 @@ class ClassFileNameSniff extends AbstractSprykerSniff
             return;
         }
 
-        $tokens  = $phpcsFile->getTokens();
+        $tokens = $phpcsFile->getTokens();
 
         $previous = $phpcsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPtr - 1);
         if ($previous) {
@@ -76,15 +68,17 @@ class ClassFileNameSniff extends AbstractSprykerSniff
 
         $decName = $phpcsFile->findNext(T_STRING, $stackPtr);
 
-        if ($tokens[$decName]['content'] !== $fileName) {
-            $error = '%s name doesn\'t match filename; expected "%s %s"';
-            $data  = [
-                      ucfirst($tokens[$stackPtr]['content']),
-                      $tokens[$stackPtr]['content'],
-                      $fileName,
-                     ];
-            $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
+        if ($tokens[$decName]['content'] === $fileName) {
+            return;
         }
+
+        $error = '%s name doesn\'t match filename; expected "%s %s"';
+        $data = [
+            ucfirst($tokens[$stackPtr]['content']),
+            $tokens[$stackPtr]['content'],
+            $fileName,
+        ];
+        $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
     }
 
 }
