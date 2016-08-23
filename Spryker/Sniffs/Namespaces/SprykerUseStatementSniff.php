@@ -71,7 +71,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
 
         $this->loadStatements($phpcsFile);
 
-        if ($tokens[$stackPtr]['code'] === T_CLASS || $tokens[$stackPtr]['code'] === T_INTERFACE || $tokens[$stackPtr]['code'] === T_INTERFACE) {
+        if ($tokens[$stackPtr]['code'] === T_CLASS || $tokens[$stackPtr]['code'] === T_INTERFACE || $tokens[$stackPtr]['code'] === T_TRAIT) {
             $this->checkUseForClass($phpcsFile, $stackPtr);
         } elseif ($tokens[$stackPtr]['code'] === T_NEW) {
             $this->checkUseForNew($phpcsFile, $stackPtr);
@@ -99,6 +99,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkExtends(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -110,54 +111,17 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
             return;
         }
 
-        $extendsClassIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $extendsIndex + 1, null, true);
-        $extends = $tokens[$extendsClassIndex]['content'];
-        $pos = $extendsClassIndex + 1;
-        while ($tokens[$pos]['code'] === T_NS_SEPARATOR || $tokens[$pos]['code'] === T_STRING) {
-            $extends .= $tokens[$pos]['content'];
-            $pos++;
+        $extends = $this->parseExtends($phpcsFile, $extendsIndex);
+
+        foreach ($extends as $extend) {
+            $this->fixStatement($phpcsFile, $extend, $stackPtr);
         }
-
-        if (strpos($extends, '\\') === false) {
-            return;
-        }
-
-        $partial = strpos($extends, '\\') !== 0;
-
-        $extractedUseStatement = ltrim($extends, '\\');
-
-        $className = substr($extends, strrpos($extends, '\\') + 1);
-
-        $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
-        if ($partial) {
-            // For now just warn about partial FQCN
-            //$phpcsFile->addWarning($error, $stackPtr, 'Extension');
-            return;
-        }
-
-        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Extension');
-        if (!$fix) {
-            return;
-        }
-
-        $phpcsFile->fixer->beginChangeset();
-
-        $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
-
-        for ($i = $extendsClassIndex; $i < $pos - 1; ++$i) {
-            $phpcsFile->fixer->replaceToken($i, '');
-        }
-
-        if ($addedUseStatement['alias'] !== null) {
-            $phpcsFile->fixer->replaceToken($pos - 1, $addedUseStatement['alias']);
-        }
-
-        $phpcsFile->fixer->endChangeset();
     }
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkImplements(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -169,41 +133,53 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
 
         $implements = $this->parseImplements($phpcsFile, $implementsIndex);
         foreach ($implements as $implement) {
-            if (strpos($implement['content'], '\\') === false) {
-                continue;
-            }
-
-            $partial = strpos($implement['content'], '\\') !== 0;
-
-            $extractedUseStatement = ltrim($implement['content'], '\\');
-            $className = substr($implement['content'], strrpos($implement['content'], '\\') + 1);
-
-            $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
-            if ($partial) {
-                // For now just warn about partial FQCN
-                //$phpcsFile->addWarning($error, $stackPtr, 'Interface');
-                continue;
-            }
-
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Interface');
-            if (!$fix) {
-                continue;
-            }
-
-            $phpcsFile->fixer->beginChangeset();
-
-            $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
-
-            for ($i = $implement['start']; $i < $implement['end']; ++$i) {
-                $phpcsFile->fixer->replaceToken($i, '');
-            }
-
-            if ($addedUseStatement['alias'] !== null) {
-                $phpcsFile->fixer->replaceToken($implement['end'], $addedUseStatement['alias']);
-            }
-
-            $phpcsFile->fixer->endChangeset();
+            $this->fixStatement($phpcsFile, $implement, $stackPtr);
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $statement
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function fixStatement(PHP_CodeSniffer_File $phpcsFile, $statement, $stackPtr)
+    {
+        if (strpos($statement['content'], '\\') === false) {
+            return;
+        }
+
+        $partial = strpos($statement['content'], '\\') !== 0;
+
+        $extractedUseStatement = ltrim($statement['content'], '\\');
+        $className = substr($statement['content'], strrpos($statement['content'], '\\') + 1);
+
+        $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
+        if ($partial) {
+            // For now just warn about partial FQCN
+            //$phpcsFile->addWarning($error, $stackPtr, 'Interface');
+            return;
+        }
+
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Statement');
+        if (!$fix) {
+            return;
+        }
+
+        $phpcsFile->fixer->beginChangeset();
+
+        $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
+
+        for ($i = $statement['start']; $i < $statement['end']; ++$i) {
+            $phpcsFile->fixer->replaceToken($i, '');
+        }
+
+        if ($addedUseStatement['alias'] !== null) {
+            $phpcsFile->fixer->replaceToken($statement['end'], $addedUseStatement['alias']);
+        }
+
+        $phpcsFile->fixer->endChangeset();
     }
 
     /**
@@ -654,6 +630,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
+     *
      * @return string|null
      */
     protected function findClassName(PHP_CodeSniffer_File $phpcsFile)
@@ -673,32 +650,88 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $extendsStartIndex
+     *
+     * @return array
+     */
+    protected function parseExtends(PHP_CodeSniffer_File $phpcsFile, $extendsStartIndex)
+    {
+        $extendsEndIndex = $phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
+
+        return $this->parse($phpcsFile, $extendsStartIndex, $extendsEndIndex);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $implementsStartIndex
+     *
      * @return array
      */
     protected function parseImplements(PHP_CodeSniffer_File $phpcsFile, $implementsStartIndex)
     {
-        $tokens = $phpcsFile->getTokens();
         $implementsEndIndex = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
 
-        $implementsClassIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $implementsStartIndex + 1, null, true);
+        return $this->parse($phpcsFile, $implementsStartIndex, $implementsEndIndex);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $startIndex
+     * @param int $endIndex
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    protected function parse(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
+    {
+        $tokens = $phpcsFile->getTokens();
+        if (empty($tokens[$endIndex])) {
+            throw new \Exception();
+        }
+
+        $classIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $startIndex + 1, null, true);
+
+        if (empty($tokens[$classIndex])) {
+            throw new \Exception();
+        }
 
         $implements = [];
 
-        $i = $implementsClassIndex;
-        while ($i < $implementsEndIndex) {
+        $i = $classIndex;
+        while ($i < $endIndex) {
+            if (empty($tokens[$i])) {
+                break;
+            }
+
             while ($tokens[$i]['code'] !== T_NS_SEPARATOR && $tokens[$i]['code'] !== T_STRING) {
                 $i++;
+                if (empty($tokens[$i])) {
+                    break;
+                }
+
                 continue;
+            }
+
+            if (empty($tokens[$i])) {
+                break;
             }
 
             $current = $i;
             $className = $tokens[$i]['content'];
             $i++;
 
+            if (empty($tokens[$i])) {
+                break;
+            }
+
             while ($tokens[$i]['code'] === T_NS_SEPARATOR || $tokens[$i]['code'] === T_STRING) {
                 $className .= $tokens[$i]['content'];
                 $i++;
+
+                if (empty($tokens[$i])) {
+                    break;
+                }
             }
 
             $implements[] = [
@@ -707,6 +740,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
                 'content' => $className
             ];
         }
+
         return $implements;
     }
 
