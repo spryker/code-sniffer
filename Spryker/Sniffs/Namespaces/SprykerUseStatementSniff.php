@@ -687,13 +687,12 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     {
         $tokens = $phpcsFile->getTokens();
         if (empty($tokens[$endIndex])) {
-            throw new \Exception();
+            throw new RuntimeException('Should not happen');
         }
 
         $classIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $startIndex + 1, null, true);
-
         if (empty($tokens[$classIndex])) {
-            throw new \Exception();
+            throw new RuntimeException('Should not happen');
         }
 
         $implements = [];
