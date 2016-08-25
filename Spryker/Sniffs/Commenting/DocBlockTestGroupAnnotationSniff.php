@@ -31,7 +31,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
     {
         $filename = $phpCsFile->getFilename();
 
-        preg_match('#/(src|tests)/(Unit/Spryker|Functional/Spryker|Acceptance)/(.+)(Test|Cest).php$#', $filename, $matches);
+        preg_match('#/(src|tests)/(YvesUnit|YvesFunctional|Unit/Spryker|Functional/Spryker|Acceptance)/(.+)(Test|Cest).php$#', $filename, $matches);
         if (!$matches) {
             return;
         }
