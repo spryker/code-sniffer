@@ -63,7 +63,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     {
         $namespace = $this->getNamespace($phpCsFile);
 
-        return ($namespace === self::NAMESPACE_SPRYKER);
+        return ($namespace === static::NAMESPACE_SPRYKER);
     }
 
     /**

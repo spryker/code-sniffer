@@ -2,11 +2,14 @@
 
 namespace Spryker\Sniffs\Factory;
 
+use PHP_CodeSniffer_File;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+
 /**
  * Spryker Factory classes should not make use of private property
  * as this forbids extension.
  */
-class NoPrivateMethodsSniff implements \PHP_CodeSniffer_Sniff
+class NoPrivateMethodsSniff extends AbstractSprykerSniff
 {
 
     /**
@@ -24,6 +27,10 @@ class NoPrivateMethodsSniff implements \PHP_CodeSniffer_Sniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
+        if (!$this->isSprykerNamespace($phpCsFile)) {
+            return;
+        }
+
         if ($this->isFactory($phpCsFile) && $this->isMethodPrivate($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
             $fix = $phpCsFile->addFixableError($classMethod . ' is private.', $stackPointer);
@@ -31,6 +38,18 @@ class NoPrivateMethodsSniff implements \PHP_CodeSniffer_Sniff
                 $this->makePrivateMethodProtected($phpCsFile, $stackPointer);
             }
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isSprykerNamespace(PHP_CodeSniffer_File $phpCsFile)
+    {
+        $namespace = $this->getNamespace($phpCsFile);
+
+        return ($namespace === static::NAMESPACE_SPRYKER);
     }
 
     /**
