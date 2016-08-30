@@ -27,31 +27,31 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
+        $tokens = $phpCsFile->getTokens();
 
         // Don't mess with closures
-        $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
+        $prevIndex = $phpCsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
         if (!$this->isGivenKind(PHP_CodeSniffer_Tokens::$methodPrefixes, $tokens[$prevIndex])) {
             return;
         }
 
-        $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $stackPtr);
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPtr);
         if (!$docBlockEndIndex) {
             return;
         }
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
-        $hasInheritDoc = $this->hasInheritDoc($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
+        $hasInheritDoc = $this->hasInheritDoc($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
         if ($hasInheritDoc) {
             return;
         }
 
-        $this->checkFirstAnnotationTag($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
-        $this->checkLastAnnotationTag($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
-        $this->checkAnnotationTagGrouping($phpcsFile, $docBlockStartIndex, $docBlockEndIndex);
+        $this->checkFirstAnnotationTag($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
+        $this->checkLastAnnotationTag($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
+        $this->checkAnnotationTagGrouping($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
     }
 
     /**
@@ -191,7 +191,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      * @param int $docBlockEndIndex
      * @return void
      */
-    protected function checkAnnotationTagGrouping(PHP_CodeSniffer_File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function checkAnnotationTagGrouping(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
         //TODO
     }
