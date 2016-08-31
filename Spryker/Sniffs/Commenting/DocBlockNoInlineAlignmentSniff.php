@@ -42,6 +42,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkTag(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -73,6 +74,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkDescription(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)

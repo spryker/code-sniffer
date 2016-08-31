@@ -149,6 +149,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $stackPointer
+     *
      * @return array
      */
     protected function getNamespaceParts(PHP_CodeSniffer_File $phpCsFile, $stackPointer)

@@ -10,6 +10,7 @@ trait BasicsTrait
     /**
      * @param string|array $search
      * @param array $token
+     *
      * @return bool
      */
     protected function isGivenKind($search, array $token)
@@ -28,6 +29,7 @@ trait BasicsTrait
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
+     *
      * @return array
      */
     protected function getNamespaceStatement(\PHP_CodeSniffer_File $phpcsFile)

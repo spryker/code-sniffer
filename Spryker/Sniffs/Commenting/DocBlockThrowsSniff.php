@@ -385,6 +385,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param array $tokens
      * @param int $scopeOpener
      * @param int $scopeCloser
+     *
      * @return bool
      */
     protected function containsComplexThrowToken(array $tokens, $scopeOpener, $scopeCloser)
@@ -408,6 +409,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param array $tokens
      * @param int $scopeOpener
      * @param int $scopeCloser
+     *
      * @return bool
      */
     protected function containsThrowToken(array $tokens, $scopeOpener, $scopeCloser)

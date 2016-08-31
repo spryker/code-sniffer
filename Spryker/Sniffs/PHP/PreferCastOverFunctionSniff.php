@@ -76,6 +76,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
      * @param int $stackPtr
      * @param int $openingBraceIndex
      * @param int $closingBraceIndex
+     *
      * @return void
      */
     protected function fixContent(\PHP_CodeSniffer_File $phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex)

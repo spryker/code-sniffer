@@ -85,6 +85,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $index
+     *
      * @return void
      */
     protected function checkConstructorAndDestructor(PHP_CodeSniffer_File $phpcsFile, $index)

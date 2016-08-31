@@ -32,6 +32,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
      * @param int $stackPtr The position of the current token
      *    in the stack passed in $tokens.
+     *
      * @return void
      */
     public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -104,6 +105,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkMethodCalls(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)

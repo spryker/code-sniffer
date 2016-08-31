@@ -124,6 +124,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $stackPtr
+     *
      * @return array
      */
     protected function getMethodSignature(PHP_CodeSniffer_File $phpCsFile, $stackPtr)

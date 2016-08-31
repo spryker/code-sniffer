@@ -159,6 +159,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $index
+     *
      * @return void
      */
     protected function clearWhitespacesBeforeIndex(\PHP_CodeSniffer_File $phpcsFile, $index)

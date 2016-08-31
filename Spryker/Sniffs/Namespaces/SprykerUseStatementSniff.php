@@ -79,6 +79,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
      *
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkUseForClass(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -91,6 +92,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkUseForNew(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -160,6 +162,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkUseForStatic(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -226,6 +229,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return void
      */
     protected function checkUseForSignature(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -474,6 +478,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param array $useStatement
+     *
      * @return void
      */
     protected function insertUseStatement(\PHP_CodeSniffer_File $phpcsFile, array $useStatement)

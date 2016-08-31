@@ -57,6 +57,7 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
      *
      * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token in the stack passed in $tokens.
+     *
      * @return void
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -123,6 +124,7 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
      *
      * @param \PHP_CodeSniffer_File $phpcsFile The file to check.
      * @param int $stackPtr The index of the first use token.
+     *
      * @return void
      */
     protected function _checkUseToken(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
@@ -157,6 +159,7 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
      *
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $stackPtr
+     *
      * @return bool
      */
     protected function _isClosure(PHP_CodeSniffer_File $phpcsFile, $stackPtr)

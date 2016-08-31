@@ -25,6 +25,7 @@ class TestHelper
      * Run PHPCS on a file.
      *
      * @param string $file to run.
+     *
      * @return string The output from phpcs.
      */
     public function runPhpCs($file)

@@ -165,6 +165,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      * @param int $start
      * @param int $end
      * @param bool $skipNested
+     *
      * @return bool
      */
     protected function contains(\PHP_CodeSniffer_File $phpcsFile, $search, $start, $end, $skipNested = true)
@@ -199,6 +200,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $openingBraceIndex
      * @param int $closingBraceIndex
+     *
      * @return bool
      */
     protected function needsBrackets(\PHP_CodeSniffer_File $phpcsFile, $openingBraceIndex, $closingBraceIndex)
@@ -261,6 +263,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $index
      * @param int $count
+     *
      * @return void
      */
     protected function outdent(PHP_CodeSniffer_File $phpcsFile, $index, $count = 1)
@@ -275,6 +278,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $index
      * @param int $count
+     *
      * @return void
      */
     protected function indent(PHP_CodeSniffer_File $phpcsFile, $index, $count = 1)
@@ -288,6 +292,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
      * @param string $search
      * @param string $replace
      * @param string $subject
+     *
      * @return string
      */
     protected function strReplaceOnce($search, $replace, $subject)
@@ -303,6 +308,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param string $content
      * @param bool $correctLength
+     *
      * @return string
      */
     protected function getIndentationCharacter($content, $correctLength = false)
@@ -331,6 +337,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $prevIndex
+     *
      * @return string
      */
     protected function getIndentationWhitespace(PHP_CodeSniffer_File $phpcsFile, $prevIndex)
@@ -349,6 +356,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
      * @param int $prevIndex
+     *
      * @return int
      */
     protected function getIndentationColumn(PHP_CodeSniffer_File $phpcsFile, $prevIndex)
@@ -368,6 +376,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param array $tokens
      * @param int $index
+     *
      * @return int
      */
     protected function getFirstTokenOfLine(array $tokens, $index)
@@ -386,6 +395,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param array $tokens
      * @param int $index
+     *
      * @return int
      */
     protected function getLastTokenOfLine(array $tokens, $index)
@@ -403,6 +413,7 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $stackPointer
+     *
      * @return bool
      */
     protected function isMarkedAsDeprecated(\PHP_CodeSniffer_File $phpCsFile, $tokens, $stackPointer)
