@@ -382,6 +382,24 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
         return $currentIndex;
     }
 
+
+    /**
+     * @param array $tokens
+     * @param int $index
+     * @return int
+     */
+    protected function getLastTokenOfLine(array $tokens, $index)
+    {
+        $line = $tokens[$index]['line'];
+
+        $currentIndex = $index;
+        while ($tokens[$currentIndex + 1]['line'] === $line) {
+            $currentIndex++;
+        }
+
+        return $currentIndex;
+    }
+
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $stackPointer

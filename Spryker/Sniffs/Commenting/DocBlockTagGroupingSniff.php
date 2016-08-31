@@ -193,7 +193,209 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      */
     protected function checkAnnotationTagGrouping(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
-        //TODO
+        $tokens = $phpCsFile->getTokens();
+
+        $tags = $this->readTags($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
+
+        $currentTag = null;
+        foreach ($tags as $i => $tag) {
+            if ($currentTag === null) {
+                $currentTag = $tag['tag'];
+                continue;
+            }
+
+            if ($currentTag === $tag['tag']) {
+                $this->assertNoSpacing($phpCsFile, $tags[$i - 1], $tag);
+                continue;
+            }
+
+            $this->assertSpacing($phpCsFile, $tags[$i - 1], $tag);
+            $currentTag = $tag['tag'];
+        }
+    }
+
+    /**
+     * @param PHP_CodeSniffer_File $phpCsFile
+     * @param int $docBlockStartIndex
+     * @param int $docBlockEndIndex
+     *
+     * @throws \Exception
+     * @return array
+     */
+    protected function readTags(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $tags = [];
+
+        for ($i = $docBlockStartIndex; $i < $docBlockEndIndex; $i++) {
+            if ($tokens[$i]['code'] !== T_DOC_COMMENT_TAG) {
+                continue;
+            }
+
+            $start = $this->getFirstTokenOfLine($tokens, $i);
+            $end = $this->getEndIndex($tokens, $i);
+            $tagEnd = $this->getTagEndIndex($tokens, $start, $end);
+
+            $tag = [
+                'index' => $i,
+                'tag' => $tokens[$i]['content'],
+                'tagEnd' => $tagEnd,
+                'start' => $start,
+                'end' => $end,
+                'content' => $this->getContent($tokens, $i, $tagEnd)
+            ];
+            $tags[] = $tag;
+            $i = $end;
+        }
+
+        return $tags;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $i
+     *
+     * @return int
+     */
+    protected function getEndIndex(array $tokens, $i)
+    {
+        while (!empty($tokens[$i + 1]) && $tokens[$i + 1]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$i + 1]['code'] !== T_DOC_COMMENT_TAG) {
+            $i++;
+        }
+
+        // Jump to the previous line
+        $currentLine = $tokens[$i]['line'];
+        while ($tokens[$i]['line'] === $currentLine) {
+            $i--;
+        }
+
+        return $this->getLastTokenOfLine($tokens, $i);
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $start
+     * @param int $end
+     *
+     * @throws \Exception
+     *
+     * @return int
+     */
+    protected function getTagEndIndex(array $tokens, $start, $end)
+    {
+        for ($i = $end; $i > $start; $i--) {
+            if ($tokens[$i]['code'] !== T_DOC_COMMENT_STRING) {
+                continue;
+            }
+
+            return $i;
+        }
+
+        return $start;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $start
+     * @param int $end
+     *
+     * @return string
+     */
+    protected function getContent(array $tokens, $start, $end)
+    {
+        $content = '';
+        for ($i = $start; $i <= $end; $i++) {
+            $content .= $tokens[$i]['content'];
+        }
+
+        return $content;
+    }
+
+    /**
+     * @param PHP_CodeSniffer_File $phpCsFile
+     * @param array $first
+     * @param array $second
+     *
+     * @return void
+     */
+    protected function assertNoSpacing(PHP_CodeSniffer_File $phpCsFile, array $first, array $second)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $lastIndexOfFirst = $first['tagEnd'];
+        $lastLineOfFirst = $tokens[$lastIndexOfFirst]['line'];
+
+        $tagIndexOfSecond = $second['index'];
+        $firstLineOfSecond = $tokens[$tagIndexOfSecond]['line'];
+
+        if ($lastLineOfFirst === $firstLineOfSecond - 1) {
+            return;
+        }
+
+        $fix = $phpCsFile->addFixableError('No newline expected between tags of the same type `' . $first['tag'].'`', $tagIndexOfSecond);
+        if (!$fix) {
+            return;
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+
+        for ($i = $first['tagEnd'] + 1; $i < $second['start']; $i++) {
+            if ($tokens[$i]['line'] <= $lastLineOfFirst || $tokens[$i]['line'] >= $firstLineOfSecond) {
+                continue;
+            }
+
+            $phpCsFile->fixer->replaceToken($i, '');
+        }
+
+        $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param PHP_CodeSniffer_File $phpCsFile
+     * @param array $first
+     * @param array $second
+     *
+     * @return void
+     */
+    protected function assertSpacing(PHP_CodeSniffer_File $phpCsFile, array $first, array $second)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $lastIndexOfFirst = $first['tagEnd'];
+        $lastLineOfFirst = $tokens[$lastIndexOfFirst]['line'];
+
+        $tagIndexOfSecond = $second['index'];
+        $firstLineOfSecond = $tokens[$tagIndexOfSecond]['line'];
+
+        if ($lastLineOfFirst === $firstLineOfSecond - 2) {
+            return;
+        }
+
+        $fix = $phpCsFile->addFixableError('A single newline expected between tags of different types `' . $first['tag'].'`/`' . $second['tag'].'`', $tagIndexOfSecond);
+        if (!$fix) {
+            return;
+        }
+
+        if ($lastLineOfFirst > $firstLineOfSecond - 2) {
+            $phpCsFile->fixer->beginChangeset();
+
+            $indentation = $this->getIndentationWhitespace($phpCsFile, $tagIndexOfSecond);
+            $phpCsFile->fixer->addNewlineBefore($second['start']);
+            $phpCsFile->fixer->addContentBefore($second['start'], $indentation . '*');
+
+            $phpCsFile->fixer->endChangeset();
+
+            return;
+        }
+
+        for ($i = $first['tagEnd'] + 1; $i < $second['start']; $i++) {
+            if ($tokens[$i]['line'] <= $firstLineOfSecond - 2) {
+                continue;
+            }
+
+            $phpCsFile->fixer->replaceToken($i, '');
+        }
     }
 
 }
