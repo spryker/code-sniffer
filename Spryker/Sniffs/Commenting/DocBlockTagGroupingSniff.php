@@ -51,7 +51,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 
         $this->checkFirstAnnotationTag($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
         $this->checkLastAnnotationTag($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
-        $this->checkAnnotationTagGrouping($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
+        //$this->checkAnnotationTagGrouping($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
     }
 
     /**
@@ -221,7 +221,6 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
-     * @throws \Exception
      * @return array
      */
     protected function readTags(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)

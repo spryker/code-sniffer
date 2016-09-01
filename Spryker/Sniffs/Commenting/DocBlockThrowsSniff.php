@@ -248,7 +248,11 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                     continue;
                 }
 
+                $phpCsFile->fixer->beginChangeset();
+
                 $this->removeLine($phpCsFile, $annotation['index']);
+
+                $phpCsFile->fixer->endChangeset();
             }
         }
 
@@ -260,7 +264,11 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                     continue;
                 }
 
+                $phpCsFile->fixer->beginChangeset();
+
                 $this->addAnnotationLine($phpCsFile, $exception, $docBlockEndIndex);
+
+                $phpCsFile->fixer->endChangeset();
             }
         }
     }
