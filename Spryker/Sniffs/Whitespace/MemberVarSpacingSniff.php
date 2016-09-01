@@ -33,6 +33,11 @@ class MemberVarSpacingSniff extends PHP_CodeSniffer_Standards_AbstractVariableSn
             return;
         }
 
+        // If next token is end of class, we also skip
+        if ($tokens[$nextIndex]['code'] === T_CLOSE_CURLY_BRACKET) {
+            return;
+        }
+
         $found = $tokens[$nextIndex]['line'] - $tokens[$endIndex]['line'] - 1;
         $error = 'Expected 1 blank line after member var; %s found';
         $data = [$found];
@@ -41,7 +46,9 @@ class MemberVarSpacingSniff extends PHP_CodeSniffer_Standards_AbstractVariableSn
 
         if ($tokens[$nextIndex]['line'] - $tokens[$endIndex]['line'] < 2) {
             if ($fix === true) {
-                $phpcsFile->fixer->addNewline($endIndex + 1);
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->addNewlineBefore($endIndex + 1);
+                $phpcsFile->fixer->endChangeset();
             }
 
             return;

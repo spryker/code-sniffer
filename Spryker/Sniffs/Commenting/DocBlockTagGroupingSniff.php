@@ -388,6 +388,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
+        $phpCsFile->fixer->beginChangeset();
+
         for ($i = $first['tagEnd'] + 1; $i < $second['start']; $i++) {
             if ($tokens[$i]['line'] <= $firstLineOfSecond - 2) {
                 continue;
@@ -395,6 +397,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 
             $phpCsFile->fixer->replaceToken($i, '');
         }
+
+        $phpCsFile->fixer->endChangeset();
     }
 
 }
