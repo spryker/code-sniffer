@@ -238,8 +238,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      */
     protected function compareExceptionsAndAnnotations(PHP_CodeSniffer_File $phpCsFile, array $exceptions, array $annotations, $docBlockEndIndex)
     {
-        $processed = [];
-
         foreach ($annotations as $annotation) {
             if (!$this->isInCode($annotation, $exceptions)) {
                 $error = '@throw annotation `' . $annotation['fullClass'] . '` superfluous and needs to be removed';
