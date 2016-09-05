@@ -2,10 +2,12 @@
 
 namespace Spryker\Sniffs\Factory;
 
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+
 /**
  * Spryker Factory classes may not contain multiple object instantiations.
  */
-class OneNewPerMethodSniff implements \PHP_CodeSniffer_Sniff
+class OneNewPerMethodSniff extends AbstractSprykerSniff
 {
 
     /**
@@ -23,13 +25,25 @@ class OneNewPerMethodSniff implements \PHP_CodeSniffer_Sniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if ($this->isFactory($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
+        if ($this->isFactory($phpCsFile) && $this->isCoreClass($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
             $phpCsFile->addError(
                 $classMethod . ' contains more then one new. Fix this by extract a method.',
                 $stackPointer
             );
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isCoreClass(\PHP_CodeSniffer_File $phpCsFile)
+    {
+        $namespace = $this->getNamespace($phpCsFile);
+
+        return ($namespace === static::NAMESPACE_SPRYKER);
     }
 
     /**
