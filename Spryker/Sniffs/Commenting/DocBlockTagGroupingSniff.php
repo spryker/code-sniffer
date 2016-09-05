@@ -206,7 +206,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if ($currentTag === $tag['tag']) {
+            if ($currentTag === $tag['tag'] || strpos($tag['tag'], $currentTag) === 0) {
                 $this->assertNoSpacing($phpCsFile, $tags[$i - 1], $tag);
                 continue;
             }
