@@ -25,7 +25,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if ($this->isFactory($phpCsFile) && !$this->isCoreClass($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
+        if ($this->isFactory($phpCsFile) && $this->isCoreClass($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
             $phpCsFile->addError(
                 $classMethod . ' contains more then one new. Fix this by extract a method.',
