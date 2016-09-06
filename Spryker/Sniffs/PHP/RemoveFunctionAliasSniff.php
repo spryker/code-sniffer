@@ -52,7 +52,7 @@ class RemoveFunctionAliasSniff implements \PHP_CodeSniffer_Sniff
 
         $tokenContent = $tokens[$stackPtr]['content'];
         $key = strtolower($tokenContent);
-        if (!isset(self::$matching[$key])) {
+        if (!isset(static::$matching[$key])) {
             return;
         }
 
@@ -66,10 +66,10 @@ class RemoveFunctionAliasSniff implements \PHP_CodeSniffer_Sniff
             return;
         }
 
-        $error = 'Function name ' . $tokenContent . '() found, should be ' . self::$matching[$key] . '().';
+        $error = 'Function name ' . $tokenContent . '() found, should be ' . static::$matching[$key] . '().';
         $fix = $phpcsFile->addFixableError($error, $stackPtr);
         if ($fix) {
-            $phpcsFile->fixer->replaceToken($stackPtr, self::$matching[$key]);
+            $phpcsFile->fixer->replaceToken($stackPtr, static::$matching[$key]);
         }
     }
 

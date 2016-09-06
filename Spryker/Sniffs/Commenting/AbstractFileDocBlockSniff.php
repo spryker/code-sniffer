@@ -59,8 +59,8 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 
             $secondNamespaceString = $phpCsFile->getTokens()[$secondNamespaceTokenPosition]['content'];
 
-            $isSprykerClass = ($firstNamespaceString === self::SPRYKER_NAMESPACE && in_array($secondNamespaceString, $this->sprykerApplications));
-            $isSprykerTestClass = (in_array($firstNamespaceString, $this->sprykerTestNamespaces) && $secondNamespaceString === self::SPRYKER_NAMESPACE);
+            $isSprykerClass = ($firstNamespaceString === static::SPRYKER_NAMESPACE && in_array($secondNamespaceString, $this->sprykerApplications));
+            $isSprykerTestClass = (in_array($firstNamespaceString, $this->sprykerTestNamespaces) && $secondNamespaceString === static::SPRYKER_NAMESPACE);
 
             return ($isSprykerClass || $isSprykerTestClass);
         }
@@ -96,9 +96,9 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, '/**');
         $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . sprintf(self::EXPECTED_COMMENT_FIRST_LINE_STRING, date('Y')));
+        $phpCsFile->fixer->addContent($stackPointer, ' * ' . sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, date('Y')));
         $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . self::EXPECTED_COMMENT_SECOND_LINE_STRING);
+        $phpCsFile->fixer->addContent($stackPointer, ' * ' . static::EXPECTED_COMMENT_SECOND_LINE_STRING);
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, ' */');
         $phpCsFile->fixer->addNewline($stackPointer);

@@ -59,7 +59,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
-        return (count($fileDockBlockTokens) !== self::EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT);
+        return (count($fileDockBlockTokens) !== static::EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT);
     }
 
     /**
@@ -72,11 +72,11 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
-        $firstLineComment = $fileDockBlockTokens[self::FIRST_COMMENT_LINE_POSITION]['content'];
-        $secondLineComment = $fileDockBlockTokens[self::SECOND_COMMENT_LINE_POSITION]['content'];
+        $firstLineComment = $fileDockBlockTokens[static::FIRST_COMMENT_LINE_POSITION]['content'];
+        $secondLineComment = $fileDockBlockTokens[static::SECOND_COMMENT_LINE_POSITION]['content'];
 
-        if ($firstLineComment !== sprintf(self::EXPECTED_COMMENT_FIRST_LINE_STRING, date(self::DATE_FULL_YEAR))
-            || $secondLineComment !== self::EXPECTED_COMMENT_SECOND_LINE_STRING) {
+        if ($firstLineComment !== sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, date(static::DATE_FULL_YEAR))
+            || $secondLineComment !== static::EXPECTED_COMMENT_SECOND_LINE_STRING) {
             return true;
         }
 

@@ -99,7 +99,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
                 $className = substr($className, 0, -2);
             }
 
-            if (in_array($className, self::$whitelistedTypes)) {
+            if (in_array($className, static::$whitelistedTypes)) {
                 continue;
             }
 

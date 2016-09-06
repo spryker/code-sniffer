@@ -67,7 +67,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
     {
         $phpCsFile->fixer->beginChangeset();
 
-        if ($this->getLayer($phpCsFile) !== self::LAYER_PERSISTENCE) {
+        if ($this->getLayer($phpCsFile) !== static::LAYER_PERSISTENCE) {
             $this->addUseStatements(
                 $phpCsFile,
                 $stackPointer,
@@ -102,7 +102,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, -2);
         $bundleName = $classNameParts[2];
-        array_push($classNameParts, self::LAYER_PERSISTENCE);
+        array_push($classNameParts, static::LAYER_PERSISTENCE);
         array_push($classNameParts, $bundleName . 'QueryContainer');
         $queryContainerClassName = implode('\\', $classNameParts);
 

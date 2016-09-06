@@ -90,8 +90,8 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
 
             $secondNamespaceString = $phpCsFile->getTokens()[$secondNamespaceTokenPosition]['content'];
 
-            $isSprykerClass = ($firstNamespaceString === self::DEMOSHOP_NAMESPACE && in_array($secondNamespaceString, $this->sprykerApplications));
-            $isSprykerTestClass = (in_array($firstNamespaceString, $this->sprykerTestNamespaces) && $secondNamespaceString === self::DEMOSHOP_NAMESPACE);
+            $isSprykerClass = ($firstNamespaceString === static::DEMOSHOP_NAMESPACE && in_array($secondNamespaceString, $this->sprykerApplications));
+            $isSprykerTestClass = (in_array($firstNamespaceString, $this->sprykerTestNamespaces) && $secondNamespaceString === static::DEMOSHOP_NAMESPACE);
 
             return ($isSprykerClass || $isSprykerTestClass);
         }
@@ -127,9 +127,9 @@ abstract class AbstractDemoshopFileDocBlockSniff implements \PHP_CodeSniffer_Sni
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, '/**');
         $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . self::EXPECTED_COMMENT_FIRST_LINE_STRING);
+        $phpCsFile->fixer->addContent($stackPointer, ' * ' . static::EXPECTED_COMMENT_FIRST_LINE_STRING);
         $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . self::EXPECTED_COMMENT_SECOND_LINE_STRING);
+        $phpCsFile->fixer->addContent($stackPointer, ' * ' . static::EXPECTED_COMMENT_SECOND_LINE_STRING);
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, ' */');
         $phpCsFile->fixer->addNewline($stackPointer);

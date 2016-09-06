@@ -52,13 +52,13 @@ class ShortCastSniff implements \PHP_CodeSniffer_Sniff
         $content = $tokens[$stackPtr]['content'];
         $key = strtolower($content);
 
-        if (!isset(self::$matching[$key])) {
+        if (!isset(static::$matching[$key])) {
             return;
         }
 
-        $fix = $phpcsFile->addFixableError($content . ' found, expected ' . self::$matching[$key], $stackPtr);
+        $fix = $phpcsFile->addFixableError($content . ' found, expected ' . static::$matching[$key], $stackPtr);
         if ($fix) {
-            $phpcsFile->fixer->replaceToken($stackPtr, self::$matching[$key]);
+            $phpcsFile->fixer->replaceToken($stackPtr, static::$matching[$key]);
         }
     }
 

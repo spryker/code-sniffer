@@ -341,7 +341,7 @@ class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
         $firstSeparator = mb_strpos($extractedUseStatement, '\\');
         $namespace = mb_substr($extractedUseStatement, 0, $firstSeparator);
 
-        return in_array($namespace, self::$whiteListOfNamespaces);
+        return in_array($namespace, static::$whiteListOfNamespaces);
     }
 
     /**

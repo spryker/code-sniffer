@@ -39,7 +39,7 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
-        return (count($fileDockBlockTokens) !== self::EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT);
+        return (count($fileDockBlockTokens) !== static::EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT);
     }
 
     /**
@@ -52,11 +52,11 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
-        $firstLineComment = $fileDockBlockTokens[self::FIRST_COMMENT_LINE_POSITION]['content'];
-        $secondLineComment = $fileDockBlockTokens[self::SECOND_COMMENT_LINE_POSITION]['content'];
+        $firstLineComment = $fileDockBlockTokens[static::FIRST_COMMENT_LINE_POSITION]['content'];
+        $secondLineComment = $fileDockBlockTokens[static::SECOND_COMMENT_LINE_POSITION]['content'];
 
-        if ($firstLineComment !== self::EXPECTED_COMMENT_FIRST_LINE_STRING
-            || $secondLineComment !== self::EXPECTED_COMMENT_SECOND_LINE_STRING) {
+        if ($firstLineComment !== static::EXPECTED_COMMENT_FIRST_LINE_STRING
+            || $secondLineComment !== static::EXPECTED_COMMENT_SECOND_LINE_STRING) {
             return true;
         }
 

@@ -50,10 +50,10 @@ class PhpSapiConstantSniff implements \PHP_CodeSniffer_Sniff
             return;
         }
 
-        $error = $tokenContent . '() found, should be const ' . self::PHP_SAPI . '.';
+        $error = $tokenContent . '() found, should be const ' . static::PHP_SAPI . '.';
         $fix = $phpcsFile->addFixableError($error, $stackPtr);
         if ($fix) {
-            $phpcsFile->fixer->replaceToken($stackPtr, self::PHP_SAPI);
+            $phpcsFile->fixer->replaceToken($stackPtr, static::PHP_SAPI);
             for ($i = $openingBrace; $i <= $closingBrace; ++$i) {
                 $phpcsFile->fixer->replaceToken($i, '');
             }
