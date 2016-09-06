@@ -54,7 +54,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
      */
     public function register()
     {
-        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT];
+        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT, T_INSTANCEOF];
     }
 
     /**
@@ -77,6 +77,8 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
             $this->checkUseForNew($phpcsFile, $stackPtr);
         } elseif ($tokens[$stackPtr]['code'] === T_DOUBLE_COLON) {
             $this->checkUseForStatic($phpcsFile, $stackPtr);
+        } elseif ($tokens[$stackPtr]['code'] === T_INSTANCEOF) {
+            $this->checkUseForInstanceOf($phpcsFile, $stackPtr);
         } else {
             $this->checkUseForSignature($phpcsFile, $stackPtr);
         }
@@ -307,6 +309,72 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
             $phpcsFile->fixer->replaceToken($firstSeparatorIndex + 1, $addedUseStatement['alias']);
             for ($i = $firstSeparatorIndex + 2; $i <= $lastIndex; ++$i) {
                 $phpcsFile->fixer->replaceToken($i, '');
+            }
+        }
+
+        $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function checkUseForInstanceOf(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $classNameIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        $lastIndex = null;
+        $i = $classNameIndex;
+        $extractedUseStatement = '';
+        $lastSeparatorIndex = null;
+        while (true) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$i])) {
+                break;
+            }
+            $lastIndex = $i;
+            $extractedUseStatement .= $tokens[$i]['content'];
+
+            if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$i])) {
+                $lastSeparatorIndex = $i;
+            }
+            ++$i;
+        }
+
+        if ($lastIndex === null || $lastSeparatorIndex === null) {
+            return;
+        }
+
+        $extractedUseStatement = ltrim($extractedUseStatement, '\\');
+
+        $className = '';
+        for ($i = $lastSeparatorIndex + 1; $i <= $lastIndex; ++$i) {
+            $className .= $tokens[$i]['content'];
+        }
+
+        $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InstanceOf');
+        if (!$fix) {
+            return;
+        }
+
+        $phpcsFile->fixer->beginChangeset();
+
+        $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
+        $firstSeparatorIndex = $classNameIndex;
+
+        for ($k = $lastSeparatorIndex; $k > $firstSeparatorIndex; --$k) {
+            $phpcsFile->fixer->replaceToken($k, '');
+        }
+        $phpcsFile->fixer->replaceToken($firstSeparatorIndex, '');
+
+        if ($addedUseStatement['alias'] !== null) {
+            $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
+            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+                $phpcsFile->fixer->replaceToken($k, '');
             }
         }
 
