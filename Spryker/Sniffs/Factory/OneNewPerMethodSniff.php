@@ -42,7 +42,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isSprykerClass(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isSprykerClass(PHP_CodeSniffer_File $phpCsFile)
     {
         $namespace = $this->getNamespace($phpCsFile);
 
