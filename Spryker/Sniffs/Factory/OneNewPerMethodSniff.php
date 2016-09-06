@@ -6,6 +6,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Spryker Factory classes may not contain multiple object instantiations.
+ *
+ * Note: This sniff will only run on Spryker Core files.
  */
 class OneNewPerMethodSniff extends AbstractSprykerSniff
 {
@@ -25,7 +27,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        if ($this->isFactory($phpCsFile) && $this->isCoreClass($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
+        if ($this->isFactory($phpCsFile) && $this->isSprykerClass($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
             $phpCsFile->addError(
                 $classMethod . ' contains more then one new. Fix this by extract a method.',
@@ -39,7 +41,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isCoreClass(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isSprykerClass(\PHP_CodeSniffer_File $phpCsFile)
     {
         $namespace = $this->getNamespace($phpCsFile);
 

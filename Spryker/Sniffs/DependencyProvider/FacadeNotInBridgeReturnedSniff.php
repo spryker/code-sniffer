@@ -6,6 +6,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Spryker Locator should not return Facades directly, use a bridge instead.
+ *
+ * Note: This sniff will only run on Spryker Core files.
  */
 class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
 {

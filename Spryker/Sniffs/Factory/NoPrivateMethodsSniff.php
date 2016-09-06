@@ -8,6 +8,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 /**
  * Spryker Factory classes should not make use of private property
  * as this forbids extension.
+ *
+ * Note: This sniff will only run on Spryker Core files.
  */
 class NoPrivateMethodsSniff extends AbstractSprykerSniff
 {

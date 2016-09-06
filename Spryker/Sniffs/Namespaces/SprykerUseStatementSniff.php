@@ -8,7 +8,7 @@ namespace Spryker\Sniffs\Namespaces;
 use Spryker\Traits\BasicsTrait;
 
 /**
- * Spryker internal FQNS must be moved to use statements.
+ * Spryker internal "inline FQCN" must be moved to use statements.
  */
 class SprykerUseStatementSniff implements \PHP_CodeSniffer_Sniff
 {
