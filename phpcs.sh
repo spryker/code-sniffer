@@ -9,9 +9,9 @@ else
 fi
 
 if [ "$FIX" = 1 ]; then
-	# Sniff only
+	# Sniff and fix
 	vendor/bin/phpcbf --standard=Spryker/ruleset.xml -v --ignore=code-sniffer/vendor/,tests/files/ ./
 else
-	# Sniff and fix
+	# Sniff only
 	vendor/bin/phpcs --standard=Spryker/ruleset.xml -v --ignore=code-sniffer/vendor/,tests/files/ ./
 fi
