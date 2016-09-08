@@ -10,6 +10,9 @@ use Spryker\Tools\Traits\CommentingTrait;
 /**
  * Method doc blocks should have a consistent grouping of tag types.
  * They also should have a single newline between description and tags.
+ *
+ * @author Mark Scherer
+ * @license MIT
  */
 class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 {
