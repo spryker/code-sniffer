@@ -230,10 +230,14 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
 
         $newOrder = [];
         foreach ($tags as $tag) {
-            $newOrder[$order[$tag['tag']]][] = $this->getContent($tokens, $tag['start'], $tag['end']);
+            $tagOrder = isset($order[$tag['tag']]) ? $order[$tag['tag']] : -1;
+            $newOrder[$tagOrder][] = $this->getContent($tokens, $tag['start'], $tag['end']);
         }
 
         ksort($newOrder);
+        if (isset($newOrder[-1])) {
+            ksort($newOrder[-1]);
+        }
 
         $content = '';
         foreach ($newOrder as $tagGroup) {
