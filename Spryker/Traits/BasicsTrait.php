@@ -56,7 +56,7 @@ trait BasicsTrait
         return [
             'start' => $namespaceIndex,
             'namespace' => $namespace,
-            'end' => $endIndex
+            'end' => $endIndex,
         ];
     }
 

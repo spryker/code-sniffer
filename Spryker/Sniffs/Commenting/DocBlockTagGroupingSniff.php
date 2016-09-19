@@ -247,7 +247,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
                 'tagEnd' => $tagEnd,
                 'start' => $start,
                 'end' => $end,
-                'content' => $this->getContent($tokens, $i, $tagEnd)
+                'content' => $this->getContent($tokens, $i, $tagEnd),
             ];
             $tags[] = $tag;
             $i = $end;

@@ -190,7 +190,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             $throwTags[] = [
                 'index' => $index,
                 'fullClass' => $fullClass,
-                'class' => $class
+                'class' => $class,
             ];
         }
 
@@ -225,7 +225,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             'start' => $contentIndex,
             'end' => $position - 1,
             'fullClass' => $fullClass,
-            'class' => $class
+            'class' => $class,
         ];
     }
 
