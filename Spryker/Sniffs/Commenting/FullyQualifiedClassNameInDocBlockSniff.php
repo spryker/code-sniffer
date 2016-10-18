@@ -2,6 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use PHP_CodeSniffer_File;
+
 /**
  * All doc blocks must use FQCN for class names.
  */
@@ -27,21 +29,83 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
             T_TRAIT,
             T_FUNCTION,
             T_VARIABLE,
+            T_COMMENT
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
+        if ($tokens[$stackPointer]['code'] === T_COMMENT) {
+            $this->processInlineComments($phpCsFile, $stackPointer);
+            return;
+        }
+
+        $this->processDocBlockComments($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function processInlineComments(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        if (!preg_match('|^\/\* @var (.+) \$.+\*\/$|', $tokens[$stackPointer]['content'], $matches)) {
+            return;
+        }
+
+        $content = $matches[1];
+
+        $classNames = explode('|', $content);
+
+        $result = $this->generateClassNameMap($phpCsFile, $stackPointer, $classNames);
+        if (!$result) {
+            return;
+        }
+
+        $message = [];
+        foreach ($result as $className => $useStatement) {
+            $message[] = $className . ' => ' . $useStatement;
+        }
+
+        $fix = $phpCsFile->addFixableError(implode(', ', $message), $stackPointer);
+        if (!$fix) {
+            return;
+        }
+
+        $classes = implode('|', $classNames);
+        $content = preg_replace('|@var (.+) \$|', '@var ' . $classes . ' $', $tokens[$stackPointer]['content']);
+
+        $phpCsFile->fixer->beginChangeset();
+
+        $phpCsFile->fixer->replaceToken($stackPointer, $content);
+
+        $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function processDocBlockComments(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
 
         if (!$docBlockEndIndex) {
             return;
         }
+
+        $tokens = $phpCsFile->getTokens();
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
@@ -85,7 +149,34 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    protected function fixClassNames(\PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array $classNames, $appendix)
+    protected function fixClassNames(PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array $classNames, $appendix)
+    {
+        $result = $this->generateClassNameMap($phpCsFile, $classNameIndex, $classNames);
+        if (!$result) {
+            return;
+        }
+
+        $message = [];
+        foreach ($result as $className => $useStatement) {
+            $message[] = $className . ' => ' . $useStatement;
+        }
+
+        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex);
+        if ($fix) {
+            $newContent = implode('|', $classNames);
+
+            $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $classNameIndex
+     * @param array $classNames
+     *
+     * @return array
+     */
+    protected function generateClassNameMap(PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array &$classNames)
     {
         $result = [];
         foreach ($classNames as $key => $className) {
@@ -113,21 +204,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
             $result[$className . ($arrayOfObject ? '[]' : '')] = $classNames[$key];
         }
 
-        if (!$result) {
-            return;
-        }
-
-        $message = [];
-        foreach ($result as $className => $useStatement) {
-            $message[] = $className . ' => ' . $useStatement;
-        }
-
-        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex);
-        if ($fix) {
-            $newContent = implode('|', $classNames);
-
-            $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);
-        }
+        return $result;
     }
 
     /**
@@ -136,7 +213,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string|null
      */
-    protected function findUseStatementForClassName(\PHP_CodeSniffer_File $phpCsFile, $className)
+    protected function findUseStatementForClassName(PHP_CodeSniffer_File $phpCsFile, $className)
     {
         $useStatements = $this->parseUseStatements($phpCsFile);
         if (!isset($useStatements[$className])) {
@@ -157,7 +234,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string|null
      */
-    protected function findInSameNameSpace(\PHP_CodeSniffer_File $phpCsFile, $className)
+    protected function findInSameNameSpace(PHP_CodeSniffer_File $phpCsFile, $className)
     {
         $currentNameSpace = $this->getNamespace($phpCsFile);
         if (!$currentNameSpace) {
@@ -178,7 +255,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getNamespace(\PHP_CodeSniffer_File $phpCsFile)
+    protected function getNamespace(PHP_CodeSniffer_File $phpCsFile)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -217,7 +294,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
-    protected function findRelatedDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function findRelatedDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -239,7 +316,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
      *
      * @return array
      */
-    protected function parseUseStatements(\PHP_CodeSniffer_File $phpCsFile)
+    protected function parseUseStatements(PHP_CodeSniffer_File $phpCsFile)
     {
         $useStatements = [];
         $tokens = $phpCsFile->getTokens();
