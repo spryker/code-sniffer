@@ -21,10 +21,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
     public $ignorableBundles = [];
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
     public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
