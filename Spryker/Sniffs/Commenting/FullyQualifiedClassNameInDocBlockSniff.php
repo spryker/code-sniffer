@@ -62,17 +62,16 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
             return;
         }
 
-        $content = $matches[1];
+        $classes = $matches[1];
+        $classNames = explode('|', $classes);
 
-        $classNames = explode('|', $content);
-
-        $result = $this->generateClassNameMap($phpCsFile, $stackPointer, $classNames);
-        if (!$result) {
+        $classNameMap = $this->generateClassNameMap($phpCsFile, $stackPointer, $classNames);
+        if (!$classNameMap) {
             return;
         }
 
         $message = [];
-        foreach ($result as $className => $useStatement) {
+        foreach ($classNameMap as $className => $useStatement) {
             $message[] = $className . ' => ' . $useStatement;
         }
 
@@ -151,13 +150,13 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
      */
     protected function fixClassNames(PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array $classNames, $appendix)
     {
-        $result = $this->generateClassNameMap($phpCsFile, $classNameIndex, $classNames);
-        if (!$result) {
+        $classNameMap = $this->generateClassNameMap($phpCsFile, $classNameIndex, $classNames);
+        if (!$classNameMap) {
             return;
         }
 
         $message = [];
-        foreach ($result as $className => $useStatement) {
+        foreach ($classNameMap as $className => $useStatement) {
             $message[] = $className . ' => ' . $useStatement;
         }
 
