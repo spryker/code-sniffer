@@ -83,36 +83,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
             }
 
             $comment = $tokens[$i]['content'];
-            if (!preg_match('|^/\*(\s*)@var|', $comment, $matches)) {
-                continue;
-            }
-
-            preg_match('|^\/\*\s*@var\s+(.+?)(\s+)(.+?)\s*\*\/$|', $comment, $contentMatches);
-            if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
-                $phpCsFile->addError('Invalid Inline Doc Block content', $i);
-                continue;
-            }
-
-            $errors = [];
-            if ($matches[1] !== ' ') {
-                $errors['space-before-tag'] = 'Expected single space before ´@var´, got ´' . $matches[1] . '´';
-            }
-
-            if (!preg_match('|([a-z0-9])+\s*\*\/$|i', $comment)) {
-                $errors['end'] = 'Expected ´ */´ to terminate comment';
-            }
-
-            if (!preg_match('|([a-z0-9]) [\*]+\/$|i', $comment)) {
-                $errors['space-before-end'] = 'Expected single space before ´*/´';
-            }
-
-            if ($contentMatches[2] !== ' ') {
-                $errors['space-between-type-and-var'] = 'Expected a single space between type and var, got `' . $contentMatches[2] . '`';
-            }
-
-            if (!preg_match('|^\$[a-z0-9]+$|i', $contentMatches[3])) {
-                $errors['order'] = 'Expected ´{Type} ${var}´, got `' . $contentMatches[1] . $contentMatches[2] . $contentMatches[3] . '`';
-            }
+            $errors = $this->findErrors($phpCsFile, $i, $comment);
 
             if (!$errors) {
                 continue;
@@ -142,6 +113,49 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
             $phpCsFile->fixer->endChangeset();
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $i
+     * @param string $comment
+     *
+     * @return array
+     */
+    protected function findErrors(PHP_CodeSniffer_File $phpCsFile, $i, $comment)
+    {
+        if (!preg_match('|^/\*(\s*)@var|', $comment, $matches)) {
+            return [];
+        }
+
+        preg_match('|^\/\*\s*@var\s+(.+?)(\s+)(.+?)\s*\*\/$|', $comment, $contentMatches);
+        if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
+            $phpCsFile->addError('Invalid Inline Doc Block content', $i);
+            return [];
+        }
+
+        $errors = [];
+        if ($matches[1] !== ' ') {
+            $errors['space-before-tag'] = 'Expected single space before ´@var´, got ´' . $matches[1] . '´';
+        }
+
+        if (!preg_match('|([a-z0-9])+\s*\*\/$|i', $comment)) {
+            $errors['end'] = 'Expected ´ */´ to terminate comment';
+        }
+
+        if (!preg_match('|([a-z0-9]) [\*]+\/$|i', $comment)) {
+            $errors['space-before-end'] = 'Expected single space before ´*/´';
+        }
+
+        if ($contentMatches[2] !== ' ') {
+            $errors['space-between-type-and-var'] = 'Expected a single space between type and var, got `' . $contentMatches[2] . '`';
+        }
+
+        if (!preg_match('|^\$[a-z0-9]+$|i', $contentMatches[3])) {
+            $errors['order'] = 'Expected ´{Type} ${var}´, got `' . $contentMatches[1] . $contentMatches[2] . $contentMatches[3] . '`';
+        }
+
+        return $errors;
     }
 
 }
