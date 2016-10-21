@@ -37,7 +37,6 @@ trait CommentingTrait
         return false;
     }
 
-
     /**
      * Allow \Foo\Bar[] to pass as array.
      *
