@@ -391,7 +391,6 @@ abstract class AbstractSprykerSniff implements \PHP_CodeSniffer_Sniff
         return $currentIndex;
     }
 
-
     /**
      * @param array $tokens
      * @param int $index
