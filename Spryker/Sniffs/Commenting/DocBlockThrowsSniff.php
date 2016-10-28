@@ -52,6 +52,12 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         $exceptions = $this->extractExceptions($phpCsFile, $stackPointer);
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+
+        // We skip for Spryker @api containing methods
+        if ($this->isApiMethod($phpCsFile, $docBlockStartIndex)) {
+            return;
+        }
+
         $annotations = $this->extractExceptionAnnotations($phpCsFile, $docBlockStartIndex);
 
         $containsComplexThrowToken = $this->containsComplexThrowToken($tokens, $tokens[$stackPointer]['scope_opener'], $tokens[$stackPointer]['scope_closer']);
@@ -426,6 +432,25 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             }
 
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $docBlockStartIndex
+     *
+     * @return bool
+     */
+    protected function isApiMethod(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        foreach ($tokens[$docBlockStartIndex]['comment_tags'] as $index) {
+            if ($tokens[$index]['content'] === '@api') {
+                return true;
+            }
         }
 
         return false;

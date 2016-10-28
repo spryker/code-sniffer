@@ -50,7 +50,11 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
         $namespace = $this->getNamespace($phpCsFile, $stackPointer);
         $name = $this->getClassOrInterfaceName($phpCsFile, $stackPointer);
 
-        if ($this->isFacade($namespace, $name) || $this->isClient($namespace, $name) || $this->isQueryContainer($namespace, $name)) {
+        if ($this->isFacade($namespace, $name)
+            || $this->isClient($namespace, $name)
+            || $this->isQueryContainer($namespace, $name)
+            || $this->isPluginInterface($namespace, $name)
+        ) {
             return true;
         }
 
@@ -165,6 +169,21 @@ class DocBlockApiAnnotationSniff implements \PHP_CodeSniffer_Sniff
     protected function isClient($namespace, $name)
     {
         if (preg_match('/^Spryker\\\Client\\\[a-zA-Z]+$/', $namespace) && preg_match('/^(.*?)(Client|ClientInterface)/', $name)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $namespace
+     * @param string $name
+     *
+     * @return bool
+     */
+    protected function isPluginInterface($namespace, $name)
+    {
+        if (preg_match('/^Spryker\\\\[a-zA-Z]+\\\\[a-zA-Z]+\\\\Dependency\\\\Plugin\\\\/', $namespace) && preg_match('/^\w+Interface$/', $name)) {
             return true;
         }
 
