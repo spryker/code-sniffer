@@ -39,12 +39,12 @@ class EmptyLinesSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
         if ($tokens[$stackPtr]['content'] === $phpcsFile->eolChar
-         && isset($tokens[($stackPtr + 1)]) === true
-         && $tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar
-         && isset($tokens[($stackPtr + 2)]) === true
-         && $tokens[($stackPtr + 2)]['content'] === $phpcsFile->eolChar
+            && isset($tokens[($stackPtr + 1)]) === true
+            && $tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar
+            && isset($tokens[($stackPtr + 2)]) === true
+            && $tokens[($stackPtr + 2)]['content'] === $phpcsFile->eolChar
         ) {
-            $error = '2 empty lines and more are not allowed';
+            $error = 'Found more than a single empty line between content';
             $fix = $phpcsFile->addFixableError($error, ($stackPtr + 3), 'EmptyLines');
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr + 2, '');
