@@ -82,7 +82,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
         foreach ($tags as $i => $tag) {
             if (!isset($order[$tag['tag']])) {
                 if ($currentOrder !== null) {
-                    $tags[$i]['error'] = 'Position of ' . $tag['tag'] . 'tag too low.';
+                    $tags[$i]['error'] = 'Position of ' . $tag['tag'] . ' tag too low.';
                     return $tags;
                 }
                 continue;
