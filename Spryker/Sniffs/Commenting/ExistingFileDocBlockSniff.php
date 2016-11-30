@@ -29,7 +29,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
             return;
         }
 
-        if ($this->existsFileDocBlock($phpCsFile, $stackPointer)
+        if ($this->existsFileDocBlock($phpCsFile, $stackPointer) && $this->isOwnFileDocBlock($phpCsFile, $stackPointer)
             && ($this->hasNotExpectedLength($phpCsFile, $stackPointer) || $this->hasWrongContent($phpCsFile, $stackPointer))
         ) {
             $this->addFixableExistingDocBlock($phpCsFile, $stackPointer);
@@ -78,6 +78,25 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
         }
 
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isOwnFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
+        $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
+
+        $firstLineComment = $fileDockBlockTokens[static::FIRST_COMMENT_LINE_POSITION]['content'];
+
+        if (strpos($firstLineComment, 'modified by Spryker Systems GmbH') !== false) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
