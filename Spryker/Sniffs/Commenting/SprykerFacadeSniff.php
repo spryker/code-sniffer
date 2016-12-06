@@ -60,7 +60,7 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * Facade Interfaces must have a "Specification" block as part of the contract.
+     * Facade interfaces must have a "Specification" block as part of the contract.
      *
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $stackPointer
