@@ -88,7 +88,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function isOwnFileDocBlock(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isOwnFileDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 

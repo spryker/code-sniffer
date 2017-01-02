@@ -27,7 +27,7 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if (!$this->isSprykerFacadeApiClass($phpCsFile, $stackPointer)) {
             return;
@@ -97,7 +97,7 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function isSprykerFacadeApiClass(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isSprykerFacadeApiClass(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer)) {
             return false;
@@ -122,7 +122,7 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
      *
      * @return bool
      */
-    protected function hasNamespace(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         if (!$namespacePosition) {
@@ -138,7 +138,7 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function getNamespace(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
@@ -160,7 +160,7 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
      *
      * @return string
      */
-    protected function findClassOrInterfaceName(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function findClassOrInterfaceName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
 

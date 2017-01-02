@@ -804,7 +804,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
             $implements[] = [
                 'start' => $current,
                 'end' => $i - 1,
-                'content' => $className
+                'content' => $className,
             ];
         }
 
