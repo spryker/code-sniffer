@@ -157,8 +157,8 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
 
         $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
         if ($partial) {
-            // For now just warn about partial FQCN
-            $phpcsFile->addWarning($error, $stackPtr, 'Interface');
+            // For now just warn about partial FQCN locally
+            //$phpcsFile->addWarning($error, $stackPtr, 'Interface');
             return;
         }
 
