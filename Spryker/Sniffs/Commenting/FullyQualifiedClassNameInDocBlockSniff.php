@@ -30,7 +30,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements PHP_CodeSniffer_Sniff
             T_TRAIT,
             T_FUNCTION,
             T_VARIABLE,
-            T_COMMENT
+            T_COMMENT,
         ];
     }
 
