@@ -183,42 +183,24 @@ class FullyQualifiedClassNameInDocBlockSniff implements PHP_CodeSniffer_Sniff
             if (strpos($className, '\\') !== false) {
                 continue;
             }
-
             $arrayOfObject = false;
             if (substr($className, -2) === '[]') {
                 $arrayOfObject = true;
                 $className = substr($className, 0, -2);
             }
-
             if (in_array($className, static::$whitelistedTypes)) {
                 continue;
             }
-
             $useStatement = $this->findUseStatementForClassName($phpCsFile, $className);
             if (!$useStatement) {
                 $phpCsFile->addError('Invalid class name "' . $className . '"', $classNameIndex);
                 continue;
             }
-
             $classNames[$key] = $useStatement . ($arrayOfObject ? '[]' : '');
             $result[$className . ($arrayOfObject ? '[]' : '')] = $classNames[$key];
         }
 
-        if (!$result) {
-            return;
-        }
-
-        $message = [];
-        foreach ($result as $className => $useStatement) {
-            $message[] = $className . ' => ' . $useStatement;
-        }
-
-        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex);
-        if ($fix) {
-            $newContent = implode('|', $classNames);
-
-            $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);
-        }
+        return $result;
     }
 
     /**
