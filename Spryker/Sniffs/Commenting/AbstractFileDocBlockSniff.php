@@ -11,6 +11,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
 
     const SPRYKER_NAMESPACE = 'Spryker';
+    const YEAR = '2016';
 
     /**
      * @var array
@@ -96,7 +97,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, '/**');
         $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, date('Y')));
+        $phpCsFile->fixer->addContent($stackPointer, ' * ' . sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, static::YEAR));
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addContent($stackPointer, ' * ' . static::EXPECTED_COMMENT_SECOND_LINE_STRING);
         $phpCsFile->fixer->addNewline($stackPointer);

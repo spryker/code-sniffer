@@ -11,7 +11,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
     const FIRST_COMMENT_LINE_POSITION = 5;
     const SECOND_COMMENT_LINE_POSITION = 10;
     const EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT = 14;
-    const DATE_FULL_YEAR = 'Y';
+    const YEAR = '2016';
 
     /**
      * This property can be filled within the ruleset configuration file
@@ -72,7 +72,7 @@ class ExistingFileDocBlockSniff extends AbstractFileDocBlockSniff
         $firstLineComment = $fileDockBlockTokens[static::FIRST_COMMENT_LINE_POSITION]['content'];
         $secondLineComment = $fileDockBlockTokens[static::SECOND_COMMENT_LINE_POSITION]['content'];
 
-        if ($firstLineComment !== sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, date(static::DATE_FULL_YEAR))
+        if ($firstLineComment !== sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, static::YEAR)
             || $secondLineComment !== static::EXPECTED_COMMENT_SECOND_LINE_STRING) {
             return true;
         }
