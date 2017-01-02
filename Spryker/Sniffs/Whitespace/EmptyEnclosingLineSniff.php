@@ -2,11 +2,14 @@
 
 namespace Spryker\Sniffs\Whitespace;
 
+use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
+
 /**
  * There should be an empty newline at the beginning and end of each body.
  * Unless it is empty.
  */
-class EmptyEnclosingLineSniff implements \PHP_CodeSniffer_Sniff
+class EmptyEnclosingLineSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**
@@ -24,7 +27,7 @@ class EmptyEnclosingLineSniff implements \PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         $errorData = [strtolower($tokens[$stackPtr]['content'])];

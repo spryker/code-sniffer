@@ -2,9 +2,11 @@
 
 namespace Spryker\Sniffs\Commenting;
 
+use Exception;
 use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Traits\UseStatementsTrait;
 
 /**
  * Ensures Doc Blocks for throws annotations are correct.
@@ -15,6 +17,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DocBlockThrowsSniff extends AbstractSprykerSniff
 {
+
+    use UseStatementsTrait;
 
     /**
      * @inheritDoc
@@ -244,48 +248,77 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      */
     protected function compareExceptionsAndAnnotations(PHP_CodeSniffer_File $phpCsFile, array $exceptions, array $annotations, $docBlockEndIndex)
     {
+        $useStatements = $this->getUseStatements($phpCsFile);
+
         foreach ($annotations as $annotation) {
-            if (!$this->isInCode($annotation, $exceptions)) {
-                $error = '@throw annotation `' . $annotation['fullClass'] . '` superfluous and needs to be removed';
-                $fix = $phpCsFile->addFixableError($error, $annotation['index']);
-                if (!$fix) {
-                    continue;
-                }
-
-                $phpCsFile->fixer->beginChangeset();
-
-                $this->removeLine($phpCsFile, $annotation['index']);
-
-                $phpCsFile->fixer->endChangeset();
+            if ($this->isInCode($annotation, $exceptions, $useStatements)) {
+                continue;
             }
+
+            $error = '@throw annotation `' . $annotation['fullClass'] . '` superfluous and needs to be removed';
+            $fix = $phpCsFile->addFixableError($error, $annotation['index']);
+            if (!$fix) {
+                continue;
+            }
+
+            $phpCsFile->fixer->beginChangeset();
+
+            $this->removeLine($phpCsFile, $annotation['index']);
+
+            $phpCsFile->fixer->endChangeset();
         }
 
         foreach ($exceptions as $exception) {
-            if (!$this->isInAnnotation($exception, $annotations)) {
-                $error = 'Doc Block @throw annotation `' . $exception['fullClass'] . '` missing';
-                $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex);
-                if (!$fix) {
-                    continue;
-                }
+            $exception = $this->normalizeClassName($exception, $useStatements);
 
-                $phpCsFile->fixer->beginChangeset();
+            if ($this->isInAnnotation($exception, $annotations)) {
+                continue;
+            }
 
-                $this->addAnnotationLine($phpCsFile, $exception, $docBlockEndIndex);
+            $error = 'Doc Block @throw annotation `' . $exception['fullClass'] . '` missing';
+            $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex);
+            if (!$fix) {
+                continue;
+            }
 
-                $phpCsFile->fixer->endChangeset();
+            $phpCsFile->fixer->beginChangeset();
+
+            $this->addAnnotationLine($phpCsFile, $exception, $docBlockEndIndex);
+
+            $phpCsFile->fixer->endChangeset();
+        }
+    }
+
+    /**
+     * @param array $exception
+     * @param array $useStatements
+     *
+     * @return array Exception
+     */
+    protected function normalizeClassName(array $exception, array $useStatements)
+    {
+        foreach ($useStatements as $useStatement) {
+            if ($useStatement['alias'] === $exception['class']) {
+                $exception['class'] = $useStatement['shortName'];
+                $exception['fullClass'] = $useStatement['fullName'];
             }
         }
+
+        return $exception;
     }
 
     /**
      * @param array $annotation
      * @param array $exceptions
+     * @param array $useStatements
      *
      * @return bool
      */
-    protected function isInCode(array $annotation, array $exceptions)
+    protected function isInCode(array $annotation, array $exceptions, array $useStatements)
     {
         foreach ($exceptions as $exception) {
+            $exception = $this->normalizeClassName($exception, $useStatements);
+
             if ($annotation['class'] === $exception['class']) {
                 return true;
             }
@@ -345,7 +378,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
         $throwAnnotationIndex = $this->getThrowAnnotationIndex($tokens, $docBlockStartIndex);
         if (!$throwAnnotationIndex) {
-            throw new \Exception('Should not happen');
+            throw new Exception('Should not happen');
         }
 
         $phpCsFile->fixer->beginChangeset();

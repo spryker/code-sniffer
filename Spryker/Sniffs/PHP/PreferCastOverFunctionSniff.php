@@ -5,6 +5,7 @@
 
 namespace Spryker\Sniffs\PHP;
 
+use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -34,7 +35,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];
 
@@ -79,7 +80,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixContent(\PHP_CodeSniffer_File $phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex)
+    protected function fixContent(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex)
     {
         $needsBrackets = $this->needsBrackets($phpcsFile, $openingBraceIndex, $closingBraceIndex);
 

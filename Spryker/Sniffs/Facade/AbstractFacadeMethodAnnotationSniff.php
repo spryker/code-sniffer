@@ -2,6 +2,7 @@
 
 namespace Spryker\Sniffs\Facade;
 
+use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
 
 abstract class AbstractFacadeMethodAnnotationSniff extends AbstractMethodAnnotationSniff
@@ -12,7 +13,7 @@ abstract class AbstractFacadeMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return bool
      */
-    protected function isFacade(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isFacade(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $bundleName = $this->getBundle($phpCsFile);

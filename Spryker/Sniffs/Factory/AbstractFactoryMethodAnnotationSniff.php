@@ -2,6 +2,7 @@
 
 namespace Spryker\Sniffs\Factory;
 
+use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
 
 abstract class AbstractFactoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
@@ -12,7 +13,7 @@ abstract class AbstractFactoryMethodAnnotationSniff extends AbstractMethodAnnota
      *
      * @return bool
      */
-    protected function isFactory(\PHP_CodeSniffer_File $phpCsFile)
+    protected function isFactory(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
 

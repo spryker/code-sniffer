@@ -2,6 +2,8 @@
 
 namespace Spryker\Sniffs\Factory;
 
+use PHP_CodeSniffer_File;
+
 /**
  * Spryker Factory classes should have a getQueryContainer() annotation.
  */
@@ -13,7 +15,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if (!$this->isFactory($phpCsFile)) {
             return;
@@ -38,7 +40,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return bool
      */
-    private function hasQueryContainerAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    private function hasQueryContainerAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -63,7 +65,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return void
      */
-    private function addQueryContainerAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, $queryContainerName)
+    private function addQueryContainerAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer, $queryContainerName)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -96,7 +98,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return array
      */
-    private function getQueryContainerClassName(\PHP_CodeSniffer_File $phpCsFile)
+    private function getQueryContainerClassName(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

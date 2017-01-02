@@ -251,12 +251,6 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
             }
 
             if ($tokens[$nextToken]['code'] === T_DOUBLE_ARROW) {
-                if ($singleUsed === true) {
-                    $error = 'Key specified for array entry; first entry has no key';
-                    $phpcsFile->addError($error, $nextToken, 'KeySpecified');
-                    return;
-                }
-
                 $currentEntry['arrow'] = $nextToken;
                 $keyUsed = true;
 

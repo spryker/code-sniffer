@@ -2,6 +2,7 @@
 
 namespace Spryker\Sniffs\Plugin;
 
+use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
 
 abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotationSniff
@@ -13,7 +14,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return bool
      */
-    protected function isPlugin(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isPlugin(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if ($this->isFileInPluginDirectory($phpCsFile) && $this->extendsAbstractPlugin($phpCsFile, $stackPointer)) {
             return true;
@@ -27,7 +28,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return int
      */
-    private function isFileInPluginDirectory(\PHP_CodeSniffer_File $phpCsFile)
+    private function isFileInPluginDirectory(PHP_CodeSniffer_File $phpCsFile)
     {
         return preg_match('/Communication\/Plugin/', $phpCsFile->getFilename());
     }
@@ -38,7 +39,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return bool
      */
-    private function extendsAbstractPlugin(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    private function extendsAbstractPlugin(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
 
@@ -55,7 +56,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return int
      */
-    protected function getStackPointerOfClassBegin(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getStackPointerOfClassBegin(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $abstractPosition = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer);
         if ($abstractPosition) {

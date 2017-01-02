@@ -8,6 +8,7 @@
 
 namespace Spryker\Sniffs\Classes;
 
+use PHP_CodeSniffer_File;
 use PHP_CodeSniffer_Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
@@ -28,7 +29,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -72,7 +73,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function getLastNonDefaultArgumentIndex(\PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
+    protected function getLastNonDefaultArgumentIndex(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -97,7 +98,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isEllipsis(\PHP_CodeSniffer_File $phpcsFile, $variableIndex)
+    protected function isEllipsis(PHP_CodeSniffer_File $phpcsFile, $variableIndex)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -115,7 +116,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function removeDefaultArgument(\PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
+    protected function removeDefaultArgument(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
     {
         $this->clearWhitespacesBeforeIndex($phpcsFile, $startIndex);
         for ($i = $startIndex; $i <= $endIndex; ++$i) {
@@ -129,7 +130,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isTypehintedNullableVariable(\PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function isTypehintedNullableVariable(PHP_CodeSniffer_File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -162,7 +163,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function clearWhitespacesBeforeIndex(\PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function clearWhitespacesBeforeIndex(PHP_CodeSniffer_File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 

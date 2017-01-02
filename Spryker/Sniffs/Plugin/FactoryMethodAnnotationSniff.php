@@ -2,6 +2,8 @@
 
 namespace Spryker\Sniffs\Plugin;
 
+use PHP_CodeSniffer_File;
+
 /**
  * Spryker Plugin classes should have a getFactory() annotation.
  */
@@ -11,7 +13,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     /**
      * @inheritdoc
      */
-    public function process(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         if (!$this->isPlugin($phpCsFile, $stackPointer)) {
             return;
@@ -33,7 +35,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return bool
      */
-    private function hasFactoryAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    private function hasFactoryAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -58,7 +60,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return void
      */
-    private function addFactoryAnnotation(\PHP_CodeSniffer_File $phpCsFile, $stackPointer, $factoryName)
+    private function addFactoryAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer, $factoryName)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -91,7 +93,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return array
      */
-    private function getFactoryClassName(\PHP_CodeSniffer_File $phpCsFile)
+    private function getFactoryClassName(PHP_CodeSniffer_File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

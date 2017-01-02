@@ -3,11 +3,12 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer_File;
+use PHP_CodeSniffer_Sniff;
 
 /**
  * All doc blocks must use FQCN for class names.
  */
-class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
+class FullyQualifiedClassNameInDocBlockSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**
@@ -29,7 +30,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
             T_TRAIT,
             T_FUNCTION,
             T_VARIABLE,
-            T_COMMENT
+            T_COMMENT,
         ];
     }
 
@@ -182,23 +183,19 @@ class FullyQualifiedClassNameInDocBlockSniff implements \PHP_CodeSniffer_Sniff
             if (strpos($className, '\\') !== false) {
                 continue;
             }
-
             $arrayOfObject = false;
             if (substr($className, -2) === '[]') {
                 $arrayOfObject = true;
                 $className = substr($className, 0, -2);
             }
-
             if (in_array($className, static::$whitelistedTypes)) {
                 continue;
             }
-
             $useStatement = $this->findUseStatementForClassName($phpCsFile, $className);
             if (!$useStatement) {
                 $phpCsFile->addError('Invalid class name "' . $className . '"', $classNameIndex);
                 continue;
             }
-
             $classNames[$key] = $useStatement . ($arrayOfObject ? '[]' : '');
             $result[$className . ($arrayOfObject ? '[]' : '')] = $classNames[$key];
         }
