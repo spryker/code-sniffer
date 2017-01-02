@@ -30,7 +30,7 @@ class RemoveFunctionAliasSniff implements \PHP_CodeSniffer_Sniff
         'fputs' => 'fwrite',
         'die' => 'exit',
         'chop' => 'rtrim',
-        'print' => 'echo'
+        'print' => 'echo',
     ];
 
     /**

@@ -36,7 +36,7 @@ class SprykerStandardTest extends PHPUnit_Framework_TestCase
             $tests[] = [
                 $file,
                 $standard,
-                $expectPass
+                $expectPass,
             ];
         }
 
