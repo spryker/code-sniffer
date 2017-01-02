@@ -106,8 +106,6 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
      */
     protected function checkExtends(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
-
         $extendsIndex = $phpcsFile->findNext([T_EXTENDS], $stackPtr + 1);
         if (!$extendsIndex) {
             return;
@@ -160,7 +158,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
         $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
         if ($partial) {
             // For now just warn about partial FQCN
-            //$phpcsFile->addWarning($error, $stackPtr, 'Interface');
+            $phpcsFile->addWarning($error, $stackPtr, 'Interface');
             return;
         }
 
