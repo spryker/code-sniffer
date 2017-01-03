@@ -39,66 +39,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements PHP_CodeSniffer_Sniff
      */
     public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
     {
-        $tokens = $phpCsFile->getTokens();
-
-        if ($tokens[$stackPointer]['code'] === T_COMMENT) {
-            $this->processInlineComments($phpCsFile, $stackPointer);
-            return;
-        }
-
-        $this->processDocBlockComments($phpCsFile, $stackPointer);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
-    protected function processInlineComments(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
-    {
-        $tokens = $phpCsFile->getTokens();
-
-        if (!preg_match('|^\/\* @var (.+) \$.+\*\/$|', $tokens[$stackPointer]['content'], $matches)) {
-            return;
-        }
-
-        $classes = $matches[1];
-        $classNames = explode('|', $classes);
-
-        $classNameMap = $this->generateClassNameMap($phpCsFile, $stackPointer, $classNames);
-        if (!$classNameMap) {
-            return;
-        }
-
-        $message = [];
-        foreach ($classNameMap as $className => $useStatement) {
-            $message[] = $className . ' => ' . $useStatement;
-        }
-
-        $fix = $phpCsFile->addFixableError(implode(', ', $message), $stackPointer);
-        if (!$fix) {
-            return;
-        }
-
-        $classes = implode('|', $classNames);
-        $content = preg_replace('|@var (.+) \$|', '@var ' . $classes . ' $', $tokens[$stackPointer]['content']);
-
-        $phpCsFile->fixer->beginChangeset();
-
-        $phpCsFile->fixer->replaceToken($stackPointer, $content);
-
-        $phpCsFile->fixer->endChangeset();
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
-    protected function processDocBlockComments(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
-    {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
 
         if (!$docBlockEndIndex) {
@@ -179,6 +119,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements PHP_CodeSniffer_Sniff
     protected function generateClassNameMap(PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array &$classNames)
     {
         $result = [];
+
         foreach ($classNames as $key => $className) {
             if (strpos($className, '\\') !== false) {
                 continue;

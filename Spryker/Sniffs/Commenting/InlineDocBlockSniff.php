@@ -51,19 +51,53 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         for ($i = $startIndex + 1; $i < $endIndex; $i++) {
-            if ($tokens[$i]['code'] !== T_DOC_COMMENT_OPEN_TAG) {
+            if ($tokens[$i]['code'] !== T_COMMENT) {
                 continue;
             }
 
-            $fix = $phpCsFile->addFixableError('Inline Doc Block Comment should be using /* ... */', $i);
+            if (!preg_match('|^\/\*\s*@\w+ (.+)|', $tokens[$i]['content'])) {
+                continue;
+            }
+
+            $fix = $phpCsFile->addFixableError('Inline Doc Block comment should be using `/** ... */`', $i);
             if ($fix) {
                 $phpCsFile->fixer->beginChangeset();
 
-                $phpCsFile->fixer->replaceToken($i, '/*');
+                $comment = $tokens[$i]['content'];
+                $comment = str_replace('/*', '/**', $comment);
+
+                $phpCsFile->fixer->replaceToken($i, $comment);
 
                 $phpCsFile->fixer->endChangeset();
             }
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param int $index
+     *
+     * @return void
+     */
+    protected function fixDocCommentCloseTags(PHP_CodeSniffer_File $phpCsFile, $index)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $content = $tokens[$index]['content'];
+        if ($content === '*/') {
+            return;
+        }
+
+        $fix = $phpCsFile->addFixableError('Inline Doc Block comment end tag should be `*/`, got `' . $content . '`', $index);
+        if (!$fix) {
+            return;
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+
+        $phpCsFile->fixer->replaceToken($index, '*/');
+
+        $phpCsFile->fixer->endChangeset();
     }
 
     /**
@@ -78,77 +112,94 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         for ($i = $startIndex + 1; $i < $endIndex; $i++) {
-            if ($tokens[$i]['type'] !== 'T_COMMENT') {
+            if ($tokens[$i]['code'] !== T_DOC_COMMENT_OPEN_TAG) {
                 continue;
             }
 
-            $comment = $tokens[$i]['content'];
-            $errors = $this->findErrors($phpCsFile, $i, $comment);
+            $commentEndTag = $tokens[$i]['comment_closer'];
+            $this->fixDocCommentCloseTags($phpCsFile, $commentEndTag);
+
+            $typeTag = $this->_findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_TAG);
+            $contentTag = $this->_findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_STRING);
+
+            if ($typeTag === null || $contentTag === null) {
+                $phpCsFile->addError('Invalid Inline Doc Block', $startIndex);
+                return;
+            }
+
+            if ($tokens[$typeTag]['content'] !== '@var') {
+                $phpCsFile->addError('Invalid Inline Doc Block tag type ' . $tokens[$typeTag]['content'] . ', expected @var', $startIndex);
+                return;
+            }
+
+            $errors = $this->findErrors($phpCsFile, $contentTag);
 
             if (!$errors) {
                 continue;
             }
 
-            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block: ' . implode(', ', $errors), $i);
+            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block content: ' . implode(', ', $errors), $i);
             if (!$fix) {
                 continue;
             }
 
             $phpCsFile->fixer->beginChangeset();
 
-            if (isset($errors['space-before-tag'])) {
-                $comment = preg_replace('|^/\*(\s*)@var|', '/* @var', $comment);
-            }
+            $comment = $tokens[$contentTag]['content'];
+
             if (isset($errors['space-before-end']) || isset($errors['end'])) {
-                $comment = preg_replace('|\b\s*[\*]+\/$|i', ' */', $comment);
-            }
-            if (isset($errors['space-between-type-and-var'])) {
-                $comment = preg_replace('|@var\s+(.+?)\s+|', '@var \1 ', $comment);
-            }
-            if (isset($errors['order'])) {
-                $comment = preg_replace('|@var\s+(.+?)\s+(.+?)\s+|', '@var \2 \1 ', $comment);
+                $comment .= ' ';
             }
 
-            $phpCsFile->fixer->replaceToken($i, $comment);
+            if (isset($errors['order'])) {
+                $comment = preg_replace('|^(.+?)\s+(.+?)\s*$|', '\2 \1 ', $comment);
+            }
+
+            $phpCsFile->fixer->replaceToken($contentTag, $comment);
 
             $phpCsFile->fixer->endChangeset();
         }
     }
 
     /**
+     * @param array $tokens
+     * @param int $from
+     * @param int $to
+     * @param int $tagType
+     * @return int|null
+     */
+    protected function _findTagIndex(array $tokens, $from, $to, $tagType) {
+        for ($i = $from + 1; $i < $to; $i++) {
+            if ($tokens[$i]['code'] === $tagType) {
+                return $i;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     * @param int $i
-     * @param string $comment
+     * @param int $contentIndex
      *
      * @return array
      */
-    protected function findErrors(PHP_CodeSniffer_File $phpCsFile, $i, $comment)
+    protected function findErrors(PHP_CodeSniffer_File $phpCsFile, $contentIndex)
     {
-        if (!preg_match('|^/\*(\s*)@var|', $comment, $matches)) {
-            return [];
-        }
+        $tokens = $phpCsFile->getTokens();
 
-        preg_match('|^\/\*\s*@var\s+(.+?)(\s+)(.+?)\s*\*\/$|', $comment, $contentMatches);
+        $comment = $tokens[$contentIndex]['content'];
+
+        preg_match('|^(.+?)(\s+)(.+?)\s*$|', $comment, $contentMatches);
         if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
-            $phpCsFile->addError('Invalid Inline Doc Block content', $i);
+            $phpCsFile->addError('Invalid Inline Doc Block content', $contentIndex);
             return [];
         }
 
         $errors = [];
-        if ($matches[1] !== ' ') {
-            $errors['space-before-tag'] = 'Expected single space before ´@var´, got ´' . $matches[1] . '´';
-        }
 
-        if (!preg_match('|([a-z0-9])+\s*\*\/$|i', $comment)) {
-            $errors['end'] = 'Expected ´ */´ to terminate comment';
-        }
-
-        if (!preg_match('|([a-z0-9]) [\*]+\/$|i', $comment)) {
+        if (!preg_match('|([a-z0-9]) $|i', $comment)) {
             $errors['space-before-end'] = 'Expected single space before ´*/´';
-        }
-
-        if ($contentMatches[2] !== ' ') {
-            $errors['space-between-type-and-var'] = 'Expected a single space between type and var, got `' . $contentMatches[2] . '`';
         }
 
         if (!preg_match('|^\$[a-z0-9]+$|i', $contentMatches[3])) {
