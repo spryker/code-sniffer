@@ -128,7 +128,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
             }
 
             if ($tokens[$typeTag]['content'] !== '@var') {
-                $phpCsFile->addError('Invalid Inline Doc Block tag type ' . $tokens[$typeTag]['content'] . ', expected @var', $startIndex);
+                // We ignore those
                 return;
             }
 
