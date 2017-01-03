@@ -166,9 +166,11 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      * @param int $from
      * @param int $to
      * @param int $tagType
+     *
      * @return int|null
      */
-    protected function _findTagIndex(array $tokens, $from, $to, $tagType) {
+    protected function _findTagIndex(array $tokens, $from, $to, $tagType)
+    {
         for ($i = $from + 1; $i < $to; $i++) {
             if ($tokens[$i]['code'] === $tagType) {
                 return $i;
