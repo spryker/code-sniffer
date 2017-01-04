@@ -117,7 +117,13 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
             }
 
             $commentEndTag = $tokens[$i]['comment_closer'];
+
             $this->fixDocCommentCloseTags($phpCsFile, $commentEndTag);
+
+            // We skip for multiline for now
+            if ($tokens[$i]['line'] !== $tokens[$commentEndTag]['line']) {
+                continue;
+            }
 
             $typeTag = $this->_findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_TAG);
             $contentTag = $this->_findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_STRING);
