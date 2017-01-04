@@ -22,7 +22,7 @@ class SprykerNamespaceSniff implements PHP_CodeSniffer_Sniff
      */
     public function register()
     {
-        return [T_CLASS];
+        return [T_CLASS, T_INTERFACE];
     }
 
     /**

@@ -75,7 +75,7 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
             $next = $phpcsFile->findNext(T_USE, $next + 1);
         }
 
-     // Prevent multiple uses in the same file from entering
+        // Prevent multiple uses in the same file from entering
         $this->_processed[$phpcsFile->getFilename()] = true;
 
         foreach ($this->_uses as $scope => $used) {
@@ -130,7 +130,7 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
      */
     protected function _checkUseToken(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
-     // If the use token is for a closure we want to ignore it.
+        // If the use token is for a closure we want to ignore it.
         $isClosure = $this->_isClosure($phpcsFile, $stackPtr);
         if ($isClosure) {
             return;
@@ -146,8 +146,8 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
             $content .= $tokens[$i]['content'];
         }
 
-     // Check for class scoping on use. Traits should be
-     // ordered independently.
+        // Check for class scoping on use. Traits should be
+        // ordered independently.
         $scope = 0;
         if (!empty($tokens[$i]['conditions'])) {
             $scope = key($tokens[$i]['conditions']);
