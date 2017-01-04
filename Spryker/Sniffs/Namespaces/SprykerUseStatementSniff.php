@@ -22,16 +22,6 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     /**
      * @var array
      */
-    protected static $whiteListOfNamespaces = [
-        'Pyz',
-        'Orm',
-        'Generated',
-        'Spryker',
-    ];
-
-    /**
-     * @var array
-     */
     protected $existingStatements;
 
     /**
@@ -503,19 +493,6 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
         }
 
         return false;
-    }
-
-    /**
-     * @param string $extractedUseStatement
-     *
-     * @return bool
-     */
-    protected function isValidNamespace($extractedUseStatement)
-    {
-        $firstSeparator = mb_strpos($extractedUseStatement, '\\');
-        $namespace = mb_substr($extractedUseStatement, 0, $firstSeparator);
-
-        return in_array($namespace, static::$whiteListOfNamespaces);
     }
 
     /**
