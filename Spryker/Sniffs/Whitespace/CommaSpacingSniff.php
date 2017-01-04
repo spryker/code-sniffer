@@ -40,7 +40,7 @@ class CommaSpacingSniff implements Sniff
             }
 
             $error = 'Space before comma, expected none, though';
-            $fix = $phpcsFile->addFixableError($error, $previous);
+            $fix = $phpcsFile->addFixableError($error, $next, 'InvalidCommaBefore');
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($previous + 1, '');
             }
@@ -61,7 +61,7 @@ class CommaSpacingSniff implements Sniff
         // Closing inline array should not have a comma before
         if ($tokens[$next]['code'] === T_CLOSE_SHORT_ARRAY && $tokens[$next]['line'] === $tokens[$stackPtr]['line']) {
             $error = 'Invalid comma before closing inline array end `]`.';
-            $fix = $phpcsFile->addFixableError($error, $next);
+            $fix = $phpcsFile->addFixableError($error, $next, 'InvalidCommaInline');
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr, '');
             }
@@ -80,7 +80,7 @@ class CommaSpacingSniff implements Sniff
             }
 
             $error = 'Missing space after comma';
-            $fix = $phpcsFile->addFixableError($error, $next);
+            $fix = $phpcsFile->addFixableError($error, $next, 'MissingCommaAfter');
             if ($fix) {
                 $phpcsFile->fixer->addContent($stackPtr, ' ');
             }
