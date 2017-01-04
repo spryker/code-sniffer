@@ -52,7 +52,8 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function extractNamespace($fullClassName) {
+    protected function extractNamespace($fullClassName)
+    {
         $namespaces = explode('\\', $fullClassName, 2);
 
         return $namespaces[0];
