@@ -5,13 +5,13 @@
 
 namespace Spryker\Sniffs\PHP;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Always use PHP_SAPI constant instead of php_sapi_name() function.
  */
-class PhpSapiConstantSniff implements PHP_CodeSniffer_Sniff
+class PhpSapiConstantSniff implements Sniff
 {
 
     const PHP_SAPI = 'PHP_SAPI';
@@ -27,7 +27,7 @@ class PhpSapiConstantSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

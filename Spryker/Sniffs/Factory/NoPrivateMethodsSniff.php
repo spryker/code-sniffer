@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Factory;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -27,7 +27,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isSprykerNamespace($phpCsFile)) {
             return;
@@ -43,11 +43,11 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return bool
      */
-    protected function isSprykerNamespace(PHP_CodeSniffer_File $phpCsFile)
+    protected function isSprykerNamespace(File $phpCsFile)
     {
         $namespace = $this->getNamespace($phpCsFile);
 
@@ -55,12 +55,12 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function isMethodPrivate(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isMethodPrivate(File $phpCsFile, $stackPointer)
     {
         $privateTokenPointer = $phpCsFile->findFirstOnLine(T_PRIVATE, $stackPointer);
         if ($privateTokenPointer) {
@@ -71,12 +71,12 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return string
      */
-    protected function getMethodName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getMethodName(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
         $methodNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
@@ -86,11 +86,11 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return bool
      */
-    protected function isFactory(PHP_CodeSniffer_File $phpCsFile)
+    protected function isFactory(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
 
@@ -98,11 +98,11 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return string
      */
-    protected function getClassName(PHP_CodeSniffer_File $phpCsFile)
+    protected function getClassName(File $phpCsFile)
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -115,12 +115,12 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return string
      */
-    protected function getClassMethod(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getClassMethod(File $phpCsFile, $stackPointer)
     {
         $className = $this->getClassName($phpCsFile);
         $methodName = $this->getMethodName($phpCsFile, $stackPointer);
@@ -131,12 +131,12 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    protected function makePrivateMethodProtected(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function makePrivateMethodProtected(File $phpCsFile, $stackPointer)
     {
         $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->replaceToken($stackPointer - 2, 'protected');

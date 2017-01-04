@@ -5,14 +5,14 @@
 
 namespace Spryker\Sniffs\Whitespace;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * There should always be newlines around functions/methods.
  */
-class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
+class FunctionSpacingSniff implements Sniff
 {
 
     /**
@@ -26,7 +26,7 @@ class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -40,7 +40,7 @@ class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
             $openingParenthesisIndex = $phpCsFile->findNext(T_OPEN_PARENTHESIS, $stackPointer + 1);
             $closingParenthesisIndex = $tokens[$openingParenthesisIndex]['parenthesis_closer'];
 
-            $semicolonIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $closingParenthesisIndex + 1, null, true);
+            $semicolonIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $closingParenthesisIndex + 1, null, true);
 
             $nextContentIndex = $phpCsFile->findNext(T_WHITESPACE, $semicolonIndex + 1, null, true);
 
@@ -62,7 +62,7 @@ class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
         $closingBraceIndex = $tokens[$openingBraceIndex]['scope_closer'];
 
         // Ignore closures
-        $nextIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $closingBraceIndex + 1, null, true);
+        $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $closingBraceIndex + 1, null, true);
         if (in_array($tokens[$nextIndex]['content'], [';', ',', ')'])) {
             return;
         }

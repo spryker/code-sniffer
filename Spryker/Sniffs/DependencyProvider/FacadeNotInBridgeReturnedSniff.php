@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\DependencyProvider;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -26,7 +26,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isProvider($phpCsFile) || !$this->isCoreProvider($phpCsFile)) {
             return;
@@ -41,11 +41,11 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return bool
      */
-    protected function isProvider(PHP_CodeSniffer_File $phpCsFile)
+    protected function isProvider(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $bundleName = $this->getBundle($phpCsFile);
@@ -58,11 +58,11 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return bool
      */
-    protected function isCoreProvider(PHP_CodeSniffer_File $phpCsFile)
+    protected function isCoreProvider(File $phpCsFile)
     {
         $namespace = $this->getNamespace($phpCsFile);
 
@@ -70,12 +70,12 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    private function isFacadeNotInBridgeReturned(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    private function isFacadeNotInBridgeReturned(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
         $returnPointer = $phpCsFile->findNext(T_RETURN, $stackPointer);

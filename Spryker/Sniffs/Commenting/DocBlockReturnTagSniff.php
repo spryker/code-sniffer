@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer_Standards_AbstractScopeSniff;
 
 /**
@@ -26,13 +26,13 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
     /**
      * Processes the function tokens within the class.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file where this token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
      * @param int $stackPtr The position where the token was found.
      * @param int $currScope The current scope opener token.
      *
      * @return void
      */
-    protected function processTokenWithinScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope)
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
     {
         $tokens = $phpcsFile->getTokens();
 

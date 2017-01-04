@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
@@ -45,12 +45,12 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function isSprykerNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isSprykerNamespace(File $phpCsFile, $stackPointer)
     {
         $firstNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $stackPointer);
         if ($firstNamespaceTokenPosition) {
@@ -73,12 +73,12 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function existsFileDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function existsFileDocBlock(File $phpCsFile, $stackPointer)
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
 
@@ -86,12 +86,12 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    protected function addFileDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function addFileDocBlock(File $phpCsFile, $stackPointer)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -111,12 +111,12 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    protected function clearFileDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function clearFileDocBlock(File $phpCsFile, $stackPointer)
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_OPEN_TAG, $stackPointer) + 1;
 

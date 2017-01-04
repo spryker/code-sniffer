@@ -15,14 +15,14 @@
 
 namespace Spryker\Sniffs\Whitespace;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Makes sure there are spaces between the concatenation operator (.) and
  * the strings being concatenated.
  */
-class ConcatenationSpacingSniff implements PHP_CodeSniffer_Sniff
+class ConcatenationSpacingSniff implements Sniff
 {
 
     /**
@@ -36,7 +36,7 @@ class ConcatenationSpacingSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -80,12 +80,12 @@ class ConcatenationSpacingSniff implements PHP_CodeSniffer_Sniff
     /**
      * Adds a single space on the right sight.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return void
      */
-    protected function addSpace(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function addSpace(File $phpcsFile, $index)
     {
         if ($phpcsFile->fixer->enabled !== true) {
             return;

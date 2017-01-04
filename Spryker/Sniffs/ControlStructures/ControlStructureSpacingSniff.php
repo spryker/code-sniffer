@@ -2,13 +2,13 @@
 
 namespace Spryker\Sniffs\ControlStructures;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Checks that control structures have the correct spacing around them.
  */
-class ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
+class ControlStructureSpacingSniff implements Sniff
 {
 
     /**
@@ -33,7 +33,7 @@ class ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $this->checkTryToken($phpcsFile, $stackPtr);
         $this->checkCatchToken($phpcsFile, $stackPtr);
@@ -41,12 +41,12 @@ class ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkTryToken(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkTryToken(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -58,12 +58,12 @@ class ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkCatchToken(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkCatchToken(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -76,13 +76,13 @@ class ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      * @param string $tokenName
      *
      * @return void
      */
-    protected function expectSingleSpaceBefore(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokenName)
+    protected function expectSingleSpaceBefore(File $phpcsFile, $stackPtr, $tokenName)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -107,13 +107,13 @@ class ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      * @param string $tokenName
      *
      * @return void
      */
-    protected function expectSingleSpaceAfter(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokenName)
+    protected function expectSingleSpaceAfter(File $phpcsFile, $stackPtr, $tokenName)
     {
         $tokens = $phpcsFile->getTokens();
 

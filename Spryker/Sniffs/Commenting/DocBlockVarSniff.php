@@ -2,8 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -28,11 +28,11 @@ class DocBlockVarSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
-        $previousIndex = $phpCsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPointer - 1, null, true);
+        $previousIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $stackPointer - 1, null, true);
         if (!$this->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE], $tokens[$previousIndex])) {
             return;
         }
@@ -117,21 +117,21 @@ class DocBlockVarSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return string|null
      */
-    protected function findDefaultValueType(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function findDefaultValueType(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
-        $nextIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPointer + 1, null, true);
+        $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $stackPointer + 1, null, true);
         if (!$nextIndex || !$this->isGivenKind(T_EQUAL, $tokens[$nextIndex])) {
             return null;
         }
 
-        $nextIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $nextIndex + 1, null, true);
+        $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $nextIndex + 1, null, true);
         if (!$nextIndex) {
             return null;
         }
@@ -170,14 +170,14 @@ class DocBlockVarSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockEndIndex
      * @param int $docBlockStartIndex
      * @param string|null $defaultValueType
      *
      * @return void
      */
-    protected function handleMissingVar(PHP_CodeSniffer_File $phpCsFile, $docBlockEndIndex, $docBlockStartIndex, $defaultValueType)
+    protected function handleMissingVar(File $phpCsFile, $docBlockEndIndex, $docBlockStartIndex, $defaultValueType)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -193,7 +193,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             return;
         }
 
-        $index = $phpCsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
+        $index = $phpCsFile->findPrevious(Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
         if (!$index) {
             $index = $docBlockStartIndex;
         }
@@ -205,13 +205,13 @@ class DocBlockVarSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $varIndex
      * @param string|null $defaultValueType
      *
      * @return void
      */
-    protected function handleMissingVarType(PHP_CodeSniffer_File $phpCsFile, $varIndex, $defaultValueType)
+    protected function handleMissingVarType(File $phpCsFile, $varIndex, $defaultValueType)
     {
         $error = 'Doc Block type for annotation @var for variable missing';
         if ($defaultValueType === null) {

@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Factory;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 
 /**
  * Spryker Factory classes should have a getConfig() annotation.
@@ -13,7 +13,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isFactory($phpCsFile)) {
             return;
@@ -31,12 +31,12 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function hasConfigAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasConfigAnnotation(File $phpCsFile, $stackPointer)
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -55,13 +55,13 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      * @param string $configName
      *
      * @return void
      */
-    protected function addConfigAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer, $configName)
+    protected function addConfigAnnotation(File $phpCsFile, $stackPointer, $configName)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -88,11 +88,11 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return array
      */
-    protected function getConfigClassName(PHP_CodeSniffer_File $phpCsFile)
+    protected function getConfigClassName(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

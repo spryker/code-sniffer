@@ -11,14 +11,13 @@
  */
 namespace Spryker\Sniffs\Classes;
 
-use PEAR_Sniffs_Classes_ClassDeclarationSniff;
-use PHP_CodeSniffer_Exception;
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Standards\PEAR\Sniffs\Classes\ClassDeclarationSniff as PearClassDeclarationSniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 
 if (class_exists('PEAR_Sniffs_Classes_ClassDeclarationSniff', true) === false) {
     $error = 'Class PEAR_Sniffs_Classes_ClassDeclarationSniff not found';
-    throw new PHP_CodeSniffer_Exception($error);
+    throw new \Exception($error);
 }
 
 /**
@@ -31,14 +30,16 @@ if (class_exists('PEAR_Sniffs_Classes_ClassDeclarationSniff', true) === false) {
  * @license https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @version Release: @package_version@
  * @link http://pear.php.net/package/PHP_CodeSniffer
+ *
+ * //FIXME
  */
-class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
+class ClassDeclarationSniff extends PearClassDeclarationSniff
 {
 
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         // We want all the errors from the PEAR standard, plus some of our own.
         parent::process($phpcsFile, $stackPtr);
@@ -56,13 +57,13 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
     /**
      * Processes the opening section of a class declaration.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token
      *    in the stack passed in $tokens.
      *
      * @return void
      */
-    public function processOpen(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function processOpen(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         $stackPtrType = strtolower($tokens[$stackPtr]['content']);
@@ -213,7 +214,7 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
         $implements = $phpcsFile->findNext($keywordTokenType, ($stackPtr + 1), $openingBrace);
         $multiLineImplements = false;
         if ($implements !== false) {
-            $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($openingBrace - 1), $implements, true);
+            $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($openingBrace - 1), $implements, true);
             if ($tokens[$prev]['line'] !== $tokens[$implements]['line']) {
                 $multiLineImplements = true;
             }
@@ -392,13 +393,13 @@ class ClassDeclarationSniff extends PEAR_Sniffs_Classes_ClassDeclarationSniff
     /**
      * Processes the closing section of a class declaration.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token
      *    in the stack passed in $tokens.
      *
      * @return void
      */
-    public function processClose(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function processClose(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

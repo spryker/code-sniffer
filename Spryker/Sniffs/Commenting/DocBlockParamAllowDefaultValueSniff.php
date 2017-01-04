@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\SignatureTrait;
@@ -33,7 +33,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 

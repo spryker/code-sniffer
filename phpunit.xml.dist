@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="true"
-         colors="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         mapTestClassNameToCoveredClassName="false"
-         strict="false"
-         verbose="false"
-         bootstrap="./Spryker/tests/bootstrap.php">
+<phpunit>
     <testsuites>
-        <testsuite name="phpcs">
-            <file>./Spryker/tests/SprykerStandardTest.php</file>
+        <testsuite name="Spryker CodeSniffer Test Suite">
+            <file>./vendor/squizlabs/php_codesniffer/tests/AllTests.php</file>
         </testsuite>
     </testsuites>
+
+    <!-- Prevent coverage reports from looking in tests, vendors, config folders -->
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./Spryker/Sniffs</directory>
+        </whitelist>
+    </filter>
 </phpunit>

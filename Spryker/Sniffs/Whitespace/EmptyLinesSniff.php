@@ -1,7 +1,7 @@
 <?php
 namespace Spryker\Sniffs\WhiteSpace;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -35,18 +35,18 @@ class EmptyLinesSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $this->assertMaximumOneEmptyLineBetweenContent($phpcsFile, $stackPtr);
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function assertMaximumOneEmptyLineBetweenContent(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function assertMaximumOneEmptyLineBetweenContent(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

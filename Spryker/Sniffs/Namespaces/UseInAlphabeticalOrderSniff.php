@@ -16,9 +16,9 @@
 
 namespace Spryker\Sniffs\Namespaces;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Ensures all use statements are in alphabetical order.
@@ -26,7 +26,7 @@ use PHP_CodeSniffer_Tokens;
  * @author Mark Scherer
  * @license MIT
  */
-class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
+class UseInAlphabeticalOrderSniff implements Sniff
 {
 
     /**
@@ -56,12 +56,12 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being scanned.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int $stackPtr The position of the current token in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         if (isset($this->_processed[$phpcsFile->getFilename()])) {
             return;
@@ -101,7 +101,7 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
                 $map = [];
                 foreach ($sorted as $name) {
                     $tokenIndex = array_shift($used);
-                    $tokenIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $tokenIndex + 1, null, true);
+                    $tokenIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $tokenIndex + 1, null, true);
                     $map[$tokenIndex] = $name;
                 }
 
@@ -123,12 +123,12 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
     /**
      * Check all the use tokens in a file.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file to check.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file to check.
      * @param int $stackPtr The index of the first use token.
      *
      * @return void
      */
-    protected function _checkUseToken(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function _checkUseToken(File $phpcsFile, $stackPtr)
     {
         // If the use token is for a closure we want to ignore it.
         $isClosure = $this->_isClosure($phpcsFile, $stackPtr);
@@ -139,7 +139,7 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
         $tokens = $phpcsFile->getTokens();
 
         $content = '';
-        $startIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         $endIndex = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], $startIndex + 1);
 
         for ($i = $startIndex; $i < $endIndex; $i++) {
@@ -158,12 +158,12 @@ class UseInAlphabeticalOrderSniff implements PHP_CodeSniffer_Sniff
     /**
      * Check if the current stackPtr is a use token that is for a closure.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return bool
      */
-    protected function _isClosure(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function _isClosure(File $phpcsFile, $stackPtr)
     {
         return $phpcsFile->findPrevious(
             [T_CLOSURE],

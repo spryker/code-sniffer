@@ -14,7 +14,7 @@
  */
 namespace Spryker\Sniffs\Classes;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -49,7 +49,7 @@ class ClassFileNameSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $fullPath = basename($phpcsFile->getFilename());
         $fileName = substr($fullPath, 0, strrpos($fullPath, '.'));

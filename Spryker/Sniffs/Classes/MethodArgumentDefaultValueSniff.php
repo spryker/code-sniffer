@@ -8,8 +8,8 @@
 
 namespace Spryker\Sniffs\Classes;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -29,7 +29,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -67,13 +67,13 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $startIndex
      * @param int $endIndex
      *
      * @return int|null
      */
-    protected function getLastNonDefaultArgumentIndex(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
+    protected function getLastNonDefaultArgumentIndex(File $phpcsFile, $startIndex, $endIndex)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -82,7 +82,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
             if ($this->isGivenKind(T_EQUAL, $token)) {
                 $i = $phpcsFile->findPrevious(T_VARIABLE, $i - 1);
-                $i = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $i, $startIndex - 1, true);
+                $i = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true);
                 continue;
             }
 
@@ -93,16 +93,16 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $variableIndex
      *
      * @return bool
      */
-    protected function isEllipsis(PHP_CodeSniffer_File $phpcsFile, $variableIndex)
+    protected function isEllipsis(File $phpcsFile, $variableIndex)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $variableIndex - 1, null, true);
+        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $variableIndex - 1, null, true);
         if (!defined('T_ELLIPSIS')) {
             return $tokens[$prevIndex]['content'] === '.';
         }
@@ -116,7 +116,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function removeDefaultArgument(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
+    protected function removeDefaultArgument(File $phpcsFile, $startIndex, $endIndex)
     {
         $this->clearWhitespacesBeforeIndex($phpcsFile, $startIndex);
         for ($i = $startIndex; $i <= $endIndex; ++$i) {
@@ -125,16 +125,16 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index Index of "="
      *
      * @return bool
      */
-    protected function isTypehintedNullableVariable(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function isTypehintedNullableVariable(File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $nextIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $index + 1, null, true);
+        $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $index + 1, null, true);
 
         $nextToken = $tokens[$nextIndex];
 
@@ -158,12 +158,12 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return void
      */
-    protected function clearWhitespacesBeforeIndex(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function clearWhitespacesBeforeIndex(File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 

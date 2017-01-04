@@ -6,8 +6,8 @@
 
 namespace Spryker\Sniffs\ControlStructures;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -30,13 +30,13 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
      * @param int $stackPtr The position of the current token
      *    in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         if ($tokens[$stackPtr]['code'] === T_OBJECT_OPERATOR || $tokens[$stackPtr]['code'] === T_DOUBLE_COLON) {
@@ -44,7 +44,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $openingBraceIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $openingBraceIndex = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if (!$openingBraceIndex) {
             return;
         }
@@ -63,14 +63,14 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $startIndex
      * @param int $endIndex
      * @param int &$indexEqualSign
      *
      * @return bool
      */
-    protected function isFixableInlineAssignment(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex, &$indexEqualSign)
+    protected function isFixableInlineAssignment(File $phpcsFile, $startIndex, $endIndex, &$indexEqualSign)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -79,7 +79,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             $currentToken = $tokens[$i];
 
             // We need to skip for complex assignments
-            if ($this->isGivenKind(PHP_CodeSniffer_Tokens::$booleanOperators, $tokens[$currentToken])) {
+            if ($this->isGivenKind(Tokens::$booleanOperators, $tokens[$currentToken])) {
                 $hasInlineAssignment = false;
                 break;
             }
@@ -91,7 +91,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             }
 
             // Comparison inside is also more complex
-            if ($this->isGivenKind(PHP_CodeSniffer_Tokens::$comparisonTokens, $tokens[$currentToken])) {
+            if ($this->isGivenKind(Tokens::$comparisonTokens, $tokens[$currentToken])) {
                 $hasInlineAssignment = false;
                 break;
             }
@@ -104,12 +104,12 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkMethodCalls(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkMethodCalls(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

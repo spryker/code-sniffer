@@ -5,8 +5,8 @@
 
 namespace Spryker\Sniffs\PHP;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -26,7 +26,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];
 
@@ -137,12 +137,12 @@ class NoIsNullSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return bool
      */
-    protected function leadRequiresBrackets(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function leadRequiresBrackets(File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -150,7 +150,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
         if ($this->isCast($phpcsFile, $previous)) {
             return true;
         }
-        if (in_array($tokens[$previous]['code'], PHP_CodeSniffer_Tokens::$arithmeticTokens)) {
+        if (in_array($tokens[$previous]['code'], Tokens::$arithmeticTokens)) {
             return true;
         }
 
@@ -158,23 +158,23 @@ class NoIsNullSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return bool
      */
-    protected function isCast(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function isCast(File $phpcsFile, $index)
     {
-        return in_array($index, PHP_CodeSniffer_Tokens::$castTokens);
+        return in_array($index, Tokens::$castTokens);
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return int|null
      */
-    protected function findUnnecessaryLeadingComparisonStart(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function findUnnecessaryLeadingComparisonStart(File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -192,12 +192,12 @@ class NoIsNullSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return int|null
      */
-    protected function findUnnecessaryTrailingComparisonEnd(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function findUnnecessaryTrailingComparisonEnd(File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -215,24 +215,24 @@ class NoIsNullSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return bool
      */
-    protected function hasLeadingComparison(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function hasLeadingComparison(File $phpcsFile, $stackPtr)
     {
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         return $this->isComparison($phpcsFile, $previous);
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return bool
      */
-    protected function hasTrailingComparison(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function hasTrailingComparison(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -241,16 +241,16 @@ class NoIsNullSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return bool
      */
-    protected function isComparison(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function isComparison(File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $whitelist = PHP_CodeSniffer_Tokens::$equalityTokens;
+        $whitelist = Tokens::$equalityTokens;
         if (in_array($tokens[$index]['code'], $whitelist, true)) {
             return true;
         }

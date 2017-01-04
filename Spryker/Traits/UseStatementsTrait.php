@@ -5,8 +5,8 @@
 
 namespace Spryker\Traits;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 
 trait UseStatementsTrait
 {
@@ -14,7 +14,7 @@ trait UseStatementsTrait
     /**
      * @return array
      */
-    protected function getUseStatements(PHP_CodeSniffer_File $phpcsFile)
+    protected function getUseStatements(File $phpcsFile)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -24,7 +24,7 @@ trait UseStatementsTrait
                 continue;
             }
 
-            $useStatementStartIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $index + 1, null, true);
+            $useStatementStartIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $index + 1, null, true);
 
             // Ignore function () use ($foo) {}
             if ($tokens[$useStatementStartIndex]['content'] === '(') {
@@ -32,7 +32,7 @@ trait UseStatementsTrait
             }
 
             $semicolonIndex = $phpcsFile->findNext(T_SEMICOLON, $useStatementStartIndex + 1);
-            $useStatementEndIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $semicolonIndex - 1, null, true);
+            $useStatementEndIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $semicolonIndex - 1, null, true);
 
             $statement = '';
             for ($i = $useStatementStartIndex; $i <= $useStatementEndIndex; $i++) {

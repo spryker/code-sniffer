@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -24,7 +24,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
         $startIndex = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer + 1);
@@ -40,13 +40,13 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $startIndex
      * @param int $endIndex
      *
      * @return void
      */
-    protected function fixDocCommentOpenTags(PHP_CodeSniffer_File $phpCsFile, $startIndex, $endIndex)
+    protected function fixDocCommentOpenTags(File $phpCsFile, $startIndex, $endIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -74,12 +74,12 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $index
      *
      * @return void
      */
-    protected function fixDocCommentCloseTags(PHP_CodeSniffer_File $phpCsFile, $index)
+    protected function fixDocCommentCloseTags(File $phpCsFile, $index)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -101,13 +101,13 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $startIndex
      * @param int $endIndex
      *
      * @return void
      */
-    protected function checkInlineComments(PHP_CodeSniffer_File $phpCsFile, $startIndex, $endIndex)
+    protected function checkInlineComments(File $phpCsFile, $startIndex, $endIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -187,12 +187,12 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $contentIndex
      *
      * @return array
      */
-    protected function findErrors(PHP_CodeSniffer_File $phpCsFile, $contentIndex)
+    protected function findErrors(File $phpCsFile, $contentIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
