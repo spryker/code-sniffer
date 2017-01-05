@@ -5,7 +5,7 @@
 
 namespace Spryker\Sniffs\Namespaces;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Traits\UseStatementsTrait;
 
@@ -30,7 +30,7 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         if (!$this->isSprykerNamespace($phpcsFile)) {
             return;
@@ -60,11 +60,11 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return bool
      */
-    protected function isSprykerNamespace(PHP_CodeSniffer_File $phpCsFile)
+    protected function isSprykerNamespace(File $phpCsFile)
     {
         $namespace = $this->getNamespace($phpCsFile);
 
