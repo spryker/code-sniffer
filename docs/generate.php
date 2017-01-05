@@ -3,7 +3,11 @@
 
 exec('vendor/bin/phpcs --standard=Spryker/ruleset.xml -e', $output, $ret);
 if ($ret !== 0) {
-    die('Invalid execution. Run from ROOT after composer install etc.');
+    die('Invalid execution. Run from ROOT after composer install etc as `php docs/generate.php`.');
+}
+
+foreach ($output as &$row) {
+    $row = str_replace('  ', '- ', $row);
 }
 
 $content = implode(PHP_EOL, $output);

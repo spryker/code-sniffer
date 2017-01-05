@@ -89,6 +89,8 @@ Don't forget to test your changes:
 php phpunit.phar
 ```
 
+Also run `composer docs` to generate new sniff list.
+
 ### Running own sniffs on this project
 There is a convenience script to run all sniffs for this repository:
 ```
