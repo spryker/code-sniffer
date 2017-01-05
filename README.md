@@ -7,6 +7,8 @@
 This sniffer package follows [PSR-2](http://www.php-fig.org/psr/psr-2/) and ships with a lot of additional fixers on top.
 Please see the Spryker Coding conventions for details.
 
+[List of included sniffs](/docs)
+
 ## Documentation
 https://github.com/squizlabs/PHP_CodeSniffer/wiki
 
@@ -27,8 +29,8 @@ To automatically fix fixable errors, use
 vendor/bin/console code:sniff -f
 ```
 
-`-v` is useful for more info output. 
-To run only a specific sniff, use the `-s` option. See `-h` for help.   
+`-v` is useful for more info output.
+To run only a specific sniff, use the `-s` option. See `-h` for help.
 
 ### How to use in any project
 You can also manually invoke the phpcs/phpcbf commands:
