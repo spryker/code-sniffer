@@ -61,6 +61,7 @@ class MethodSpacingSniff extends AbstractSprykerSniff
         $braceEndIndex = $tokens[$braceStartIndex]['bracket_closer'];
         $nextContentIndex = $phpcsFile->findNext(T_WHITESPACE, ($braceStartIndex + 1), null, true);
         if ($nextContentIndex === $braceEndIndex) {
+            $this->assertNoAdditionalNewlinesForEmptyBody($phpcsFile, $braceStartIndex, $braceEndIndex);
             return;
         }
 
@@ -79,6 +80,27 @@ class MethodSpacingSniff extends AbstractSprykerSniff
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'ContentBeforeClose');
             if ($fix === true) {
                 $phpcsFile->fixer->replaceToken($lastContentIndex + 1, '');
+            }
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $from
+     * @param int $to
+     *
+     * @return void
+     */
+    protected function assertNoAdditionalNewlinesForEmptyBody(PHP_CodeSniffer_File $phpcsFile, $from, $to)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $startLine = $tokens[$from]['line'];
+        $endLine = $tokens[$to]['line'];
+        if ($endLine === $startLine + 2) {
+            $error = 'There should be no extra newline in empty methods';
+            if ($phpcsFile->addFixableError($error, $from, 'ContentEmpty')) {
+                $phpcsFile->fixer->replaceToken($from + 1, '');
             }
         }
     }
