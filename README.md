@@ -94,10 +94,10 @@ Also run `composer docs` to generate new sniff list.
 ### Running own sniffs on this project
 There is a convenience script to run all sniffs for this repository:
 ```
-./phpcs.sh
+composer cs-check
 ```
 If you want to fix the fixable errors, use
 ```
-./phpcs.sh -f
+composer cs-fix
 ```
 Once everything is green you can make a PR with your changes.

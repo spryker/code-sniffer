@@ -27,6 +27,8 @@
     "phpunit/phpunit": "~5.2"
   },
   "scripts": {
-    "docs": "php docs/generate.php"
+    "docs": "php docs/generate.php",
+    "cs-check": "vendor/bin/phpcs --standard=Spryker/ruleset.xml -v --ignore=/vendor/ ./",
+    "cs-fix": "vendor/bin/phpcbf --standard=Spryker/ruleset.xml -v --ignore=/vendor/ ./"
   }
 }
