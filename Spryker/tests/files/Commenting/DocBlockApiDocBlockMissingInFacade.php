@@ -12,7 +12,6 @@ class DocBlockApiDocBlockMissingInFacade
 
     public function methodWithoutApiAnnotation()
     {
-
     }
 
 }

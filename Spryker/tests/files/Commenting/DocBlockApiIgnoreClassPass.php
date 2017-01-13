@@ -17,7 +17,6 @@ class DocBlockApiIgnoreClassPass
      */
     public function methodWithoutApiAnnotation($foo)
     {
-
     }
 
 }

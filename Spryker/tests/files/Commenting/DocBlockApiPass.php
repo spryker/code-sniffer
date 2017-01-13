@@ -23,7 +23,6 @@ class DocBlockApiPass
      */
     public function methodWithoutApiAnnotation($foo)
     {
-
     }
 
     /**
@@ -31,7 +30,6 @@ class DocBlockApiPass
      */
     protected function doSomething()
     {
-
     }
 
 }
