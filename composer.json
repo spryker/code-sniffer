@@ -25,8 +25,8 @@
         "sed -i.bak 's/<!--<severity>0<\\/severity>-->/<severity>0<\\/severity>/' Spryker/ruleset.xml",
         "rm -f Spryker/ruleset.xml.bak"
     ],
-    "cs-check": "phpcs --colors -p --extensions=php --standard=Spryker ./Spryker",
-    "cs-fix": "phpcbf --colors --extensions=php --standard=Spryker ./Spryker"
+    "cs-check": "phpcs --colors -p --extensions=php --standard=Spryker --ignore=/code-sniffer/vendor/,/tests/files/ ./",
+    "cs-fix": "phpcbf --colors --extensions=php --standard=Spryker --ignore=/code-sniffer/vendor/,/tests/files/ ./"
   },
   "autoload": {
     "psr-4": {

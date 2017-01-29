@@ -3,7 +3,7 @@
 namespace Spryker\Sniffs\Whitespace;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer_Standards_AbstractVariableSniff;
+use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -12,7 +12,7 @@ use PHP_CodeSniffer\Util\Tokens;
  * @author Mark Scherer
  * @license MIT
  */
-class MemberVarSpacingSniff extends PHP_CodeSniffer_Standards_AbstractVariableSniff
+class MemberVarSpacingSniff extends AbstractVariableSniff
 {
 
     /**

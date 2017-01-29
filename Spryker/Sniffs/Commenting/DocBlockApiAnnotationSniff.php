@@ -243,14 +243,14 @@ class DocBlockApiAnnotationSniff implements Sniff
      */
     protected function addFixableMissingApiAnnotation(File $phpCsFile, $stackPointer)
     {
-        $fix = $phpCsFile->addFixableError('@api annotation is missing', $stackPointer);
+        $fix = $phpCsFile->addFixableError('@api annotation is missing', $stackPointer, 'ApiAnnotationMissing');
 
         if ($fix) {
             $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
             $firstDocCommentTagPosition = $phpCsFile->findNext(T_DOC_COMMENT_TAG, $docCommentOpenerPosition);
 
             if (!$firstDocCommentTagPosition) {
-                $phpCsFile->addErrorOnLine('Cannot fix missing @api tag', $stackPointer);
+                $phpCsFile->addErrorOnLine('Cannot fix missing @api tag', $stackPointer, 'ApiAnnotationNotFixable');
 
                 return;
             }

@@ -11,14 +11,9 @@
  */
 namespace Spryker\Sniffs\Classes;
 
-use PHP_CodeSniffer\Standards\PEAR\Sniffs\Classes\ClassDeclarationSniff as PearClassDeclarationSniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Standards\PEAR\Sniffs\Classes\ClassDeclarationSniff as PearClassDeclarationSniff;
 use PHP_CodeSniffer\Util\Tokens;
-
-if (class_exists('PEAR_Sniffs_Classes_ClassDeclarationSniff', true) === false) {
-    $error = 'Class PEAR_Sniffs_Classes_ClassDeclarationSniff not found';
-    throw new \Exception($error);
-}
 
 /**
  * Class Declaration Test.

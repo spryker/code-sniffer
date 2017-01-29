@@ -15,7 +15,7 @@
 namespace Spryker\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer_Standards_AbstractScopeSniff;
+use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
@@ -29,7 +29,7 @@ use PHP_CodeSniffer\Util\Tokens;
  * @version Release: @package_version@
  * @link http://pear.php.net/package/PHP_CodeSniffer
  */
-class MethodDeclarationSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff
+class MethodDeclarationSniff extends AbstractScopeSniff
 {
 
     /**
@@ -133,6 +133,10 @@ class MethodDeclarationSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
 
             $phpcsFile->fixer->endChangeset();
         }
+    }
+
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    {
     }
 
 }

@@ -3,7 +3,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer_Standards_AbstractScopeSniff;
+use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
 /**
  * Verifies that a `@return` tag exists for all functions and methods and that it does not exist
@@ -12,7 +12,7 @@ use PHP_CodeSniffer_Standards_AbstractScopeSniff;
  * @author Mark Scherer
  * @license MIT
  */
-class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff
+class DocBlockReturnTagSniff extends AbstractScopeSniff
 {
 
     /**
@@ -92,6 +92,10 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
             }
             return;
         }
+    }
+
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    {
     }
 
 }

@@ -23,7 +23,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
         $factoryName = $bundle . 'BusinessFactory';
 
         if (!$this->hasFactoryAnnotation($phpCsFile, $stackPointer) && $this->fileExists($phpCsFile, $this->getFactoryClassName($phpCsFile))) {
-            $fix = $phpCsFile->addFixableError('getFactory() annotation missing', $stackPointer);
+            $fix = $phpCsFile->addFixableError('getFactory() annotation missing', $stackPointer, 'FactoryAnnotationMissing');
             if ($fix) {
                 $this->addFactoryAnnotation($phpCsFile, $stackPointer, $factoryName);
             }

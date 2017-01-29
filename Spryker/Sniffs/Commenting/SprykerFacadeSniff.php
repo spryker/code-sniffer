@@ -55,7 +55,7 @@ class SprykerFacadeSniff implements Sniff
         $facadeInterfaceFile = str_replace('Facade.php', 'FacadeInterface.php', $phpCsFile->getFilename());
 
         if (!file_exists($facadeInterfaceFile)) {
-            $phpCsFile->addError('FacadeInterface missing for ' . $name, $stackPointer);
+            $phpCsFile->addError('FacadeInterface missing for ' . $name, $stackPointer, 'InterfaceMissing');
         }
     }
 
@@ -85,7 +85,7 @@ class SprykerFacadeSniff implements Sniff
             $missingMethods = array_diff($methods, $interfaceMethods);
 
             $phpCsFile->addError(
-                sprintf('Interface methods do not match facade methods: "%s" missing', implode(', ', $missingMethods)),
+                sprintf('Interface methods do not match facade methods: "%s" missing', implode(', ', $missingMethods), 'InterfaceMethodsNotMatch'),
                 $stackPointer
             );
         }
