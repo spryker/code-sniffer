@@ -54,7 +54,7 @@ class PhpSapiConstantSniff implements Sniff
         }
 
         $error = $tokenContent . '() found, should be const ' . static::PHP_SAPI . '.';
-        $fix = $phpcsFile->addFixableError($error, $stackPtr);
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MethodVsConst');
         if ($fix) {
             $phpcsFile->fixer->replaceToken($stackPtr, static::PHP_SAPI);
             for ($i = $openingBrace; $i <= $closingBrace; ++$i) {

@@ -71,7 +71,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 return;
             }
 
-            $phpCsFile->addError('Throw token found, but no annotation for it.', $docBlockEndIndex);
+            $phpCsFile->addError('Throw token found, but no annotation for it.', $docBlockEndIndex, 'ThrowAnnotationMissing');
             return;
         }
 
@@ -90,12 +90,12 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     {
         $error = 'Doc Block annotation @var for variable missing';
         if ($defaultValueType === null) {
-            $phpCsFile->addError($error, $docBlockEndIndex);
+            $phpCsFile->addError($error, $docBlockEndIndex, 'VarAnnotationMissing');
             return;
         }
 
         $error .= ', type `' . $defaultValueType . '` detected';
-        $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex);
+        $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
         if (!$fix) {
             return;
         }
@@ -121,7 +121,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     protected function handleMissingThrowsAnnotation(File $phpCsFile, $varIndex, $defaultValueType)
     {
         $error = 'Doc Block annotation @throw missing';
-        $fix = $phpCsFile->addFixableError($error, $varIndex);
+        $fix = $phpCsFile->addFixableError($error, $varIndex, 'ThrowMissing');
         if (!$fix) {
             return;
         }
@@ -244,7 +244,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param array $exceptions
      * @param array $annotations
      *
-     * @return array
+     * @return void
      */
     protected function compareExceptionsAndAnnotations(File $phpCsFile, array $exceptions, array $annotations, $docBlockEndIndex)
     {
@@ -256,7 +256,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             }
 
             $error = '@throw annotation `' . $annotation['fullClass'] . '` superfluous and needs to be removed';
-            $fix = $phpCsFile->addFixableError($error, $annotation['index']);
+            $fix = $phpCsFile->addFixableError($error, $annotation['index'], 'ThrowSuperfluous');
             if (!$fix) {
                 continue;
             }
@@ -276,7 +276,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             }
 
             $error = 'Doc Block @throw annotation `' . $exception['fullClass'] . '` missing';
-            $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex);
+            $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'ThrowMissing');
             if (!$fix) {
                 continue;
             }

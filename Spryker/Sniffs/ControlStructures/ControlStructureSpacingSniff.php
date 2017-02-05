@@ -88,7 +88,7 @@ class ControlStructureSpacingSniff implements Sniff
 
         $prevIndex = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if ($prevIndex === $stackPtr - 1) {
-            $fix = $phpcsFile->addFixableError('Whitespace missing before ' . $tokenName, $stackPtr);
+            $fix = $phpcsFile->addFixableError('Whitespace missing before ' . $tokenName, $stackPtr, 'MissingBefore');
             if ($fix) {
                 $phpcsFile->fixer->addContent($prevIndex, ' ');
             }
@@ -96,7 +96,8 @@ class ControlStructureSpacingSniff implements Sniff
         }
 
         if ($tokens[$stackPtr - 1]['content'] !== ' ') {
-            $fix = $phpcsFile->addFixableError('Whitespace invalid before ' . $tokenName . ', expected ` `, got `' . $tokens[$stackPtr - 1]['content'] . '`', $stackPtr);
+            $error = 'Whitespace invalid before ' . $tokenName . ', expected ` `, got `' . $tokens[$stackPtr - 1]['content'] . '`';
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidBefore');
             if ($fix) {
                 for ($i = $prevIndex + 1; $i < $stackPtr - 1; $i++) {
                     $phpcsFile->fixer->replaceToken($i, '');
@@ -119,7 +120,7 @@ class ControlStructureSpacingSniff implements Sniff
 
         $nextIndex = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if ($nextIndex === $stackPtr + 1) {
-            $fix = $phpcsFile->addFixableError('Whitespace missing after ' . $tokenName, $stackPtr);
+            $fix = $phpcsFile->addFixableError('Whitespace missing after ' . $tokenName, $stackPtr, 'MissingAfter');
             if ($fix) {
                 $phpcsFile->fixer->addContent($stackPtr, ' ');
             }
@@ -127,7 +128,8 @@ class ControlStructureSpacingSniff implements Sniff
         }
 
         if ($tokens[$stackPtr + 1]['content'] !== ' ') {
-            $fix = $phpcsFile->addFixableError('Whitespace invalid after ' . $tokenName . ', expected ` `, got `' . $tokens[$stackPtr + 1]['content'] . '`', $stackPtr);
+            $error = 'Whitespace invalid after ' . $tokenName . ', expected ` `, got `' . $tokens[$stackPtr + 1]['content'] . '`';
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidAfter');
             if ($fix) {
                 for ($i = $nextIndex - 1; $i > $stackPtr + 1; $i--) {
                     $phpcsFile->fixer->replaceToken($i, '');

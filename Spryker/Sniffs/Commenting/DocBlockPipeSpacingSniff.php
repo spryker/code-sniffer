@@ -72,7 +72,7 @@ class DocBlockPipeSpacingSniff implements Sniff
         $newContent = implode('|', $hints) . $desc;
 
         if ($newContent !== $content) {
-            $fix = $phpcsFile->addFixableError('There should be no space around pipes in doc blocks.', $stackPtr);
+            $fix = $phpcsFile->addFixableError('There should be no space around pipes in doc blocks.', $stackPtr, 'InvalidSpaceAroundPipes');
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr, $newContent);
             }

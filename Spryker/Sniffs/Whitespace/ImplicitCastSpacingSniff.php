@@ -41,7 +41,7 @@ class ImplicitCastSpacingSniff implements Sniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('No whitespace should be between ' . $tokens[$stackPtr]['content'] . ' and variable.', $stackPtr);
+        $fix = $phpcsFile->addFixableError('No whitespace should be between ' . $tokens[$stackPtr]['content'] . ' and variable.', $stackPtr, 'WhitespaceBetweenContentVariable');
         if ($fix && $phpcsFile->fixer->enabled) {
             $phpcsFile->fixer->beginChangeset();
             $phpcsFile->fixer->replaceToken($stackPtr + 1, '');
@@ -65,7 +65,7 @@ class ImplicitCastSpacingSniff implements Sniff
                 return;
             }
 
-            $fix = $phpcsFile->addFixableError('No whitespace should be between incrementor and variable.', $stackPtr);
+            $fix = $phpcsFile->addFixableError('No whitespace should be between incrementor and variable.', $stackPtr, 'WhitespaceBeforeVariable');
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->replaceToken($stackPtr + 1, '');
@@ -80,7 +80,7 @@ class ImplicitCastSpacingSniff implements Sniff
                 return;
             }
 
-            $fix = $phpcsFile->addFixableError('No whitespace should be between variable and incrementor.', $stackPtr);
+            $fix = $phpcsFile->addFixableError('No whitespace should be between variable and incrementor.', $stackPtr, 'WhitespaceAfterVariable');
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->replaceToken($stackPtr - 1, '');

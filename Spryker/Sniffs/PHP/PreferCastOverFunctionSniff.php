@@ -66,7 +66,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
 
         $error = $tokenContent . '() found, should be ' . static::$matching[$key] . ' cast.';
 
-        $fix = $phpcsFile->addFixableError($error, $stackPtr);
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MethodVsCast');
         if ($fix) {
             $this->fixContent($phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex);
         }
@@ -83,8 +83,6 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
     protected function fixContent(File $phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex)
     {
         $needsBrackets = $this->needsBrackets($phpcsFile, $openingBraceIndex, $closingBraceIndex);
-
-        $tokens = $phpcsFile->getTokens();
 
         $cast = '(' . static::$matching[$key] . ')';
 

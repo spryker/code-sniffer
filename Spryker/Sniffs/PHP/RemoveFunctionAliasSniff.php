@@ -70,7 +70,7 @@ class RemoveFunctionAliasSniff implements Sniff
         }
 
         $error = 'Function name ' . $tokenContent . '() found, should be ' . static::$matching[$key] . '().';
-        $fix = $phpcsFile->addFixableError($error, $stackPtr);
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'LongInvalid');
         if ($fix) {
             $phpcsFile->fixer->replaceToken($stackPtr, static::$matching[$key]);
         }

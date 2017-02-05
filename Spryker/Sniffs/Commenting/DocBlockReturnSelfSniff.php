@@ -101,7 +101,7 @@ class DocBlockReturnSelfSniff implements Sniff
             $message[] = $part . ' => ' . $useStatement;
         }
 
-        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex);
+        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex, 'SelfVsThis');
         if ($fix) {
             $newContent = implode('|', $parts);
             $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);

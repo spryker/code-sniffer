@@ -217,7 +217,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Invalid order of tags: ' . implode(', ', $errors), $docBlockEndIndex);
+        $fix = $phpCsFile->addFixableError('Invalid order of tags: ' . implode(', ', $errors), $docBlockEndIndex, 'OrderInvalid');
         if (!$fix) {
             return;
         }

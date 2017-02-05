@@ -89,7 +89,7 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
      */
     protected function addFixableExistingDocBlock(File $phpCsFile, $stackPointer)
     {
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer);
+        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'FileDocBlockWrong');
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
         }

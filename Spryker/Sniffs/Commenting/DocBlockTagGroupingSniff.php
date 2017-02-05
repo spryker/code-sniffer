@@ -84,7 +84,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Expected 1 extra new line before tags, got ' . ($diff - 1), $nextIndex);
+        $fix = $phpCsFile->addFixableError('Expected 1 extra new line before tags, got ' . ($diff - 1), $nextIndex, 'ExtraLineMissing');
         if (!$fix) {
             return;
         }
@@ -139,7 +139,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Expected no extra blank line after tags, got ' . ($diff - 1), $prevIndex);
+        $fix = $phpCsFile->addFixableError('Expected no extra blank line after tags, got ' . ($diff - 1), $prevIndex, 'NoExtraNewlineAfterTags');
         if (!$fix) {
             return;
         }
@@ -172,8 +172,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Expected no extra blank line before tags, got ' . ($diff - 1), $nextIndex);
-        if (!$fix) {
+        $fix = $phpCsFile->addFixableError('Expected no extra blank line before tags, got ' . ($diff - 1), $nextIndex, 'NoExtraNewlineBeforeTags');
+        if ($fix) {
             return;
         }
 
@@ -198,8 +198,6 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      */
     protected function checkAnnotationTagGrouping(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
-        $tokens = $phpCsFile->getTokens();
-
         $tags = $this->readTags($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
 
         $currentTag = null;
@@ -335,7 +333,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('No newline expected between tags of the same type `' . $first['tag'] . '`', $tagIndexOfSecond);
+        $fix = $phpCsFile->addFixableError('No newline expected between tags of the same type `' . $first['tag'] . '`', $tagIndexOfSecond, 'NoNewlineBetweenSameType');
         if (!$fix) {
             return;
         }
@@ -374,7 +372,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('A single newline expected between tags of different types `' . $first['tag'] . '`/`' . $second['tag'] . '`', $tagIndexOfSecond);
+        $error = 'A single newline expected between tags of different types `' . $first['tag'] . '`/`' . $second['tag'] . '`';
+        $fix = $phpCsFile->addFixableError($error, $tagIndexOfSecond, 'NewlineBetweenDifferentTypes');
         if (!$fix) {
             return;
         }

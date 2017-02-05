@@ -66,7 +66,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('There should be no additional whitespace around doc block tag types.', $stackPtr);
+        $fix = $phpcsFile->addFixableError('There should be no additional whitespace around doc block tag types.', $stackPtr, 'WhitespaceAroundTypes');
         if ($fix) {
             $phpcsFile->fixer->replaceToken($followingWhitespace, ' ');
         }
@@ -88,7 +88,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('There should be no inline alignment in doc blocks descriptions.', $stackPtr);
+        $fix = $phpcsFile->addFixableError('There should be no inline alignment in doc blocks descriptions.', $stackPtr, 'DocBlockInlineAlignment');
         if ($fix) {
             $newContent = preg_replace('/\s\s+/', ' ', $content);
             $phpcsFile->fixer->replaceToken($stackPtr, $newContent);

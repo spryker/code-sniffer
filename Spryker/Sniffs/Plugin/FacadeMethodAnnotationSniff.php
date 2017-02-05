@@ -25,7 +25,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
         if (!$this->hasFacadeAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getFacadeClassName($phpCsFile))
         ) {
-            $fix = $phpCsFile->addFixableError('getFacade() annotation missing', $stackPointer);
+            $fix = $phpCsFile->addFixableError('getFacade() annotation missing', $stackPointer, 'Missing');
             if ($fix) {
                 $this->addFacadeAnnotation($phpCsFile, $stackPointer, $facadeName);
             }

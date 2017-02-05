@@ -60,7 +60,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      */
     protected function fixGroupAnnotation(File $phpCsFile, $stackPointer, array $namespaceParts)
     {
-        $fix = $phpCsFile->addFixableError('@group annotation missing or incomplete', $stackPointer);
+        $fix = $phpCsFile->addFixableError('@group annotation missing or incomplete', $stackPointer, 'GroupAnnotation');
 
         if (!$fix) {
             return;

@@ -54,7 +54,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fix = $phpcsFile->addFixableError('Invalid optional method argument default value for ' . $token['content'], $i);
+            $fix = $phpcsFile->addFixableError('Invalid optional method argument default value for ' . $token['content'], $i, 'InvalidDefaultValue');
 
             if ($fix) {
                 $commaIndex = $phpcsFile->findPrevious(T_COMMA, $lastArgumentIndex - 1, $startIndex);

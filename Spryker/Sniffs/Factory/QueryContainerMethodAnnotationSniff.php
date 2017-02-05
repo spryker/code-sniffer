@@ -27,7 +27,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
         if (!$this->hasQueryContainerAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getQueryContainerClassName($phpCsFile))
         ) {
-            $fix = $phpCsFile->addFixableError('getQueryContainer() annotation missing', $stackPointer);
+            $fix = $phpCsFile->addFixableError('getQueryContainer() annotation missing', $stackPointer, 'Missing');
             if ($fix) {
                 $this->addQueryContainerAnnotation($phpCsFile, $stackPointer, $queryContainerName);
             }

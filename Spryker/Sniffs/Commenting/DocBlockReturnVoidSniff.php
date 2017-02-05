@@ -57,7 +57,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         // If interface we will at least report it
         if (empty($tokens[$stackPtr]['scope_opener']) || empty($tokens[$stackPtr]['scope_closer'])) {
             if (!$docBlockReturnIndex && !$hasInheritDoc) {
-                $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
+                $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnMissingInInterface');
             }
             return;
         }
@@ -70,11 +70,11 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         // We only look for void methods right now
         $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
         if ($returnType === null) {
-            $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
+            $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnMissing');
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('Method does not have a return void statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
+        $fix = $phpcsFile->addFixableError('Method does not have a return void statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnVoidMissing');
         if (!$fix) {
             return;
         }
@@ -104,7 +104,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError($tokens[$index]['content'] . ' has invalid return statement.', $docBlockReturnIndex);
+        $fix = $phpcsFile->addFixableError($tokens[$index]['content'] . ' has invalid return statement.', $docBlockReturnIndex, 'ReturnStatementInvalid');
         if ($fix) {
             $phpcsFile->fixer->replaceToken($docBlockReturnIndex, '');
 
@@ -151,8 +151,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      */
     protected function addReturnAnnotation(File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex, $returnType = 'void')
     {
-        $tokens = $phpcsFile->getTokens();
-
         $indentation = $this->getIndentationWhitespace($phpcsFile, $docBlockEndIndex);
 
         $lastLineEndIndex = $phpcsFile->findPrevious([T_DOC_COMMENT_WHITESPACE], $docBlockEndIndex - 1, null, true);

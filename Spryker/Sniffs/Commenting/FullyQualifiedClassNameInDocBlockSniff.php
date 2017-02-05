@@ -101,7 +101,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             $message[] = $className . ' => ' . $useStatement;
         }
 
-        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex);
+        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex, 'FQCN');
         if ($fix) {
             $newContent = implode('|', $classNames);
 
@@ -134,7 +134,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             }
             $useStatement = $this->findUseStatementForClassName($phpCsFile, $className);
             if (!$useStatement) {
-                $phpCsFile->addError('Invalid class name "' . $className . '"', $classNameIndex);
+                $phpCsFile->addError('Invalid class name "' . $className . '"', $classNameIndex, 'ClassNameInvalid');
                 continue;
             }
             $classNames[$key] = $useStatement . ($arrayOfObject ? '[]' : '');

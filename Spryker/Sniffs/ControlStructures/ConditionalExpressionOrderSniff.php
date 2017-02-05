@@ -57,7 +57,7 @@ class ConditionalExpressionOrderSniff implements Sniff
             && !$this->isGivenKind(Tokens::$booleanOperators, $tokens[$prevIndex]) && $prevContent !== '('
         ) {
             // Not fixable
-            $phpCsFile->addError($error, $stackPointer);
+            $phpCsFile->addError($error, $stackPointer, 'YodaNotAllowed');
             return;
         }
 

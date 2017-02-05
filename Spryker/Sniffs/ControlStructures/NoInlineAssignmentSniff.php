@@ -59,7 +59,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $phpcsFile->addError('Inline/Conditional assignment not allowed', $stackPtr);
+        $phpcsFile->addError('Inline/Conditional assignment not allowed', $stackPtr, 'ConditionalAssignmentNotAllowed');
     }
 
     /**
@@ -128,7 +128,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $phpcsFile->addError('Inline assignment not allowed', $stackPtr);
+        $phpcsFile->addError('Inline assignment not allowed', $stackPtr, 'NoInlineAssignment');
     }
 
 }

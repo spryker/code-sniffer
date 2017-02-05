@@ -59,7 +59,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fix = $phpCsFile->addFixableError('Inline Doc Block comment should be using `/** ... */`', $i);
+            $fix = $phpCsFile->addFixableError('Inline Doc Block comment should be using `/** ... */`', $i, 'InlineDocBlock');
             if ($fix) {
                 $phpCsFile->fixer->beginChangeset();
 
@@ -88,7 +88,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Inline Doc Block comment end tag should be `*/`, got `' . $content . '`', $index);
+        $fix = $phpCsFile->addFixableError('Inline Doc Block comment end tag should be `*/`, got `' . $content . '`', $index, 'EndTag');
         if (!$fix) {
             return;
         }
@@ -129,7 +129,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
             $contentTag = $this->_findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_STRING);
 
             if ($typeTag === null || $contentTag === null) {
-                $phpCsFile->addError('Invalid Inline Doc Block', $startIndex);
+                $phpCsFile->addError('Invalid Inline Doc Block', $startIndex, 'DocBlockInvalid');
                 return;
             }
 
@@ -144,7 +144,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block content: ' . implode(', ', $errors), $i);
+            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block content: ' . implode(', ', $errors), $i, 'DocBlockContentInvalid');
             if (!$fix) {
                 continue;
             }
@@ -200,7 +200,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
         preg_match('|^(.+?)(\s+)(.+?)\s*$|', $comment, $contentMatches);
         if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
-            $phpCsFile->addError('Invalid Inline Doc Block content', $contentIndex);
+            $phpCsFile->addError('Invalid Inline Doc Block content', $contentIndex, 'ContentInvalid');
             return [];
         }
 

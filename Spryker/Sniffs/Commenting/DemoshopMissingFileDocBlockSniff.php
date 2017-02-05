@@ -35,7 +35,7 @@ class DemoshopMissingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
      */
     protected function addFixableMissingDocBlock(File $phpCsFile, $stackPointer)
     {
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer);
+        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'FileDocBlockMissing');
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
         }

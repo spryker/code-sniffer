@@ -35,7 +35,7 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
 
         if ($this->isFactory($phpCsFile) && $this->isMethodPrivate($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
-            $fix = $phpCsFile->addFixableError($classMethod . ' is private.', $stackPointer);
+            $fix = $phpCsFile->addFixableError($classMethod . ' is private.', $stackPointer, 'PrivateNotAllowed');
             if ($fix) {
                 $this->makePrivateMethodProtected($phpCsFile, $stackPointer);
             }

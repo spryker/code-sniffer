@@ -51,7 +51,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
         $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
 
         if ($startsWithCreate && !$requiresCreatePrefix) {
-            $phpCsFile->addError($classMethod . ' is called create...(), should be get...()', $stackPointer);
+            $phpCsFile->addError($classMethod . ' is called create...(), should be get...()', $stackPointer, 'CreateVsGet');
         }
     }
 

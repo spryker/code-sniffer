@@ -52,7 +52,7 @@ class SprykerNamespaceSniff implements Sniff
         }
 
         $error = sprintf('Namespace `%s` does not fit to folder structure `%s`', $namespace, $pathToNamespace);
-        $phpcsFile->addError($error, $namespaceStatement['start']);
+        $phpcsFile->addError($error, $namespaceStatement['start'], 'NamespaceFolderMismatch');
     }
 
 }
