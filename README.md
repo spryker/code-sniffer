@@ -42,6 +42,28 @@ The command `phpcs` just sniffs, `phpcbf` fixes.
 
 You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of your test fixture folders.
 
+### How to configure the default rule set
+
+In order to simplify command line interface, `phpcs` allows to specify [default rule set](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-default-coding-standard) in and [standards path](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-installed-standard-paths) the following way.
+
+Assuming the following directory structure:
+
+```
+vendor/spryker/code-sniffer/                          # Base directory
+                           |_ Spryker/                # Rule set name
+                                      |_ ruleset.xml  # Rule set
+```
+
+The base directory and rule set can be used in configuration now.
+
+
+```
+vendor/bin/phpcs --config-set installed_paths vendor/spryker/code-sniffer/
+vendor/bin/phpcs --config-set default_standard Spryker
+```
+
+You might need to specify full directory path. Now the tools can be used without `--standard` switch.
+
 ## Using own project standard
 You can exchange or extend the Spryker coding standard by providing your own ruleset.xml.
 This can be configured in the Development bundle config:
