@@ -173,7 +173,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
         }
 
         $fix = $phpCsFile->addFixableError('Expected no extra blank line before tags, got ' . ($diff - 1), $nextIndex);
-        if ($fix) {
+        if (!$fix) {
             return;
         }
 
