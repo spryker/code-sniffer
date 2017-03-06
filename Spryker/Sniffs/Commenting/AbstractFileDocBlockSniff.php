@@ -20,6 +20,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     protected $sprykerTestNamespaces = [
         'Unit',
         'Functional',
+        'Acceptance',
     ];
 
     /**
@@ -30,6 +31,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
         'Shared',
         'Yves',
         'Zed',
+        'Service',
     ];
 
     /**
@@ -120,10 +122,10 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 
         $currentPosition = $fileDocBlockStartPosition;
         $endPosition = $phpCsFile->findNext([T_NAMESPACE], $currentPosition);
-        do {
+        while ($currentPosition < $endPosition) {
             $phpCsFile->fixer->replaceToken($currentPosition, '');
             $currentPosition++;
-        } while ($currentPosition < $endPosition);
+        }
     }
 
 }

@@ -19,6 +19,13 @@ abstract class AbstractDemoshopFileDocBlockSniff implements PHP_CodeSniffer_Snif
     protected $sprykerTestNamespaces = [
         'Unit',
         'Functional',
+        'YvesUnit',
+        'YvesFunctional',
+        'SharedUnit',
+        'SharedFunctional'.
+        'ZedUnit',
+        'ZedFunctional',
+        'Acceptance',
     ];
 
     /**
@@ -29,6 +36,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements PHP_CodeSniffer_Snif
         'Shared',
         'Yves',
         'Zed',
+        'Service',
     ];
 
     /**
@@ -152,10 +160,10 @@ abstract class AbstractDemoshopFileDocBlockSniff implements PHP_CodeSniffer_Snif
 
         $currentPosition = $fileDocBlockStartPosition;
         $endPosition = $phpCsFile->findNext([T_NAMESPACE], $currentPosition);
-        do {
+        while ($currentPosition < $endPosition) {
             $phpCsFile->fixer->replaceToken($currentPosition, '');
             $currentPosition++;
-        } while ($currentPosition < $endPosition);
+        }
     }
 
 }
