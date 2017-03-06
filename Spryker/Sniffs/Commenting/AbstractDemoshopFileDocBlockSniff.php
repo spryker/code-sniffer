@@ -22,7 +22,7 @@ abstract class AbstractDemoshopFileDocBlockSniff implements PHP_CodeSniffer_Snif
         'YvesUnit',
         'YvesFunctional',
         'SharedUnit',
-        'SharedFunctional'.
+        'SharedFunctional',
         'ZedUnit',
         'ZedFunctional',
         'Acceptance',
