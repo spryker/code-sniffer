@@ -40,7 +40,7 @@ class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
             $openingParenthesisIndex = $phpCsFile->findNext(T_OPEN_PARENTHESIS, $stackPointer + 1);
             $closingParenthesisIndex = $tokens[$openingParenthesisIndex]['parenthesis_closer'];
 
-            $semicolonIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $closingParenthesisIndex + 1, null, true);
+            $semicolonIndex = $phpCsFile->findNext(T_SEMICOLON, $closingParenthesisIndex + 1);
 
             $nextContentIndex = $phpCsFile->findNext(T_WHITESPACE, $semicolonIndex + 1, null, true);
 
