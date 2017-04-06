@@ -43,6 +43,12 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
     {
         $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
 
+        // We do not force-annotate on abstract classes
+        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
+        if ($abstractClassTypeIndex !== false) {
+            return false;
+        }
+
         if ($extendedClassName === 'AbstractPlugin') {
             return true;
         }
