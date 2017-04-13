@@ -251,21 +251,6 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
-     *
-     * @return string
-     */
-    private function getBundleNameFromFilePath(PHP_CodeSniffer_File $phpCsFile)
-    {
-        $bundleName = '';
-        if (preg_match('/spryker\/spryker\/Bundles\/(.*?)\//', $phpCsFile->getFilename(), $matches)) {
-            $bundleName = $matches[1];
-        }
-
-        return $bundleName;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
      * @param int $docCommentStartPosition
      * @param int $firstDocCommentTagPosition
      *
@@ -348,7 +333,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     private function containsExpectedGroupAnnotations(array $givenGroupAnnotationParts, array $expectedGroupAnnotations)
     {
         if (count($givenGroupAnnotationParts) === 0) {
-            return;
+            return false;
         }
         foreach ($expectedGroupAnnotations as $index => $expectedGroupAnnotation) {
             if ($givenGroupAnnotationParts[$index] !== $expectedGroupAnnotation) {
