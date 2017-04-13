@@ -7,7 +7,7 @@ use PHP_CodeSniffer_File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * Checks if doc blocks of Spryker test classes contain @group annotations.
+ * Checks if doc blocks of Spryker test classes contain all necessary @group annotations.
  */
 class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
 {
@@ -35,7 +35,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     {
         $filename = $phpCsFile->getFilename();
 
-        preg_match('#/(tests)/(ZedBusiness|ZedCommunication|ZedPresentation)/(.+)(Test|Cest).php$#', $filename, $matches);
+        preg_match('#/(tests)/(SprykerTest)/(.+)(Test|Cest).php$#', $filename, $matches);
         if (!$matches) {
             return;
         }
@@ -230,8 +230,6 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     protected function getExpectedAnnotations(PHP_CodeSniffer_File $phpCsFile, array $namespaceParts)
     {
         $className = array_pop($namespaceParts);
-        $bundleName = $this->getBundleNameFromFilePath($phpCsFile);
-        array_unshift($namespaceParts, $bundleName);
         array_unshift($namespaceParts, static::ANNOTATION_START_TEXT);
         $expectedAnnotations = $namespaceParts;
         if (preg_match('/Facade/', $className)) {
