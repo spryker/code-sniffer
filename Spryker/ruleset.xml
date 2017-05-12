@@ -6,6 +6,7 @@
         All sniffs in ./Sniffs will be auto loaded
     </description>
 
+    <exclude-pattern>\.idea</exclude-pattern>
     <exclude-pattern>\.git</exclude-pattern>
     <exclude-pattern>*/src/Generated/*</exclude-pattern>
     <exclude-pattern>*/src/Orm/*</exclude-pattern>
