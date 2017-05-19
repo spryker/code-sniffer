@@ -243,6 +243,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer_File $phpCsFile
      * @param array $exceptions
      * @param array $annotations
+     * @param int $docBlockEndIndex
      *
      * @return array
      */

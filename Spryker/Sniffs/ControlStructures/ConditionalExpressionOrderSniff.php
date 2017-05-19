@@ -146,9 +146,10 @@ class ConditionalExpressionOrderSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
+     * @param array $tokens
      * @param int $index
      * @param int $leftIndexStart
-     * @param int int $leftIndexEnd
+     * @param int $leftIndexEnd
      * @param int $rightIndexStart
      * @param int $rightIndexEnd
      *

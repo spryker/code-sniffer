@@ -126,6 +126,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param int $classNameIndex
      *
      * @return bool
      */

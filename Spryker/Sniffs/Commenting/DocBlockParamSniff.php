@@ -13,7 +13,8 @@ use Spryker\Tools\Traits\SignatureTrait;
  * @author Mark Scherer
  * @license MIT
  */
-class DocBlockParamSniff extends AbstractSprykerSniff {
+class DocBlockParamSniff extends AbstractSprykerSniff
+{
 
     use CommentingTrait;
     use SignatureTrait;
@@ -21,7 +22,8 @@ class DocBlockParamSniff extends AbstractSprykerSniff {
     /**
      * @inheritDoc
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_FUNCTION,
         ];
@@ -30,7 +32,8 @@ class DocBlockParamSniff extends AbstractSprykerSniff {
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer) {
+    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    {
         $tokens = $phpCsFile->getTokens();
 
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
