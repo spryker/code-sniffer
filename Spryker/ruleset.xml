@@ -14,8 +14,8 @@
     <exclude-pattern>*/tests/_helpers/*</exclude-pattern>
     <exclude-pattern>*/tests/_output/*</exclude-pattern>
     <exclude-pattern>*/Fixtures/*</exclude-pattern>
-    <exclude-pattern>*/Propel/DE/Migration/*</exclude-pattern>
-    <exclude-pattern>*/data/DE/cache/*</exclude-pattern>
+    <exclude-pattern>*/Propel/*</exclude-pattern>
+    <exclude-pattern>*/data/*</exclude-pattern>
     <exclude-pattern>*.xml</exclude-pattern>
     <exclude-pattern>*.css</exclude-pattern>
     <exclude-pattern>*.js</exclude-pattern>
