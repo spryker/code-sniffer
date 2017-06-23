@@ -45,8 +45,8 @@ You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of you
 ### How to include in your IDE
 E.g. for PHPStorm:
 * Open Settings -> Tools -> External Tools
-* Add a new tool named "cs-sniffer" and set Program to `$ProjectFileDir$/vendor/bin/phpcs`, Parameters to `--standard=$ProjectFileDir$/vendor/spryker/code-sniffer/Spryker/ruleset.xml -p $FilePath$` and Working directoy to `$ProjectFileDir$`.
-* Add a new tool named "cs-fixer" and set Program to `$ProjectFileDir$/vendor/bin/phpcbf`, Parameters to `--standard=$ProjectFileDir$/vendor/spryker/code-sniffer/Spryker/ruleset.xml -v $FilePath$` and Working directoy to `$ProjectFileDir$`.
+* Add a new tool named "cs-sniffer" and set Program to `$ProjectFileDir$/vendor/bin/phpcs`, Parameters to `--standard=$ProjectFileDir$/vendor/spryker/code-sniffer/Spryker/ruleset.xml -p $FilePath$` and Working directory to `$ProjectFileDir$`.
+* Add a new tool named "cs-fixer" and set Program to `$ProjectFileDir$/vendor/bin/phpcbf`, Parameters to `--standard=$ProjectFileDir$/vendor/spryker/code-sniffer/Spryker/ruleset.xml -v $FilePath$` and Working directory to `$ProjectFileDir$`.
 * Remove the "Open console" if you don't want to see any output here for the fixer.
 * Now set up your hotkeys under Settings -> Keymap (search for cs-sniffer and cs-fixer). E.g. `Control + Comma` for sniffing, and `Control + Dot` for fixing.
 
