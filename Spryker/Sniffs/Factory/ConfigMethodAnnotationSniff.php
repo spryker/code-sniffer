@@ -90,7 +90,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
     /**
      * @param \PHP_CodeSniffer_File $phpCsFile
      *
-     * @return array
+     * @return string
      */
     protected function getConfigClassName(PHP_CodeSniffer_File $phpCsFile)
     {
