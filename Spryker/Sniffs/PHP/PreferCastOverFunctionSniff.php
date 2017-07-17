@@ -75,6 +75,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
+     * @param string $key
      * @param int $openingBraceIndex
      * @param int $closingBraceIndex
      *

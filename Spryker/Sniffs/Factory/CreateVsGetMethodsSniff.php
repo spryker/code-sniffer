@@ -123,6 +123,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
+     * @param string $newMethodName
      *
      * @return void
      */

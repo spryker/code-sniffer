@@ -12,6 +12,8 @@ trait UseStatementsTrait
 {
 
     /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     *
      * @return array
      */
     protected function getUseStatements(File $phpcsFile)
@@ -65,6 +67,7 @@ trait UseStatementsTrait
             $statements[$key] = [
                 'alias' => $alias,
                 'end' => $semicolonIndex,
+                'statement' => $statement,
                 'fullName' => ltrim($fullName, '\\'),
                 'shortName' => $shortName,
                 'start' => $index,

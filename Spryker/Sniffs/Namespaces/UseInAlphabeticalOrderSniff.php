@@ -79,10 +79,9 @@ class UseInAlphabeticalOrderSniff implements Sniff
         $this->_processed[$phpcsFile->getFilename()] = true;
 
         foreach ($this->_uses as $scope => $used) {
-            $defined = $sorted = array_keys($used);
+            $defined = array_keys($used);
 
-            natcasesort($sorted);
-            $sorted = array_values($sorted);
+            $sorted = $this->sortImportsAlphabetically($defined);
             if ($sorted === $defined) {
                 continue;
             }
@@ -173,6 +172,40 @@ class UseInAlphabeticalOrderSniff implements Sniff
             null,
             true
         );
+    }
+
+    /**
+     * @param array $imports
+     *
+     * @return array
+     */
+    protected function sortImportsAlphabetically(array $imports)
+    {
+        $hashSlashes = true;
+        $hashed = $this->replaceSeparators($imports, $hashSlashes);
+        natcasesort($hashed);
+        $sorted = $this->replaceSeparators($hashed, !$hashSlashes);
+
+        return array_values($sorted);
+    }
+
+    /**
+     * @param array $imports
+     * @param bool $hashSlashes
+     *
+     * @return array
+     */
+    protected function replaceSeparators(array $imports, $hashSlashes = false)
+    {
+        $search = $hashSlashes ? '\\' : '##';
+        $replace = $hashSlashes ? '##' : '\\';
+
+        $sorted = [];
+        foreach ($imports as $import) {
+            $sorted[] = str_replace($search, $replace, $import);
+        };
+
+        return $sorted;
     }
 
 }

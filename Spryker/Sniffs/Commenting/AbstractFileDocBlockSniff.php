@@ -64,7 +64,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
             $secondNamespaceString = $phpCsFile->getTokens()[$secondNamespaceTokenPosition]['content'];
 
             $isSprykerClass = ($firstNamespaceString === static::SPRYKER_NAMESPACE && in_array($secondNamespaceString, $this->sprykerApplications));
-            $isSprykerTestClass = (in_array($firstNamespaceString, $this->sprykerTestNamespaces) && $secondNamespaceString === static::SPRYKER_NAMESPACE);
+            $isSprykerTestClass = (in_array($firstNamespaceString, $this->sprykerTestNamespaces) && ($secondNamespaceString === static::SPRYKER_NAMESPACE));
 
             return ($isSprykerClass || $isSprykerTestClass);
         }

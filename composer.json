@@ -1,7 +1,7 @@
 {
   "name": "spryker/code-sniffer",
   "description": "Spryker Code Sniffer Standards",
-  "type": "library",
+  "type": "phpcodesniffer-standard",
   "license": "MIT",
   "keywords": ["framework", "codesniffer", "phpcs", "standards"],
   "homepage": "http://spryker.com",

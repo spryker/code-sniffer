@@ -535,6 +535,8 @@ class SprykerUseStatementSniff implements Sniff
     }
 
     /**
+     * @param \PHP_CodeSniffer_File $phpcsFile
+     *
      * @return array
      */
     protected function getUseStatements(File $phpcsFile)

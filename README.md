@@ -42,6 +42,16 @@ The command `phpcs` just sniffs, `phpcbf` fixes.
 
 You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of your test fixture folders.
 
+### How to include in your IDE
+E.g. for PHPStorm:
+* Open Settings -> Tools -> External Tools
+* Add a new tool named "cs-sniffer" and set Program to `$ProjectFileDir$/vendor/bin/phpcs`, Parameters to `--standard=$ProjectFileDir$/vendor/spryker/code-sniffer/Spryker/ruleset.xml -p $FilePath$` and Working directory to `$ProjectFileDir$`.
+* Add a new tool named "cs-fixer" and set Program to `$ProjectFileDir$/vendor/bin/phpcbf`, Parameters to `--standard=$ProjectFileDir$/vendor/spryker/code-sniffer/Spryker/ruleset.xml -v $FilePath$` and Working directory to `$ProjectFileDir$`.
+* Remove the "Open console" if you don't want to see any output here for the fixer.
+* Now set up your hotkeys under Settings -> Keymap (search for cs-sniffer and cs-fixer). E.g. `Control + Comma` for sniffing, and `Control + Dot` for fixing.
+
+You can also set up file watchers, but here you should better only whitelist certain sniffs that only add things and don't remove anything.
+
 ### How to configure the default rule set
 
 In order to simplify command line interface, `phpcs` allows to specify [default rule set](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-default-coding-standard) in and [standards path](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-installed-standard-paths) the following way.

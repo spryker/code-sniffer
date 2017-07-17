@@ -168,7 +168,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         $diff = $tokens[$nextIndex]['line'] - $tokens[$docBlockStartIndex]['line'];
-        if ($diff === 1) {
+        if ($diff < 2) {
             return;
         }
 
@@ -256,23 +256,26 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 
     /**
      * @param array $tokens
-     * @param int $i
+     * @param int $index
      *
      * @return int
      */
-    protected function getEndIndex(array $tokens, $i)
+    protected function getEndIndex(array $tokens, $index)
     {
-        while (!empty($tokens[$i + 1]) && $tokens[$i + 1]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$i + 1]['code'] !== T_DOC_COMMENT_TAG) {
-            $i++;
+        $startIndex = $index;
+        while (!empty($tokens[$index + 1]) && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_TAG) {
+            $index++;
         }
 
         // Jump to the previous line
-        $currentLine = $tokens[$i]['line'];
-        while ($tokens[$i]['line'] === $currentLine) {
-            $i--;
+        $currentLine = $tokens[$index]['line'];
+        while ($tokens[$index]['line'] === $currentLine) {
+            $index--;
         }
+        // Fix for single line doc blocks
+        $index = max($index, $startIndex);
 
-        return $this->getLastTokenOfLine($tokens, $i);
+        return $this->getLastTokenOfLine($tokens, $index);
     }
 
     /**

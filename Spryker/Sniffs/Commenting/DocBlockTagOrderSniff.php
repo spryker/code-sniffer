@@ -146,6 +146,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      */
     protected function getEndIndex(array $tokens, $index)
     {
+        $startIndex = $index;
         while (!empty($tokens[$index + 1]) && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_TAG) {
             $index++;
         }
@@ -155,6 +156,8 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
         while ($tokens[$index]['line'] === $currentLine) {
             $index--;
         }
+        // Fix for single line doc blocks
+        $index = max($index, $startIndex);
 
         return $this->getLastTokenOfLine($tokens, $index);
     }
