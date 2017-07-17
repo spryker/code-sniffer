@@ -67,6 +67,7 @@ trait UseStatementsTrait
             $statements[$key] = [
                 'alias' => $alias,
                 'end' => $semicolonIndex,
+                'statement' => $statement,
                 'fullName' => ltrim($fullName, '\\'),
                 'shortName' => $shortName,
                 'start' => $index,
