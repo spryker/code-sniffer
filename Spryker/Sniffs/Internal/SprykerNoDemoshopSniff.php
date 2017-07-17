@@ -5,7 +5,7 @@
 
 namespace Spryker\Sniffs\Internal;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -30,7 +30,7 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         if (!$this->isDemoshopCode($phpcsFile)) {
             return;
@@ -47,11 +47,11 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return bool
      */
-    protected function isDemoshopCode(PHP_CodeSniffer_File $phpCsFile)
+    protected function isDemoshopCode(File $phpCsFile)
     {
         if (static::$isDemoshop !== null) {
             return static::$isDemoshop;

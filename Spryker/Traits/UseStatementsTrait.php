@@ -12,7 +12,7 @@ trait UseStatementsTrait
 {
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
      * @return array
      */

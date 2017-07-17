@@ -44,7 +44,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             return;
         }
 
-        if ($phpCsFile->isAnonymousFunction($stackPointer)) {
+        if ($phpCsFile->getDeclarationName($stackPointer) === null) {
             return;
         }
 

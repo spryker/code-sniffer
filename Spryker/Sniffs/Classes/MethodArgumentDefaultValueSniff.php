@@ -111,7 +111,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $startIndex
      * @param int $endIndex
      *
