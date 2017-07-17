@@ -39,8 +39,24 @@ class UseWithLeadingBackslashSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $error = 'Leading backslash is not allowed in use statements.';
-            $phpcsFile->addError($error, $useStatement['statement'], 'Backslash');
+            $error = 'Leading backslash is not allowed in use statements: ' . $useStatement['statement'];
+            $fixable = $phpcsFile->addFixableError($error, $useStatement['start'], 'Backslash');
+            if (!$fixable) {
+                return;
+            }
+
+            $tokens = $phpcsFile->getTokens();
+
+            for ($i = $useStatement['start'] + 1; $i < $useStatement['end']; $i++) {
+                if ($tokens[$i]['code'] !== T_NS_SEPARATOR) {
+                    continue;
+                }
+
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->replaceToken($i, '');
+                $phpcsFile->fixer->endChangeset();
+                break;
+            }
         }
     }
 
