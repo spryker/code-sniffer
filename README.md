@@ -21,12 +21,13 @@ composer require --dev spryker/code-sniffer
 
 The Development bundle provides a convenience command:
 ```
-vendor/bin/console code:sniff
+console code:sniff:style
 ```
+(or `console c:s:s` as shortcut)
 
 To automatically fix fixable errors, use
 ```
-vendor/bin/console code:sniff -f
+console code:sniff:style -f
 ```
 
 `-v` is useful for more info output.
