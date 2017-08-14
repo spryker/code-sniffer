@@ -44,7 +44,7 @@ class FunctionSpacingSniff implements Sniff
             $skippedTokens = array_merge(Tokens::$emptyTokens, $php7Tokens);
             $semicolonIndex = $phpCsFile->findNext($skippedTokens, $closingParenthesisIndex + 1, null, true);
 
-            $nextContentIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $semicolonIndex + 1, null, true);
+            $nextContentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $semicolonIndex + 1, null, true);
 
             // Do not mess with the end of the class
             if ($tokens[$nextContentIndex]['type'] === 'T_CLOSE_CURLY_BRACKET') {

@@ -26,7 +26,7 @@
         "rm -f Spryker/ruleset.xml.bak"
     ],
     "cs-check": "phpcs --colors -p --extensions=php --standard=Spryker --ignore=/code-sniffer/vendor/,/tests/files/ ./",
-    "cs-fix": "phpcbf --colors --extensions=php --standard=Spryker --ignore=/code-sniffer/vendor/,/tests/files/ ./"
+    "cs-fix": "phpcbf --colors -v --extensions=php --standard=Spryker --ignore=/code-sniffer/vendor/,/tests/files/ ./"
   },
   "autoload": {
     "psr-4": {
