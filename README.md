@@ -21,12 +21,13 @@ composer require --dev spryker/code-sniffer
 
 The Development bundle provides a convenience command:
 ```
-vendor/bin/console code:sniff
+console code:sniff:style
 ```
+(or `console c:s:s` as shortcut)
 
 To automatically fix fixable errors, use
 ```
-vendor/bin/console code:sniff -f
+console code:sniff:style -f
 ```
 
 `-v` is useful for more info output.
@@ -100,9 +101,10 @@ The following is an example for CircleCI but will also be compatible with any ot
   override:
     ...
     - vendor/bin/console application:integration-check
-    - vendor/bin/console code:sniff
+    - vendor/bin/console code:sniff:style
+    - vendor/bin/console code:sniff:architecture
 ```
-You basically just append `- vendor/bin/console code:sniff` at the end.
+You basically just add `- vendor/bin/console code:sniff:style` the the list.
 
 
 Please see the [Spryker Demoshop](https://github.com/spryker/demoshop) repository for details. It is used there.
