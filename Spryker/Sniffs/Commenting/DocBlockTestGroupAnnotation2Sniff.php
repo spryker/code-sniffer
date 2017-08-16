@@ -3,7 +3,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use Exception;
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -26,12 +26,12 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $filename = $phpCsFile->getFilename();
 
@@ -62,15 +62,15 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      * @param array $expectedGroupAnnotations
      *
      * @return void
      */
-    protected function fixGroupAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer, array $expectedGroupAnnotations)
+    protected function fixGroupAnnotation(File $phpCsFile, $stackPointer, array $expectedGroupAnnotations)
     {
-        $fix = $phpCsFile->addFixableError('@group annotation missing or incomplete', $stackPointer);
+        $fix = $phpCsFile->addFixableError('@group annotation missing or incomplete', $stackPointer, 'Incomplete');
 
         if (!$fix) {
             return;
@@ -87,13 +87,13 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      * @param array $expectedAnnotations
      *
      * @return void
      */
-    protected function addCommentWithGroupAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer, array $expectedAnnotations)
+    protected function addCommentWithGroupAnnotation(File $phpCsFile, $stackPointer, array $expectedAnnotations)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -121,13 +121,13 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docCommentEndPosition
      * @param array $namespaceParts
      *
      * @return void
      */
-    protected function modifyExistingComment(PHP_CodeSniffer_File $phpCsFile, $docCommentEndPosition, array $namespaceParts)
+    protected function modifyExistingComment(File $phpCsFile, $docCommentEndPosition, array $namespaceParts)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -152,12 +152,12 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return array
      */
-    protected function getNamespaceParts(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getNamespaceParts(File $phpCsFile, $stackPointer)
     {
         $namespace = $this->getNamespaceStatement($phpCsFile);
         if (!$namespace) {
@@ -173,12 +173,12 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return string
      */
-    protected function getClassOrInterfaceName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getClassOrInterfaceName(File $phpCsFile, $stackPointer)
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
@@ -187,12 +187,12 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return array
      */
-    protected function getAnnotations(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getAnnotations(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -222,12 +222,12 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array $namespaceParts
      *
      * @return array
      */
-    protected function getExpectedAnnotations(PHP_CodeSniffer_File $phpCsFile, array $namespaceParts)
+    protected function getExpectedAnnotations(File $phpCsFile, array $namespaceParts)
     {
         $className = array_pop($namespaceParts);
         array_unshift($namespaceParts, static::ANNOTATION_START_TEXT);
@@ -250,13 +250,13 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docCommentStartPosition
      * @param int $firstDocCommentTagPosition
      *
      * @return int|null
      */
-    protected function findGroupTagPosition(PHP_CodeSniffer_File $phpCsFile, $docCommentStartPosition, $firstDocCommentTagPosition)
+    protected function findGroupTagPosition(File $phpCsFile, $docCommentStartPosition, $firstDocCommentTagPosition)
     {
         $tokens = $phpCsFile->getTokens();
         $docEndIndex = $tokens[$docCommentStartPosition]['comment_closer'];
@@ -277,12 +277,12 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docCommentStartPosition
      *
      * @return int
      */
-    protected function getLastLineOfDocBlock(PHP_CodeSniffer_File $phpCsFile, $docCommentStartPosition)
+    protected function getLastLineOfDocBlock(File $phpCsFile, $docCommentStartPosition)
     {
         $tokens = $phpCsFile->getTokens();
         $index = $tokens[$docCommentStartPosition]['comment_closer'];
@@ -295,7 +295,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docCommentStartPosition
      * @param int $firstGroupTagPosition
      *
@@ -303,7 +303,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getGroupTagPositionEnd(PHP_CodeSniffer_File $phpCsFile, $docCommentStartPosition, $firstGroupTagPosition)
+    protected function getGroupTagPositionEnd(File $phpCsFile, $docCommentStartPosition, $firstGroupTagPosition)
     {
         $tokens = $phpCsFile->getTokens();
 

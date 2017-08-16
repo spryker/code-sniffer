@@ -2,13 +2,13 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Doc blocks should type-hint returning itself as $this for fluent interface to work.
  */
-class DocBlockReturnSelfSniff implements PHP_CodeSniffer_Sniff
+class DocBlockReturnSelfSniff implements Sniff
 {
 
     /**
@@ -28,7 +28,7 @@ class DocBlockReturnSelfSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -73,14 +73,14 @@ class DocBlockReturnSelfSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
      * @param array $parts
      * @param string $appendix
      *
      * @return void
      */
-    protected function fixParts(PHP_CodeSniffer_File $phpCsFile, $classNameIndex, array $parts, $appendix)
+    protected function fixParts(File $phpCsFile, $classNameIndex, array $parts, $appendix)
     {
         $result = [];
         foreach ($parts as $key => $part) {
@@ -101,7 +101,7 @@ class DocBlockReturnSelfSniff implements PHP_CodeSniffer_Sniff
             $message[] = $part . ' => ' . $useStatement;
         }
 
-        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex);
+        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex, 'SelfVsThis');
         if ($fix) {
             $newContent = implode('|', $parts);
             $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);
@@ -109,12 +109,12 @@ class DocBlockReturnSelfSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
-    protected function findRelatedDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function findRelatedDocBlock(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 

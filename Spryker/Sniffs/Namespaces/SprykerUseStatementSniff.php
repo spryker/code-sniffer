@@ -5,16 +5,16 @@
 
 namespace Spryker\Sniffs\Namespaces;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use RuntimeException;
 use Spryker\Traits\BasicsTrait;
 
 /**
  * Spryker internal "inline FQCN" must be moved to use statements.
  */
-class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
+class SprykerUseStatementSniff implements Sniff
 {
 
     use BasicsTrait;
@@ -50,7 +50,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -77,24 +77,24 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     /**
      * Checks extends, implements.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkUseForClass(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForClass(File $phpcsFile, $stackPtr)
     {
         $this->checkExtends($phpcsFile, $stackPtr);
         $this->checkImplements($phpcsFile, $stackPtr);
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkExtends(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkExtends(File $phpcsFile, $stackPtr)
     {
         $extendsIndex = $phpcsFile->findNext([T_EXTENDS], $stackPtr + 1);
         if (!$extendsIndex) {
@@ -109,12 +109,12 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkImplements(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkImplements(File $phpcsFile, $stackPtr)
     {
         $implementsIndex = $phpcsFile->findNext([T_IMPLEMENTS], $stackPtr + 1);
         if (!$implementsIndex) {
@@ -128,13 +128,13 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $statement
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function fixStatement(PHP_CodeSniffer_File $phpcsFile, $statement, $stackPtr)
+    protected function fixStatement(File $phpcsFile, $statement, $stackPtr)
     {
         if (strpos($statement['content'], '\\') === false) {
             return;
@@ -173,16 +173,16 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkUseForNew(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForNew(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $nextIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         $lastIndex = null;
         $i = $nextIndex;
         $extractedUseStatement = '';
@@ -240,16 +240,16 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkUseForStatic(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForStatic(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
+        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
 
         $lastIndex = null;
         $i = $prevIndex;
@@ -304,16 +304,16 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkUseForInstanceOf(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForInstanceOf(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $classNameIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
 
         $lastIndex = null;
         $i = $classNameIndex;
@@ -370,12 +370,12 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkUseForSignature(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkUseForSignature(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -425,7 +425,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
 
             $phpcsFile->fixer->beginChangeset();
 
-            $firstSeparatorIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $startIndex + 1, null, true);
+            $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
 
             $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
@@ -446,11 +446,11 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
      *
      * @return void
      */
-    protected function loadStatements(PHP_CodeSniffer_File $phpcsFile)
+    protected function loadStatements(File $phpcsFile)
     {
         $this->className = $this->findClassName($phpcsFile);
 
@@ -465,11 +465,11 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
      * @return bool
      */
-    protected function isBlacklistedFile(PHP_CodeSniffer_File $phpcsFile)
+    protected function isBlacklistedFile(File $phpcsFile)
     {
         $file = $phpcsFile->getFilename();
         if (strpos($file, DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR) !== false) {
@@ -535,11 +535,11 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
      * @return array
      */
-    protected function getUseStatements(PHP_CodeSniffer_File $phpcsFile)
+    protected function getUseStatements(File $phpcsFile)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -549,7 +549,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
                 continue;
             }
 
-            $useStatementStartIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $index + 1, null, true);
+            $useStatementStartIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $index + 1, null, true);
 
             // Ignore function () use ($foo) {}
             if ($tokens[$useStatementStartIndex]['content'] === '(') {
@@ -557,7 +557,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
             }
 
             $semicolonIndex = $phpcsFile->findNext(T_SEMICOLON, $useStatementStartIndex + 1);
-            $useStatementEndIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $semicolonIndex - 1, null, true);
+            $useStatementEndIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $semicolonIndex - 1, null, true);
 
             $statement = '';
             for ($i = $useStatementStartIndex; $i <= $useStatementEndIndex; $i++) {
@@ -599,7 +599,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param string $shortName
      * @param string $fullName
      *
@@ -607,7 +607,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
      *
      * @return array
      */
-    protected function addUseStatement(PHP_CodeSniffer_File $phpcsFile, $shortName, $fullName)
+    protected function addUseStatement(File $phpcsFile, $shortName, $fullName)
     {
         foreach ($this->allStatements as $useStatement) {
             if ($useStatement['fullName'] === $fullName) {
@@ -634,12 +634,12 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param array $useStatement
      *
      * @return void
      */
-    protected function insertUseStatement(PHP_CodeSniffer_File $phpcsFile, array $useStatement)
+    protected function insertUseStatement(File $phpcsFile, array $useStatement)
     {
         $existingStatements = $this->existingStatements;
         if ($existingStatements) {
@@ -674,11 +674,11 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
      * @return string|null
      */
-    protected function findClassName(PHP_CodeSniffer_File $phpcsFile)
+    protected function findClassName(File $phpcsFile)
     {
         $index = $phpcsFile->findNext([T_CLASS, T_INTERFACE, T_TRAIT], 0);
         if (!$index) {
@@ -694,12 +694,12 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $extendsStartIndex
      *
      * @return array
      */
-    protected function parseExtends(PHP_CodeSniffer_File $phpcsFile, $extendsStartIndex)
+    protected function parseExtends(File $phpcsFile, $extendsStartIndex)
     {
         $extendsEndIndex = $phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
 
@@ -707,12 +707,12 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $implementsStartIndex
      *
      * @return array
      */
-    protected function parseImplements(PHP_CodeSniffer_File $phpcsFile, $implementsStartIndex)
+    protected function parseImplements(File $phpcsFile, $implementsStartIndex)
     {
         $implementsEndIndex = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
 
@@ -720,7 +720,7 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $startIndex
      * @param int $endIndex
      *
@@ -728,14 +728,14 @@ class SprykerUseStatementSniff implements PHP_CodeSniffer_Sniff
      *
      * @return array
      */
-    protected function parse(PHP_CodeSniffer_File $phpcsFile, $startIndex, $endIndex)
+    protected function parse(File $phpcsFile, $startIndex, $endIndex)
     {
         $tokens = $phpcsFile->getTokens();
         if (empty($tokens[$endIndex])) {
             throw new RuntimeException('Should not happen');
         }
 
-        $classIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $startIndex + 1, null, true);
+        $classIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
         if (empty($tokens[$classIndex])) {
             throw new RuntimeException('Should not happen');
         }

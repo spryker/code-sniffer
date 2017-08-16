@@ -5,14 +5,14 @@
 
 namespace Spryker\Sniffs\Whitespace;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * There should always be newlines around functions/methods.
  */
-class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
+class FunctionSpacingSniff implements Sniff
 {
 
     /**
@@ -26,7 +26,7 @@ class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -41,10 +41,10 @@ class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
             $closingParenthesisIndex = $tokens[$openingParenthesisIndex]['parenthesis_closer'];
 
             $php7Tokens = [T_COLON => T_COLON, T_WHITESPACE => T_WHITESPACE, T_RETURN_TYPE => T_RETURN_TYPE, T_NULLABLE => T_NULLABLE];
-            $skippedTokens = array_merge(PHP_CodeSniffer_Tokens::$emptyTokens, $php7Tokens);
+            $skippedTokens = array_merge(Tokens::$emptyTokens, $php7Tokens);
             $semicolonIndex = $phpCsFile->findNext($skippedTokens, $closingParenthesisIndex + 1, null, true);
 
-            $nextContentIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $semicolonIndex + 1, null, true);
+            $nextContentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $semicolonIndex + 1, null, true);
 
             // Do not mess with the end of the class
             if ($tokens[$nextContentIndex]['type'] === 'T_CLOSE_CURLY_BRACKET') {
@@ -64,7 +64,7 @@ class FunctionSpacingSniff implements PHP_CodeSniffer_Sniff
         $closingBraceIndex = $tokens[$openingBraceIndex]['scope_closer'];
 
         // Ignore closures
-        $nextIndex = $phpCsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $closingBraceIndex + 1, null, true);
+        $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $closingBraceIndex + 1, null, true);
         if (in_array($tokens[$nextIndex]['content'], [';', ',', ')'])) {
             return;
         }

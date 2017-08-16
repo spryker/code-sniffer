@@ -5,13 +5,13 @@
  */
 namespace Spryker\Sniffs\PHP;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Casts should only be used in their short form.
  */
-class ShortCastSniff implements PHP_CodeSniffer_Sniff
+class ShortCastSniff implements Sniff
 {
 
     /**
@@ -33,7 +33,7 @@ class ShortCastSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -43,7 +43,7 @@ class ShortCastSniff implements PHP_CodeSniffer_Sniff
                 return;
             }
 
-            $fix = $phpcsFile->addFixableError('`!!` cast not allowed, use `(bool)`', $stackPtr);
+            $fix = $phpcsFile->addFixableError('`!!` cast not allowed, use `(bool)`', $stackPtr, 'DoubleNotInvalid');
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($prevIndex, '');
                 $phpcsFile->fixer->replaceToken($stackPtr, '(bool)');
@@ -59,7 +59,7 @@ class ShortCastSniff implements PHP_CodeSniffer_Sniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError($content . ' found, expected ' . static::$matching[$key], $stackPtr);
+        $fix = $phpcsFile->addFixableError($content . ' found, expected ' . static::$matching[$key], $stackPtr, 'LongInvalid');
         if ($fix) {
             $phpcsFile->fixer->replaceToken($stackPtr, static::$matching[$key]);
         }

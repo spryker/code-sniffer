@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Whitespace;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -25,7 +25,7 @@ class MethodSpacingSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -85,13 +85,13 @@ class MethodSpacingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $from
      * @param int $to
      *
      * @return void
      */
-    protected function assertNoAdditionalNewlinesForEmptyBody(PHP_CodeSniffer_File $phpcsFile, $from, $to)
+    protected function assertNoAdditionalNewlinesForEmptyBody(File $phpcsFile, $from, $to)
     {
         $tokens = $phpcsFile->getTokens();
 

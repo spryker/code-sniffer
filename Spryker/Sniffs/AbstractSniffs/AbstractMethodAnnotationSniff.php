@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\AbstractSniffs;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 
 abstract class AbstractMethodAnnotationSniff extends AbstractSprykerSniff
 {
@@ -23,12 +23,12 @@ abstract class AbstractMethodAnnotationSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function hasDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasDocBlock(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -36,12 +36,12 @@ abstract class AbstractMethodAnnotationSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param string $className
      *
      * @return bool
      */
-    protected function fileExists(PHP_CodeSniffer_File $phpCsFile, $className)
+    protected function fileExists(File $phpCsFile, $className)
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);

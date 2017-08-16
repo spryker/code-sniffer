@@ -5,13 +5,13 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * No spaces around pipes in doc block hints.
  */
-class DocBlockPipeSpacingSniff implements PHP_CodeSniffer_Sniff
+class DocBlockPipeSpacingSniff implements Sniff
 {
 
     /**
@@ -27,7 +27,7 @@ class DocBlockPipeSpacingSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -72,7 +72,7 @@ class DocBlockPipeSpacingSniff implements PHP_CodeSniffer_Sniff
         $newContent = implode('|', $hints) . $desc;
 
         if ($newContent !== $content) {
-            $fix = $phpcsFile->addFixableError('There should be no space around pipes in doc blocks.', $stackPtr);
+            $fix = $phpcsFile->addFixableError('There should be no space around pipes in doc blocks.', $stackPtr, 'InvalidSpaceAroundPipes');
             if ($fix) {
                 $phpcsFile->fixer->replaceToken($stackPtr, $newContent);
             }

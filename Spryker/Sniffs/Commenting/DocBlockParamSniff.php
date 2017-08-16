@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\SignatureTrait;
@@ -32,7 +32,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -65,7 +65,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
             $classNameIndex = $i + 2;
 
             if ($tokens[$classNameIndex]['type'] !== 'T_DOC_COMMENT_STRING') {
-                $phpCsFile->addError('Missing type in param doc block', $i);
+                $phpCsFile->addError('Missing type in param doc block', $i, 'MissingType');
                 continue;
             }
 
@@ -90,7 +90,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
         }
 
         if (count($docBlockParams) !== count($methodSignature)) {
-            $phpCsFile->addError('Doc Block params do not match method signature', $stackPointer);
+            $phpCsFile->addError('Doc Block params do not match method signature', $stackPointer, 'SignatureMismatch');
             return;
         }
 

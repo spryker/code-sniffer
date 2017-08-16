@@ -1,9 +1,9 @@
 <?php
 namespace Spryker\Sniffs\Formatting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * @category PHP
@@ -16,7 +16,7 @@ use PHP_CodeSniffer_Tokens;
  *
  * @modified by Mark Scherer with some minor fixes and removal of error-prone parts
  */
-class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
+class ArrayDeclarationSniff implements Sniff
 {
 
     /**
@@ -32,7 +32,7 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -55,13 +55,13 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
     /**
      * Processes a single-line array definition.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The current file being checked.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
      * @param int $arrayStart The token that starts the array definition.
      * @param int $arrayEnd The token that ends the array definition.
      *
      * @return void
      */
-    public function processSingleLineArray(PHP_CodeSniffer_File $phpcsFile, $arrayStart, $arrayEnd)
+    public function processSingleLineArray(File $phpcsFile, $arrayStart, $arrayEnd)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -104,14 +104,14 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
     /**
      * Processes a multi-line array definition.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The current file being checked.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
      * @param int $stackPtr The position of the current token in the stack passed in $tokens.
      * @param int $arrayStart The token that starts the array definition.
      * @param int $arrayEnd The token that ends the array definition.
      *
      * @return void
      */
-    public function processMultiLineArray(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $arrayStart, $arrayEnd)
+    public function processMultiLineArray(File $phpcsFile, $stackPtr, $arrayStart, $arrayEnd)
     {
         $tokens = $phpcsFile->getTokens();
         $keywordStart = $tokens[$stackPtr]['column'];
@@ -236,7 +236,7 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
                     }
 
                     $valueContent = $phpcsFile->findNext(
-                        PHP_CodeSniffer_Tokens::$emptyTokens,
+                        Tokens::$emptyTokens,
                         ($lastToken + 1),
                         $nextToken,
                         true
@@ -273,7 +273,7 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
 
                 // Find the value of this index.
                 $nextContent = $phpcsFile->findNext(
-                    PHP_CodeSniffer_Tokens::$emptyTokens,
+                    Tokens::$emptyTokens,
                     ($nextToken + 1),
                     $arrayEnd,
                     true
@@ -290,7 +290,7 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
             $lastIndex = $indices[($count - 1)]['value'];
 
             $trailingContent = $phpcsFile->findPrevious(
-                PHP_CodeSniffer_Tokens::$emptyTokens,
+                Tokens::$emptyTokens,
                 ($arrayEnd - 1),
                 $lastIndex,
                 true
@@ -395,7 +395,7 @@ class ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
                 }
 
                 // Skip to the end of multi-line strings.
-                if (isset(PHP_CodeSniffer_Tokens::$stringTokens[$tokens[$i]['code']]) === true) {
+                if (isset(Tokens::$stringTokens[$tokens[$i]['code']]) === true) {
                     $i = $phpcsFile->findNext($tokens[$i]['code'], ($i + 1), null, true);
                     $i--;
                     $valueLine = $tokens[$i]['line'];

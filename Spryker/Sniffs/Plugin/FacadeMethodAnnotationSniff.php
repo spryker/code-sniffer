@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Plugin;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 
 /**
  * Spryker Plugin classes should have a getFacade() annotation.
@@ -13,7 +13,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isPlugin($phpCsFile, $stackPointer)) {
             return;
@@ -25,7 +25,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
         if (!$this->hasFacadeAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getFacadeClassName($phpCsFile))
         ) {
-            $fix = $phpCsFile->addFixableError('getFacade() annotation missing', $stackPointer);
+            $fix = $phpCsFile->addFixableError('getFacade() annotation missing', $stackPointer, 'Missing');
             if ($fix) {
                 $this->addFacadeAnnotation($phpCsFile, $stackPointer, $facadeName);
             }
@@ -33,12 +33,12 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    private function hasFacadeAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    private function hasFacadeAnnotation(File $phpCsFile, $stackPointer)
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -57,13 +57,13 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      * @param string $facadeName
      *
      * @return void
      */
-    private function addFacadeAnnotation(PHP_CodeSniffer_File $phpCsFile, $stackPointer, $facadeName)
+    private function addFacadeAnnotation(File $phpCsFile, $stackPointer, $facadeName)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -92,11 +92,11 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return array
      */
-    private function getFacadeClassName(PHP_CodeSniffer_File $phpCsFile)
+    private function getFacadeClassName(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

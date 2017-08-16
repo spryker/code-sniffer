@@ -5,13 +5,13 @@
 
 namespace Spryker\Sniffs\PHP;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Do not use aliases or long forms of functions.
  */
-class RemoveFunctionAliasSniff implements PHP_CodeSniffer_Sniff
+class RemoveFunctionAliasSniff implements Sniff
 {
 
     /**
@@ -47,7 +47,7 @@ class RemoveFunctionAliasSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -70,7 +70,7 @@ class RemoveFunctionAliasSniff implements PHP_CodeSniffer_Sniff
         }
 
         $error = 'Function name ' . $tokenContent . '() found, should be ' . static::$matching[$key] . '().';
-        $fix = $phpcsFile->addFixableError($error, $stackPtr);
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'LongInvalid');
         if ($fix) {
             $phpcsFile->fixer->replaceToken($stackPtr, static::$matching[$key]);
         }

@@ -5,7 +5,7 @@
 
 namespace Spryker\Sniffs\PHP;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -35,7 +35,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];
 
@@ -66,14 +66,14 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
 
         $error = $tokenContent . '() found, should be ' . static::$matching[$key] . ' cast.';
 
-        $fix = $phpcsFile->addFixableError($error, $stackPtr);
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MethodVsCast');
         if ($fix) {
             $this->fixContent($phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex);
         }
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      * @param string $key
      * @param int $openingBraceIndex
@@ -81,7 +81,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixContent(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex)
+    protected function fixContent(File $phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex)
     {
         $needsBrackets = $this->needsBrackets($phpcsFile, $openingBraceIndex, $closingBraceIndex);
 

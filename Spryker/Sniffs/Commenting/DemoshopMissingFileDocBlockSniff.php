@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 
 /**
  * Checks if file doc block exists
@@ -11,12 +11,12 @@ class DemoshopMissingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
 {
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isPyzNamespace($phpCsFile, $stackPointer)) {
             return;
@@ -28,14 +28,14 @@ class DemoshopMissingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    protected function addFixableMissingDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function addFixableMissingDocBlock(File $phpCsFile, $stackPointer)
     {
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer);
+        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'FileDocBlockMissing');
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
         }

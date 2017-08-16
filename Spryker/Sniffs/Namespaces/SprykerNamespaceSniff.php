@@ -5,14 +5,14 @@
 
 namespace Spryker\Sniffs\Namespaces;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use Spryker\Traits\BasicsTrait;
 
 /**
  * Makes sure the namespace declared in each class file fits to the folder structure.
  */
-class SprykerNamespaceSniff implements PHP_CodeSniffer_Sniff
+class SprykerNamespaceSniff implements Sniff
 {
 
     use BasicsTrait;
@@ -28,7 +28,7 @@ class SprykerNamespaceSniff implements PHP_CodeSniffer_Sniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
         if (!$namespaceStatement) {
@@ -52,7 +52,7 @@ class SprykerNamespaceSniff implements PHP_CodeSniffer_Sniff
         }
 
         $error = sprintf('Namespace `%s` does not fit to folder structure `%s`', $namespace, $pathToNamespace);
-        $phpcsFile->addError($error, $namespaceStatement['start']);
+        $phpcsFile->addError($error, $namespaceStatement['start'], 'NamespaceFolderMismatch');
     }
 
 }

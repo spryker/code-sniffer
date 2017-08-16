@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 
 /**
  * Checks if Spryker Demoshop's files have doc block comment and have the expected content.
@@ -18,7 +18,7 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isPyzNamespace($phpCsFile, $stackPointer) || !$this->isDemoshop($phpCsFile)) {
             return;
@@ -32,12 +32,12 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function hasNotExpectedLength(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasNotExpectedLength(File $phpCsFile, $stackPointer)
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -45,12 +45,12 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function hasWrongContent(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasWrongContent(File $phpCsFile, $stackPointer)
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -66,12 +66,12 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return array
      */
-    protected function getFileDocBlockTokens(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getFileDocBlockTokens(File $phpCsFile, $stackPointer)
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
         $fileDocBlockEndPosition = $phpCsFile->findNext(T_DOC_COMMENT_CLOSE_TAG, $fileDocBlockStartPosition) + 1;
@@ -82,14 +82,14 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    protected function addFixableExistingDocBlock(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function addFixableExistingDocBlock(File $phpCsFile, $stackPointer)
     {
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer);
+        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'FileDocBlockWrong');
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
         }

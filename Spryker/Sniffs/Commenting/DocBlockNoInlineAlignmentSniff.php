@@ -5,7 +5,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -28,7 +28,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     /**
      * @inheritdoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -41,12 +41,12 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkTag(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkTag(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -66,19 +66,19 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('There should be no additional whitespace around doc block tag types.', $stackPtr);
+        $fix = $phpcsFile->addFixableError('There should be no additional whitespace around doc block tag types.', $stackPtr, 'WhitespaceAroundTypes');
         if ($fix) {
             $phpcsFile->fixer->replaceToken($followingWhitespace, ' ');
         }
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkDescription(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function checkDescription(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -88,7 +88,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('There should be no inline alignment in doc blocks descriptions.', $stackPtr);
+        $fix = $phpcsFile->addFixableError('There should be no inline alignment in doc blocks descriptions.', $stackPtr, 'DocBlockInlineAlignment');
         if ($fix) {
             $newContent = preg_replace('/\s\s+/', ' ', $content);
             $phpcsFile->fixer->replaceToken($stackPtr, $newContent);

@@ -2,13 +2,13 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Sniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Checks if methods of Spryker facade API classes have a matching interface method.
  */
-class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
+class SprykerFacadeSniff implements Sniff
 {
 
     /**
@@ -22,12 +22,12 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isSprykerFacadeApiClass($phpCsFile, $stackPointer)) {
             return;
@@ -44,30 +44,30 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
     /**
      * Facades must have a matching interface.
      *
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    protected function checkFacade(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function checkFacade(File $phpCsFile, $stackPointer)
     {
         $name = $this->findClassOrInterfaceName($phpCsFile, $stackPointer);
         $facadeInterfaceFile = str_replace('Facade.php', 'FacadeInterface.php', $phpCsFile->getFilename());
 
         if (!file_exists($facadeInterfaceFile)) {
-            $phpCsFile->addError('FacadeInterface missing for ' . $name, $stackPointer);
+            $phpCsFile->addError('FacadeInterface missing for ' . $name, $stackPointer, 'InterfaceMissing');
         }
     }
 
     /**
      * Facade interfaces must have a "Specification" block as part of the contract.
      *
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
      */
-    protected function checkInterface(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function checkInterface(File $phpCsFile, $stackPointer)
     {
         $facadeFile = str_replace('FacadeInterface.php', 'Facade.php', $phpCsFile->getFilename());
 
@@ -85,19 +85,19 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
             $missingMethods = array_diff($methods, $interfaceMethods);
 
             $phpCsFile->addError(
-                sprintf('Interface methods do not match facade methods: "%s" missing', implode(', ', $missingMethods)),
+                sprintf('Interface methods do not match facade methods: "%s" missing', implode(', ', $missingMethods), 'InterfaceMethodsNotMatch'),
                 $stackPointer
             );
         }
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function isSprykerFacadeApiClass(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function isSprykerFacadeApiClass(File $phpCsFile, $stackPointer)
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer)) {
             return false;
@@ -117,12 +117,12 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
      */
-    protected function hasNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function hasNamespace(File $phpCsFile, $stackPointer)
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         if (!$namespacePosition) {
@@ -133,12 +133,12 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return string
      */
-    protected function getNamespace(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function getNamespace(File $phpCsFile, $stackPointer)
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
@@ -155,12 +155,12 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return string
      */
-    protected function findClassOrInterfaceName(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    protected function findClassOrInterfaceName(File $phpCsFile, $stackPointer)
     {
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
 
@@ -168,7 +168,7 @@ class SprykerFacadeSniff implements PHP_CodeSniffer_Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool

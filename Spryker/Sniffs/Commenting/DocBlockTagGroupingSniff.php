@@ -2,8 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Tools\Traits\CommentingTrait;
 
@@ -30,13 +30,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPtr)
+    public function process(File $phpCsFile, $stackPtr)
     {
         $tokens = $phpCsFile->getTokens();
 
         // Don't mess with closures
-        $prevIndex = $phpCsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
-        if (!$this->isGivenKind(PHP_CodeSniffer_Tokens::$methodPrefixes, $tokens[$prevIndex])) {
+        $prevIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
+        if (!$this->isGivenKind(Tokens::$methodPrefixes, $tokens[$prevIndex])) {
             return;
         }
 
@@ -58,13 +58,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
      * @return void
      */
-    protected function checkFirstAnnotationTag(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function checkFirstAnnotationTag(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -84,7 +84,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Expected 1 extra new line before tags, got ' . ($diff - 1), $nextIndex);
+        $fix = $phpCsFile->addFixableError('Expected 1 extra new line before tags, got ' . ($diff - 1), $nextIndex, 'ExtraLineMissing');
         if (!$fix) {
             return;
         }
@@ -119,13 +119,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
      * @return void
      */
-    protected function checkLastAnnotationTag(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function checkLastAnnotationTag(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -139,7 +139,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Expected no extra blank line after tags, got ' . ($diff - 1), $prevIndex);
+        $fix = $phpCsFile->addFixableError('Expected no extra blank line after tags, got ' . ($diff - 1), $prevIndex, 'NoExtraNewlineAfterTags');
         if (!$fix) {
             return;
         }
@@ -157,13 +157,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $nextIndex
      *
      * @return void
      */
-    protected function checkBeginningOfDocBlock(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $nextIndex)
+    protected function checkBeginningOfDocBlock(File $phpCsFile, $docBlockStartIndex, $nextIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -172,8 +172,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Expected no extra blank line before tags, got ' . ($diff - 1), $nextIndex);
-        if (!$fix) {
+        $fix = $phpCsFile->addFixableError('Expected no extra blank line before tags, got ' . ($diff - 1), $nextIndex, 'NoExtraNewlineBeforeTags');
+        if ($fix) {
             return;
         }
 
@@ -190,13 +190,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
      * @return void
      */
-    protected function checkAnnotationTagGrouping(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function checkAnnotationTagGrouping(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
         $tags = $this->readTags($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
 
@@ -218,13 +218,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
      * @return array
      */
-    protected function readTags(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function readTags(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -316,13 +316,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array $first
      * @param array $second
      *
      * @return void
      */
-    protected function assertNoSpacing(PHP_CodeSniffer_File $phpCsFile, array $first, array $second)
+    protected function assertNoSpacing(File $phpCsFile, array $first, array $second)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -336,7 +336,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('No newline expected between tags of the same type `' . $first['tag'] . '`', $tagIndexOfSecond);
+        $fix = $phpCsFile->addFixableError('No newline expected between tags of the same type `' . $first['tag'] . '`', $tagIndexOfSecond, 'NoNewlineBetweenSameType');
         if (!$fix) {
             return;
         }
@@ -355,13 +355,13 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array $first
      * @param array $second
      *
      * @return void
      */
-    protected function assertSpacing(PHP_CodeSniffer_File $phpCsFile, array $first, array $second)
+    protected function assertSpacing(File $phpCsFile, array $first, array $second)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -375,7 +375,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('A single newline expected between tags of different types `' . $first['tag'] . '`/`' . $second['tag'] . '`', $tagIndexOfSecond);
+        $error = 'A single newline expected between tags of different types `' . $first['tag'] . '`/`' . $second['tag'] . '`';
+        $fix = $phpCsFile->addFixableError($error, $tagIndexOfSecond, 'NewlineBetweenDifferentTypes');
         if (!$fix) {
             return;
         }

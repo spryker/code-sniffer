@@ -119,8 +119,7 @@ vendor/bin/phpcs --standard=Spryker/ruleset.xml Spryker/Sniffs/ -v -s ./
 
 Don't forget to test your changes:
 ```
-./setup.sh
-php phpunit.phar
+composer test
 ```
 
 Also run `composer docs` to generate new sniff list.

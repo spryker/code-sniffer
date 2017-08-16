@@ -14,9 +14,9 @@
 
 namespace Spryker\Sniffs\Classes;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Standards_AbstractScopeSniff;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * PSR2_Sniffs_Methods_MethodDeclarationSniff.
@@ -29,7 +29,7 @@ use PHP_CodeSniffer_Tokens;
  * @version Release: @package_version@
  * @link http://pear.php.net/package/PHP_CodeSniffer
  */
-class MethodDeclarationSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff
+class MethodDeclarationSniff extends AbstractScopeSniff
 {
 
     /**
@@ -43,7 +43,7 @@ class MethodDeclarationSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
     /**
      * @inheritDoc
      */
-    protected function processTokenWithinScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope)
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -58,12 +58,12 @@ class MethodDeclarationSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
         $abstract = 0;
         $final = 0;
 
-        $find = PHP_CodeSniffer_Tokens::$methodPrefixes;
+        $find = Tokens::$methodPrefixes;
         $find[] = T_WHITESPACE;
         $prev = $phpcsFile->findPrevious($find, ($stackPtr - 1), null, true);
 
         $prefix = $stackPtr;
-        while (($prefix = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$methodPrefixes, ($prefix - 1), $prev)) !== false) {
+        while (($prefix = $phpcsFile->findPrevious(Tokens::$methodPrefixes, ($prefix - 1), $prev)) !== false) {
             switch ($tokens[$prefix]['code']) {
                 case T_STATIC:
                     $static = $prefix;
@@ -133,6 +133,16 @@ class MethodDeclarationSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
 
             $phpcsFile->fixer->endChangeset();
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    {
     }
 
 }

@@ -2,8 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\SignatureTrait;
@@ -29,19 +29,19 @@ class DocBlockSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $nextIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         if ($tokens[$nextIndex]['content'] === '__construct' || $tokens[$nextIndex]['content'] === '__destruct') {
             $this->checkConstructorAndDestructor($phpcsFile, $nextIndex);
             return;
         }
 
         // Don't mess with closures
-        $prevIndex = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr - 1, null, true);
-        if (!$this->isGivenKind(PHP_CodeSniffer_Tokens::$methodPrefixes, $tokens[$prevIndex])) {
+        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
+        if (!$this->isGivenKind(Tokens::$methodPrefixes, $tokens[$prevIndex])) {
             return;
         }
 
@@ -53,11 +53,11 @@ class DocBlockSniff extends AbstractSprykerSniff
         // We only look for void methods right now
         $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
         if ($returnType === null) {
-            $phpcsFile->addError('Method does not have a doc block: ' . $tokens[$nextIndex]['content'] . '()', $nextIndex);
+            $phpcsFile->addError('Method does not have a doc block: ' . $tokens[$nextIndex]['content'] . '()', $nextIndex, 'DocBlockMissing');
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('Method does not have a return void statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex);
+        $fix = $phpcsFile->addFixableError('Method does not have a return void statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnVoidMissing');
         if (!$fix) {
             return;
         }
@@ -66,13 +66,13 @@ class DocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      * @param string $returnType
      *
      * @return void
      */
-    protected function addDocBlock(PHP_CodeSniffer_File $phpcsFile, $index, $returnType)
+    protected function addDocBlock(File $phpcsFile, $index, $returnType)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -91,12 +91,12 @@ class DocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return void
      */
-    protected function checkConstructorAndDestructor(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function checkConstructorAndDestructor(File $phpcsFile, $index)
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $index);
         if ($docBlockEndIndex) {
@@ -113,13 +113,13 @@ class DocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
      * @return int|null
      */
-    protected function findDocBlockReturn(PHP_CodeSniffer_File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function findDocBlockReturn(File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -140,12 +140,12 @@ class DocBlockSniff extends AbstractSprykerSniff
     /**
      * For right now we only try to detect void.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
      *
      * @return string|null
      */
-    protected function detectReturnTypeVoid(PHP_CodeSniffer_File $phpcsFile, $index)
+    protected function detectReturnTypeVoid(File $phpcsFile, $index)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -169,7 +169,7 @@ class DocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $nextIndex = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $i + 1, null, true);
+            $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $i + 1, null, true);
             if (!$this->isGivenKind(T_SEMICOLON, $tokens[$nextIndex])) {
                 return null;
             }

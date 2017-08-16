@@ -1,8 +1,8 @@
 <?php
 namespace Spryker\Sniffs\Namespaces;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\NamespaceTrait;
@@ -27,7 +27,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -41,7 +41,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
         }
 
         $classNameIndex = $phpcsFile->findPrevious(
-            PHP_CodeSniffer_Tokens::$emptyTokens,
+            Tokens::$emptyTokens,
             ($semicolonIndex - 1),
             null,
             true
@@ -90,12 +90,12 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $classNameIndex
      *
      * @return bool
      */
-    protected function isClassUnused(PHP_CodeSniffer_File $phpcsFile, $classNameIndex)
+    protected function isClassUnused(File $phpcsFile, $classNameIndex)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -103,7 +103,7 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
 
         while ($classUsed !== false) {
             $beforeUsage = $phpcsFile->findPrevious(
-                PHP_CodeSniffer_Tokens::$emptyTokens,
+                Tokens::$emptyTokens,
                 ($classUsed - 1),
                 null,
                 true
@@ -125,12 +125,12 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer_File $phpcsFile
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $classNameIndex
      *
      * @return bool
      */
-    protected function isClassNotUsedInDocBlock(PHP_CodeSniffer_File $phpcsFile, $classNameIndex)
+    protected function isClassNotUsedInDocBlock(File $phpcsFile, $classNameIndex)
     {
         $tokens = $phpcsFile->getTokens();
 

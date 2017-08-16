@@ -2,9 +2,9 @@
 
 namespace Spryker\Sniffs\Whitespace;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Standards_AbstractVariableSniff;
-use PHP_CodeSniffer_Tokens;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Checks that the member var declarations have correct spacing.
@@ -12,17 +12,17 @@ use PHP_CodeSniffer_Tokens;
  * @author Mark Scherer
  * @license MIT
  */
-class MemberVarSpacingSniff extends PHP_CodeSniffer_Standards_AbstractVariableSniff
+class MemberVarSpacingSniff extends AbstractVariableSniff
 {
 
     /**
      * @inheritdoc
      */
-    protected function processMemberVar(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function processMemberVar(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
-        $ignore = PHP_CodeSniffer_Tokens::$methodPrefixes;
+        $ignore = Tokens::$methodPrefixes;
         $ignore[] = T_VAR;
         $ignore[] = T_WHITESPACE;
 
@@ -62,7 +62,7 @@ class MemberVarSpacingSniff extends PHP_CodeSniffer_Standards_AbstractVariableSn
     /**
      * @inheritdoc
      */
-    protected function processVariable(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function processVariable(File $phpcsFile, $stackPtr)
     {
         // We don't care about normal variables.
     }
@@ -70,7 +70,7 @@ class MemberVarSpacingSniff extends PHP_CodeSniffer_Standards_AbstractVariableSn
     /**
      * @inheritdoc
      */
-    protected function processVariableInString(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    protected function processVariableInString(File $phpcsFile, $stackPtr)
     {
         // We don't care about normal variables.
     }

@@ -2,8 +2,8 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
-use PHP_CodeSniffer_Standards_AbstractScopeSniff;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
 /**
  * Verifies that a `@return` tag exists for all functions and methods and that it does not exist
@@ -12,7 +12,7 @@ use PHP_CodeSniffer_Standards_AbstractScopeSniff;
  * @author Mark Scherer
  * @license MIT
  */
-class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff
+class DocBlockReturnTagSniff extends AbstractScopeSniff
 {
 
     /**
@@ -26,13 +26,13 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
     /**
      * Processes the function tokens within the class.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file where this token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
      * @param int $stackPtr The position where the token was found.
      * @param int $currScope The current scope opener token.
      *
      * @return void
      */
-    protected function processTokenWithinScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope)
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -92,6 +92,16 @@ class DocBlockReturnTagSniff extends PHP_CodeSniffer_Standards_AbstractScopeSnif
             }
             return;
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    {
     }
 
 }

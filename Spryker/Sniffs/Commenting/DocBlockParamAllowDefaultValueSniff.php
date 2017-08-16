@@ -2,7 +2,7 @@
 
 namespace Spryker\Sniffs\Commenting;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\SignatureTrait;
@@ -33,7 +33,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(PHP_CodeSniffer_File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer)
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -68,7 +68,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             $classNameIndex = $i + 2;
 
             if ($tokens[$classNameIndex]['type'] !== 'T_DOC_COMMENT_STRING') {
-                $phpCsFile->addError('Missing type in param doc block', $i);
+                $phpCsFile->addError('Missing type in param doc block', $i, 'TypeMissing');
                 continue;
             }
 

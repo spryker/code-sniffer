@@ -1,7 +1,7 @@
 <?php
 namespace Spryker\Tools\Traits;
 
-use PHP_CodeSniffer_File;
+use PHP_CodeSniffer\Files\File;
 
 /**
  * Common functionality around commenting.
@@ -12,13 +12,13 @@ trait CommentingTrait
     /**
      * Looks for either `@inheritdoc` or `{@inheritdoc}`.
      *
-     * @param \PHP_CodeSniffer_File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
      * @return bool
      */
-    protected function hasInheritDoc(PHP_CodeSniffer_File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function hasInheritDoc(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
     {
         $tokens = $phpCsFile->getTokens();
 
