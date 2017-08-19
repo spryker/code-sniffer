@@ -19,9 +19,9 @@ class EmptyLinesSniff extends AbstractSprykerSniff
      * @var array
      */
     public $supportedTokenizers = [
-    'PHP',
-    'JS',
-    'CSS',
+        'PHP',
+        'JS',
+        'CSS',
     ];
 
     /**
