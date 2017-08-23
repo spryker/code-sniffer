@@ -21,7 +21,6 @@ class DemoshopFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
     public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isPyzNamespace($phpCsFile, $stackPointer) || !$this->isDemoshop($phpCsFile)) {
-            $this->checkCustomFileDocBlock($phpCsFile, $stackPointer);
             return;
         }
 
@@ -46,38 +45,6 @@ class DemoshopFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
         $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'FileDocBlockMissing');
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
-        }
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
-    protected function checkCustomFileDocBlock(File $phpCsFile, $stackPointer)
-    {
-        $file = getcwd() . DIRECTORY_SEPARATOR . '.license';
-        $license = $this->getLicense($file);
-        if (!$license) {
-            return;
-        }
-
-        if (!$this->existsFileDocBlock($phpCsFile, $stackPointer)) {
-            $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'CustomFileDocBlockMissing');
-            if ($fix) {
-                $this->addFileDocBlock($phpCsFile, 0);
-            }
-            return;
-        }
-
-        if ($this->isCustomFileDocBlock($phpCsFile, $stackPointer, $license)) {
-            return;
-        }
-
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'CustomFileDocBlockWrong');
-        if ($fix) {
-            $this->addCustomFileDocBlock($phpCsFile, 0, $license);
         }
     }
 
