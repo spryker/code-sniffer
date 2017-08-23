@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker/ruleset.xml standard contains 100 sniffs
+The Spryker standard contains 103 sniffs
 
 Generic (15 sniffs)
 -------------------
@@ -37,17 +37,18 @@ PSR2 (7 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-Spryker (56 sniffs)
+Spryker (59 sniffs)
 -------------------
 - Spryker.Classes.ClassDeclaration
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
 - Spryker.Classes.MethodDeclaration
-- Spryker.Commenting.DemoshopExistingFileDocBlock
-- Spryker.Commenting.DemoshopMissingFileDocBlock
+- Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
 - Spryker.Commenting.DocBlockNoInlineAlignment
+- Spryker.Commenting.DocBlockParam
 - Spryker.Commenting.DocBlockParamAllowDefaultValue
+- Spryker.Commenting.DocBlockParamNotJustNull
 - Spryker.Commenting.DocBlockPipeSpacing
 - Spryker.Commenting.DocBlockReturnSelf
 - Spryker.Commenting.DocBlockReturnTag
@@ -55,12 +56,12 @@ Spryker (56 sniffs)
 - Spryker.Commenting.DocBlockTagGrouping
 - Spryker.Commenting.DocBlockTagOrder
 - Spryker.Commenting.DocBlockTestGroupAnnotation
+- Spryker.Commenting.DocBlockTestGroupAnnotation2
 - Spryker.Commenting.DocBlockThrows
 - Spryker.Commenting.DocBlockVar
-- Spryker.Commenting.ExistingFileDocBlock
+- Spryker.Commenting.FileDocBlock
 - Spryker.Commenting.FullyQualifiedClassNameInDocBlock
 - Spryker.Commenting.InlineDocBlock
-- Spryker.Commenting.MissingFileDocBlock
 - Spryker.Commenting.SprykerFacade
 - Spryker.ControlStructures.ConditionalExpressionOrder
 - Spryker.ControlStructures.ControlStructureSpacing
@@ -73,11 +74,13 @@ Spryker (56 sniffs)
 - Spryker.Factory.OneNewPerMethod
 - Spryker.Factory.QueryContainerMethodAnnotation
 - Spryker.Formatting.ArrayDeclaration
+- Spryker.Internal.SprykerNoDemoshop
 - Spryker.Namespaces.SprykerNamespace
 - Spryker.Namespaces.SprykerNoPyz
 - Spryker.Namespaces.SprykerUseStatement
 - Spryker.Namespaces.UnusedUseStatement
 - Spryker.Namespaces.UseInAlphabeticalOrder
+- Spryker.Namespaces.UseWithLeadingBackslash
 - Spryker.PHP.NoIsNull
 - Spryker.PHP.PhpSapiConstant
 - Spryker.PHP.PreferCastOverFunction
@@ -85,16 +88,16 @@ Spryker (56 sniffs)
 - Spryker.PHP.ShortCast
 - Spryker.Plugin.FacadeMethodAnnotation
 - Spryker.Plugin.FactoryMethodAnnotation
-- Spryker.Whitespace.CommaSpacing
-- Spryker.Whitespace.ConcatenationSpacing
-- Spryker.Whitespace.EmptyEnclosingLine
-- Spryker.Whitespace.EmptyLines
-- Spryker.Whitespace.FunctionSpacing
-- Spryker.Whitespace.ImplicitCastSpacing
-- Spryker.Whitespace.MemberVarSpacing
-- Spryker.Whitespace.MethodSpacing
-- Spryker.Whitespace.ObjectAttributeSpacing
-- Spryker.Whitespace.OperatorSpacing
+- Spryker.WhiteSpace.CommaSpacing
+- Spryker.WhiteSpace.ConcatenationSpacing
+- Spryker.WhiteSpace.EmptyEnclosingLine
+- Spryker.WhiteSpace.EmptyLines
+- Spryker.WhiteSpace.FunctionSpacing
+- Spryker.WhiteSpace.ImplicitCastSpacing
+- Spryker.WhiteSpace.MemberVarSpacing
+- Spryker.WhiteSpace.MethodSpacing
+- Spryker.WhiteSpace.ObjectAttributeSpacing
+- Spryker.WhiteSpace.OperatorSpacing
 
 Squiz (18 sniffs)
 -----------------
@@ -103,8 +106,8 @@ Squiz (18 sniffs)
 - Squiz.Commenting.DocCommentAlignment
 - Squiz.ControlStructures.ForEachLoopDeclaration
 - Squiz.ControlStructures.LowercaseDeclaration
-- Squiz.Functions.FunctionDeclarationArgumentSpacing
 - Squiz.Functions.FunctionDeclaration
+- Squiz.Functions.FunctionDeclarationArgumentSpacing
 - Squiz.Functions.MultiLineFunctionDeclaration
 - Squiz.Operators.ValidLogicalOperators
 - Squiz.PHP.Eval
@@ -117,6 +120,6 @@ Squiz (18 sniffs)
 - Squiz.WhiteSpace.SemicolonSpacing
 - Squiz.WhiteSpace.SuperfluousWhitespace
 
-Zend (1 sniffs)
+Zend (1 sniff)
 ---------------
 - Zend.Files.ClosingTag;
