@@ -110,10 +110,4 @@
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
-    <rule ref="Spryker.Commenting.ExistingFileDocBlock">
-        <properties>
-            <property name="ignorableBundles" type="array" value="Payolution"/>
-        </properties>
-    </rule>
-
 </ruleset>
