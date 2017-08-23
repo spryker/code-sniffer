@@ -16,8 +16,6 @@ if (!class_exists(Config::class) && file_exists($manualAutoload)) {
 class Tokenizer
 {
 
-    const STANDARD = 'Spryker/ruleset.xml';
-
     /**
      * @var string
      */
