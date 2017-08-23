@@ -35,6 +35,14 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     ];
 
     /**
+     * Cache of licenses to avoid file lookups.
+     *
+     * @var array
+     */
+    protected $licenseMap = [];
+
+
+    /**
      * @return array
      */
     public function register()
@@ -42,6 +50,28 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
         return [
             T_NAMESPACE
         ];
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return string
+     */
+    protected function getLicense($file)
+    {
+        if (isset($this->licenseMap[$file])) {
+            return $this->licenseMap[$file];
+        }
+
+        if (!file_exists($file)) {
+            $this->licenseMap[$file] = '';
+            return '';
+        }
+
+        $license = (string)file_get_contents($file);
+        $this->licenseMap[$file] = $license;
+
+        return $license;
     }
 
     /**
@@ -107,6 +137,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->addContent($stackPointer, ' */');
         $phpCsFile->fixer->addNewline($stackPointer);
         $phpCsFile->fixer->addNewline($stackPointer);
+
         $phpCsFile->fixer->endChangeset();
     }
 
