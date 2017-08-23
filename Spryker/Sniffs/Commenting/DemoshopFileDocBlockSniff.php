@@ -8,7 +8,7 @@ use PHP_CodeSniffer\Files\File;
  * Checks if Spryker Demoshop's files have doc block comment and have the expected content.
  * This sniff is skipped for customer's projects.
  */
-class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
+class DemoshopFileDocBlockSniff extends AbstractDemoshopFileDocBlockSniff
 {
 
     const FIRST_COMMENT_LINE_POSITION = 5;
@@ -21,13 +21,63 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
     public function process(File $phpCsFile, $stackPointer)
     {
         if (!$this->isPyzNamespace($phpCsFile, $stackPointer) || !$this->isDemoshop($phpCsFile)) {
+            $this->checkCustomFileDocBlock($phpCsFile, $stackPointer);
             return;
         }
 
-        if ($this->existsFileDocBlock($phpCsFile, $stackPointer)
-            && ($this->hasNotExpectedLength($phpCsFile, $stackPointer) || $this->hasWrongContent($phpCsFile, $stackPointer))
-        ) {
+        if (!$this->existsFileDocBlock($phpCsFile, $stackPointer)) {
+            $this->addFixableMissingDocblock($phpCsFile, $stackPointer);
+            return;
+        }
+
+        if ($this->hasNotExpectedLength($phpCsFile, $stackPointer) || $this->hasWrongContent($phpCsFile, $stackPointer)) {
             $this->addFixableExistingDocBlock($phpCsFile, $stackPointer);
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function addFixableMissingDocBlock(File $phpCsFile, $stackPointer)
+    {
+        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'FileDocBlockMissing');
+        if ($fix) {
+            $this->addFileDocBlock($phpCsFile, 0);
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function checkCustomFileDocBlock(File $phpCsFile, $stackPointer)
+    {
+        $file = getcwd() . DIRECTORY_SEPARATOR . '.license';
+        $license = $this->getLicense($file);
+        if (!$license) {
+            return;
+        }
+
+        if (!$this->existsFileDocBlock($phpCsFile, $stackPointer)) {
+            $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'CustomFileDocBlockMissing');
+            if ($fix) {
+                $this->addFileDocBlock($phpCsFile, 0);
+            }
+            return;
+        }
+
+        if ($this->isCustomFileDocBlock($phpCsFile, $stackPointer, $license)) {
+            return;
+        }
+
+        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'CustomFileDocBlockWrong');
+        if ($fix) {
+            $this->addCustomFileDocBlock($phpCsFile, 0, $license);
         }
     }
 
@@ -63,22 +113,6 @@ class DemoshopExistingFileDocBlockSniff extends AbstractDemoshopFileDocBlockSnif
         }
 
         return false;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return array
-     */
-    protected function getFileDocBlockTokens(File $phpCsFile, $stackPointer)
-    {
-        $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
-        $fileDocBlockEndPosition = $phpCsFile->findNext(T_DOC_COMMENT_CLOSE_TAG, $fileDocBlockStartPosition) + 1;
-
-        $tokens = $phpCsFile->getTokens();
-
-        return array_slice($tokens, $fileDocBlockStartPosition, $fileDocBlockEndPosition - $fileDocBlockStartPosition);
     }
 
     /**

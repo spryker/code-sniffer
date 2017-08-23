@@ -3,9 +3,8 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
 
-abstract class AbstractDemoshopFileDocBlockSniff implements Sniff
+abstract class AbstractDemoshopFileDocBlockSniff extends AbstractFileDocBlockSniff
 {
 
     const EXPECTED_COMMENT_FIRST_LINE_STRING = 'This file is part of the Spryker Demoshop.';
