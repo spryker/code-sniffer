@@ -44,7 +44,7 @@ class SprykerUseStatementSniff implements Sniff
      */
     public function register()
     {
-        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT, T_INSTANCEOF];
+        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT, T_INSTANCEOF, T_CATCH];
     }
 
     /**
@@ -69,6 +69,8 @@ class SprykerUseStatementSniff implements Sniff
             $this->checkUseForStatic($phpcsFile, $stackPtr);
         } elseif ($tokens[$stackPtr]['code'] === T_INSTANCEOF) {
             $this->checkUseForInstanceOf($phpcsFile, $stackPtr);
+        } elseif ($tokens[$stackPtr]['code'] === T_CATCH) {
+            $this->checkUseForCatch($phpcsFile, $stackPtr);
         } else {
             $this->checkUseForSignature($phpcsFile, $stackPtr);
         }
@@ -353,6 +355,77 @@ class SprykerUseStatementSniff implements Sniff
 
         $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
         $firstSeparatorIndex = $classNameIndex;
+
+        for ($k = $lastSeparatorIndex; $k > $firstSeparatorIndex; --$k) {
+            $phpcsFile->fixer->replaceToken($k, '');
+        }
+        $phpcsFile->fixer->replaceToken($firstSeparatorIndex, '');
+
+        if ($addedUseStatement['alias'] !== null) {
+            $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
+            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+                $phpcsFile->fixer->replaceToken($k, '');
+            }
+        }
+
+        $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    public function checkUseForCatch(File $phpcsFile, $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $openParenthesisIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
+        $closeParenthesisIndex = $tokens[$openParenthesisIndex]['parenthesis_closer'];
+        $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $openParenthesisIndex + 1, null, true);
+
+        $lastIndex = null;
+        $i = $classNameIndex;
+        $extractedUseStatement = '';
+        $lastSeparatorIndex = null;
+        while ($i < $closeParenthesisIndex) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING], $tokens[$i])) {
+                break;
+            }
+            $lastIndex = $i;
+            $extractedUseStatement .= $tokens[$i]['content'];
+
+            if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$i])) {
+                $lastSeparatorIndex = $i;
+            }
+            ++$i;
+        }
+
+        if ($lastIndex === null || $lastSeparatorIndex === null) {
+            return;
+        }
+
+        $extractedUseStatement = ltrim($extractedUseStatement, '\\');
+
+        $className = '';
+        for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+            $className .= $tokens[$k]['content'];
+        }
+
+        $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
+        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Catch');
+        if (!$fix) {
+            return;
+        }
+
+        $startIndex = $openParenthesisIndex;
+
+        $phpcsFile->fixer->beginChangeset();
+
+        $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
+
+        $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
         for ($k = $lastSeparatorIndex; $k > $firstSeparatorIndex; --$k) {
             $phpcsFile->fixer->replaceToken($k, '');
