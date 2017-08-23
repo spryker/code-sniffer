@@ -36,6 +36,9 @@
       "Spryker\\": "Spryker"
     }
   },
+  "bin": [
+    "bin/tokenize"
+  ],
   "support": {
     "source": "https://github.com/spryker/code-sniffer"
   }
