@@ -31,14 +31,37 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
             return;
         }
 
+        $customLicense = $this->findCustomLicense($phpCsFile);
+
         if (!$this->existsFileDocBlock($phpCsFile, $stackPointer)) {
-            $this->addFixableMissingDocBlock($phpCsFile, $stackPointer);
+            if ($customLicense) {
+                $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'CustomFileDocBlockMissing');
+                if ($fix) {
+                    $this->addCustomFileDocBlock($phpCsFile, 0, $customLicense);
+                }
+            } else {
+                $this->addFixableMissingDocBlock($phpCsFile, $stackPointer);
+            }
             return;
         }
 
-        if ($this->isOwnFileDocBlock($phpCsFile, $stackPointer)
-            && ($this->hasNotExpectedLength($phpCsFile, $stackPointer) || $this->hasWrongContent($phpCsFile, $stackPointer))
-        ) {
+        if (!$this->isOwnFileDocBlock($phpCsFile, $stackPointer)) {
+            return;
+        }
+
+        if ($this->isCustomFileDocBlock($phpCsFile, $stackPointer, $customLicense)) {
+            return;
+        }
+
+        if ($customLicense) {
+            $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'FileDocBlockWrong');
+            if ($fix) {
+                $this->addCustomFileDocBlock($phpCsFile, 0, $customLicense);
+            }
+            return;
+        }
+
+        if ($this->hasNotExpectedLength($phpCsFile, $stackPointer) || $this->hasWrongContent($phpCsFile, $stackPointer)) {
             $this->addFixableExistingDocBlock($phpCsFile, $stackPointer);
         }
     }
@@ -132,6 +155,31 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return null|string
+     */
+    protected function findCustomLicense(File $phpCsFile)
+    {
+        $path = str_replace(getcwd(), '', $phpCsFile->getFilename());
+
+        if (strpos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR) === 0) {
+            $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
+            array_shift($pathArray);
+            array_shift($pathArray);
+            array_shift($pathArray);
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
+                . 'spryker' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR
+                . 'Bundles' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
+
+            return $this->getLicense($path) ?: null;
+        }
+
+        return null;
     }
 
 }

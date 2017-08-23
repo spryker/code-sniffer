@@ -52,23 +52,23 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param string $file
+     * @param string $path
      *
      * @return string
      */
-    protected function getLicense($file)
+    protected function getLicense($path)
     {
-        if (isset($this->licenseMap[$file])) {
-            return $this->licenseMap[$file];
+        if (isset($this->licenseMap[$path])) {
+            return $this->licenseMap[$path];
         }
 
-        if (!file_exists($file)) {
-            $this->licenseMap[$file] = '';
+        if (!file_exists($path . '.license')) {
+            $this->licenseMap[$path] = '';
             return '';
         }
 
-        $license = (string)file_get_contents($file);
-        $this->licenseMap[$file] = $license;
+        $license = (string)file_get_contents($path . '.license');
+        $this->licenseMap[$path] = $license;
 
         return $license;
     }
@@ -166,8 +166,17 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      */
     protected function checkCustomFileDocBlock(File $phpCsFile, $stackPointer)
     {
-        $file = getcwd() . DIRECTORY_SEPARATOR . '.license';
-        $license = $this->getLicense($file);
+        $path = str_replace(getcwd(), '', $phpCsFile->getFilename());
+        if (strpos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR) === 0) {
+            $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
+                . array_shift($pathArray) . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
+        } else {
+            $path = getcwd() . DIRECTORY_SEPARATOR;
+        }
+
+        $license = $this->getLicense($path);
         if (!$license) {
             return;
         }
