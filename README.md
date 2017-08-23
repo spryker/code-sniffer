@@ -95,6 +95,18 @@ This can be configured in the Development bundle config:
 ```
 If you use it for custom projects, just use `--standard` to point to your ruleset file.
 
+## Custom licensing
+You can provide a custom license via `.license` file in your repository root.
+It must be a PHP doc block (valid PHP) including a trailing new line.
+
+For MIT projects we recommend (given a LICENSE file provided in your root, as well):
+```
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+```
+
 ## Integrating into CI testing and PRs
 The following is an example for CircleCI but will also be compatible with any other CI system:
 ```
