@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 104 sniffs
+The Spryker standard contains 105 sniffs
 
 Generic (15 sniffs)
 -------------------
@@ -37,7 +37,7 @@ PSR2 (7 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-Spryker (60 sniffs)
+Spryker (61 sniffs)
 -------------------
 - Spryker.Classes.ClassDeclaration
 - Spryker.Classes.ClassFileName
@@ -48,6 +48,7 @@ Spryker (60 sniffs)
 - Spryker.Commenting.DocBlockNoInlineAlignment
 - Spryker.Commenting.DocBlockParam
 - Spryker.Commenting.DocBlockParamAllowDefaultValue
+- Spryker.Commenting.DocBlockParamArray
 - Spryker.Commenting.DocBlockParamNotJustNull
 - Spryker.Commenting.DocBlockPipeSpacing
 - Spryker.Commenting.DocBlockReturnSelf
