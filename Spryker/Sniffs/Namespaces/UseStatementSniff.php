@@ -12,9 +12,9 @@ use RuntimeException;
 use Spryker\Traits\BasicsTrait;
 
 /**
- * Spryker internal "inline FQCN" must be moved to use statements.
+ * "Inline FQCN" must be moved to use statements.
  */
-class SprykerUseStatementSniff implements Sniff
+class UseStatementSniff implements Sniff
 {
 
     use BasicsTrait;

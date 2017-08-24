@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 103 sniffs
+The Spryker standard contains 104 sniffs
 
 Generic (15 sniffs)
 -------------------
@@ -37,7 +37,7 @@ PSR2 (7 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-Spryker (59 sniffs)
+Spryker (60 sniffs)
 -------------------
 - Spryker.Classes.ClassDeclaration
 - Spryker.Classes.ClassFileName
@@ -77,9 +77,10 @@ Spryker (59 sniffs)
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.Namespaces.SprykerNamespace
 - Spryker.Namespaces.SprykerNoPyz
-- Spryker.Namespaces.SprykerUseStatement
 - Spryker.Namespaces.UnusedUseStatement
 - Spryker.Namespaces.UseInAlphabeticalOrder
+- Spryker.Namespaces.UseStatement
+- Spryker.Namespaces.UseWithAliasing
 - Spryker.Namespaces.UseWithLeadingBackslash
 - Spryker.PHP.NoIsNull
 - Spryker.PHP.PhpSapiConstant
