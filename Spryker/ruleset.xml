@@ -6,6 +6,9 @@
         All sniffs in ./Sniffs will be auto loaded
     </description>
 
+    <!-- Ignore all (PHP) test files. -->
+    <exclude-pattern>*/test_files/*</exclude-pattern>
+
     <exclude-pattern>\.idea</exclude-pattern>
     <exclude-pattern>\.git</exclude-pattern>
     <exclude-pattern>*.xml</exclude-pattern>
