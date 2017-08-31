@@ -569,16 +569,21 @@ class UseStatementSniff implements Sniff
     }
 
     /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param string $shortName
      * @param string $fullName
      *
      * @return string|null
      */
-    protected function generateUniqueAlias($shortName, $fullName)
+    protected function generateUniqueAlias(File $phpcsFile, $shortName, $fullName)
     {
         $alias = $shortName;
         $count = 0;
         $pieces = explode('\\', $fullName);
+        if ($this->isSameVendor($phpcsFile, $fullName)) {
+            $pieces = array_reverse($pieces);
+            array_shift($pieces);
+        }
 
         // To avoid collisions with PHP core classes we try to add this prefix for all root namespaced classes
         if (count($pieces) < 1) {
@@ -603,6 +608,23 @@ class UseStatementSniff implements Sniff
         }
 
         return $alias;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param string $fullName
+     *
+     * @return bool
+     */
+    protected function isSameVendor(File $phpcsFile, $fullName)
+    {
+        $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
+        $firstSeparator = strpos($namespaceStatement['namespace'], '\\');
+        if ($firstSeparator === false) {
+            return $namespaceStatement['namespace'] === $fullName;
+        }
+
+        return strpos($namespaceStatement['namespace'], substr($fullName, 0, $firstSeparator)) === 0;
     }
 
     /**
@@ -686,7 +708,7 @@ class UseStatementSniff implements Sniff
             }
         }
 
-        $alias = $this->generateUniqueAlias($shortName, $fullName);
+        $alias = $this->generateUniqueAlias($phpcsFile, $shortName, $fullName);
         if (!$alias) {
             throw new RuntimeException('Could not generate unique alias.');
         }
