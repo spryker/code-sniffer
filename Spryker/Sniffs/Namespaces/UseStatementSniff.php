@@ -579,8 +579,6 @@ class UseStatementSniff implements Sniff
         $alias = $shortName;
         $count = 0;
         $pieces = explode('\\', $fullName);
-        $pieces = array_reverse($pieces);
-        array_shift($pieces);
 
         // To avoid collisions with PHP core classes we try to add this prefix for all root namespaced classes
         if (count($pieces) < 1) {
