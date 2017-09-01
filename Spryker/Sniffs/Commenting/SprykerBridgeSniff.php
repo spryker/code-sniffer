@@ -247,7 +247,8 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return bool
      */
-    protected function isRelevant($content) {
+    protected function isRelevant($content)
+    {
         $whitelist = [
             'Facade',
             'Service',
