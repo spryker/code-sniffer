@@ -113,24 +113,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $varIndex
-     * @param string|null $defaultValueType
-     *
-     * @return void
-     */
-    protected function handleMissingThrowsAnnotation(File $phpCsFile, $varIndex, $defaultValueType)
-    {
-        $error = 'Doc Block annotation @throw missing';
-        $fix = $phpCsFile->addFixableError($error, $varIndex, 'ThrowMissing');
-        if (!$fix) {
-            return;
-        }
-
-        $phpCsFile->fixer->addContent($varIndex, ' ' . $defaultValueType);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return array
@@ -271,6 +253,13 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
         foreach ($exceptions as $exception) {
             $exception = $this->normalizeClassName($exception, $useStatements);
+            if (empty($exception['fullClass'])) {
+                // We skip for complex scnarios
+                if ($annotations) {
+                    $phpCsFile->addError('Doc Block @throw annotation missing', $docBlockEndIndex, 'ThrowMissingManual');
+                }
+                continue;
+            }
 
             if ($this->isInAnnotation($exception, $annotations)) {
                 continue;

@@ -51,7 +51,8 @@ class SprykerBridgeSniff implements Sniff
                 continue;
             };
 
-            $this->assertValidBridgeConstructor($phpCsFile, $index);
+            $this->assertValidConstructor($phpCsFile, $index);
+            $this->assertValidDocBlock($phpCsFile, $index);
             break;
         }
     }
@@ -62,7 +63,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return void
      */
-    protected function assertValidBridgeConstructor(File $phpCsFile, $index)
+    protected function assertValidConstructor(File $phpCsFile, $index)
     {
         $parameters = $phpCsFile->getMethodParameters($index);
         foreach ($parameters as $parameter) {
@@ -160,6 +161,109 @@ class SprykerBridgeSniff implements Sniff
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
 
         return $phpCsFile->getTokens()[$classOrInterfaceNamePosition]['content'];
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $methodIndex
+     *
+     * @return void
+     */
+    protected function assertValidDocBlock(File $phpCsFile, $methodIndex)
+    {
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $methodIndex);
+        if (!$docBlockEndIndex) {
+            // Let another sniff take care of this
+            return;
+        }
+
+        $tokens = $phpCsFile->getTokens();
+
+        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
+            if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
+                continue;
+            }
+            if (!in_array($tokens[$i]['content'], ['@param', '@return'], true)) {
+                continue;
+            }
+
+            $classNameIndex = $i + 2;
+
+            if ($tokens[$classNameIndex]['type'] !== 'T_DOC_COMMENT_STRING') {
+                continue;
+            }
+
+            $content = $tokens[$classNameIndex]['content'];
+
+            $spacePos = strpos($content, ' ');
+            if ($spacePos) {
+                $content = substr($content, 0, $spacePos);
+            }
+            if (substr($content, 0, 8) !== '\Spryker') {
+                continue;
+            }
+            if (substr($content, -9) === 'Interface') {
+                continue;
+            }
+            $pieces = explode('\\', $content);
+            $lastPiece = array_pop($pieces);
+
+            if (!$this->isRelevant($lastPiece)) {
+                continue;
+            }
+
+            $error = 'Bridges should be annotated with interfaces only.';
+            $phpCsFile->addError($error, $classNameIndex, 'WrongAnnotation');
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
+     */
+    protected function findRelatedDocBlock(File $phpCsFile, $stackPointer)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $line = $tokens[$stackPointer]['line'];
+        $beginningOfLine = $stackPointer;
+        while (!empty($tokens[$beginningOfLine - 1]) && $tokens[$beginningOfLine - 1]['line'] === $line) {
+            $beginningOfLine--;
+        }
+
+        if (!empty($tokens[$beginningOfLine - 2]) && $tokens[$beginningOfLine - 2]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
+            return $beginningOfLine - 2;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return bool
+     */
+    protected function isRelevant($content)
+    {
+        $whitelist = [
+            'Facade',
+            'Service',
+            'QueryContainer',
+            'Client',
+        ];
+
+        foreach ($whitelist as $classType) {
+            $length = strlen($classType);
+            if (substr($content, -$length) === $classType) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

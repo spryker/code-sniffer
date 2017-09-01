@@ -304,7 +304,7 @@ class ClassDeclarationSniff extends PearClassDeclarationSniff
                         $found = strlen($tokens[$prev]['content']);
                     }
 
-                    $expected = ($classIndent + $this->indent);
+                    $expected = ($classIndent + $found);
                     if ($found !== $expected) {
                         $error = 'Expected %s spaces before interface name; %s found';
                         $data = [
@@ -331,10 +331,7 @@ class ClassDeclarationSniff extends PearClassDeclarationSniff
                 ) {
                     $error = 'Expected 1 space before "%s"; 0 found';
                     $data = [$tokens[$className]['content']];
-                    $fix = $phpcsFile->addFixableError($error, ($nextComma + 1), 'NoSpaceBeforeName', $data);
-                    if ($fix === true) {
-                        $phpcsFile->fixer->addContentBefore(($nextComma + 1), ' ');
-                    }
+                    $phpcsFile->addError($error, $className, 'NoSpaceBeforeName', $data);
                 } else {
                     if ($tokens[($className - 1)]['code'] === T_NS_SEPARATOR) {
                         $prev = ($className - 2);
