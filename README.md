@@ -121,6 +121,10 @@ You basically just add `- vendor/bin/console code:sniff:style` the the list.
 
 Please see the [Spryker Demoshop](https://github.com/spryker/demoshop) repository for details. It is used there.
 
+## Excluding test related comparison files
+If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.
+You can otherwise always create a custom and rather unique folder name and manually exclude it in your PHPCS settings.
+
 ## Writing new sniffs
 Add them to the corresponding category inside Sniffs folder and add tests in `tests` with the same folder structure.
 
