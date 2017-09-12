@@ -433,9 +433,9 @@ class UseStatementSniff implements Sniff
         $phpcsFile->fixer->replaceToken($firstSeparatorIndex, '');
 
         if ($addedUseStatement['alias'] !== null) {
-            $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
-            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
-                $phpcsFile->fixer->replaceToken($k, '');
+            $phpcsFile->fixer->replaceToken($firstSeparatorIndex + 1, $addedUseStatement['alias']);
+            for ($i = $firstSeparatorIndex + 2; $i <= $lastIndex; ++$i) {
+                $phpcsFile->fixer->replaceToken($i, '');
             }
         }
 
