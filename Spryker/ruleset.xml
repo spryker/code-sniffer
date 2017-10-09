@@ -29,6 +29,7 @@
     <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
+    <rule ref="PEAR.Classes.ClassDeclaration"/>
     <rule ref="Squiz.Classes.LowercaseClassKeywords"/>
 
     <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
@@ -45,11 +46,10 @@
     <rule ref="Squiz.ControlStructures.ForEachLoopDeclaration"/>
     <rule ref="Squiz.ControlStructures.LowercaseDeclaration"/>
 
-    <rule ref="PSR2.ControlStructures.ControlStructureSpacing"/>
-    <rule ref="PSR2.ControlStructures.ElseIfDeclaration"/>
-    <rule ref="PSR2.ControlStructures.SwitchDeclaration"/>
-
-    <rule ref="PSR2.Files.EndFileNewline"/>
+    <rule ref="PSR2"/>
+    <rule ref="PSR2.Methods.FunctionCallSignature.SpaceAfterCloseBracket">
+        <severity>0</severity>
+    </rule>
 
     <rule ref="Zend.Files.ClosingTag"/>
     <rule ref="Generic.Files.LineEndings"/>
@@ -59,9 +59,6 @@
 
     <rule ref="Squiz.Functions.FunctionDeclaration"/>
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
-
-    <rule ref="PSR2.Namespaces.NamespaceDeclaration"/>
-    <rule ref="PSR2.Namespaces.UseDeclaration"/>
 
     <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
         <properties>
@@ -73,10 +70,6 @@
     </rule>
 
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
-
-    <rule ref="PSR2.Methods.FunctionCallSignature.SpaceAfterCloseBracket">
-        <severity>0</severity>
-    </rule>
 
     <rule ref="PEAR.NamingConventions.ValidClassName"/>
 

@@ -6,8 +6,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
- * There should be an empty newline at the beginning and end of each body.
- * Unless it is empty.
+ * There should be no empty newline at the beginning of each body.
  */
 class EmptyEnclosingLineSniff implements Sniff
 {
@@ -66,43 +65,20 @@ class EmptyEnclosingLineSniff implements Sniff
             return;
         }
 
-        $contentLine = $tokens[$lastContentIndex]['line'];
-        $braceLine = $tokens[$curlyBraceEndIndex]['line'];
-
-        if ($braceLine !== $contentLine + 2) {
-            $phpcsFile->recordMetric($stackPtr, 'Class closing brace placement', 'lines');
-            $error = 'Closing brace of a %s must have one extra new line between itself and the last content.';
-
-            $fix = $phpcsFile->addFixableError($error, $curlyBraceEndIndex, 'CloseBraceNewLine', $errorData);
-            if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-
-                if ($braceLine < $contentLine + 2) {
-                    $phpcsFile->fixer->addNewlineBefore($curlyBraceEndIndex);
-                } else {
-                    for ($i = $lastContentIndex + 2; $i < $curlyBraceEndIndex - 1; $i++) {
-                        $phpcsFile->fixer->replaceToken($i, '');
-                    }
-                }
-
-                $phpcsFile->fixer->endChangeset();
-            }
-        }
-
         $firstContentIndex = $phpcsFile->findNext(T_WHITESPACE, ($curlyBraceStartIndex + 1), $lastContentIndex, true);
 
         $contentLine = $tokens[$firstContentIndex]['line'];
         $braceLine = $tokens[$curlyBraceStartIndex]['line'];
 
-        if ($contentLine !== $braceLine + 2) {
+        if ($contentLine !== $braceLine + 1) {
             $phpcsFile->recordMetric($stackPtr, 'Class opening brace placement', 'lines');
-            $error = 'Opening brace of a %s must have one extra new line between itself and the first content.';
+            $error = 'Opening brace of a %s must have only one new line between itself and the first content.';
 
             $fix = $phpcsFile->addFixableError($error, $curlyBraceStartIndex, 'OpenBraceNewLine', $errorData);
             if ($fix === true) {
                 $phpcsFile->fixer->beginChangeset();
 
-                if ($contentLine < $braceLine + 2) {
+                if ($contentLine < $braceLine + 1) {
                     $phpcsFile->fixer->addNewline($curlyBraceStartIndex);
                 } else {
                     for ($i = $curlyBraceStartIndex + 1; $i < $firstContentIndex - 1; $i++) {
