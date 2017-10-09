@@ -7,6 +7,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
 
 abstract class AbstractFacadeMethodAnnotationSniff extends AbstractMethodAnnotationSniff
 {
+
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
@@ -24,20 +25,4 @@ abstract class AbstractFacadeMethodAnnotationSniff extends AbstractMethodAnnotat
         return ($relevantClassNamePart === $facadeName);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
-    protected function isFacadeX(File $phpCsFile)
-    {
-        $className = $this->getClassName($phpCsFile);
-        $bundleName = $this->getBundle($phpCsFile);
-
-        $facadeName = $bundleName . 'Facade';
-        $stringLength = strlen($facadeName);
-        $relevantClassNamePart = substr($className, -$stringLength);
-
-        return ($relevantClassNamePart === $facadeName);
-    }
 }
