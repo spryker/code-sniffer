@@ -1,5 +1,4 @@
 <?php
-// @codingStandardsIgnoreFile
 namespace Spryker\Tools;
 
 use Exception;
