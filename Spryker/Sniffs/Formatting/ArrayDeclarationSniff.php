@@ -18,7 +18,6 @@ use PHP_CodeSniffer\Util\Tokens;
  */
 class ArrayDeclarationSniff implements Sniff
 {
-
     /**
      * @inheritdoc
      */
@@ -437,5 +436,4 @@ class ArrayDeclarationSniff implements Sniff
             }
         }
     }
-
 }

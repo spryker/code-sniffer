@@ -9,7 +9,6 @@ use PHP_CodeSniffer\Files\File;
  */
 class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -103,5 +102,4 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
 
         return $configClassName;
     }
-
 }

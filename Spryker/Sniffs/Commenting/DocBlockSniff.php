@@ -14,7 +14,6 @@ use Spryker\Tools\Traits\SignatureTrait;
  */
 class DocBlockSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
     use SignatureTrait;
 
@@ -177,5 +176,4 @@ class DocBlockSniff extends AbstractSprykerSniff
 
         return $type;
     }
-
 }

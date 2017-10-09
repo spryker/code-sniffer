@@ -12,7 +12,6 @@ use Spryker\Traits\BasicsTrait;
  */
 class ConditionalExpressionOrderSniff implements Sniff
 {
-
     use BasicsTrait;
 
     /**
@@ -175,5 +174,4 @@ class ConditionalExpressionOrderSniff implements Sniff
         $tokens[$leftIndexEnd]->setContent($rightValue);
         $tokens[$rightIndexStart]->setContent($leftValue);
     }
-
 }

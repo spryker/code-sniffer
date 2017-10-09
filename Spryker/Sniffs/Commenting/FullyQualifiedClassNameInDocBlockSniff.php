@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 {
-
     /**
      * @var array
      */
@@ -292,5 +291,4 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 
         return $useStatements;
     }
-
 }

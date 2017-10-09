@@ -9,7 +9,6 @@ use PHP_CodeSniffer\Files\File;
  */
 class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -22,7 +21,8 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
         $bundle = $this->getBundle($phpCsFile);
         $factoryName = $bundle . 'BusinessFactory';
 
-        if (!$this->hasFactoryAnnotation($phpCsFile, $stackPointer) && $this->fileExists($phpCsFile, $this->getFactoryClassName($phpCsFile))) {
+        $className = $this->getFactoryClassName($phpCsFile);
+        if (!$this->hasFactoryAnnotation($phpCsFile, $stackPointer) && $className && $this->fileExists($phpCsFile, $className)) {
             $fix = $phpCsFile->addFixableError('getFactory() annotation missing', $stackPointer, 'FactoryAnnotationMissing');
             if ($fix) {
                 $this->addFactoryAnnotation($phpCsFile, $stackPointer, $factoryName);
@@ -36,7 +36,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
      *
      * @return bool
      */
-    private function hasFactoryAnnotation(File $phpCsFile, $stackPointer)
+    protected function hasFactoryAnnotation(File $phpCsFile, $stackPointer)
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -61,7 +61,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
      *
      * @return void
      */
-    private function addFactoryAnnotation(File $phpCsFile, $stackPointer, $factoryName)
+    protected function addFactoryAnnotation(File $phpCsFile, $stackPointer, $factoryName)
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -84,18 +84,21 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return array
+     * @return string|null
      */
-    private function getFactoryClassName(File $phpCsFile)
+    protected function getFactoryClassName(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         array_pop($classNameParts);
+        if (!isset($classNameParts[2])) {
+            return null;
+        }
+
         $bundleName = $classNameParts[2];
         array_push($classNameParts, $bundleName . 'BusinessFactory');
         $factoryClassName = implode('\\', $classNameParts);
 
         return $factoryClassName;
     }
-
 }

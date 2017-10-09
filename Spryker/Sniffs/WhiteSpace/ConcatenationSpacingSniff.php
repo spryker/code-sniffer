@@ -24,7 +24,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class ConcatenationSpacingSniff implements Sniff
 {
-
     /**
      * @inheritDoc
      */
@@ -92,5 +91,4 @@ class ConcatenationSpacingSniff implements Sniff
         }
         $phpcsFile->fixer->addContent($index, ' ');
     }
-
 }

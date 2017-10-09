@@ -11,7 +11,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -179,5 +178,4 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 
         return false;
     }
-
 }

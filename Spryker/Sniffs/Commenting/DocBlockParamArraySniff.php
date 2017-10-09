@@ -15,7 +15,6 @@ use Spryker\Tools\Traits\CommentingTrait;
  */
 class DocBlockParamArraySniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
 
     /**
@@ -96,5 +95,4 @@ class DocBlockParamArraySniff extends AbstractSprykerSniff
             $phpCsFile->fixer->endChangeset();
         }
     }
-
 }

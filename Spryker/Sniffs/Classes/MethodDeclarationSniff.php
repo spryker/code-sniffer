@@ -31,7 +31,6 @@ use PHP_CodeSniffer\Util\Tokens;
  */
 class MethodDeclarationSniff extends AbstractScopeSniff
 {
-
     /**
      * @inheritDoc
      */
@@ -144,5 +143,4 @@ class MethodDeclarationSniff extends AbstractScopeSniff
     protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
     {
     }
-
 }

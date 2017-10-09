@@ -13,7 +13,6 @@ use Spryker\Tools\Traits\CommentingTrait;
  */
 class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
 
     /**
@@ -197,5 +196,4 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         return $type;
     }
-
 }

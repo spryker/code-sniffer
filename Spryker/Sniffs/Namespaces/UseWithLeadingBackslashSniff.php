@@ -16,7 +16,6 @@ use Spryker\Traits\UseStatementsTrait;
  */
 class UseWithLeadingBackslashSniff extends AbstractSprykerSniff
 {
-
     use UseStatementsTrait;
 
     /**
@@ -59,5 +58,4 @@ class UseWithLeadingBackslashSniff extends AbstractSprykerSniff
             }
         }
     }
-
 }

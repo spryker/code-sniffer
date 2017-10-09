@@ -15,7 +15,6 @@ use Spryker\Tools\Traits\SignatureTrait;
  */
 class DocBlockParamNotJustNullSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
     use SignatureTrait;
 
@@ -86,5 +85,4 @@ class DocBlockParamNotJustNullSniff extends AbstractSprykerSniff
             $phpCsFile->addError('"null" as only param type does not make sense', $classNameIndex, 'NotJustNull');
         }
     }
-
 }

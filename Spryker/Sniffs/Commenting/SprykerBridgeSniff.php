@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class SprykerBridgeSniff implements Sniff
 {
-
     /**
      * @return array
      */
@@ -265,5 +264,4 @@ class SprykerBridgeSniff implements Sniff
 
         return false;
     }
-
 }

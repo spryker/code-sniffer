@@ -9,7 +9,6 @@ use PHP_CodeSniffer\Files\File;
  */
 class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
 {
-
     const LAYER_PERSISTENCE = 'Persistence';
 
     /**
@@ -110,5 +109,4 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
 
         return $queryContainerClassName;
     }
-
 }

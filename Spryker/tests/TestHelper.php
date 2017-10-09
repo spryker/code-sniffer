@@ -10,7 +10,6 @@ if (!class_exists('PHP_CodeSniffer_CLI')) {
 
 class TestHelper
 {
-
     /**
      * @var \PHP_CodeSniffer_CLI
      */
@@ -55,5 +54,4 @@ class TestHelper
         ob_end_clean();
         return $result;
     }
-
 }

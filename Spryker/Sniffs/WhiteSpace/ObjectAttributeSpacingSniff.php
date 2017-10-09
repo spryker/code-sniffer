@@ -13,7 +13,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class ObjectAttributeSpacingSniff implements Sniff
 {
-
     /**
      * @inheritDoc
      */
@@ -51,5 +50,4 @@ class ObjectAttributeSpacingSniff implements Sniff
             }
         }
     }
-
 }

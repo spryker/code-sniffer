@@ -13,7 +13,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class PhpSapiConstantSniff implements Sniff
 {
-
     const PHP_SAPI = 'PHP_SAPI';
 
     /**
@@ -62,5 +61,4 @@ class PhpSapiConstantSniff implements Sniff
             }
         }
     }
-
 }

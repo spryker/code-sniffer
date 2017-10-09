@@ -9,7 +9,6 @@ use PHP_CodeSniffer\Files\File;
  */
 class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -108,5 +107,4 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
 
         return $facadeClassName;
     }
-
 }

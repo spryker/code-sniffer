@@ -18,7 +18,6 @@ use Spryker\Traits\UseStatementsTrait;
  */
 class UseWithAliasingSniff extends AbstractSprykerSniff
 {
-
     use UseStatementsTrait;
 
     /**
@@ -55,5 +54,4 @@ class UseWithAliasingSniff extends AbstractSprykerSniff
 
         $phpcsFile->fixer->replaceToken($stackPtr, $newContent);
     }
-
 }

@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class DocBlockApiAnnotationSniff implements Sniff
 {
-
     /**
      * @return array
      */
@@ -265,5 +264,4 @@ class DocBlockApiAnnotationSniff implements Sniff
             $phpCsFile->fixer->endChangeset();
         }
     }
-
 }

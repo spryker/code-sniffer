@@ -12,7 +12,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class OneNewPerMethodSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -130,5 +129,4 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
 
         return $classMethod;
     }
-
 }

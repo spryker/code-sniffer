@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class EmptyEnclosingLineSniff implements Sniff
 {
-
     /**
      * @inheritdoc
      */
@@ -90,5 +89,4 @@ class EmptyEnclosingLineSniff implements Sniff
             }
         }
     }
-
 }

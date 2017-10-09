@@ -47,12 +47,12 @@
     <rule ref="Squiz.ControlStructures.LowercaseDeclaration"/>
 
     <rule ref="PSR2"/>
-    <rule ref="PSR2.Methods.FunctionCallSignature.SpaceAfterCloseBracket">
-        <severity>0</severity>
-    </rule>
 
     <rule ref="Zend.Files.ClosingTag"/>
     <rule ref="Generic.Files.LineEndings"/>
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <severity>0</severity>
+    </rule>
 
     <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
     <rule ref="Squiz.Functions.MultiLineFunctionDeclaration"/>

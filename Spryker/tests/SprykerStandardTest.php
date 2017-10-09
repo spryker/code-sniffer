@@ -2,7 +2,6 @@
 
 class SprykerStandardTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @return void
      */
@@ -69,5 +68,4 @@ class SprykerStandardTest extends PHPUnit_Framework_TestCase
             );
         }
     }
-
 }

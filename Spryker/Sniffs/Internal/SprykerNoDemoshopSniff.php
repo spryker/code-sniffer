@@ -13,7 +13,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class SprykerNoDemoshopSniff extends AbstractSprykerSniff
 {
-
     /**
      * @var bool|null
      */
@@ -73,5 +72,4 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
 
         return static::$isDemoshop;
     }
-
 }

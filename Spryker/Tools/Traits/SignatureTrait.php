@@ -9,7 +9,6 @@ use PHP_CodeSniffer\Files\File;
  */
 trait SignatureTrait
 {
-
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPtr
@@ -69,5 +68,4 @@ trait SignatureTrait
 
         return $arguments;
     }
-
 }

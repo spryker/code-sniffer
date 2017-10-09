@@ -16,7 +16,6 @@ use Spryker\Tools\Traits\CommentingTrait;
  */
 class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
 
     /**
@@ -405,5 +404,4 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 
         $phpCsFile->fixer->endChangeset();
     }
-
 }

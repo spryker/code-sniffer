@@ -17,7 +17,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -174,5 +173,4 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
         $phpcsFile->fixer->replaceToken($index - 1, '');
     }
-
 }

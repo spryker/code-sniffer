@@ -14,7 +14,6 @@ use Spryker\Traits\UseStatementsTrait;
  */
 class SprykerNoPyzSniff extends AbstractSprykerSniff
 {
-
     use UseStatementsTrait;
 
     const NAMESPACE_PROJECT = 'Pyz';
@@ -70,5 +69,4 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
 
         return ($namespace === static::NAMESPACE_SPRYKER);
     }
-
 }

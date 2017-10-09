@@ -13,7 +13,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class CommaSpacingSniff implements Sniff
 {
-
     /**
      * @inheritDoc
      */
@@ -86,5 +85,4 @@ class CommaSpacingSniff implements Sniff
             }
         }
     }
-
 }

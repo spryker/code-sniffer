@@ -13,7 +13,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class NoPrivateMethodsSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -142,5 +141,4 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->replaceToken($stackPointer - 2, 'protected');
         $phpCsFile->fixer->endChangeset();
     }
-
 }
