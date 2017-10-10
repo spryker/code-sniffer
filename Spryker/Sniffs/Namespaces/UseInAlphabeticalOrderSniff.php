@@ -197,8 +197,8 @@ class UseInAlphabeticalOrderSniff implements Sniff
      */
     protected function replaceSeparators(array $imports, $hashSlashes = false)
     {
-        $search = $hashSlashes ? '\\' : '##';
-        $replace = $hashSlashes ? '##' : '\\';
+        $search = $hashSlashes ? ['\\', ' '] : ['##', '!!'];
+        $replace = $hashSlashes ? ['##', '!!'] : ['\\', ' '];
 
         $sorted = [];
         foreach ($imports as $import) {
