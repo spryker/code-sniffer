@@ -181,24 +181,24 @@ class UseInAlphabeticalOrderSniff implements Sniff
      */
     protected function sortImportsAlphabetically(array $imports)
     {
-        $hashSlashes = true;
-        $hashed = $this->replaceSeparators($imports, $hashSlashes);
+        $hashForReplacement = true;
+        $hashed = $this->replaceSeparators($imports, $hashForReplacement);
         natcasesort($hashed);
-        $sorted = $this->replaceSeparators($hashed, !$hashSlashes);
+        $sorted = $this->replaceSeparators($hashed, !$hashForReplacement);
 
         return array_values($sorted);
     }
 
     /**
      * @param array $imports
-     * @param bool $hashSlashes
+     * @param bool $hashForReplacement
      *
      * @return array
      */
-    protected function replaceSeparators(array $imports, $hashSlashes = false)
+    protected function replaceSeparators(array $imports, $hashForReplacement = false)
     {
-        $search = $hashSlashes ? ['\\', ' '] : ['##', '!!'];
-        $replace = $hashSlashes ? ['##', '!!'] : ['\\', ' '];
+        $search = $hashForReplacement ? ['\\', ' '] : ['##', '!!'];
+        $replace = $hashForReplacement ? ['##', '!!'] : ['\\', ' '];
 
         $sorted = [];
         foreach ($imports as $import) {
