@@ -51,6 +51,9 @@
     </rule>
 
     <rule ref="PSR2"/>
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <severity>0</severity>
+    </rule>
 
     <rule ref="Zend.Files.ClosingTag"/>
     <rule ref="Generic.Files.LineEndings"/>
@@ -81,7 +84,7 @@
 
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
     <rule ref="Generic.Formatting.NoSpaceAfterCast"/>
-    <!-- Disabled for now.
+    <!-- Disabled for now
     <rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops"/>
     -->
     <rule ref="Squiz.PHP.Eval"/>
