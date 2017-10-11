@@ -37,7 +37,11 @@ PSR2 (7 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-Spryker (62 sniffs)
+SlevomatCodingStandard (1 sniff)
+---------------------------------
+- SlevomatCodingStandard.Namespaces.UnusedUses
+
+Spryker (61 sniffs)
 -------------------
 - Spryker.Classes.ClassDeclaration
 - Spryker.Classes.ClassFileName
@@ -79,7 +83,6 @@ Spryker (62 sniffs)
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.Namespaces.SprykerNamespace
 - Spryker.Namespaces.SprykerNoPyz
-- Spryker.Namespaces.UnusedUseStatement
 - Spryker.Namespaces.UseInAlphabeticalOrder
 - Spryker.Namespaces.UseStatement
 - Spryker.Namespaces.UseWithAliasing
