@@ -14,7 +14,6 @@ use PHP_CodeSniffer\Util\Tokens;
  */
 class MemberVarSpacingSniff extends AbstractVariableSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -74,5 +73,4 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
     {
         // We don't care about normal variables.
     }
-
 }

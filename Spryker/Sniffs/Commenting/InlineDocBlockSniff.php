@@ -10,7 +10,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class InlineDocBlockSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -125,8 +124,8 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $typeTag = $this->_findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_TAG);
-            $contentTag = $this->_findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_STRING);
+            $typeTag = $this->findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_TAG);
+            $contentTag = $this->findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_STRING);
 
             if ($typeTag === null || $contentTag === null) {
                 $phpCsFile->addError('Invalid Inline Doc Block', $startIndex, 'DocBlockInvalid');
@@ -175,7 +174,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function _findTagIndex(array $tokens, $from, $to, $tagType)
+    protected function findTagIndex(array $tokens, $from, $to, $tagType)
     {
         for ($i = $from + 1; $i < $to; $i++) {
             if ($tokens[$i]['code'] === $tagType) {
@@ -216,5 +215,4 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
         return $errors;
     }
-
 }

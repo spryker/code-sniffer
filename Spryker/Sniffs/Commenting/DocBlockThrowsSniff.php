@@ -17,7 +17,6 @@ use Spryker\Traits\UseStatementsTrait;
  */
 class DocBlockThrowsSniff extends AbstractSprykerSniff
 {
-
     use UseStatementsTrait;
 
     /**
@@ -478,5 +477,4 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
         return false;
     }
-
 }

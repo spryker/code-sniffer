@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class SprykerFacadeSniff implements Sniff
 {
-
     /**
      * @return array
      */
@@ -198,5 +197,4 @@ class SprykerFacadeSniff implements Sniff
 
         return false;
     }
-
 }

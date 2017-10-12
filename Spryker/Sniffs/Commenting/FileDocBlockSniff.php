@@ -9,7 +9,6 @@ use PHP_CodeSniffer\Files\File;
  */
 class FileDocBlockSniff extends AbstractFileDocBlockSniff
 {
-
     const FIRST_COMMENT_LINE_POSITION = 5;
     const SECOND_COMMENT_LINE_POSITION = 10;
     const EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT = 14;
@@ -181,5 +180,4 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
 
         return null;
     }
-
 }

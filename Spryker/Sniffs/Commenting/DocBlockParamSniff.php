@@ -15,7 +15,6 @@ use Spryker\Tools\Traits\SignatureTrait;
  */
 class DocBlockParamSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
     use SignatureTrait;
 
@@ -111,5 +110,4 @@ class DocBlockParamSniff extends AbstractSprykerSniff
             $phpCsFile->addError($error, $docBlockParam['index'], 'VariableWrong');
         }
     }
-
 }

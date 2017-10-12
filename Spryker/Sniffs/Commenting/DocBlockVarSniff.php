@@ -14,7 +14,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DocBlockVarSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritDoc
      */
@@ -225,5 +224,4 @@ class DocBlockVarSniff extends AbstractSprykerSniff
 
         $phpCsFile->fixer->addContent($varIndex, ' ' . $defaultValueType);
     }
-
 }

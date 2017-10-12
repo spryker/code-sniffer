@@ -1,9 +1,9 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 106 sniffs
+The Spryker standard contains 128 sniffs
 
-Generic (15 sniffs)
+Generic (22 sniffs)
 -------------------
 - Generic.Arrays.DisallowLongArraySyntax
 - Generic.CodeAnalysis.ForLoopShouldBeWhileLoop
@@ -11,29 +11,48 @@ Generic (15 sniffs)
 - Generic.CodeAnalysis.JumbledIncrementer
 - Generic.CodeAnalysis.UnconditionalIfStatement
 - Generic.CodeAnalysis.UnnecessaryFinalModifier
+- Generic.ControlStructures.InlineControlStructure
+- Generic.Files.ByteOrderMark
 - Generic.Files.LineEndings
+- Generic.Files.LineLength
 - Generic.Formatting.DisallowMultipleStatements
 - Generic.Formatting.NoSpaceAfterCast
+- Generic.Functions.FunctionCallArgumentSpacing
+- Generic.NamingConventions.UpperCaseConstantName
 - Generic.PHP.DeprecatedFunctions
+- Generic.PHP.DisallowShortOpenTag
 - Generic.PHP.ForbiddenFunctions
 - Generic.PHP.LowerCaseConstant
+- Generic.PHP.LowerCaseKeyword
 - Generic.PHP.NoSilencedErrors
 - Generic.WhiteSpace.DisallowTabIndent
 - Generic.WhiteSpace.ScopeIndent
 
-PEAR (3 sniffs)
+PEAR (4 sniffs)
 ---------------
+- PEAR.Classes.ClassDeclaration
 - PEAR.ControlStructures.ControlSignature
 - PEAR.Functions.ValidDefaultValue
 - PEAR.NamingConventions.ValidClassName
 
-PSR2 (7 sniffs)
+PSR1 (3 sniffs)
 ---------------
+- PSR1.Classes.ClassDeclaration
+- PSR1.Files.SideEffects
+- PSR1.Methods.CamelCapsMethodName
+
+PSR2 (12 sniffs)
+----------------
+- PSR2.Classes.ClassDeclaration
+- PSR2.Classes.PropertyDeclaration
 - PSR2.ControlStructures.ControlStructureSpacing
 - PSR2.ControlStructures.ElseIfDeclaration
 - PSR2.ControlStructures.SwitchDeclaration
+- PSR2.Files.ClosingTag
 - PSR2.Files.EndFileNewline
 - PSR2.Methods.FunctionCallSignature
+- PSR2.Methods.FunctionClosingBrace
+- PSR2.Methods.MethodDeclaration
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
@@ -43,7 +62,6 @@ SlevomatCodingStandard (1 sniff)
 
 Spryker (61 sniffs)
 -------------------
-- Spryker.Classes.ClassDeclaration
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
 - Spryker.Classes.MethodDeclaration
@@ -105,15 +123,19 @@ Spryker (61 sniffs)
 - Spryker.WhiteSpace.ObjectAttributeSpacing
 - Spryker.WhiteSpace.OperatorSpacing
 
-Squiz (18 sniffs)
+Squiz (25 sniffs)
 -----------------
 - Squiz.Arrays.ArrayBracketSpacing
 - Squiz.Classes.LowercaseClassKeywords
+- Squiz.Classes.ValidClassName
 - Squiz.Commenting.DocCommentAlignment
+- Squiz.ControlStructures.ControlSignature
 - Squiz.ControlStructures.ForEachLoopDeclaration
+- Squiz.ControlStructures.ForLoopDeclaration
 - Squiz.ControlStructures.LowercaseDeclaration
 - Squiz.Functions.FunctionDeclaration
 - Squiz.Functions.FunctionDeclarationArgumentSpacing
+- Squiz.Functions.LowercaseFunctionKeywords
 - Squiz.Functions.MultiLineFunctionDeclaration
 - Squiz.Operators.ValidLogicalOperators
 - Squiz.PHP.Eval
@@ -121,8 +143,11 @@ Squiz (18 sniffs)
 - Squiz.Scope.MemberVarScope
 - Squiz.Scope.MethodScope
 - Squiz.Scope.StaticThisUsage
+- Squiz.WhiteSpace.ControlStructureSpacing
 - Squiz.WhiteSpace.LanguageConstructSpacing
 - Squiz.WhiteSpace.LogicalOperatorSpacing
+- Squiz.WhiteSpace.ScopeClosingBrace
+- Squiz.WhiteSpace.ScopeKeywordSpacing
 - Squiz.WhiteSpace.SemicolonSpacing
 - Squiz.WhiteSpace.SuperfluousWhitespace
 

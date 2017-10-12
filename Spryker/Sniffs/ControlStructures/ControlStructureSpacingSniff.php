@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class ControlStructureSpacingSniff implements Sniff
 {
-
     /**
      * @inheritDoc
      */
@@ -138,5 +137,4 @@ class ControlStructureSpacingSniff implements Sniff
             }
         }
     }
-
 }

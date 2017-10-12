@@ -12,7 +12,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -106,5 +105,4 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
 
         return $statement;
     }
-
 }

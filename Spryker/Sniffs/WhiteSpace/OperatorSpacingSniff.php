@@ -14,7 +14,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class OperatorSpacingSniff extends AbstractSprykerSniff
 {
-
     /**
      * @var array
      */
@@ -170,5 +169,4 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
             }
         }
     }
-
 }

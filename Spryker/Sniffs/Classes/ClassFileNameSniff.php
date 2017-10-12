@@ -34,7 +34,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class ClassFileNameSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -80,5 +79,4 @@ class ClassFileNameSniff extends AbstractSprykerSniff
         ];
         $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
     }
-
 }

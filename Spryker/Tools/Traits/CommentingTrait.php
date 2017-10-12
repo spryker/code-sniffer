@@ -8,7 +8,6 @@ use PHP_CodeSniffer\Files\File;
  */
 trait CommentingTrait
 {
-
     /**
      * Looks for either `@inheritdoc` or `{@inheritdoc}`.
      *
@@ -54,5 +53,4 @@ trait CommentingTrait
 
         return false;
     }
-
 }

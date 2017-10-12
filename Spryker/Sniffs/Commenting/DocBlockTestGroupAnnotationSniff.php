@@ -11,7 +11,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
 {
-
     /**
      * @return array
      */
@@ -286,5 +285,4 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
 
         throw new Exception('Not possible');
     }
-
 }

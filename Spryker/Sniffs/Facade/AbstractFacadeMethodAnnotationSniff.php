@@ -7,7 +7,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
 
 abstract class AbstractFacadeMethodAnnotationSniff extends AbstractMethodAnnotationSniff
 {
-
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
@@ -24,5 +23,4 @@ abstract class AbstractFacadeMethodAnnotationSniff extends AbstractMethodAnnotat
 
         return ($relevantClassNamePart === $facadeName);
     }
-
 }

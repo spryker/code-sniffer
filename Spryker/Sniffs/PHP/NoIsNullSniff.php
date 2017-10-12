@@ -14,7 +14,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class NoIsNullSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -257,5 +256,4 @@ class NoIsNullSniff extends AbstractSprykerSniff
 
         return false;
     }
-
 }

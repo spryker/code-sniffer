@@ -14,7 +14,6 @@ use Spryker\Traits\BasicsTrait;
  */
 class SprykerNamespaceSniff implements Sniff
 {
-
     use BasicsTrait;
 
     /**
@@ -54,5 +53,4 @@ class SprykerNamespaceSniff implements Sniff
         $error = sprintf('Namespace `%s` does not fit to folder structure `%s`', $namespace, $pathToNamespace);
         $phpcsFile->addError($error, $namespaceStatement['start'], 'NamespaceFolderMismatch');
     }
-
 }
