@@ -60,7 +60,7 @@ SlevomatCodingStandard (1 sniff)
 ---------------------------------
 - SlevomatCodingStandard.Namespaces.UnusedUses
 
-Spryker (61 sniffs)
+Spryker (60 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
