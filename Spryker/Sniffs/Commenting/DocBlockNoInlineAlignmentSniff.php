@@ -13,7 +13,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -94,5 +93,4 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
             $phpcsFile->fixer->replaceToken($stackPtr, $newContent);
         }
     }
-
 }

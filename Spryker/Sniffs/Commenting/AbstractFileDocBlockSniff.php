@@ -7,7 +7,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 {
-
     const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © %s-present Spryker Systems GmbH. All rights reserved.';
     const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
 
@@ -257,5 +256,4 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 
         $phpCsFile->fixer->endChangeset();
     }
-
 }

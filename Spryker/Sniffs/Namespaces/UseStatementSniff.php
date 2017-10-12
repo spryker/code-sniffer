@@ -16,7 +16,6 @@ use Spryker\Traits\BasicsTrait;
  */
 class UseStatementSniff implements Sniff
 {
-
     use BasicsTrait;
 
     /**
@@ -880,5 +879,4 @@ class UseStatementSniff implements Sniff
 
         return $implements;
     }
-
 }

@@ -14,7 +14,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class ImplicitCastSpacingSniff implements Sniff
 {
-
     /**
      * @inheritdoc
      */
@@ -89,5 +88,4 @@ class ImplicitCastSpacingSniff implements Sniff
             return;
         }
     }
-
 }

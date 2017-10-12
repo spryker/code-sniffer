@@ -13,7 +13,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class ShortCastSniff implements Sniff
 {
-
     /**
      * @var array
      */
@@ -64,5 +63,4 @@ class ShortCastSniff implements Sniff
             $phpcsFile->fixer->replaceToken($stackPtr, static::$matching[$key]);
         }
     }
-
 }

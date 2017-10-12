@@ -16,7 +16,6 @@ use Spryker\Tools\Traits\SignatureTrait;
  */
 class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
     use SignatureTrait;
 
@@ -122,5 +121,4 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             }
         }
     }
-
 }

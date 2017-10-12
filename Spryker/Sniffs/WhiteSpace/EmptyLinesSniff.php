@@ -12,7 +12,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class EmptyLinesSniff extends AbstractSprykerSniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -63,5 +62,4 @@ class EmptyLinesSniff extends AbstractSprykerSniff
             }
         }
     }
-
 }

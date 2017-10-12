@@ -12,7 +12,6 @@ use Spryker\Tools\Traits\NamespaceTrait;
  */
 class UnusedUseStatementSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
     use NamespaceTrait;
 
@@ -205,5 +204,4 @@ class UnusedUseStatementSniff extends AbstractSprykerSniff
 
         return $hints;
     }
-
 }

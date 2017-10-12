@@ -13,7 +13,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class PreferCastOverFunctionSniff extends AbstractSprykerSniff
 {
-
     /**
      * @var array
      */
@@ -93,5 +92,4 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
             $phpcsFile->fixer->replaceToken($closingBraceIndex, '');
         }
     }
-
 }

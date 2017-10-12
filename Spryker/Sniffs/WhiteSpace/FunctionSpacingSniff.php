@@ -14,7 +14,6 @@ use PHP_CodeSniffer\Util\Tokens;
  */
 class FunctionSpacingSniff implements Sniff
 {
-
     /**
      * @inheritdoc
      */
@@ -83,5 +82,4 @@ class FunctionSpacingSniff implements Sniff
             }
         }
     }
-
 }

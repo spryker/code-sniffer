@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 trait UseStatementsTrait
 {
-
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
@@ -90,5 +89,4 @@ trait UseStatementsTrait
 
         return false;
     }
-
 }

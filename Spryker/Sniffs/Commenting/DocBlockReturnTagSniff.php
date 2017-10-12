@@ -14,7 +14,6 @@ use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
  */
 class DocBlockReturnTagSniff extends AbstractScopeSniff
 {
-
     /**
      * @inheritdoc
      */
@@ -103,5 +102,4 @@ class DocBlockReturnTagSniff extends AbstractScopeSniff
     protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
     {
     }
-
 }

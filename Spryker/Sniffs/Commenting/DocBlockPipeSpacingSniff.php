@@ -13,7 +13,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class DocBlockPipeSpacingSniff implements Sniff
 {
-
     /**
      * @inheritdoc
      */
@@ -78,5 +77,4 @@ class DocBlockPipeSpacingSniff implements Sniff
             }
         }
     }
-
 }

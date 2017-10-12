@@ -13,7 +13,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class RemoveFunctionAliasSniff implements Sniff
 {
-
     /**
      * @see http://php.net/manual/en/aliases.php
      *
@@ -75,5 +74,4 @@ class RemoveFunctionAliasSniff implements Sniff
             $phpcsFile->fixer->replaceToken($stackPtr, static::$matching[$key]);
         }
     }
-
 }

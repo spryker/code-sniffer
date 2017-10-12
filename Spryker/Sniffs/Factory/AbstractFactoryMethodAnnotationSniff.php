@@ -7,7 +7,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
 
 abstract class AbstractFactoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
 {
-
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
@@ -23,5 +22,4 @@ abstract class AbstractFactoryMethodAnnotationSniff extends AbstractMethodAnnota
             || substr($className, -18) === 'PersistenceFactory'
         );
     }
-
 }

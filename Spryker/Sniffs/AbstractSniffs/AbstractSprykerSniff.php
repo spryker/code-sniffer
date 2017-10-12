@@ -8,7 +8,6 @@ use Spryker\Traits\BasicsTrait;
 
 abstract class AbstractSprykerSniff implements Sniff
 {
-
     use BasicsTrait;
 
     const NAMESPACE_SPRYKER = 'Spryker';
@@ -453,8 +452,7 @@ abstract class AbstractSprykerSniff implements Sniff
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
         for ($i = $docBlockStartIndex + 1;
              $i < $docBlockEndIndex;
-             $i++
-        ) {
+             $i++) {
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
@@ -466,5 +464,4 @@ abstract class AbstractSprykerSniff implements Sniff
 
         return false;
     }
-
 }

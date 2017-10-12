@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class DocBlockReturnSelfSniff implements Sniff
 {
-
     /**
      * @inheritdoc
      */
@@ -130,5 +129,4 @@ class DocBlockReturnSelfSniff implements Sniff
 
         return null;
     }
-
 }

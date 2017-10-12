@@ -15,7 +15,6 @@ use Spryker\Tools\Traits\CommentingTrait;
  */
 class DocBlockTagOrderSniff extends AbstractSprykerSniff
 {
-
     use CommentingTrait;
 
     /**
@@ -266,5 +265,4 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     {
         return array_flip($this->order);
     }
-
 }

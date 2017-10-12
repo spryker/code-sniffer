@@ -13,7 +13,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class MethodSpacingSniff extends AbstractSprykerSniff
 {
-
     /**
      * @inheritDoc
      */
@@ -104,5 +103,4 @@ class MethodSpacingSniff extends AbstractSprykerSniff
             }
         }
     }
-
 }

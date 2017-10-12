@@ -7,7 +7,6 @@ use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
 
 abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotationSniff
 {
-
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
@@ -71,5 +70,4 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
 
         return $stackPointer;
     }
-
 }
