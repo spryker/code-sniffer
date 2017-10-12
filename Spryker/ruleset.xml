@@ -18,6 +18,9 @@
     <exclude-pattern>*\.txt</exclude-pattern>
     <exclude-pattern>*\.json</exclude-pattern>
 
+    <config name="installed_paths" value="../../slevomat/coding-standard"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+
     <!-- Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting. -->
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
