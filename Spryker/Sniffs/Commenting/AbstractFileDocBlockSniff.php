@@ -46,7 +46,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     public function register()
     {
         return [
-            T_NAMESPACE
+            T_NAMESPACE,
         ];
     }
 

@@ -21,8 +21,9 @@
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+    <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
 
-    <!-- Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting. -->
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
             <property name="ignoreIndentationTokens" type="array" value="T_COMMENT,T_DOC_COMMENT_OPEN_TAG"/>
