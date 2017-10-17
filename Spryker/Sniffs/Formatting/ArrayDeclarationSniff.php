@@ -113,10 +113,8 @@ class ArrayDeclarationSniff implements Sniff
     public function processMultiLineArray(File $phpcsFile, $stackPtr, $arrayStart, $arrayEnd)
     {
         $tokens = $phpcsFile->getTokens();
-        $keywordStart = $tokens[$stackPtr]['column'];
 
         $keyUsed = false;
-        $singleUsed = false;
         $indices = [];
         $maxLength = 0;
 
@@ -242,7 +240,6 @@ class ArrayDeclarationSniff implements Sniff
                     );
 
                     $indices[] = ['value' => $valueContent];
-                    $singleUsed = true;
                 }
 
                 $lastToken = $nextToken;
@@ -284,41 +281,6 @@ class ArrayDeclarationSniff implements Sniff
             }
         }
 
-        if ($keyUsed === false && empty($indices) === false) {
-            $count = count($indices);
-            $lastIndex = $indices[($count - 1)]['value'];
-
-            $trailingContent = $phpcsFile->findPrevious(
-                Tokens::$emptyTokens,
-                ($arrayEnd - 1),
-                $lastIndex,
-                true
-            );
-
-            if ($tokens[$trailingContent]['code'] !== T_COMMA) {
-                $phpcsFile->recordMetric($stackPtr, 'Array end comma', 'no');
-                $error = 'Comma required after last value in array declaration';
-                $fix = $phpcsFile->addFixableError($error, $trailingContent, 'NoCommaAfterLast');
-                if ($fix === true) {
-                    $phpcsFile->fixer->addContent($trailingContent, ',');
-                }
-            } else {
-                $phpcsFile->recordMetric($stackPtr, 'Array end comma', 'yes');
-            }
-
-            $lastValueLine = false;
-            foreach ($indices as $value) {
-                if (empty($value['value']) === true) {
-                    // Array was malformed and we couldn't figure out
-                    // the array value correctly, so we have to ignore it.
-                    // Other parts of this sniff will correct the error.
-                    continue;
-                }
-
-                $lastValueLine = $tokens[$value['value']]['line'];
-            }
-        }
-
         /*
             Below the actual indentation of the array is checked.
             Errors will be thrown when a key is not aligned, when
@@ -348,17 +310,22 @@ class ArrayDeclarationSniff implements Sniff
 
         $numValues = count($indices);
 
-        $indicesStart = ($keywordStart + 1);
-        $arrowStart = ($indicesStart + $maxLength + 1);
         foreach ($indices as $index) {
             if (isset($index['index']) === false) {
                 // Array value only.
                 if ($tokens[$index['value']]['line'] === $tokens[$stackPtr]['line'] && $numValues > 1) {
                     $error = 'The first value in a multi-value array must be on a new line';
+                    //FIXME indentation
+                    $phpcsFile->addError($error, $stackPtr, 'FirstValueNoNewline');
+                    continue;
+                    /*
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'FirstValueNoNewline');
                     if ($fix === true) {
                         $phpcsFile->fixer->addNewlineBefore($index['value']);
+
+                        // We might also have to fix indentation here
                     }
+                    */
                 }
 
                 continue;
@@ -371,67 +338,6 @@ class ArrayDeclarationSniff implements Sniff
                 $fix = $phpcsFile->addFixableError($error, $index['index'], 'FirstIndexNoNewline');
                 if ($fix === true) {
                     $phpcsFile->fixer->addNewlineBefore($index['index']);
-                }
-
-                continue;
-            }
-
-            // Check each line ends in a comma.
-            $valueLine = $tokens[$index['value']]['line'];
-            $nextComma = false;
-            for ($i = $index['value']; $i < $arrayEnd; $i++) {
-                // Skip bracketed statements, like function calls.
-                if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS) {
-                    $i = $tokens[$i]['parenthesis_closer'];
-                    $valueLine = $tokens[$i]['line'];
-                    continue;
-                }
-
-                if ($tokens[$i]['code'] === T_ARRAY) {
-                    $i = $tokens[$tokens[$i]['parenthesis_opener']]['parenthesis_closer'];
-                    $valueLine = $tokens[$i]['line'];
-                    continue;
-                }
-
-                // Skip to the end of multi-line strings.
-                if (isset(Tokens::$stringTokens[$tokens[$i]['code']]) === true) {
-                    $i = $phpcsFile->findNext($tokens[$i]['code'], ($i + 1), null, true);
-                    $i--;
-                    $valueLine = $tokens[$i]['line'];
-                    continue;
-                }
-
-                if ($tokens[$i]['code'] === T_OPEN_SHORT_ARRAY) {
-                    $i = $tokens[$i]['bracket_closer'];
-                    $valueLine = $tokens[$i]['line'];
-                    continue;
-                }
-
-                if ($tokens[$i]['code'] === T_CLOSURE) {
-                    $i = $tokens[$i]['scope_closer'];
-                    $valueLine = $tokens[$i]['line'];
-                    continue;
-                }
-
-                if ($tokens[$i]['code'] === T_COMMA) {
-                    $nextComma = $i;
-                    break;
-                }
-            }
-
-            if ($nextComma === false || ($tokens[$nextComma]['line'] !== $valueLine)) {
-                $error = 'Each line in a multi-line array declaration must end in a comma';
-                $fix = $phpcsFile->addFixableError($error, $index['value'], 'NoComma');
-
-                if ($fix === true) {
-                    // Find the end of the line and put a comma there.
-                    for ($i = ($index['value'] + 1); $i < $arrayEnd; $i++) {
-                        if ($tokens[$i]['line'] > $valueLine) {
-                            break;
-                        }
-                    }
-
-                    $phpcsFile->fixer->addContentBefore(($i - 1), ',');
                 }
             }
         }
