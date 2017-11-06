@@ -86,7 +86,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     protected function isIgnorableBundle(File $phpCsFile)
     {
-        return (in_array($this->getBundle($phpCsFile), $this->ignorableBundles));
+        return (in_array($this->getModule($phpCsFile), $this->ignorableBundles));
     }
 
     /**

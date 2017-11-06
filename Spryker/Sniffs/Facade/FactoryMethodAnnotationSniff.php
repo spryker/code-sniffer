@@ -18,7 +18,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
             return;
         }
 
-        $bundle = $this->getBundle($phpCsFile);
+        $bundle = $this->getModule($phpCsFile);
         $factoryName = $bundle . 'BusinessFactory';
 
         $className = $this->getFactoryClassName($phpCsFile);

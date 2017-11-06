@@ -20,7 +20,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
             return;
         }
 
-        $bundle = $this->getBundle($phpCsFile);
+        $bundle = $this->getModule($phpCsFile);
         $queryContainerName = $bundle . 'QueryContainer';
 
         if (!$this->hasQueryContainerAnnotation($phpCsFile, $stackPointer)

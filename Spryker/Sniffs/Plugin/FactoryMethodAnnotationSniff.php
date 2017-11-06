@@ -18,7 +18,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
             return;
         }
 
-        $bundle = $this->getBundle($phpCsFile);
+        $bundle = $this->getModule($phpCsFile);
         $factoryName = $bundle . 'CommunicationFactory';
         if (!$this->hasFactoryAnnotation($phpCsFile, $stackPointer) && $this->fileExists($phpCsFile, $this->getFactoryClassName($phpCsFile))) {
             $fix = $phpCsFile->addFixableError('getFactory() annotation missing', $stackPointer, 'Missing');

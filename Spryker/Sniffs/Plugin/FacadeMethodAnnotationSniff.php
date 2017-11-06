@@ -18,7 +18,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
             return;
         }
 
-        $bundle = $this->getBundle($phpCsFile);
+        $bundle = $this->getModule($phpCsFile);
         $facadeName = $bundle . 'Facade';
 
         if (!$this->hasFacadeAnnotation($phpCsFile, $stackPointer)

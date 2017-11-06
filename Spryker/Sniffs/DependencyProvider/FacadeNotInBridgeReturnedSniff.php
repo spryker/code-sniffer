@@ -48,7 +48,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     protected function isProvider(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
-        $bundleName = $this->getBundle($phpCsFile);
+        $bundleName = $this->getModule($phpCsFile);
 
         $providerName = $bundleName . 'DependencyProvider';
         $stringLength = strlen($providerName);
