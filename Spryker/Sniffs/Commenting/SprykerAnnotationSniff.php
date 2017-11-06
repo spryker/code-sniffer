@@ -70,7 +70,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $content = $methodAnnotation['interface'] . ' ' .$methodAnnotation['method'];
+            $content = $methodAnnotation['interface'] . ' ' . $methodAnnotation['method'];
 
             $phpCsFile->fixer->beginChangeset();
             $phpCsFile->fixer->replaceToken($methodAnnotation['index'] + 2, $content);
@@ -82,6 +82,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
+     *
      * @return array
      */
     protected function getFixableMethodAnnotations(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
