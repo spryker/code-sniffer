@@ -3,6 +3,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use RuntimeException;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -89,6 +90,8 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
 
+        $path = $this->getBasePath($phpCsFile->getFilename());
+
         $annotations = [];
         for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
             if ($tokens[$i]['code'] !== T_DOC_COMMENT_TAG || $tokens[$i]['content'] !== '@method') {
@@ -110,13 +113,15 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if (substr($class, -9) === 'Interface') {
+            if (substr($class, -9) === 'Interface' || substr($class, 0, 5) === '\\Orm\\') {
                 continue;
             }
 
             $interface = $class . 'Interface';
-            $interfaceFile = str_replace($class, $interface, $phpCsFile->getFilename());
-            if (!file_exists($interfaceFile)) {
+            $interfacePathElement = str_replace('\\', DIRECTORY_SEPARATOR, $interface);
+            $interfacePath = $path . $interfacePathElement . '.php';
+
+            if (!file_exists($interfacePath)) {
                 $phpCsFile->addError(
                     sprintf('Interface missing for %s annotation of %s', $method, $class),
                     $i,
@@ -136,5 +141,22 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
         }
 
         return $annotations;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    protected function getBasePath($path)
+    {
+        preg_match('#^.+/vendor/.+/src/#', $path, $matches);
+        if (!$matches) {
+            throw new RuntimeException('Spryker Core classes should reveal base path: ' . $path);
+        }
+
+        return rtrim($matches[0], DIRECTORY_SEPARATOR);
     }
 }
