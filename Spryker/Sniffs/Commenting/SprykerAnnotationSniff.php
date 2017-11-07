@@ -7,7 +7,7 @@ use RuntimeException;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * Checks if Spryker method annotations contain interface where needed.
+ * Checks if Spryker method annotations use interfaces where applicable/needed.
  */
 class SprykerAnnotationSniff extends AbstractSprykerSniff
 {
@@ -90,7 +90,11 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        $path = $this->getBasePath($phpCsFile->getFilename());
+        $path = $this->findBasePath($phpCsFile->getFilename());
+        if (!$path) {
+            // We cannot fix it then for now
+            return [];
+        }
 
         $annotations = [];
         for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
@@ -148,13 +152,14 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      *
      * @throws \RuntimeException
      *
-     * @return string
+     * @return string|null
      */
-    protected function getBasePath($path)
+    protected function findBasePath($path)
     {
-        preg_match('#^.+/[vendor|spryker]/.+/src/#', $path, $matches);
+        preg_match('#^.+/(vendor|spryker)/.+/src/#', $path, $matches);
         if (!$matches) {
             throw new RuntimeException('Spryker Core classes should reveal base path: ' . $path);
+            return null;
         }
 
         return rtrim($matches[0], DIRECTORY_SEPARATOR);
