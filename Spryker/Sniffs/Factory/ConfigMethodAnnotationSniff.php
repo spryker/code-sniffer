@@ -18,7 +18,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
             return;
         }
 
-        $bundle = $this->getBundle($phpCsFile);
+        $bundle = $this->getModule($phpCsFile);
         $configName = $bundle . 'Config';
 
         if (!$this->hasConfigAnnotation($phpCsFile, $stackPointer) && $this->fileExists($phpCsFile, $this->getConfigClassName($phpCsFile))) {

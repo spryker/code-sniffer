@@ -15,7 +15,7 @@ abstract class AbstractFacadeMethodAnnotationSniff extends AbstractMethodAnnotat
     protected function isFacade(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
-        $bundleName = $this->getBundle($phpCsFile);
+        $bundleName = $this->getModule($phpCsFile);
 
         $facadeName = $bundleName . 'Facade';
         $stringLength = strlen($facadeName);

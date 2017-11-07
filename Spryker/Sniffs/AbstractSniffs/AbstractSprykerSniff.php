@@ -11,6 +11,7 @@ abstract class AbstractSprykerSniff implements Sniff
     use BasicsTrait;
 
     const NAMESPACE_SPRYKER = 'Spryker';
+    const NAMESPACE_SPRYKER_ECO = 'SprykerEco';
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
@@ -26,11 +27,25 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
+     * Core detection (including Eco).
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isCore(File $phpCsFile)
+    {
+        $namespace = $this->getNamespace($phpCsFile);
+
+        return in_array($namespace, [static::NAMESPACE_SPRYKER, static::NAMESPACE_SPRYKER_ECO], true);
+    }
+
+    /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return string
      */
-    protected function getBundle(File $phpCsFile)
+    protected function getModule(File $phpCsFile)
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

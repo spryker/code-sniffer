@@ -28,9 +28,11 @@ class EmptyLinesSniff extends AbstractSprykerSniff
      */
     public function register()
     {
-        $x = ['fpop',
+        $x = [
+            'fpop',
             'var',
-            'w'];
+            'w',
+        ];
 
         return [T_WHITESPACE];
     }
