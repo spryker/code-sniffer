@@ -152,7 +152,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      */
     protected function getBasePath($path)
     {
-        preg_match('#^.+/vendor/.+/src/#', $path, $matches);
+        preg_match('#^.+/[vendor|spryker]/.+/src/#', $path, $matches);
         if (!$matches) {
             throw new RuntimeException('Spryker Core classes should reveal base path: ' . $path);
         }
