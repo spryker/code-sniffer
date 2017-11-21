@@ -112,6 +112,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
             $ignoredMethods = [
                 'getFactory()',
                 'getConfig()',
+                'getSharedConfig()',
             ];
             if (in_array($method, $ignoredMethods, true)) {
                 continue;
