@@ -7,25 +7,21 @@ php:
 
 env:
   global:
-    - DEFAULT=1
+    - DEFAULT=0
 
 matrix:
   include:
     - php: 7.1
       env: PHPCS=1 DEFAULT=0
 
-  allow_failures:
-    - php: 7.1
-
   fast_finish: true
 
 before_script:
-  - composer self-update
   - composer install --prefer-dist --no-interaction
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -v -s --standard=Spryker/ruleset.xml --ignore=/vendor/,/tests/files/ . ; fi"
+  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/phpunit; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then composer cs-check . ; fi"
 
 notifications:
   email: false

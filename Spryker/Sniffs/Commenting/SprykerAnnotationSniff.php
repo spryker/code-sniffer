@@ -1,9 +1,13 @@
 <?php
 
+/**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use RuntimeException;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -150,8 +154,6 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
 
     /**
      * @param string $path
-     *
-     * @throws \RuntimeException
      *
      * @return string|null
      */
