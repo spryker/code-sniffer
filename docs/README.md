@@ -106,8 +106,8 @@ Spryker (61 sniffs)
 - Spryker.Formatting.ArrayDeclaration
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.Namespaces.SprykerNamespace
+- Spryker.Namespaces.SprykerNoCrossNamespace
 - Spryker.Namespaces.SprykerNoPyz
-- Spryker.Namespaces.SprykerNoYvesInZed
 - Spryker.Namespaces.UseStatement
 - Spryker.Namespaces.UseWithAliasing
 - Spryker.Namespaces.UseWithLeadingBackslash
