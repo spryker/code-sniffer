@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PSR2_Sniffs_Methods_MethodDeclarationSniff.
  *

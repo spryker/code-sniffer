@@ -1,6 +1,9 @@
 <?php
 
 /**
+ * MIT License
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ *
  * @author Mark Scherer
  * @author Lucas Manzke <lmanzke@outlook.com>
  * @author Gregor Harlan <gharlan@web.de>
