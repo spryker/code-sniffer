@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 130 sniffs
+The Spryker standard contains 134 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -56,14 +56,16 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (4 sniffs)
+SlevomatCodingStandard (6 sniffs)
 ---------------------------------
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
 - SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
 - SlevomatCodingStandard.Namespaces.UnusedUses
 - SlevomatCodingStandard.Namespaces.UseFromSameNamespace
+- SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing
+- SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 
-Spryker (59 sniffs)
+Spryker (61 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -88,6 +90,7 @@ Spryker (59 sniffs)
 - Spryker.Commenting.FileDocBlock
 - Spryker.Commenting.FullyQualifiedClassNameInDocBlock
 - Spryker.Commenting.InlineDocBlock
+- Spryker.Commenting.SprykerAnnotation
 - Spryker.Commenting.SprykerBridge
 - Spryker.Commenting.SprykerFacade
 - Spryker.ControlStructures.ConditionalExpressionOrder
@@ -104,6 +107,7 @@ Spryker (59 sniffs)
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.Namespaces.SprykerNamespace
 - Spryker.Namespaces.SprykerNoPyz
+- Spryker.Namespaces.SprykerNoYvesInZed
 - Spryker.Namespaces.UseStatement
 - Spryker.Namespaces.UseWithAliasing
 - Spryker.Namespaces.UseWithLeadingBackslash
