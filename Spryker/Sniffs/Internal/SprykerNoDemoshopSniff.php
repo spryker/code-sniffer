@@ -70,7 +70,7 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
         }
 
         $content = file_get_contents($file);
-        static::$isDemoshop = (bool)preg_match('#"name":\s*"spryker/demoshop"#', $content, $matches);
+        static::$isDemoshop = (bool)preg_match('#"name":\s*"(spryker/demoshop|spryker-shop/suite)"#', $content, $matches);
 
         return static::$isDemoshop;
     }
