@@ -74,6 +74,7 @@ class UseStatementSniff implements Sniff
             $this->checkUseForCatch($phpcsFile, $stackPtr);
         } else {
             $this->checkUseForSignature($phpcsFile, $stackPtr);
+            $this->checkUseForReturnTypeHint($phpcsFile, $stackPtr);
         }
     }
 
@@ -517,6 +518,83 @@ class UseStatementSniff implements Sniff
 
             $phpcsFile->fixer->endChangeset();
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function checkUseForReturnTypeHint(File $phpcsFile, $stackPtr)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $openParenthesisIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
+        $closeParenthesisIndex = $tokens[$openParenthesisIndex]['parenthesis_closer'];
+
+        $colonIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $closeParenthesisIndex + 1, null, true);
+        if (!$colonIndex) {
+            return;
+        }
+
+        $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $colonIndex + 1, $colonIndex + 3, true);
+        if (!$startIndex) {
+            return;
+        }
+
+        $lastIndex = null;
+        $j = $startIndex;
+        $extractedUseStatement = '';
+        $lastSeparatorIndex = null;
+        while (true) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING, T_RETURN_TYPE], $tokens[$j])) {
+                break;
+            }
+
+            $lastIndex = $j;
+            $extractedUseStatement .= $tokens[$j]['content'];
+            if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$j])) {
+                $lastSeparatorIndex = $j;
+            }
+            ++$j;
+        }
+
+        if ($lastIndex === null || $lastSeparatorIndex === null) {
+            return;
+        }
+
+        $extractedUseStatement = ltrim($extractedUseStatement, '\\');
+        $className = '';
+        for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+            $className .= $tokens[$k]['content'];
+        }
+
+        $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
+        $fix = $phpcsFile->addFixableError($error, $colonIndex, 'ReturnSignature');
+        if (!$fix) {
+            return;
+        }
+
+        $phpcsFile->fixer->beginChangeset();
+
+        $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex, null, true);
+
+        $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
+
+        for ($k = $lastSeparatorIndex; $k > $firstSeparatorIndex; --$k) {
+            $phpcsFile->fixer->replaceToken($k, '');
+        }
+        $phpcsFile->fixer->replaceToken($firstSeparatorIndex, '');
+
+        if ($addedUseStatement['alias'] !== null) {
+            $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
+            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+                $phpcsFile->fixer->replaceToken($k, '');
+            }
+        }
+
+        $phpcsFile->fixer->endChangeset();
     }
 
     /**
