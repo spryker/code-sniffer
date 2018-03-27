@@ -20,8 +20,8 @@ before_script:
   - composer install --prefer-dist --no-interaction
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/phpunit; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then composer cs-check . ; fi"
+  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/phpunit ; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then composer cs-check ; fi"
 
 notifications:
   email: false
