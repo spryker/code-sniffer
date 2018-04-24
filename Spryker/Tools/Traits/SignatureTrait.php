@@ -20,7 +20,7 @@ trait SignatureTrait
      *
      * @return array
      */
-    protected function getMethodSignature(File $phpCsFile, $stackPtr)
+    protected function getMethodSignature(File $phpCsFile, int $stackPtr): array
     {
         $parameters = $phpCsFile->getMethodParameters($stackPtr);
         $tokens = $phpCsFile->getTokens();
@@ -60,12 +60,11 @@ trait SignatureTrait
             $arguments[] = [
                 'variableIndex' => $parameter['token'],
                 'variable' => $parameter['name'],
-                //'typehintIndex' => $typehintIndex,
                 'typehint' => $typehint,
                 'typehintFull' => $parameter['type_hint'],
+                'nullable' => $parameter['nullable_type'],
                 'defaultIndex' => $defaultIndex,
                 'default' => $default,
-                'nullable' => $parameter['nullable_type'],
             ];
         }
 
