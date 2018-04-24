@@ -98,9 +98,8 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if ($methodSignatureValue['typehintIndex']) {
-                $typeIndex = $methodSignatureValue['typehintIndex'];
-                $type = $tokens[$typeIndex]['content'];
+            if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'string', 'int', 'bool', 'float', 'self', 'parent'])) {
+                $type = $methodSignatureValue['typehint'];
                 if (!in_array($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
                     $pieces[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
@@ -115,6 +114,20 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 $type = $methodSignatureValue['default'];
 
                 if (!in_array($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
+                    $pieces[] = $type;
+                    $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
+                    $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
+                    if ($fix) {
+                        $content = implode('|', $pieces);
+                        $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
+                    }
+                }
+            }
+
+            if ($methodSignatureValue['nullable']) {
+                $type = 'null';
+
+                if (!in_array($type, $pieces)) {
                     $pieces[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
