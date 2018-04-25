@@ -20,29 +20,22 @@ trait SignatureTrait
      *
      * @return array
      */
-    protected function getMethodSignature(File $phpCsFile, $stackPtr)
+    protected function getMethodSignature(File $phpCsFile, int $stackPtr): array
     {
+        $parameters = $phpCsFile->getMethodParameters($stackPtr);
         $tokens = $phpCsFile->getTokens();
 
-        $startIndex = $phpCsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
-        $endIndex = $tokens[$startIndex]['parenthesis_closer'];
-
         $arguments = [];
-        $i = $startIndex;
-        while ($nextVariableIndex = $phpCsFile->findNext(T_VARIABLE, $i + 1, $endIndex)) {
-            $typehintIndex = $defaultIndex = $default = null;
-            $possibleTypeHint = $phpCsFile->findPrevious([T_ARRAY_HINT, T_CALLABLE], $nextVariableIndex - 1, $nextVariableIndex - 3);
-            if ($possibleTypeHint) {
-                $typehintIndex = $possibleTypeHint;
-            }
+        foreach ($parameters as $parameter) {
+            $defaultIndex = $default = null;
 
-            $possibleEqualIndex = $phpCsFile->findNext([T_EQUAL], $nextVariableIndex + 1, $nextVariableIndex + 3);
+            $possibleEqualIndex = $phpCsFile->findNext([T_EQUAL], $parameter['token'] + 1, $parameter['token'] + 3);
             if ($possibleEqualIndex) {
                 $whitelist = [T_CONSTANT_ENCAPSED_STRING, T_TRUE, T_FALSE, T_NULL, T_OPEN_SHORT_ARRAY, T_LNUMBER, T_DNUMBER];
                 $possibleDefaultValue = $phpCsFile->findNext($whitelist, $possibleEqualIndex + 1, $possibleEqualIndex + 3);
                 if ($possibleDefaultValue) {
                     $defaultIndex = $possibleDefaultValue;
-                    //$default = $tokens[$defaultIndex]['content'];
+                    $default = null;
                     if ($tokens[$defaultIndex]['code'] === T_CONSTANT_ENCAPSED_STRING) {
                         $default = 'string';
                     } elseif ($tokens[$defaultIndex]['code'] === T_OPEN_SHORT_ARRAY) {
@@ -55,20 +48,24 @@ trait SignatureTrait
                         $default = 'float';
                     } elseif ($tokens[$defaultIndex]['code'] === T_NULL) {
                         $default = 'null';
-                    } else {
-                        //die('Invalid default type: ' . $default);
                     }
                 }
             }
 
+            $typehint = $parameter['type_hint'];
+            if (substr($typehint, 0, 1) === '?') {
+                $typehint = substr($typehint, 1);
+            }
+
             $arguments[] = [
-                'variable' => $nextVariableIndex,
-                'typehintIndex' => $typehintIndex,
+                'variableIndex' => $parameter['token'],
+                'variable' => $parameter['name'],
+                'typehint' => $typehint,
+                'typehintFull' => $parameter['type_hint'],
+                'nullable' => $parameter['nullable_type'],
                 'defaultIndex' => $defaultIndex,
                 'default' => $default,
             ];
-
-            $i = $nextVariableIndex;
         }
 
         return $arguments;

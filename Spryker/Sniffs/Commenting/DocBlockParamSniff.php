@@ -100,7 +100,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
 
         foreach ($docBlockParams as $docBlockParam) {
             $methodParam = array_shift($methodSignature);
-            $variableName = $tokens[$methodParam['variable']]['content'];
+            $variableName = $tokens[$methodParam['variableIndex']]['content'];
 
             if ($docBlockParam['variable'] === $variableName) {
                 continue;

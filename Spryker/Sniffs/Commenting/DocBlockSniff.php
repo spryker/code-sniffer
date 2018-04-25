@@ -39,7 +39,7 @@ class DocBlockSniff extends AbstractSprykerSniff
 
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         if ($tokens[$nextIndex]['content'] === '__construct' || $tokens[$nextIndex]['content'] === '__destruct') {
-            $this->checkConstructorAndDestructor($phpcsFile, $nextIndex);
+            $this->checkConstructorAndDestructor($phpcsFile, $stackPtr);
             return;
         }
 
@@ -96,24 +96,24 @@ class DocBlockSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
+     * @param int $stackPtr
      *
      * @return void
      */
-    protected function checkConstructorAndDestructor(File $phpcsFile, $index)
+    protected function checkConstructorAndDestructor(File $phpcsFile, $stackPtr)
     {
-        $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $index);
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $stackPtr);
         if ($docBlockEndIndex) {
             return;
         }
 
-        $methodSignature = $this->getMethodSignature($phpcsFile, $index);
+        $methodSignature = $this->getMethodSignature($phpcsFile, $stackPtr);
         $arguments = count($methodSignature);
         if (!$arguments) {
             return;
         }
 
-        $phpcsFile->addError('Missing doc block for method', $index, 'ConstructDesctructMissingDocBlock');
+        $phpcsFile->addError('Missing doc block for method', $stackPtr, 'ConstructDesctructMissingDocBlock');
     }
 
     /**
