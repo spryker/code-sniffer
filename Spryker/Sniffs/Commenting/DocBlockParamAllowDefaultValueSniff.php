@@ -129,9 +129,25 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
                 if (!in_array($type, $pieces)) {
                     $pieces[] = $type;
-                    $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
+                    $error = 'Doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
                     if ($fix) {
+                        $content = implode('|', $pieces);
+                        $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
+                    }
+                }
+            }
+
+            if (!$methodSignatureValue['default'] && !$methodSignatureValue['nullable']) {
+                $error = 'Doc block error: `' . $content . '` seems to be having a wrong `null` type hinted, argument is not nullable though.';
+                if (in_array('null', $pieces)) {
+                    $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'WrongNullable');
+                    if ($fix) {
+                        foreach ($pieces as $k => $v) {
+                            if ($v === 'null') {
+                                unset($pieces[$k]);
+                            }
+                        }
                         $content = implode('|', $pieces);
                         $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
                     }
