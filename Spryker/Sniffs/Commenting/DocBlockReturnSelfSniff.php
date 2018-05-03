@@ -71,6 +71,10 @@ class DocBlockReturnSelfSniff implements Sniff
                 continue;
             }
 
+            if ($this->isStaticMethod($phpCsFile, $stackPointer)) {
+                continue;
+            }
+
             $parts = explode('|', $content);
             $this->fixParts($phpCsFile, $classNameIndex, $parts, $appendix);
         }
@@ -133,5 +137,24 @@ class DocBlockReturnSelfSniff implements Sniff
         }
 
         return null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isStaticMethod(File $phpCsFile, $stackPointer)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        if (!in_array($tokens[$stackPointer]['code'], [T_FUNCTION])) {
+            return false;
+        }
+
+        $methodProperties = $phpCsFile->getMethodProperties($stackPointer);
+
+        return $methodProperties['is_static'];
     }
 }
