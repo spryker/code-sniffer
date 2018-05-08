@@ -33,6 +33,11 @@ console code:sniff:style -f
 `-v` is useful for more info output.
 To run only a specific sniff, use the `-s` option. See `-h` for help.
 
+You can also sniff a specific project level module or path:
+```
+console code:sniff:style [-m ModuleName] [optional-sub-path] -v
+```
+
 ### How to use in any project
 You can also manually invoke the phpcs/phpcbf commands:
 ```
