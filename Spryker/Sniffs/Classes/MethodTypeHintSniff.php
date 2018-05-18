@@ -12,7 +12,7 @@ use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * In method return types the own class must be references as self.
+ * In method return types the own class or interface must be references as self.
  *
  * @author Mark Scherer
  */
