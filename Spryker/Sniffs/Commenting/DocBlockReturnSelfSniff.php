@@ -8,12 +8,13 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Doc blocks should type-hint returning itself as $this for fluent interface to work.
  */
-class DocBlockReturnSelfSniff implements Sniff
+class DocBlockReturnSelfSniff extends AbstractSprykerSniff
 {
     /**
      * @inheritdoc
@@ -21,11 +22,7 @@ class DocBlockReturnSelfSniff implements Sniff
     public function register()
     {
         return [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
             T_FUNCTION,
-            T_VARIABLE,
         ];
     }
 
@@ -76,7 +73,8 @@ class DocBlockReturnSelfSniff implements Sniff
             }
 
             $parts = explode('|', $content);
-            $this->fixParts($phpCsFile, $classNameIndex, $parts, $appendix);
+            $this->assertCorrectDocBlockParts($phpCsFile, $classNameIndex, $parts, $appendix);
+            $this->fixClassToThis($phpCsFile, $stackPointer, $classNameIndex, $parts, $appendix);
         }
     }
 
@@ -88,7 +86,7 @@ class DocBlockReturnSelfSniff implements Sniff
      *
      * @return void
      */
-    protected function fixParts(File $phpCsFile, $classNameIndex, array $parts, $appendix)
+    protected function assertCorrectDocBlockParts(File $phpCsFile, $classNameIndex, array $parts, $appendix)
     {
         $result = [];
         foreach ($parts as $key => $part) {
@@ -156,5 +154,87 @@ class DocBlockReturnSelfSniff implements Sniff
         $methodProperties = $phpCsFile->getMethodProperties($stackPointer);
 
         return $methodProperties['is_static'];
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @param int $classNameIndex
+     * @param array $parts
+     * @param string $appendix
+     *
+     * @return void
+     */
+    protected function fixClassToThis(File $phpCsFile, $stackPointer, $classNameIndex, $parts, $appendix)
+    {
+        $ownClassName = '\\' . $this->getClassName($phpCsFile);
+
+        $result = [];
+        foreach ($parts as $key => $part) {
+            if ($part !== $ownClassName) {
+                continue;
+            }
+
+            $parts[$key] = '$this';
+            $result[$part] = '$this';
+        }
+
+        if (!$result) {
+            return;
+        }
+
+        $isFluentInterfaceMethod = $this->isFluentInterfaceMethod($phpCsFile, $stackPointer);
+        if (!$isFluentInterfaceMethod) {
+            return;
+        }
+
+        $message = [];
+        foreach ($result as $part => $useStatement) {
+            $message[] = $part . ' => ' . $useStatement;
+        }
+
+        $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex, 'ClassVsThis');
+        if ($fix) {
+            $newContent = implode('|', $parts);
+            $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);
+        }
+    }
+
+    /**
+     * We want to skip for static or other non chainable use cases.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isFluentInterfaceMethod(File $phpCsFile, $stackPointer)
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        // We skip for interface methods
+        if (empty($tokens[$stackPointer]['scope_opener']) || empty($tokens[$stackPointer]['scope_closer'])) {
+            return false;
+        }
+
+        $scopeOpener = $tokens[$stackPointer]['scope_opener'];
+        $scopeCloser = $tokens[$stackPointer]['scope_closer'];
+
+        for ($i = $scopeOpener; $i < $scopeCloser; $i++) {
+            if ($tokens[$i]['code'] !== T_RETURN) {
+                continue;
+            }
+
+            $contentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $i + 1, $scopeCloser, true);
+            if (!$contentIndex) {
+                return false;
+            }
+
+            if ($tokens[$contentIndex]['content'] === '$this') {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
