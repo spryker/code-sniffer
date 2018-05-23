@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 136 sniffs
+The Spryker standard contains 137 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -56,17 +56,19 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (7 sniffs)
+SlevomatCodingStandard (9 sniffs)
 ---------------------------------
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
+- SlevomatCodingStandard.Exceptions.DeadCatch
 - SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
 - SlevomatCodingStandard.Namespaces.UnusedUses
+- SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash
 - SlevomatCodingStandard.Namespaces.UseFromSameNamespace
 - SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue
 - SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 
-Spryker (62 sniffs)
+Spryker (61 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -112,7 +114,6 @@ Spryker (62 sniffs)
 - Spryker.Namespaces.SprykerNoPyz
 - Spryker.Namespaces.UseStatement
 - Spryker.Namespaces.UseWithAliasing
-- Spryker.Namespaces.UseWithLeadingBackslash
 - Spryker.PHP.NoIsNull
 - Spryker.PHP.PhpSapiConstant
 - Spryker.PHP.PreferCastOverFunction
