@@ -19,13 +19,16 @@
     <exclude-pattern>*\.json</exclude-pattern>
 
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+
+    <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
