@@ -34,8 +34,8 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     protected $sprykerTestNamespaces = [
         'SprykerTest',
         'SprykerShopTest',
-        'SprykerEco',
-        'SprykerSdk',
+        'SprykerEcoTest',
+        'SprykerSdkTest',
     ];
 
     /**
