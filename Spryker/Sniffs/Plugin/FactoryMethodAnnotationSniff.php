@@ -39,7 +39,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return bool
      */
-    private function hasFactoryAnnotation(File $phpCsFile, int $stackPointer): bool
+    protected function hasFactoryAnnotation(File $phpCsFile, int $stackPointer): bool
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -64,7 +64,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return void
      */
-    private function addFactoryAnnotation(File $phpCsFile, int $stackPointer, string $factoryName): void
+    protected function addFactoryAnnotation(File $phpCsFile, int $stackPointer, string $factoryName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -95,9 +95,9 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return array
+     * @return string
      */
-    private function getFactoryClassName(File $phpCsFile): array
+    protected function getFactoryClassName(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

@@ -42,7 +42,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return bool
      */
-    private function hasFacadeAnnotation(File $phpCsFile, int $stackPointer): bool
+    protected function hasFacadeAnnotation(File $phpCsFile, int $stackPointer): bool
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -67,7 +67,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return void
      */
-    private function addFacadeAnnotation(File $phpCsFile, int $stackPointer, string $facadeName): void
+    protected function addFacadeAnnotation(File $phpCsFile, int $stackPointer, string $facadeName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -98,9 +98,9 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return array
+     * @return string
      */
-    private function getFacadeClassName(File $phpCsFile): array
+    protected function getFacadeClassName(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

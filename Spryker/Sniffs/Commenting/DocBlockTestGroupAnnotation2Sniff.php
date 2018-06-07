@@ -331,7 +331,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    private function containsExpectedGroupAnnotations(array $givenGroupAnnotationParts, array $expectedGroupAnnotations): bool
+    protected function containsExpectedGroupAnnotations(array $givenGroupAnnotationParts, array $expectedGroupAnnotations): bool
     {
         if (count($givenGroupAnnotationParts) === 0) {
             return false;
