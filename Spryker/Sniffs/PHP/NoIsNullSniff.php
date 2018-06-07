@@ -178,12 +178,12 @@ class NoIsNullSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($index - 1), null, true);
+        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($index - 1), null, true);
         if (!$previous || !in_array($tokens[$previous]['code'], [T_IS_IDENTICAL, T_IS_NOT_IDENTICAL])) {
             return null;
         }
 
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($previous - 1), null, true);
+        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($previous - 1), null, true);
         if (!$previous || !in_array($tokens[$previous]['code'], [T_TRUE, T_FALSE])) {
             return null;
         }
@@ -201,12 +201,12 @@ class NoIsNullSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($index + 1), null, true);
+        $next = (int)$phpcsFile->findNext(T_WHITESPACE, ($index + 1), null, true);
         if (!$next || !in_array($tokens[$next]['code'], [T_IS_IDENTICAL, T_IS_NOT_IDENTICAL])) {
             return null;
         }
 
-        $next = $phpcsFile->findPrevious(T_WHITESPACE, ($next - 1), null, true);
+        $next = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($next - 1), null, true);
         if (!$next || !in_array($tokens[$next]['code'], [T_TRUE, T_FALSE])) {
             return null;
         }
@@ -223,6 +223,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
     protected function hasLeadingComparison(File $phpcsFile, int $stackPtr): bool
     {
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+
         return $this->isComparison($phpcsFile, $previous);
     }
 
@@ -235,6 +236,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
     protected function hasTrailingComparison(File $phpcsFile, int $stackPtr): bool
     {
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+
         return $this->isComparison($phpcsFile, $next);
     }
 

@@ -68,7 +68,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      */
     protected function getStackPointerOfClassBegin(File $phpCsFile, int $stackPointer): int
     {
-        $abstractPosition = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer);
+        $abstractPosition = (int)$phpCsFile->findPrevious(T_ABSTRACT, $stackPointer);
         if ($abstractPosition) {
             return $abstractPosition;
         }
