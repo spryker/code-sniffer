@@ -47,7 +47,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkTag(File $phpcsFile, $stackPtr)
+    protected function checkTag(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -79,7 +79,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkDescription(File $phpcsFile, $stackPtr)
+    protected function checkDescription(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

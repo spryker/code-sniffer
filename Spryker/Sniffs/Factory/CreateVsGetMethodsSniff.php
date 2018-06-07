@@ -65,7 +65,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getMethodName(File $phpCsFile, $stackPointer)
+    protected function getMethodName(File $phpCsFile, int $stackPointer): string
     {
         $tokens = $phpCsFile->getTokens();
         $methodNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
@@ -79,7 +79,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFactory(File $phpCsFile)
+    protected function isFactory(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
 
@@ -96,7 +96,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassName(File $phpCsFile)
+    protected function getClassName(File $phpCsFile): string
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -114,7 +114,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassMethod(File $phpCsFile, $stackPointer)
+    protected function getClassMethod(File $phpCsFile, int $stackPointer): string
     {
         $className = $this->getClassName($phpCsFile);
         $methodName = $this->getMethodName($phpCsFile, $stackPointer);
@@ -131,7 +131,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function correctMethodName(File $phpCsFile, $stackPointer, $newMethodName)
+    protected function correctMethodName(File $phpCsFile, int $stackPointer, string $newMethodName): void
     {
         $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->replaceToken($stackPointer, $newMethodName);
@@ -144,7 +144,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function containsNew($tokens, $stackPointer)
+    protected function containsNew(array $tokens, int $stackPointer): bool
     {
         $begin = $tokens[$stackPointer]['scope_opener'] + 1;
         $end = $tokens[$stackPointer]['scope_closer'] - 1;
@@ -166,7 +166,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function containsCreateMethod($tokens, $stackPointer)
+    protected function containsCreateMethod(array $tokens, int $stackPointer): bool
     {
         $begin = $tokens[$stackPointer]['scope_opener'] + 1;
         $end = $tokens[$stackPointer]['scope_closer'] - 1;

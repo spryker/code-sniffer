@@ -81,7 +81,7 @@ class MethodTypeHintSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getCurrentClassName(File $phpCsFile)
+    protected function getCurrentClassName(File $phpCsFile): string
     {
         $fullClassName = parent::getClassName($phpCsFile);
 

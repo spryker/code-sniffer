@@ -18,7 +18,7 @@ trait BasicsTrait
      *
      * @return bool
      */
-    protected function isGivenKind($search, array $token)
+    protected function isGivenKind($search, array $token): bool
     {
         $kind = (array)$search;
 
@@ -37,7 +37,7 @@ trait BasicsTrait
      *
      * @return array
      */
-    protected function getNamespaceStatement(File $phpcsFile)
+    protected function getNamespaceStatement(File $phpcsFile): array
     {
         $tokens = $phpcsFile->getTokens();
 

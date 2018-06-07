@@ -74,7 +74,7 @@ class ConditionalExpressionOrderSniff implements Sniff
      *
      * @return int
      */
-    protected function getComparisonValue($tokens, $comparisonIndex)
+    protected function getComparisonValue(array $tokens, int $comparisonIndex): int
     {
         $comparisonIndexValue = $tokens[$comparisonIndex]->getContent();
         $operatorsToMap = [T_GREATER_THAN, T_SMALLER_THAN, T_IS_GREATER_OR_EQUAL, T_IS_SMALLER_OR_EQUAL];
@@ -99,7 +99,7 @@ class ConditionalExpressionOrderSniff implements Sniff
      *
      * @return int
      */
-    protected function detectRightEnd($tokens, $index)
+    protected function detectRightEnd(array $tokens, int $index): int
     {
         $rightEndIndex = $index;
         $nextIndex = $index;
@@ -159,7 +159,7 @@ class ConditionalExpressionOrderSniff implements Sniff
      *
      * @return void
      */
-    protected function applyFix($tokens, $index, $leftIndexStart, $leftIndexEnd, $rightIndexStart, $rightIndexEnd)
+    protected function applyFix(array $tokens, int $index, int $leftIndexStart, int $leftIndexEnd, int $rightIndexStart, int $rightIndexEnd): void
     {
         // Check if we need to inverse comparison operator
         $comparisonValue = $this->getComparisonValue($tokens, $index);

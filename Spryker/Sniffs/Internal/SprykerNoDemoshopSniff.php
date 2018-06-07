@@ -52,7 +52,7 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isDemoshopCode(File $phpCsFile)
+    protected function isDemoshopCode(File $phpCsFile): bool
     {
         if (static::$isDemoshop !== null) {
             return static::$isDemoshop;

@@ -22,7 +22,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @return array
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS,
@@ -30,10 +30,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -72,7 +69,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixGroupAnnotation(File $phpCsFile, $stackPointer, array $expectedGroupAnnotations)
+    protected function fixGroupAnnotation(File $phpCsFile, int $stackPointer, array $expectedGroupAnnotations): void
     {
         $fix = $phpCsFile->addFixableError('@group annotation missing or incomplete', $stackPointer, 'Incomplete');
 
@@ -97,7 +94,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function addCommentWithGroupAnnotation(File $phpCsFile, $stackPointer, array $expectedAnnotations)
+    protected function addCommentWithGroupAnnotation(File $phpCsFile, int $stackPointer, array $expectedAnnotations): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -131,7 +128,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function modifyExistingComment(File $phpCsFile, $docCommentEndPosition, array $namespaceParts)
+    protected function modifyExistingComment(File $phpCsFile, int $docCommentEndPosition, array $namespaceParts): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -161,7 +158,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function getNamespaceParts(File $phpCsFile, $stackPointer)
+    protected function getNamespaceParts(File $phpCsFile, int $stackPointer): array
     {
         $namespace = $this->getNamespaceStatement($phpCsFile);
         if (!$namespace) {
@@ -182,7 +179,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassOrInterfaceName(File $phpCsFile, $stackPointer)
+    protected function getClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
@@ -196,7 +193,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function getAnnotations(File $phpCsFile, $stackPointer)
+    protected function getAnnotations(File $phpCsFile, int $stackPointer): array
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -231,7 +228,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function getExpectedAnnotations(File $phpCsFile, array $namespaceParts)
+    protected function getExpectedAnnotations(File $phpCsFile, array $namespaceParts): array
     {
         $className = array_pop($namespaceParts);
         array_unshift($namespaceParts, static::ANNOTATION_START_TEXT);
@@ -260,7 +257,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function findGroupTagPosition(File $phpCsFile, $docCommentStartPosition, $firstDocCommentTagPosition)
+    protected function findGroupTagPosition(File $phpCsFile, int $docCommentStartPosition, int $firstDocCommentTagPosition): ?int
     {
         $tokens = $phpCsFile->getTokens();
         $docEndIndex = $tokens[$docCommentStartPosition]['comment_closer'];
@@ -286,7 +283,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getLastLineOfDocBlock(File $phpCsFile, $docCommentStartPosition)
+    protected function getLastLineOfDocBlock(File $phpCsFile, int $docCommentStartPosition): int
     {
         $tokens = $phpCsFile->getTokens();
         $index = $tokens[$docCommentStartPosition]['comment_closer'];
@@ -307,7 +304,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getGroupTagPositionEnd(File $phpCsFile, $docCommentStartPosition, $firstGroupTagPosition)
+    protected function getGroupTagPositionEnd(File $phpCsFile, int $docCommentStartPosition, int $firstGroupTagPosition): int
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -334,7 +331,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    private function containsExpectedGroupAnnotations(array $givenGroupAnnotationParts, array $expectedGroupAnnotations)
+    private function containsExpectedGroupAnnotations(array $givenGroupAnnotationParts, array $expectedGroupAnnotations): bool
     {
         if (count($givenGroupAnnotationParts) === 0) {
             return false;

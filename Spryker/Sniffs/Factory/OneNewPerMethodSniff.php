@@ -47,7 +47,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isSprykerClass(File $phpCsFile)
+    protected function isSprykerClass(File $phpCsFile): bool
     {
         $namespace = $this->getNamespace($phpCsFile);
 
@@ -59,7 +59,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassName(File $phpCsFile)
+    protected function getClassName(File $phpCsFile): string
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -77,7 +77,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getMethodName(File $phpCsFile, $stackPointer)
+    protected function getMethodName(File $phpCsFile, int $stackPointer): string
     {
         $tokens = $phpCsFile->getTokens();
         $methodNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
@@ -91,7 +91,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFactory(File $phpCsFile)
+    protected function isFactory(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
 
@@ -104,7 +104,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function hasMoreThenOneNewInMethod(File $phpCsFile, $stackPointer)
+    protected function hasMoreThenOneNewInMethod(File $phpCsFile, int $stackPointer): bool
     {
         $openPointer = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer);
         $closePointer = $phpCsFile->findNext(T_CLOSE_CURLY_BRACKET, $openPointer);
@@ -125,7 +125,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getClassMethod(File $phpCsFile, $stackPointer)
+    protected function getClassMethod(File $phpCsFile, int $stackPointer): string
     {
         $className = $this->getClassName($phpCsFile);
         $methodName = $this->getMethodName($phpCsFile, $stackPointer);

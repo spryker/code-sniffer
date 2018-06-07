@@ -28,13 +28,7 @@ class DocBlockReturnTagSniff extends AbstractScopeSniff
     }
 
     /**
-     * Processes the function tokens within the class.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int $stackPtr The position where the token was found.
-     * @param int $currScope The current scope opener token.
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
     {
@@ -99,10 +93,7 @@ class DocBlockReturnTagSniff extends AbstractScopeSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
     {

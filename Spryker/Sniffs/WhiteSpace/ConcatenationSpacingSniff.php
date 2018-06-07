@@ -86,7 +86,7 @@ class ConcatenationSpacingSniff implements Sniff
      *
      * @return void
      */
-    protected function addSpace(File $phpcsFile, $index)
+    protected function addSpace(File $phpcsFile, int $index): void
     {
         if ($phpcsFile->fixer->enabled !== true) {
             return;

@@ -76,7 +76,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return void
      */
-    protected function addFixableMissingDocBlock(File $phpCsFile, $stackPointer)
+    protected function addFixableMissingDocBlock(File $phpCsFile, int $stackPointer): void
     {
         $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'FileDocBlockMissing');
         if ($fix) {
@@ -89,7 +89,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function isIgnorableBundle(File $phpCsFile)
+    protected function isIgnorableBundle(File $phpCsFile): bool
     {
         return (in_array($this->getModule($phpCsFile), $this->ignorableBundles));
     }
@@ -100,7 +100,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function hasNotExpectedLength(File $phpCsFile, $stackPointer)
+    protected function hasNotExpectedLength(File $phpCsFile, int $stackPointer): bool
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -113,7 +113,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function hasWrongContent(File $phpCsFile, $stackPointer)
+    protected function hasWrongContent(File $phpCsFile, int $stackPointer): bool
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -134,7 +134,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return bool
      */
-    protected function isOwnFileDocBlock(File $phpCsFile, $stackPointer)
+    protected function isOwnFileDocBlock(File $phpCsFile, int $stackPointer): bool
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -153,7 +153,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return void
      */
-    protected function addFixableExistingDocBlock(File $phpCsFile, $stackPointer)
+    protected function addFixableExistingDocBlock(File $phpCsFile, int $stackPointer): void
     {
         $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'FileDocBlockWrong');
         if ($fix) {
@@ -166,7 +166,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      *
      * @return null|string
      */
-    protected function findCustomLicense(File $phpCsFile)
+    protected function findCustomLicense(File $phpCsFile): ?string
     {
         $path = str_replace(getcwd(), '', $phpCsFile->getFilename());
 

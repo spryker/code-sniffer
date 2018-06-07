@@ -92,7 +92,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkConstructorAndDestructor(File $phpcsFile, $index)
+    protected function checkConstructorAndDestructor(File $phpcsFile, int $index): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $index);
         if (!$docBlockEndIndex) {
@@ -127,7 +127,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function findDocBlockReturn(File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function findDocBlockReturn(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -153,7 +153,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function addReturnAnnotation(File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex, $returnType = 'void')
+    protected function addReturnAnnotation(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex, string $returnType = 'void'): void
     {
         $indentation = $this->getIndentationWhitespace($phpcsFile, $docBlockEndIndex);
 
@@ -173,7 +173,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return string|null
      */
-    protected function detectReturnTypeVoid(File $phpcsFile, $index)
+    protected function detectReturnTypeVoid(File $phpcsFile, int $index): ?string
     {
         $tokens = $phpcsFile->getTokens();
 

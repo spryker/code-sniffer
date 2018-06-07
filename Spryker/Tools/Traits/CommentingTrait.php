@@ -49,7 +49,7 @@ trait CommentingTrait
      *
      * @return bool
      */
-    protected function containsTypeArray($docBlockTypes)
+    protected function containsTypeArray(array $docBlockTypes): bool
     {
         foreach ($docBlockTypes as $docBlockType) {
             if (strpos($docBlockType, '[]') !== false) {

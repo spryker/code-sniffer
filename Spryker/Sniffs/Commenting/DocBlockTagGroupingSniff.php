@@ -68,7 +68,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkFirstAnnotationTag(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function checkFirstAnnotationTag(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -129,7 +129,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkLastAnnotationTag(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function checkLastAnnotationTag(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -167,7 +167,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkBeginningOfDocBlock(File $phpCsFile, $docBlockStartIndex, $nextIndex)
+    protected function checkBeginningOfDocBlock(File $phpCsFile, int $docBlockStartIndex, int $nextIndex): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -200,7 +200,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkAnnotationTagGrouping(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function checkAnnotationTagGrouping(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): void
     {
         $tags = $this->readTags($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
 
@@ -228,7 +228,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function readTags(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function readTags(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): array
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -264,7 +264,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getEndIndex(array $tokens, $index)
+    protected function getEndIndex(array $tokens, int $index): int
     {
         $startIndex = $index;
         while (!empty($tokens[$index + 1]) && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_TAG) {
@@ -289,7 +289,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getTagEndIndex(array $tokens, $start, $end)
+    protected function getTagEndIndex(array $tokens, int $start, int $end): int
     {
         for ($i = $end; $i > $start; $i--) {
             if ($tokens[$i]['code'] !== T_DOC_COMMENT_STRING) {
@@ -309,7 +309,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getContent(array $tokens, $start, $end)
+    protected function getContent(array $tokens, int $start, int $end): string
     {
         $content = '';
         for ($i = $start; $i <= $end; $i++) {
@@ -326,7 +326,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertNoSpacing(File $phpCsFile, array $first, array $second)
+    protected function assertNoSpacing(File $phpCsFile, array $first, array $second): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -365,7 +365,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertSpacing(File $phpCsFile, array $first, array $second)
+    protected function assertSpacing(File $phpCsFile, array $first, array $second): void
     {
         $tokens = $phpCsFile->getTokens();
 

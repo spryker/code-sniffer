@@ -53,7 +53,7 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function extractNamespace($fullClassName)
+    protected function extractNamespace(string $fullClassName): string
     {
         $namespaces = explode('\\', $fullClassName, 2);
 
@@ -65,7 +65,7 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isSprykerNamespace(File $phpCsFile)
+    protected function isSprykerNamespace(File $phpCsFile): bool
     {
         $namespace = $this->getNamespace($phpCsFile);
 

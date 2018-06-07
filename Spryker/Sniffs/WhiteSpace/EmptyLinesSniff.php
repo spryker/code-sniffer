@@ -57,7 +57,7 @@ class EmptyLinesSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertMaximumOneEmptyLineBetweenContent(File $phpcsFile, $stackPtr)
+    protected function assertMaximumOneEmptyLineBetweenContent(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

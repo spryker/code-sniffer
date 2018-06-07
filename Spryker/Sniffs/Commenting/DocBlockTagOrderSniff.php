@@ -78,7 +78,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function checkAnnotationTagOrder(array $tags)
+    protected function checkAnnotationTagOrder(array $tags): array
     {
         $order = $this->getTagOrderMap();
 
@@ -112,7 +112,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function readTags(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function readTags(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): array
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -148,7 +148,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getEndIndex(array $tokens, $index)
+    protected function getEndIndex(array $tokens, int $index): int
     {
         $startIndex = $index;
         while (!empty($tokens[$index + 1]) && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$index + 1]['code'] !== T_DOC_COMMENT_TAG) {
@@ -173,7 +173,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getTagEndIndex(array $tokens, $start, $end)
+    protected function getTagEndIndex(array $tokens, int $start, int $end): int
     {
         for ($i = $end; $i > $start; $i--) {
             if ($tokens[$i]['code'] !== T_DOC_COMMENT_STRING) {
@@ -193,7 +193,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getContent(array $tokens, $start, $end)
+    protected function getContent(array $tokens, int $start, int $end): string
     {
         $content = '';
         for ($i = $start; $i <= $end; $i++) {
@@ -211,7 +211,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixOrder(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex, array $tags)
+    protected function fixOrder(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex, array $tags): void
     {
         $errors = [];
         foreach ($tags as $i => $tag) {
@@ -266,7 +266,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     /**
      * @return array
      */
-    protected function getTagOrderMap()
+    protected function getTagOrderMap(): array
     {
         return array_flip($this->order);
     }

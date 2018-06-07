@@ -25,7 +25,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function getNamespace(File $phpCsFile)
+    protected function getNamespace(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
@@ -40,7 +40,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return bool
      */
-    protected function isCore(File $phpCsFile)
+    protected function isCore(File $phpCsFile): bool
     {
         $namespace = $this->getNamespace($phpCsFile);
 
@@ -59,7 +59,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function getModule(File $phpCsFile)
+    protected function getModule(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
@@ -76,7 +76,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function getLayer(File $phpCsFile)
+    protected function getLayer(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
@@ -93,7 +93,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function getClassName(File $phpCsFile)
+    protected function getClassName(File $phpCsFile): string
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -115,7 +115,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return void
      */
-    protected function addUseStatements(File $phpCsFile, $stackPointer, array $missingUses)
+    protected function addUseStatements(File $phpCsFile, int $stackPointer, array $missingUses): void
     {
         $useStatements = $this->parseUseStatements($phpCsFile, $stackPointer);
         foreach ($missingUses as $missingUse) {
@@ -131,7 +131,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return array
      */
-    protected function parseUseStatements(File $phpCsFile, $stackPointer)
+    protected function parseUseStatements(File $phpCsFile, int $stackPointer): array
     {
         $useStatements = [];
         $tokens = $phpCsFile->getTokens();
@@ -158,7 +158,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function parseUseParts(array $useTokens)
+    protected function parseUseParts(array $useTokens): string
     {
         $useClass = '';
         foreach ($useTokens as $useToken) {
@@ -175,7 +175,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return void
      */
-    protected function addMissingUse(File $phpCsFile, $stackPointer, $missingUse)
+    protected function addMissingUse(File $phpCsFile, int $stackPointer, string $missingUse): void
     {
         $previousUsePosition = $phpCsFile->findPrevious(T_USE, $stackPointer);
         if ($previousUsePosition !== false) {
@@ -197,7 +197,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return bool
      */
-    protected function contains(File $phpcsFile, $search, $start, $end, $skipNested = true)
+    protected function contains(File $phpcsFile, $search, $start, $end, $skipNested = true): bool
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -232,7 +232,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return bool
      */
-    protected function needsBrackets(File $phpcsFile, $openingBraceIndex, $closingBraceIndex)
+    protected function needsBrackets(File $phpcsFile, int $openingBraceIndex, int $closingBraceIndex): bool
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -271,7 +271,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
-    protected function findRelatedDocBlock(File $phpCsFile, $stackPointer)
+    protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -295,7 +295,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return void
      */
-    protected function outdent(File $phpcsFile, $index, $count = 1)
+    protected function outdent(File $phpcsFile, int $index, int $count = 1): void
     {
         $tokens = $phpcsFile->getTokens();
         $char = $this->getIndentationCharacter($tokens[$index]['content'], true);
@@ -310,7 +310,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return void
      */
-    protected function indent(File $phpcsFile, $index, $count = 1)
+    protected function indent(File $phpcsFile, int $index, int $count = 1): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -324,7 +324,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function strReplaceOnce($search, $replace, $subject)
+    protected function strReplaceOnce(string $search, string $replace, string $subject): string
     {
         $pos = strpos($subject, $search);
         if ($pos === false) {
@@ -340,7 +340,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function getIndentationCharacter($content, $correctLength = false)
+    protected function getIndentationCharacter(string $content, bool $correctLength = false): string
     {
         if (strpos($content, "\n")) {
             $parts = explode("\n", $content);
@@ -369,7 +369,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return string
      */
-    protected function getIndentationWhitespace(File $phpcsFile, $prevIndex)
+    protected function getIndentationWhitespace(File $phpcsFile, int $prevIndex): string
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -388,7 +388,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return int
      */
-    protected function getIndentationColumn(File $phpcsFile, $prevIndex)
+    protected function getIndentationColumn(File $phpcsFile, int $prevIndex): int
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -408,7 +408,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return int
      */
-    protected function getFirstTokenOfLine(array $tokens, $index)
+    protected function getFirstTokenOfLine(array $tokens, int $index): int
     {
         $line = $tokens[$index]['line'];
 
@@ -426,7 +426,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return int
      */
-    protected function getLastTokenOfLine(array $tokens, $index)
+    protected function getLastTokenOfLine(array $tokens, int $index): int
     {
         $line = $tokens[$index]['line'];
 
@@ -445,7 +445,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return bool
      */
-    protected function isMarkedAsDeprecated(File $phpCsFile, $tokens, $stackPointer)
+    protected function isMarkedAsDeprecated(File $phpCsFile, array $tokens, int $stackPointer): bool
     {
         $begin = $tokens[$stackPointer]['scope_opener'] + 1;
         $end = $tokens[$stackPointer]['scope_closer'] - 1;
@@ -472,7 +472,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return bool
      */
-    protected function isMarkedDeprecatedInDocBlock(File $phpCsFile, $tokens, $stackPointer)
+    protected function isMarkedDeprecatedInDocBlock(File $phpCsFile, array $tokens, int $stackPointer): bool
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
         if (!$docBlockEndIndex) {

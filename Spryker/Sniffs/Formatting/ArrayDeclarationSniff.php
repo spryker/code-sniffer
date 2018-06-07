@@ -66,7 +66,7 @@ class ArrayDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function processSingleLineArray(File $phpcsFile, $arrayStart, $arrayEnd)
+    public function processSingleLineArray(File $phpcsFile, int $arrayStart, int $arrayEnd): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -116,7 +116,7 @@ class ArrayDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function processMultiLineArray(File $phpcsFile, $stackPtr, $arrayStart, $arrayEnd)
+    public function processMultiLineArray(File $phpcsFile, int $stackPtr, int $arrayStart, int $arrayEnd): void
     {
         $tokens = $phpcsFile->getTokens();
 

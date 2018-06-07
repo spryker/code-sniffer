@@ -18,7 +18,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
     /**
      * @return array
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS,
@@ -27,10 +27,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -47,7 +44,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkAnnotations(File $phpCsFile, $stackPointer)
+    protected function checkAnnotations(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -90,7 +87,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function getFixableMethodAnnotations(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function getFixableMethodAnnotations(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): array
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -158,7 +155,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      *
      * @return string|null
      */
-    protected function findBasePath($path)
+    protected function findBasePath(string $path): ?string
     {
         preg_match('#^.+/(vendor|spryker)/.+/src/#', $path, $matches);
         if (!$matches) {

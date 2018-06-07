@@ -44,7 +44,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return bool
      */
-    private function hasQueryContainerAnnotation(File $phpCsFile, $stackPointer)
+    private function hasQueryContainerAnnotation(File $phpCsFile, int $stackPointer): bool
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -69,7 +69,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return void
      */
-    private function addQueryContainerAnnotation(File $phpCsFile, $stackPointer, $queryContainerName)
+    private function addQueryContainerAnnotation(File $phpCsFile, int $stackPointer, string $queryContainerName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -102,7 +102,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return array
      */
-    private function getQueryContainerClassName(File $phpCsFile)
+    private function getQueryContainerClassName(File $phpCsFile): array
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

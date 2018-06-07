@@ -21,20 +21,14 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    public function register()
+    public function register(): array
     {
         // We skip T_FOR, T_WHILE for now as they can have valid inline assignment
         return [T_FOREACH, T_IF, T_SWITCH, T_OBJECT_OPERATOR, T_DOUBLE_COLON];
     }
 
     /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
-     * @param int $stackPtr The position of the current token
-     *    in the stack passed in $tokens.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -70,7 +64,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFixableInlineAssignment(File $phpcsFile, $startIndex, $endIndex, &$indexEqualSign)
+    protected function isFixableInlineAssignment(File $phpcsFile, int $startIndex, int $endIndex, int &$indexEqualSign): bool
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -109,7 +103,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkMethodCalls(File $phpcsFile, $stackPtr)
+    protected function checkMethodCalls(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

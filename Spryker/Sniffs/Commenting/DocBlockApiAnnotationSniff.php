@@ -18,7 +18,7 @@ class DocBlockApiAnnotationSniff implements Sniff
     /**
      * @return array
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_FUNCTION,
@@ -26,10 +26,7 @@ class DocBlockApiAnnotationSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -48,7 +45,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function isSprykerApiClass(File $phpCsFile, $stackPointer)
+    protected function isSprykerApiClass(File $phpCsFile, int $stackPointer): bool
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer) || !$this->hasClassOrInterfaceName($phpCsFile, $stackPointer)) {
             return false;
@@ -74,7 +71,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function isPublicMethod(File $phpCsFile, $stackPointer)
+    protected function isPublicMethod(File $phpCsFile, int $stackPointer): bool
     {
         $publicPosition = $phpCsFile->findFirstOnLine(T_PUBLIC, $stackPointer);
         if ($publicPosition) {
@@ -90,7 +87,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function hasNamespace(File $phpCsFile, $stackPointer)
+    protected function hasNamespace(File $phpCsFile, int $stackPointer): bool
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         if (!$namespacePosition) {
@@ -106,7 +103,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function hasClassOrInterfaceName(File $phpCsFile, $stackPointer)
+    protected function hasClassOrInterfaceName(File $phpCsFile, int $stackPointer): bool
     {
         $classOrInterfaceNamePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
         if (!$classOrInterfaceNamePosition) {
@@ -122,7 +119,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return string
      */
-    protected function getNamespace(File $phpCsFile, $stackPointer)
+    protected function getNamespace(File $phpCsFile, int $stackPointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
@@ -144,7 +141,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return string
      */
-    protected function getClassOrInterfaceName(File $phpCsFile, $stackPointer)
+    protected function getClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
@@ -158,7 +155,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function isFacade($namespace, $name)
+    protected function isFacade(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker\\\Zed\\\(.*?)\\\Business$/', $namespace) && preg_match('/^(.*?)(Facade|FacadeInterface)/', $name)) {
             return true;
@@ -173,7 +170,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function isClient($namespace, $name)
+    protected function isClient(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker\\\Client\\\[a-zA-Z]+$/', $namespace) && preg_match('/^(.*?)(Client|ClientInterface)/', $name)) {
             return true;
@@ -188,7 +185,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function isPluginInterface($namespace, $name)
+    protected function isPluginInterface(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker\\\\[a-zA-Z]+\\\\[a-zA-Z]+\\\\Dependency\\\\Plugin\b/', $namespace) && preg_match('/^\w+Interface$/', $name)) {
             return true;
@@ -203,7 +200,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function isQueryContainer($namespace, $name)
+    protected function isQueryContainer(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker\\\Zed\\\(.*?)\\\Persistence$/', $namespace) && preg_match('/^(.*?)(QueryContainer|QueryContainerInterface)/', $name)) {
             return true;
@@ -218,7 +215,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return bool
      */
-    protected function hasApiAnnotation(File $phpCsFile, $stackPointer)
+    protected function hasApiAnnotation(File $phpCsFile, int $stackPointer): bool
     {
         $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
         if (!$docCommentOpenerPosition) {
@@ -245,7 +242,7 @@ class DocBlockApiAnnotationSniff implements Sniff
      *
      * @return void
      */
-    protected function addFixableMissingApiAnnotation(File $phpCsFile, $stackPointer)
+    protected function addFixableMissingApiAnnotation(File $phpCsFile, int $stackPointer): void
     {
         $fix = $phpCsFile->addFixableError('@api annotation is missing', $stackPointer, 'ApiAnnotationMissing');
 

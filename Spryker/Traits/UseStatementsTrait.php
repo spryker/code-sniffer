@@ -17,7 +17,7 @@ trait UseStatementsTrait
      *
      * @return array
      */
-    protected function getUseStatements(File $phpcsFile)
+    protected function getUseStatements(File $phpcsFile): array
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -83,7 +83,7 @@ trait UseStatementsTrait
      *
      * @return bool
      */
-    protected function isMultipleUseStatement($statementContent)
+    protected function isMultipleUseStatement(string $statementContent): bool
     {
         if (strpos($statementContent, ',') !== false) {
             return true;

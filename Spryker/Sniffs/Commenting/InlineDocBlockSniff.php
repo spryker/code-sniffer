@@ -50,7 +50,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixDocCommentOpenTags(File $phpCsFile, $startIndex, $endIndex)
+    protected function fixDocCommentOpenTags(File $phpCsFile, int $startIndex, int $endIndex): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -83,7 +83,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixDocCommentCloseTags(File $phpCsFile, $index)
+    protected function fixDocCommentCloseTags(File $phpCsFile, int $index): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -111,7 +111,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkInlineComments(File $phpCsFile, $startIndex, $endIndex)
+    protected function checkInlineComments(File $phpCsFile, int $startIndex, int $endIndex): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -179,7 +179,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function findTagIndex(array $tokens, $from, $to, $tagType)
+    protected function findTagIndex(array $tokens, int $from, int $to, int $tagType): ?int
     {
         for ($i = $from + 1; $i < $to; $i++) {
             if ($tokens[$i]['code'] === $tagType) {
@@ -196,7 +196,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function findErrors(File $phpCsFile, $contentIndex)
+    protected function findErrors(File $phpCsFile, int $contentIndex): array
     {
         $tokens = $phpCsFile->getTokens();
 
