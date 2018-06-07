@@ -83,8 +83,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
             $token = $tokens[$i];
 
             if ($this->isGivenKind(T_EQUAL, $token)) {
-                $i = $phpcsFile->findPrevious(T_VARIABLE, $i - 1);
-                $i = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true);
+                $i = (int)$phpcsFile->findPrevious(T_VARIABLE, $i - 1) ?: null;
+                $i = (int)$phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true) ?: null;
                 continue;
             }
 
@@ -143,6 +143,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
         $nextToken = $tokens[$nextIndex];
 
+        /*
         if (!$nextToken->equals([T_STRING, 'null'], false)) {
             return false;
         }
@@ -160,6 +161,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
 
         return $tokens[$prevIndex]->isGivenKind($typehintKinds);
+        */
+        return false;
     }
 
     /**

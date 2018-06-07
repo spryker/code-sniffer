@@ -17,6 +17,7 @@
     "squizlabs/php_codesniffer": "^3.0"
   },
   "require-dev": {
+    "phpstan/phpstan-shim": "^0.9.2",
     "phpunit/phpunit": "<5.0"
   },
   "scripts": {
@@ -30,7 +31,8 @@
     ],
     "cs-check": "phpcs --colors -v -p -s --extensions=php --standard=Spryker --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/",
     "cs-fix": "phpcbf --colors -v --extensions=php --standard=Spryker --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/",
-    "test": "phpunit"
+    "test": "phpunit",
+    "phpstan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 4 Spryker/Sniffs/"
   },
   "autoload": {
     "psr-4": {

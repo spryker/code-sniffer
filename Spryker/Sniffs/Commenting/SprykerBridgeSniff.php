@@ -102,7 +102,7 @@ class SprykerBridgeSniff implements Sniff
         }
 
         $namespace = $this->getNamespace($phpCsFile, $stackPointer);
-        if (!preg_match('/^Spryker\\\\/', $namespace)) {
+        if (!preg_match('/^Spryker.*\\\\/', $namespace)) {
             return false;
         }
 

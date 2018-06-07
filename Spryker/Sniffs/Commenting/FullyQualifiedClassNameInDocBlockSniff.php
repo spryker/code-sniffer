@@ -116,7 +116,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
-     * @param array &$classNames
+     * @param array $classNames
      *
      * @return array
      */
