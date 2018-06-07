@@ -365,7 +365,7 @@ class UseStatementSniff implements Sniff
 
         if ($addedUseStatement['alias'] !== null) {
             $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
-            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+            for ($k = $lastSeparatorIndex + 1; $k < $lastIndex; ++$k) {
                 $phpcsFile->fixer->replaceToken($k, '');
             }
         }
@@ -484,7 +484,6 @@ class UseStatementSniff implements Sniff
             if ($lastIndex === null || $lastSeparatorIndex === null) {
                 continue;
             }
-
             $extractedUseStatement = ltrim($extractedUseStatement, '\\');
 
             $className = '';
@@ -495,7 +494,7 @@ class UseStatementSniff implements Sniff
             $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Signature');
             if (!$fix) {
-                return;
+                continue;
             }
 
             $phpcsFile->fixer->beginChangeset();
@@ -504,16 +503,12 @@ class UseStatementSniff implements Sniff
 
             $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
-            for ($k = $lastSeparatorIndex; $k > $firstSeparatorIndex; --$k) {
+            for ($k = $lastSeparatorIndex; $k >= $firstSeparatorIndex; --$k) {
                 $phpcsFile->fixer->replaceToken($k, '');
             }
-            $phpcsFile->fixer->replaceToken($firstSeparatorIndex, '');
 
             if ($addedUseStatement['alias'] !== null) {
                 $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
-                for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
-                    $phpcsFile->fixer->replaceToken($k, '');
-                }
             }
 
             $phpcsFile->fixer->endChangeset();
@@ -589,9 +584,6 @@ class UseStatementSniff implements Sniff
 
         if ($addedUseStatement['alias'] !== null) {
             $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
-            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
-                $phpcsFile->fixer->replaceToken($k, '');
-            }
         }
 
         $phpcsFile->fixer->endChangeset();
@@ -789,7 +781,7 @@ class UseStatementSniff implements Sniff
 
         $alias = $this->generateUniqueAlias($phpcsFile, $shortName, $fullName);
         if (!$alias) {
-            throw new RuntimeException('Could not generate unique alias.');
+            throw new RuntimeException(sprintf('Could not generate unique alias for %s (%s).', $shortName, $fullName));
         }
 
         $result = [

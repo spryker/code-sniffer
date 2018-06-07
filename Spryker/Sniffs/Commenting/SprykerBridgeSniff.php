@@ -78,10 +78,11 @@ class SprykerBridgeSniff implements Sniff
             }
 
             $variableIndex = $parameter['token'];
-            $typehintIndex = $phpCsFile->findPrevious(T_STRING, $variableIndex - 1);
+            $typehintIndex = $phpCsFile->findPrevious([T_STRING, T_NS_SEPARATOR], $variableIndex - 1);
+            $firstIndex = $phpCsFile->findPrevious([T_STRING, T_NS_SEPARATOR], $typehintIndex - 1, null, true);
 
             $phpCsFile->fixer->beginChangeset();
-            for ($i = $typehintIndex; $i < $variableIndex; $i++) {
+            for ($i = $firstIndex + 1; $i < $variableIndex; $i++) {
                 $phpCsFile->fixer->replaceToken($i, '');
             }
             $phpCsFile->fixer->endChangeset();
