@@ -28,6 +28,14 @@
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
 
+    <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessParameterAnnotation"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
