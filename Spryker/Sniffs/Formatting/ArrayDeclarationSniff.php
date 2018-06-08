@@ -257,7 +257,7 @@ class ArrayDeclarationSniff implements Sniff
                 $keyUsed = true;
 
                 // Find the start of index that uses this double arrow.
-                $indexEnd = $phpcsFile->findPrevious(T_WHITESPACE, ($nextToken - 1), $arrayStart, true);
+                $indexEnd = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($nextToken - 1), $arrayStart, true);
                 $indexStart = $phpcsFile->findStartOfStatement($indexEnd);
 
                 if ($indexStart === $indexEnd) {

@@ -43,12 +43,12 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
      */
     protected function hasFactoryAnnotation(File $phpCsFile, int $stackPointer): bool
     {
-        $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+        $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
 
-        while ($position !== false) {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
-            if ($position !== false) {
+        while ($position) {
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
+            if ($position) {
                 if (strpos($tokens[$position + 2]['content'], 'getFactory()') !== false) {
                     return true;
                 }
@@ -78,7 +78,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
         } else {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
             $phpCsFile->fixer->addNewlineBefore($position);
             $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $factoryName . ' getConfig()');
         }

@@ -83,7 +83,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     protected function isFacadeNotInBridgeReturned(File $phpCsFile, int $stackPointer): bool
     {
         $tokens = $phpCsFile->getTokens();
-        $returnPointer = $phpCsFile->findNext(T_RETURN, $stackPointer);
+        $returnPointer = (int)$phpCsFile->findNext(T_RETURN, $stackPointer);
         $endOfLinePointer = $phpCsFile->findEndOfStatement($returnPointer);
 
         $statementTokens = array_slice($tokens, $returnPointer, $endOfLinePointer - $returnPointer);
