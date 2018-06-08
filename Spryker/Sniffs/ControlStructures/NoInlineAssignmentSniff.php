@@ -38,7 +38,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $openingBraceIndex = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $openingBraceIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if (!$openingBraceIndex) {
             return;
         }
@@ -48,7 +48,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
 
         $closingBraceIndex = $tokens[$openingBraceIndex]['parenthesis_closer'];
 
-        $hasInlineAssignment = $this->contains($phpcsFile, $openingBraceIndex, $closingBraceIndex, T_EQUAL);
+        $hasInlineAssignment = $this->contains($phpcsFile, T_EQUAL, $openingBraceIndex, $closingBraceIndex);
         if (!$hasInlineAssignment) {
             return;
         }

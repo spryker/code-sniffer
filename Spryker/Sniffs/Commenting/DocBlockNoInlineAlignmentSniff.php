@@ -51,7 +51,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $followingWhitespace = $phpcsFile->findNext(T_DOC_COMMENT_WHITESPACE, $stackPtr + 1, $stackPtr + 2);
+        $followingWhitespace = (int)$phpcsFile->findNext(T_DOC_COMMENT_WHITESPACE, $stackPtr + 1, $stackPtr + 2);
         if (!$followingWhitespace || $tokens[$followingWhitespace]['line'] !== $tokens[$stackPtr]['line']) {
             return;
         }

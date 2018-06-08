@@ -39,17 +39,17 @@ class PhpSapiConstantSniff implements Sniff
             return;
         }
 
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens)) {
             return;
         }
 
-        $openingBrace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $openingBrace = (int)$phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if (!$openingBrace || $tokens[$openingBrace]['type'] !== 'T_OPEN_PARENTHESIS') {
             return;
         }
 
-        $closingBrace = $phpcsFile->findNext(T_WHITESPACE, ($openingBrace + 1), null, true);
+        $closingBrace = (int)$phpcsFile->findNext(T_WHITESPACE, ($openingBrace + 1), null, true);
         if (!$closingBrace || $tokens[$closingBrace]['type'] !== 'T_CLOSE_PARENTHESIS') {
             return;
         }
