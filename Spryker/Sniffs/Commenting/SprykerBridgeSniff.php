@@ -9,12 +9,15 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use Spryker\Traits\BridgeTrait;
 
 /**
  * Checks if Spryker Bridge classes have a type-hinting-less constructor.
  */
 class SprykerBridgeSniff implements Sniff
 {
+    use BridgeTrait;
+
     /**
      * @return array
      */
@@ -87,82 +90,6 @@ class SprykerBridgeSniff implements Sniff
             }
             $phpCsFile->fixer->endChangeset();
         }
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function isSprykerBridge(File $phpCsFile, int $stackPointer): bool
-    {
-        if (!$this->hasNamespace($phpCsFile, $stackPointer)) {
-            return false;
-        }
-
-        $namespace = $this->getNamespace($phpCsFile, $stackPointer);
-        if (!preg_match('/^Spryker.*\\\\/', $namespace)) {
-            return false;
-        }
-
-        $name = $this->findClassOrInterfaceName($phpCsFile, $stackPointer);
-        if (!$name || substr($name, -6) !== 'Bridge') {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function hasNamespace(File $phpCsFile, int $stackPointer): bool
-    {
-        $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
-        if (!$namespacePosition) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
-    protected function getNamespace(File $phpCsFile, int $stackPointer): string
-    {
-        $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
-        $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
-
-        $tokens = $phpCsFile->getTokens();
-        $namespaceTokens = array_splice($tokens, $namespacePosition + 2, $endOfNamespacePosition - $namespacePosition - 2);
-
-        $namespace = '';
-        foreach ($namespaceTokens as $token) {
-            $namespace .= $token['content'];
-        }
-
-        return $namespace;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
-    protected function findClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
-    {
-        $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
-
-        return $phpCsFile->getTokens()[$classOrInterfaceNamePosition]['content'];
     }
 
     /**
