@@ -39,14 +39,14 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return bool
      */
-    private function hasFactoryAnnotation(File $phpCsFile, $stackPointer)
+    protected function hasFactoryAnnotation(File $phpCsFile, int $stackPointer): bool
     {
-        $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+        $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
 
-        while ($position !== false) {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
-            if ($position !== false) {
+        while ($position) {
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
+            if ($position) {
                 if (strpos($tokens[$position + 2]['content'], 'getFactory()') !== false) {
                     return true;
                 }
@@ -64,7 +64,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return void
      */
-    private function addFactoryAnnotation(File $phpCsFile, $stackPointer, $factoryName)
+    protected function addFactoryAnnotation(File $phpCsFile, int $stackPointer, string $factoryName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -84,7 +84,7 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
         } else {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
             $phpCsFile->fixer->addNewlineBefore($position);
             $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $factoryName . ' getFactory()');
         }
@@ -95,9 +95,9 @@ class FactoryMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return array
+     * @return string
      */
-    private function getFactoryClassName(File $phpCsFile)
+    protected function getFactoryClassName(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

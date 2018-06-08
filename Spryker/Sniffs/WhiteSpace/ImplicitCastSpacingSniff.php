@@ -56,7 +56,7 @@ class ImplicitCastSpacingSniff implements Sniff
      *
      * @return void
      */
-    protected function processIncDec(File $phpcsFile, $stackPtr)
+    protected function processIncDec(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

@@ -41,14 +41,14 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
      *
      * @return bool
      */
-    protected function hasFactoryAnnotation(File $phpCsFile, $stackPointer)
+    protected function hasFactoryAnnotation(File $phpCsFile, int $stackPointer): bool
     {
-        $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+        $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
 
-        while ($position !== false) {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
-            if ($position !== false) {
+        while ($position) {
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
+            if ($position) {
                 if (strpos($tokens[$position + 2]['content'], 'getFactory()') !== false) {
                     return true;
                 }
@@ -66,7 +66,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
      *
      * @return void
      */
-    protected function addFactoryAnnotation(File $phpCsFile, $stackPointer, $factoryName)
+    protected function addFactoryAnnotation(File $phpCsFile, int $stackPointer, string $factoryName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -78,7 +78,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
         } else {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
             $phpCsFile->fixer->addNewlineBefore($position);
             $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $factoryName . ' getConfig()');
         }
@@ -91,7 +91,7 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
      *
      * @return string|null
      */
-    protected function getFactoryClassName(File $phpCsFile)
+    protected function getFactoryClassName(File $phpCsFile): ?string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

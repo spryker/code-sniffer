@@ -126,7 +126,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      *
      * @return string|null
      */
-    protected function findDefaultValueType(File $phpCsFile, $stackPointer)
+    protected function findDefaultValueType(File $phpCsFile, int $stackPointer): ?string
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -148,7 +148,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      *
      * @return null|string
      */
-    protected function detectType(array $token)
+    protected function detectType(array $token): ?string
     {
         if ($this->isGivenKind(T_OPEN_SHORT_ARRAY, $token)) {
             return 'array';
@@ -181,7 +181,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function handleMissingVar(File $phpCsFile, $docBlockEndIndex, $docBlockStartIndex, $defaultValueType)
+    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType): void
     {
         $error = 'Doc Block annotation @var for variable missing';
         if ($defaultValueType === null) {
@@ -213,7 +213,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function handleMissingVarType(File $phpCsFile, $varIndex, $defaultValueType)
+    protected function handleMissingVarType(File $phpCsFile, int $varIndex, ?string $defaultValueType): void
     {
         $error = 'Doc Block type for annotation @var for variable missing';
         if ($defaultValueType === null) {

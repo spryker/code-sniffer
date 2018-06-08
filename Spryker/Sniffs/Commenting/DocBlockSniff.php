@@ -76,7 +76,7 @@ class DocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function addDocBlock(File $phpcsFile, $index, $returnType)
+    protected function addDocBlock(File $phpcsFile, int $index, string $returnType): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -100,7 +100,7 @@ class DocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkConstructorAndDestructor(File $phpcsFile, $stackPtr)
+    protected function checkConstructorAndDestructor(File $phpcsFile, int $stackPtr): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $stackPtr);
         if ($docBlockEndIndex) {
@@ -123,7 +123,7 @@ class DocBlockSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function findDocBlockReturn(File $phpcsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function findDocBlockReturn(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -149,7 +149,7 @@ class DocBlockSniff extends AbstractSprykerSniff
      *
      * @return string|null
      */
-    protected function detectReturnTypeVoid(File $phpcsFile, $index)
+    protected function detectReturnTypeVoid(File $phpcsFile, int $index): ?string
     {
         $tokens = $phpcsFile->getTokens();
 

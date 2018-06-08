@@ -17,7 +17,7 @@ abstract class AbstractFactoryMethodAnnotationSniff extends AbstractMethodAnnota
      *
      * @return bool
      */
-    protected function isFactory(File $phpCsFile)
+    protected function isFactory(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
 

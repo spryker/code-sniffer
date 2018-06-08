@@ -86,7 +86,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertCorrectDocBlockParts(File $phpCsFile, $classNameIndex, array $parts, $appendix)
+    protected function assertCorrectDocBlockParts(File $phpCsFile, int $classNameIndex, array $parts, string $appendix): void
     {
         $result = [];
         foreach ($parts as $key => $part) {
@@ -120,7 +120,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
-    protected function findRelatedDocBlock(File $phpCsFile, $stackPointer)
+    protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -143,7 +143,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isStaticMethod(File $phpCsFile, $stackPointer)
+    protected function isStaticMethod(File $phpCsFile, int $stackPointer): bool
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -165,7 +165,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixClassToThis(File $phpCsFile, $stackPointer, $classNameIndex, $parts, $appendix)
+    protected function fixClassToThis(File $phpCsFile, int $stackPointer, int $classNameIndex, array $parts, string $appendix): void
     {
         $ownClassName = '\\' . $this->getClassName($phpCsFile);
 
@@ -208,7 +208,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFluentInterfaceMethod(File $phpCsFile, $stackPointer)
+    protected function isFluentInterfaceMethod(File $phpCsFile, int $stackPointer): bool
     {
         $tokens = $phpCsFile->getTokens();
 

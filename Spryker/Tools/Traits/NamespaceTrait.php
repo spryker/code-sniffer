@@ -22,7 +22,7 @@ trait NamespaceTrait
      *
      * @return bool
      */
-    protected function shouldIgnoreUse(File $phpcsFile, $stackPtr)
+    protected function shouldIgnoreUse(File $phpcsFile, int $stackPtr): bool
     {
         $tokens = $phpcsFile->getTokens();
 

@@ -40,7 +40,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
      *
      * @return bool
      */
-    protected function hasConfigAnnotation(File $phpCsFile, $stackPointer)
+    protected function hasConfigAnnotation(File $phpCsFile, int $stackPointer): bool
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -65,7 +65,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
      *
      * @return void
      */
-    protected function addConfigAnnotation(File $phpCsFile, $stackPointer, $configName)
+    protected function addConfigAnnotation(File $phpCsFile, int $stackPointer, string $configName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -96,7 +96,7 @@ class ConfigMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
      *
      * @return string
      */
-    protected function getConfigClassName(File $phpCsFile)
+    protected function getConfigClassName(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

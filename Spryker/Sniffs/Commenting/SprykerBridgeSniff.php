@@ -18,7 +18,7 @@ class SprykerBridgeSniff implements Sniff
     /**
      * @return array
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS,
@@ -26,10 +26,7 @@ class SprykerBridgeSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -46,7 +43,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return void
      */
-    protected function checkBridge(File $phpCsFile, $stackPointer)
+    protected function checkBridge(File $phpCsFile, int $stackPointer): void
     {
         $index = $stackPointer;
         while ($index = $phpCsFile->findNext(T_FUNCTION, $index + 1)) {
@@ -67,7 +64,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return void
      */
-    protected function assertValidConstructor(File $phpCsFile, $index)
+    protected function assertValidConstructor(File $phpCsFile, int $index): void
     {
         $parameters = $phpCsFile->getMethodParameters($index);
         foreach ($parameters as $parameter) {
@@ -81,10 +78,11 @@ class SprykerBridgeSniff implements Sniff
             }
 
             $variableIndex = $parameter['token'];
-            $typehintIndex = $phpCsFile->findPrevious(T_STRING, $variableIndex - 1);
+            $typehintIndex = $phpCsFile->findPrevious([T_STRING, T_NS_SEPARATOR], $variableIndex - 1);
+            $firstIndex = $phpCsFile->findPrevious([T_STRING, T_NS_SEPARATOR], $typehintIndex - 1, null, true);
 
             $phpCsFile->fixer->beginChangeset();
-            for ($i = $typehintIndex; $i < $variableIndex; $i++) {
+            for ($i = $firstIndex + 1; $i < $variableIndex; $i++) {
                 $phpCsFile->fixer->replaceToken($i, '');
             }
             $phpCsFile->fixer->endChangeset();
@@ -97,14 +95,14 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return bool
      */
-    protected function isSprykerBridge(File $phpCsFile, $stackPointer)
+    protected function isSprykerBridge(File $phpCsFile, int $stackPointer): bool
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer)) {
             return false;
         }
 
         $namespace = $this->getNamespace($phpCsFile, $stackPointer);
-        if (!preg_match('/^Spryker\\\\/', $namespace)) {
+        if (!preg_match('/^Spryker.*\\\\/', $namespace)) {
             return false;
         }
 
@@ -122,7 +120,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return bool
      */
-    protected function hasNamespace(File $phpCsFile, $stackPointer)
+    protected function hasNamespace(File $phpCsFile, int $stackPointer): bool
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         if (!$namespacePosition) {
@@ -138,7 +136,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return string
      */
-    protected function getNamespace(File $phpCsFile, $stackPointer)
+    protected function getNamespace(File $phpCsFile, int $stackPointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
@@ -160,7 +158,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return string
      */
-    protected function findClassOrInterfaceName(File $phpCsFile, $stackPointer)
+    protected function findClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
 
@@ -173,7 +171,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return void
      */
-    protected function assertValidDocBlock(File $phpCsFile, $methodIndex)
+    protected function assertValidDocBlock(File $phpCsFile, int $methodIndex): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $methodIndex);
         if (!$docBlockEndIndex) {
@@ -229,7 +227,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
-    protected function findRelatedDocBlock(File $phpCsFile, $stackPointer)
+    protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -251,7 +249,7 @@ class SprykerBridgeSniff implements Sniff
      *
      * @return bool
      */
-    protected function isRelevant($content)
+    protected function isRelevant(string $content): bool
     {
         $whitelist = [
             'Facade',

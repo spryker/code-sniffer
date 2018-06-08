@@ -18,7 +18,7 @@ class SprykerFacadeSniff implements Sniff
     /**
      * @return array
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS, T_INTERFACE,
@@ -26,10 +26,7 @@ class SprykerFacadeSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -53,7 +50,7 @@ class SprykerFacadeSniff implements Sniff
      *
      * @return void
      */
-    protected function checkFacade(File $phpCsFile, $stackPointer)
+    protected function checkFacade(File $phpCsFile, int $stackPointer): void
     {
         $name = $this->findClassOrInterfaceName($phpCsFile, $stackPointer);
         $facadeInterfaceFile = str_replace('Facade.php', 'FacadeInterface.php', $phpCsFile->getFilename());
@@ -71,7 +68,7 @@ class SprykerFacadeSniff implements Sniff
      *
      * @return void
      */
-    protected function checkInterface(File $phpCsFile, $stackPointer)
+    protected function checkInterface(File $phpCsFile, int $stackPointer): void
     {
         $facadeFile = str_replace('FacadeInterface.php', 'Facade.php', $phpCsFile->getFilename());
 
@@ -94,7 +91,7 @@ class SprykerFacadeSniff implements Sniff
 
         if (count($missingInterfaceMethods) > 0) {
             $phpCsFile->addError(
-                sprintf('Interface methods do not match facade methods: "%s" missing', implode(', ', $missingInterfaceMethods), 'InterfaceMethodsNotMatch'),
+                sprintf('Interface methods do not match facade methods: "%s" missing', implode(', ', $missingInterfaceMethods)),
                 $stackPointer,
                 'InterfaceMethodMissing'
             );
@@ -102,7 +99,7 @@ class SprykerFacadeSniff implements Sniff
 
         if (count($missingInterfaceImplementations) > 0) {
             $phpCsFile->addError(
-                sprintf('Interface method has no implementation: "%s" missing', implode(', ', $missingInterfaceImplementations), 'InterfaceMethodsNotMatch'),
+                sprintf('Interface method has no implementation: "%s" missing', implode(', ', $missingInterfaceImplementations)),
                 $stackPointer,
                 'InterfaceImplementationMissing'
             );
@@ -115,7 +112,7 @@ class SprykerFacadeSniff implements Sniff
      *
      * @return bool
      */
-    protected function isSprykerFacadeApiClass(File $phpCsFile, $stackPointer)
+    protected function isSprykerFacadeApiClass(File $phpCsFile, int $stackPointer): bool
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer)) {
             return false;
@@ -140,7 +137,7 @@ class SprykerFacadeSniff implements Sniff
      *
      * @return bool
      */
-    protected function hasNamespace(File $phpCsFile, $stackPointer)
+    protected function hasNamespace(File $phpCsFile, int $stackPointer): bool
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         if (!$namespacePosition) {
@@ -156,7 +153,7 @@ class SprykerFacadeSniff implements Sniff
      *
      * @return string
      */
-    protected function getNamespace(File $phpCsFile, $stackPointer)
+    protected function getNamespace(File $phpCsFile, int $stackPointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
@@ -178,7 +175,7 @@ class SprykerFacadeSniff implements Sniff
      *
      * @return string
      */
-    protected function findClassOrInterfaceName(File $phpCsFile, $stackPointer)
+    protected function findClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
 
@@ -191,7 +188,7 @@ class SprykerFacadeSniff implements Sniff
      *
      * @return bool
      */
-    protected function isFacadeInterface($phpCsFile, $stackPointer)
+    protected function isFacadeInterface(File $phpCsFile, int $stackPointer): bool
     {
         $namespace = $this->getNamespace($phpCsFile, $stackPointer);
         $name = $this->findClassOrInterfaceName($phpCsFile, $stackPointer);

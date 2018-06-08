@@ -42,14 +42,14 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return bool
      */
-    private function hasFacadeAnnotation(File $phpCsFile, $stackPointer)
+    protected function hasFacadeAnnotation(File $phpCsFile, int $stackPointer): bool
     {
-        $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+        $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
 
-        while ($position !== false) {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
-            if ($position !== false) {
+        while ($position) {
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
+            if ($position) {
                 if (strpos($tokens[$position + 2]['content'], 'getFacade()') !== false) {
                     return true;
                 }
@@ -67,7 +67,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return void
      */
-    private function addFacadeAnnotation(File $phpCsFile, $stackPointer, $facadeName)
+    protected function addFacadeAnnotation(File $phpCsFile, int $stackPointer, string $facadeName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -87,7 +87,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
         } else {
-            $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+            $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
             $phpCsFile->fixer->addNewlineBefore($position);
             $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $facadeName . ' getFacade()');
         }
@@ -98,9 +98,9 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return array
+     * @return string
      */
-    private function getFacadeClassName(File $phpCsFile)
+    protected function getFacadeClassName(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);

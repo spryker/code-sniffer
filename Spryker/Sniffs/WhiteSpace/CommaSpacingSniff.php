@@ -58,7 +58,7 @@ class CommaSpacingSniff implements Sniff
      *
      * @return void
      */
-    public function checkNext(File $phpcsFile, $stackPtr, $next)
+    public function checkNext(File $phpcsFile, int $stackPtr, int $next): void
     {
         $tokens = $phpcsFile->getTokens();
 

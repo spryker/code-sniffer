@@ -50,7 +50,7 @@ class ControlStructureSpacingSniff implements Sniff
      *
      * @return void
      */
-    protected function checkTryToken(File $phpcsFile, $stackPtr)
+    protected function checkTryToken(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -67,7 +67,7 @@ class ControlStructureSpacingSniff implements Sniff
      *
      * @return void
      */
-    protected function checkCatchToken(File $phpcsFile, $stackPtr)
+    protected function checkCatchToken(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -86,7 +86,7 @@ class ControlStructureSpacingSniff implements Sniff
      *
      * @return void
      */
-    protected function expectSingleSpaceBefore(File $phpcsFile, $stackPtr, $tokenName)
+    protected function expectSingleSpaceBefore(File $phpcsFile, int $stackPtr, string $tokenName): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -118,7 +118,7 @@ class ControlStructureSpacingSniff implements Sniff
      *
      * @return void
      */
-    protected function expectSingleSpaceAfter(File $phpcsFile, $stackPtr, $tokenName)
+    protected function expectSingleSpaceAfter(File $phpcsFile, int $stackPtr, string $tokenName): void
     {
         $tokens = $phpcsFile->getTokens();
 

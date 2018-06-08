@@ -66,7 +66,7 @@ class ArrayDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function processSingleLineArray(File $phpcsFile, $arrayStart, $arrayEnd)
+    public function processSingleLineArray(File $phpcsFile, int $arrayStart, int $arrayEnd): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -116,7 +116,7 @@ class ArrayDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function processMultiLineArray(File $phpcsFile, $stackPtr, $arrayStart, $arrayEnd)
+    public function processMultiLineArray(File $phpcsFile, int $stackPtr, int $arrayStart, int $arrayEnd): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -257,7 +257,7 @@ class ArrayDeclarationSniff implements Sniff
                 $keyUsed = true;
 
                 // Find the start of index that uses this double arrow.
-                $indexEnd = $phpcsFile->findPrevious(T_WHITESPACE, ($nextToken - 1), $arrayStart, true);
+                $indexEnd = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($nextToken - 1), $arrayStart, true);
                 $indexStart = $phpcsFile->findStartOfStatement($indexEnd);
 
                 if ($indexStart === $indexEnd) {

@@ -69,7 +69,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkUseStatement(File $phpcsFile, array $useStatement, $applicationLayer)
+    protected function checkUseStatement(File $phpcsFile, array $useStatement, string $applicationLayer): void
     {
         $className = $useStatement['fullName'];
 

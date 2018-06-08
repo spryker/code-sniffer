@@ -18,7 +18,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return bool
      */
-    protected function isPlugin(File $phpCsFile, $stackPointer)
+    protected function isPlugin(File $phpCsFile, int $stackPointer): bool
     {
         if ($this->isFileInPluginDirectory($phpCsFile) && $this->extendsAbstractPlugin($phpCsFile, $stackPointer)) {
             return true;
@@ -32,7 +32,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return int
      */
-    private function isFileInPluginDirectory(File $phpCsFile)
+    protected function isFileInPluginDirectory(File $phpCsFile): int
     {
         return preg_match('/Communication\/Plugin/', $phpCsFile->getFilename());
     }
@@ -43,7 +43,7 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return bool
      */
-    private function extendsAbstractPlugin(File $phpCsFile, $stackPointer)
+    protected function extendsAbstractPlugin(File $phpCsFile, int $stackPointer): bool
     {
         $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
 
@@ -66,9 +66,9 @@ abstract class AbstractPluginMethodAnnotationSniff extends AbstractMethodAnnotat
      *
      * @return int
      */
-    protected function getStackPointerOfClassBegin(File $phpCsFile, $stackPointer)
+    protected function getStackPointerOfClassBegin(File $phpCsFile, int $stackPointer): int
     {
-        $abstractPosition = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer);
+        $abstractPosition = (int)$phpCsFile->findPrevious(T_ABSTRACT, $stackPointer);
         if ($abstractPosition) {
             return $abstractPosition;
         }

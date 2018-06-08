@@ -59,7 +59,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     /**
      * @return array
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_NAMESPACE,
@@ -71,7 +71,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return string
      */
-    protected function getLicense($path)
+    protected function getLicense(string $path): string
     {
         if (isset($this->licenseMap[$path])) {
             return $this->licenseMap[$path];
@@ -94,7 +94,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isSprykerNamespace(File $phpCsFile, $stackPointer)
+    protected function isSprykerNamespace(File $phpCsFile, int $stackPointer): bool
     {
         $firstNamespaceTokenPosition = $phpCsFile->findNext(T_STRING, $stackPointer);
         if ($firstNamespaceTokenPosition) {
@@ -121,7 +121,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function existsFileDocBlock(File $phpCsFile, $stackPointer)
+    protected function existsFileDocBlock(File $phpCsFile, int $stackPointer): bool
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
 
@@ -134,7 +134,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function addFileDocBlock(File $phpCsFile, $stackPointer)
+    protected function addFileDocBlock(File $phpCsFile, int $stackPointer): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -160,7 +160,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function clearFileDocBlock(File $phpCsFile, $stackPointer)
+    protected function clearFileDocBlock(File $phpCsFile, int $stackPointer): void
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_OPEN_TAG, $stackPointer) + 1;
 
@@ -178,7 +178,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function checkCustomFileDocBlock(File $phpCsFile, $stackPointer)
+    protected function checkCustomFileDocBlock(File $phpCsFile, int $stackPointer): void
     {
         $path = str_replace(getcwd(), '', $phpCsFile->getFilename());
         if (strpos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR) === 0) {
@@ -220,7 +220,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isCustomFileDocBlock(File $phpCsFile, $stackPointer, $license)
+    protected function isCustomFileDocBlock(File $phpCsFile, int $stackPointer, string $license): bool
     {
         $fileDockBlockTokens = $this->getFileDocBlockTokens($phpCsFile, $stackPointer);
 
@@ -242,7 +242,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return array
      */
-    protected function getFileDocBlockTokens(File $phpCsFile, $stackPointer)
+    protected function getFileDocBlockTokens(File $phpCsFile, int $stackPointer): array
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
         $fileDocBlockEndPosition = $phpCsFile->findNext(T_DOC_COMMENT_CLOSE_TAG, $fileDocBlockStartPosition) + 1;
@@ -259,7 +259,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function addCustomFileDocBlock(File $phpCsFile, $stackPointer, $license)
+    protected function addCustomFileDocBlock(File $phpCsFile, int $stackPointer, string $license): void
     {
         $phpCsFile->fixer->beginChangeset();
 

@@ -48,12 +48,12 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
             return;
         }
 
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
         if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens)) {
             return;
         }
 
-        $openingBraceIndex = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $openingBraceIndex = (int)$phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
         if (!$openingBraceIndex || $tokens[$openingBraceIndex]['type'] !== 'T_OPEN_PARENTHESIS') {
             return;
         }
@@ -82,7 +82,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixContent(File $phpcsFile, $stackPtr, $key, $openingBraceIndex, $closingBraceIndex)
+    protected function fixContent(File $phpcsFile, int $stackPtr, string $key, int $openingBraceIndex, int $closingBraceIndex): void
     {
         $needsBrackets = $this->needsBrackets($phpcsFile, $openingBraceIndex, $closingBraceIndex);
 

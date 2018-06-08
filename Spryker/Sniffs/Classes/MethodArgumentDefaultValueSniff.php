@@ -75,7 +75,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function getLastNonDefaultArgumentIndex(File $phpcsFile, $startIndex, $endIndex)
+    protected function getLastNonDefaultArgumentIndex(File $phpcsFile, int $startIndex, int $endIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -83,8 +83,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
             $token = $tokens[$i];
 
             if ($this->isGivenKind(T_EQUAL, $token)) {
-                $i = $phpcsFile->findPrevious(T_VARIABLE, $i - 1);
-                $i = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true);
+                $i = (int)$phpcsFile->findPrevious(T_VARIABLE, $i - 1) ?: null;
+                $i = (int)$phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true) ?: null;
                 continue;
             }
 
@@ -92,6 +92,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
                 return $i;
             }
         }
+
+        return null;
     }
 
     /**
@@ -100,7 +102,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isEllipsis(File $phpcsFile, $variableIndex)
+    protected function isEllipsis(File $phpcsFile, int $variableIndex): bool
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -119,7 +121,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function removeDefaultArgument(File $phpcsFile, $startIndex, $endIndex)
+    protected function removeDefaultArgument(File $phpcsFile, int $startIndex, int $endIndex): void
     {
         $this->clearWhitespacesBeforeIndex($phpcsFile, $startIndex);
         for ($i = $startIndex; $i <= $endIndex; ++$i) {
@@ -133,7 +135,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isTypehintedNullableVariable(File $phpcsFile, $index)
+    protected function isTypehintedNullableVariable(File $phpcsFile, int $index): bool
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -141,6 +143,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
         $nextToken = $tokens[$nextIndex];
 
+        /*
         if (!$nextToken->equals([T_STRING, 'null'], false)) {
             return false;
         }
@@ -158,6 +161,8 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
 
         return $tokens[$prevIndex]->isGivenKind($typehintKinds);
+        */
+        return false;
     }
 
     /**
@@ -166,7 +171,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function clearWhitespacesBeforeIndex(File $phpcsFile, $index)
+    protected function clearWhitespacesBeforeIndex(File $phpcsFile, int $index): void
     {
         $tokens = $phpcsFile->getTokens();
 

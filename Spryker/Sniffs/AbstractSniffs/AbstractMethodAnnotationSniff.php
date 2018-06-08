@@ -32,7 +32,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function hasDocBlock(File $phpCsFile, $stackPointer)
+    protected function hasDocBlock(File $phpCsFile, int $stackPointer): bool
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -45,7 +45,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function fileExists(File $phpCsFile, $className)
+    protected function fileExists(File $phpCsFile, string $className): bool
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);

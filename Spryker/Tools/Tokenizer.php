@@ -40,7 +40,7 @@ class Tokenizer
      *
      * @throws \Exception
      */
-    public function __construct($argv)
+    public function __construct(array $argv)
     {
         $file = !empty($argv[1]) ? $argv[1] : null;
         if (!$file || !file_exists($file)) {
@@ -56,7 +56,7 @@ class Tokenizer
     /**
      * @return void
      */
-    public function tokenize()
+    public function tokenize(): void
     {
         $res = [];
         $tokens = $this->getTokens($this->path);
@@ -83,7 +83,7 @@ class Tokenizer
      *
      * @return array Tokens
      */
-    protected function getTokens($path)
+    protected function getTokens(string $path): array
     {
         $phpcs = new Runner();
 
@@ -108,7 +108,7 @@ class Tokenizer
      *
      * @return array
      */
-    protected function getTokenStrings($row, $tokens)
+    protected function getTokenStrings(int $row, array $tokens): array
     {
         $pieces = [];
         foreach ($tokens as $key => $token) {

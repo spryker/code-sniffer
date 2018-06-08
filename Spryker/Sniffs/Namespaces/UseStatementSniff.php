@@ -86,7 +86,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkUseForClass(File $phpcsFile, $stackPtr)
+    protected function checkUseForClass(File $phpcsFile, int $stackPtr): void
     {
         $this->checkExtends($phpcsFile, $stackPtr);
         $this->checkImplements($phpcsFile, $stackPtr);
@@ -98,7 +98,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkExtends(File $phpcsFile, $stackPtr)
+    protected function checkExtends(File $phpcsFile, int $stackPtr): void
     {
         $extendsIndex = $phpcsFile->findNext([T_EXTENDS], $stackPtr + 1);
         if (!$extendsIndex) {
@@ -118,7 +118,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkImplements(File $phpcsFile, $stackPtr)
+    protected function checkImplements(File $phpcsFile, int $stackPtr): void
     {
         $implementsIndex = $phpcsFile->findNext([T_IMPLEMENTS], $stackPtr + 1);
         if (!$implementsIndex) {
@@ -133,12 +133,12 @@ class UseStatementSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $statement
+     * @param array $statement
      * @param int $stackPtr
      *
      * @return void
      */
-    protected function fixStatement(File $phpcsFile, $statement, $stackPtr)
+    protected function fixStatement(File $phpcsFile, array $statement, int $stackPtr): void
     {
         if (strpos($statement['content'], '\\') === false) {
             return;
@@ -182,7 +182,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkUseForNew(File $phpcsFile, $stackPtr)
+    protected function checkUseForNew(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -249,7 +249,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkUseForStatic(File $phpcsFile, $stackPtr)
+    protected function checkUseForStatic(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -313,7 +313,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkUseForInstanceOf(File $phpcsFile, $stackPtr)
+    protected function checkUseForInstanceOf(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -365,7 +365,7 @@ class UseStatementSniff implements Sniff
 
         if ($addedUseStatement['alias'] !== null) {
             $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
-            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+            for ($k = $lastSeparatorIndex + 1; $k < $lastIndex; ++$k) {
                 $phpcsFile->fixer->replaceToken($k, '');
             }
         }
@@ -379,7 +379,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    public function checkUseForCatch(File $phpcsFile, $stackPtr)
+    public function checkUseForCatch(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -450,7 +450,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkUseForSignature(File $phpcsFile, $stackPtr)
+    protected function checkUseForSignature(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -484,7 +484,6 @@ class UseStatementSniff implements Sniff
             if ($lastIndex === null || $lastSeparatorIndex === null) {
                 continue;
             }
-
             $extractedUseStatement = ltrim($extractedUseStatement, '\\');
 
             $className = '';
@@ -495,7 +494,7 @@ class UseStatementSniff implements Sniff
             $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
             $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Signature');
             if (!$fix) {
-                return;
+                continue;
             }
 
             $phpcsFile->fixer->beginChangeset();
@@ -504,16 +503,12 @@ class UseStatementSniff implements Sniff
 
             $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
-            for ($k = $lastSeparatorIndex; $k > $firstSeparatorIndex; --$k) {
+            for ($k = $lastSeparatorIndex; $k >= $firstSeparatorIndex; --$k) {
                 $phpcsFile->fixer->replaceToken($k, '');
             }
-            $phpcsFile->fixer->replaceToken($firstSeparatorIndex, '');
 
             if ($addedUseStatement['alias'] !== null) {
                 $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
-                for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
-                    $phpcsFile->fixer->replaceToken($k, '');
-                }
             }
 
             $phpcsFile->fixer->endChangeset();
@@ -526,7 +521,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function checkUseForReturnTypeHint(File $phpcsFile, $stackPtr)
+    protected function checkUseForReturnTypeHint(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -589,9 +584,6 @@ class UseStatementSniff implements Sniff
 
         if ($addedUseStatement['alias'] !== null) {
             $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
-            for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
-                $phpcsFile->fixer->replaceToken($k, '');
-            }
         }
 
         $phpcsFile->fixer->endChangeset();
@@ -602,7 +594,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function loadStatements(File $phpcsFile)
+    protected function loadStatements(File $phpcsFile): void
     {
         $this->className = $this->findClassName($phpcsFile);
 
@@ -621,7 +613,7 @@ class UseStatementSniff implements Sniff
      *
      * @return bool
      */
-    protected function isBlacklistedFile(File $phpcsFile)
+    protected function isBlacklistedFile(File $phpcsFile): bool
     {
         $file = $phpcsFile->getFilename();
         if (strpos($file, DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR) !== false) {
@@ -638,7 +630,7 @@ class UseStatementSniff implements Sniff
      *
      * @return bool
      */
-    protected function isMultipleUseStatement($statementContent)
+    protected function isMultipleUseStatement(string $statementContent): bool
     {
         if (strpos($statementContent, ',') !== false) {
             return true;
@@ -654,7 +646,7 @@ class UseStatementSniff implements Sniff
      *
      * @return string|null
      */
-    protected function generateUniqueAlias(File $phpcsFile, $shortName, $fullName)
+    protected function generateUniqueAlias(File $phpcsFile, string $shortName, string $fullName): ?string
     {
         $alias = $shortName;
         $count = 0;
@@ -695,7 +687,7 @@ class UseStatementSniff implements Sniff
      *
      * @return bool
      */
-    protected function isSameVendor(File $phpcsFile, $fullName)
+    protected function isSameVendor(File $phpcsFile, string $fullName): bool
     {
         $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
         $firstSeparator = strpos($namespaceStatement['namespace'], '\\');
@@ -711,7 +703,7 @@ class UseStatementSniff implements Sniff
      *
      * @return array
      */
-    protected function getUseStatements(File $phpcsFile)
+    protected function getUseStatements(File $phpcsFile): array
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -779,7 +771,7 @@ class UseStatementSniff implements Sniff
      *
      * @return array
      */
-    protected function addUseStatement(File $phpcsFile, $shortName, $fullName)
+    protected function addUseStatement(File $phpcsFile, string $shortName, string $fullName): array
     {
         foreach ($this->allStatements as $useStatement) {
             if ($useStatement['fullName'] === $fullName) {
@@ -789,7 +781,7 @@ class UseStatementSniff implements Sniff
 
         $alias = $this->generateUniqueAlias($phpcsFile, $shortName, $fullName);
         if (!$alias) {
-            throw new RuntimeException('Could not generate unique alias.');
+            throw new RuntimeException(sprintf('Could not generate unique alias for %s (%s).', $shortName, $fullName));
         }
 
         $result = [
@@ -811,7 +803,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    protected function insertUseStatement(File $phpcsFile, array $useStatement)
+    protected function insertUseStatement(File $phpcsFile, array $useStatement): void
     {
         $existingStatements = $this->existingStatements;
         if ($existingStatements) {
@@ -833,7 +825,7 @@ class UseStatementSniff implements Sniff
      *
      * @return string
      */
-    protected function generateUseStatement(array $useStatement)
+    protected function generateUseStatement(array $useStatement): string
     {
         $alias = '';
         if (!empty($useStatement['alias'])) {
@@ -850,7 +842,7 @@ class UseStatementSniff implements Sniff
      *
      * @return string|null
      */
-    protected function findClassName(File $phpcsFile)
+    protected function findClassName(File $phpcsFile): ?string
     {
         $index = $phpcsFile->findNext([T_CLASS, T_INTERFACE, T_TRAIT], 0);
         if (!$index) {
@@ -871,7 +863,7 @@ class UseStatementSniff implements Sniff
      *
      * @return array
      */
-    protected function parseExtends(File $phpcsFile, $extendsStartIndex)
+    protected function parseExtends(File $phpcsFile, int $extendsStartIndex): array
     {
         $extendsEndIndex = $phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
 
@@ -884,7 +876,7 @@ class UseStatementSniff implements Sniff
      *
      * @return array
      */
-    protected function parseImplements(File $phpcsFile, $implementsStartIndex)
+    protected function parseImplements(File $phpcsFile, int $implementsStartIndex): array
     {
         $implementsEndIndex = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
 
@@ -900,7 +892,7 @@ class UseStatementSniff implements Sniff
      *
      * @return array
      */
-    protected function parse(File $phpcsFile, $startIndex, $endIndex)
+    protected function parse(File $phpcsFile, int $startIndex, int $endIndex): array
     {
         $tokens = $phpcsFile->getTokens();
         if (empty($tokens[$endIndex])) {
