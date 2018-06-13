@@ -123,6 +123,9 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
             if (substr($class, -9) === 'Interface' || substr($class, 0, 5) === '\\Orm\\') {
                 continue;
             }
+            if ($this->isAbstract($class)) {
+                continue;
+            }
 
             $interface = $class . 'Interface';
             $interfacePathElement = str_replace('\\', DIRECTORY_SEPARATOR, $interface);
@@ -163,5 +166,19 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
         }
 
         return rtrim($matches[0], DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return bool
+     */
+    protected function isAbstract(string $class): bool
+    {
+        $classPieces = explode('\\', $class);
+
+        $className = array_pop($classPieces);
+
+        return (substr($className, 0, 8) === 'Abstract');
     }
 }
