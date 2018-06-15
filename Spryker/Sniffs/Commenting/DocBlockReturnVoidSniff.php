@@ -75,7 +75,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
 
         if ($docBlockReturnIndex) {
-            $this->assertExisting($phpcsFile, $docBlockReturnIndex, $returnType);
+            $this->assertExisting($phpcsFile, $stackPtr, $docBlockReturnIndex, $returnType);
             return;
         }
 
@@ -210,20 +210,28 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $pointer
      * @param int $docBlockReturnIndex
      * @param string|null $returnType
      *
      * @return void
      */
-    protected function assertExisting(File $phpcsFile, int $docBlockReturnIndex, ?string $returnType): void
+    protected function assertExisting(File $phpcsFile, int $pointer, int $docBlockReturnIndex, ?string $returnType): void
     {
         $tokens = $phpcsFile->getTokens();
 
         $documentedReturnType = $tokens[$docBlockReturnIndex + 2]['content'];
-        if ($returnType === 'void' && $documentedReturnType !== 'void') {
-            $phpcsFile->addError('Method is void, but doc block states otherwise.', $docBlockReturnIndex + 2, 'InvalidVoidBody');
-
+        if ($returnType !== 'void' || $documentedReturnType === 'void') {
             return;
         }
+
+        // We need to skip for fake extension hooks.
+        $scopeOpenerIndex = $tokens[$pointer]['scope_opener'];
+        $firstToken = $phpcsFile->findNext(Tokens::$emptyTokens, $scopeOpenerIndex + 1, null, true);
+        if ($tokens[$firstToken]['code'] === T_THROW) {
+            return;
+        }
+
+        $phpcsFile->addError('Method is void, but doc block states otherwise.', $docBlockReturnIndex + 2, 'InvalidVoidBody');
     }
 }
