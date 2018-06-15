@@ -224,6 +224,9 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         if ($returnType !== 'void' || $documentedReturnType === 'void') {
             return;
         }
+        if ($this->documentedTypesContainFuzzyVoid($documentedReturnType)) {
+            return;
+        }
 
         // We need to skip for fake extension hooks.
         $scopeOpenerIndex = $tokens[$pointer]['scope_opener'];
@@ -233,5 +236,17 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         $phpcsFile->addError('Method is void, but doc block states otherwise.', $docBlockReturnIndex + 2, 'InvalidVoidBody');
+    }
+
+    /**
+     * @param string $documentedReturnType
+     *
+     * @return bool
+     */
+    protected function documentedTypesContainFuzzyVoid(string $documentedReturnType): bool
+    {
+        $types = explode('|', $documentedReturnType);
+
+        return in_array('null', $types, true);
     }
 }
