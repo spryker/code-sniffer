@@ -67,12 +67,18 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         // If inheritdoc is present assume the parent contains it
-        if ($docBlockReturnIndex || !$docBlockReturnIndex && $hasInheritDoc) {
+        if (!$docBlockReturnIndex && $hasInheritDoc) {
             return;
         }
 
         // We only look for void methods right now
         $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
+
+        if ($docBlockReturnIndex) {
+            $this->assertExisting($phpcsFile, $stackPtr, $docBlockReturnIndex, $returnType);
+            return;
+        }
+
         if ($returnType === null) {
             $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnMissing');
             return;
@@ -200,5 +206,52 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         return $type;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $pointer
+     * @param int $docBlockReturnIndex
+     * @param string|null $returnType
+     *
+     * @return void
+     */
+    protected function assertExisting(File $phpcsFile, int $pointer, int $docBlockReturnIndex, ?string $returnType): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $documentedReturnType = $tokens[$docBlockReturnIndex + 2]['content'];
+        $whiteSpacePosition = mb_strpos($documentedReturnType, ' ');
+        if ($whiteSpacePosition !== false) {
+            $documentedReturnType = mb_substr($documentedReturnType, 0, $whiteSpacePosition);
+        }
+
+        if ($returnType !== 'void' || $documentedReturnType === 'void') {
+            return;
+        }
+        if ($this->documentedTypesContainFuzzyVoid($documentedReturnType)) {
+            return;
+        }
+
+        // We need to skip for fake extension hooks.
+        $scopeOpenerIndex = $tokens[$pointer]['scope_opener'];
+        $firstToken = $phpcsFile->findNext(Tokens::$emptyTokens, $scopeOpenerIndex + 1, null, true);
+        if ($tokens[$firstToken]['code'] === T_THROW) {
+            return;
+        }
+
+        $phpcsFile->addError('Method is void, but doc block states otherwise.', $docBlockReturnIndex + 2, 'InvalidVoidBody');
+    }
+
+    /**
+     * @param string $documentedReturnType
+     *
+     * @return bool
+     */
+    protected function documentedTypesContainFuzzyVoid(string $documentedReturnType): bool
+    {
+        $types = explode('|', $documentedReturnType);
+
+        return in_array('null', $types, true);
     }
 }

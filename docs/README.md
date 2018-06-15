@@ -91,6 +91,7 @@ Spryker (62 sniffs)
 - Spryker.Commenting.DocBlockTestGroupAnnotation2
 - Spryker.Commenting.DocBlockThrows
 - Spryker.Commenting.DocBlockVar
+- Spryker.Commenting.DocBlockVarNotJustNull
 - Spryker.Commenting.FileDocBlock
 - Spryker.Commenting.FullyQualifiedClassNameInDocBlock
 - Spryker.Commenting.InlineDocBlock
