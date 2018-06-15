@@ -67,12 +67,18 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         // If inheritdoc is present assume the parent contains it
-        if ($docBlockReturnIndex || !$docBlockReturnIndex && $hasInheritDoc) {
+        if (!$docBlockReturnIndex && $hasInheritDoc) {
             return;
         }
 
         // We only look for void methods right now
         $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
+
+        if ($docBlockReturnIndex) {
+            $this->assertExisting($phpcsFile, $docBlockReturnIndex, $returnType);
+            return;
+        }
+
         if ($returnType === null) {
             $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnMissing');
             return;
@@ -200,5 +206,24 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         return $type;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $docBlockReturnIndex
+     * @param string|null $returnType
+     *
+     * @return void
+     */
+    protected function assertExisting(File $phpcsFile, int $docBlockReturnIndex, ?string $returnType): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $documentedReturnType = $tokens[$docBlockReturnIndex + 2]['content'];
+        if ($returnType === 'void' && $documentedReturnType !== 'void') {
+            $phpcsFile->addError('Method is void, but doc block states otherwise.', $docBlockReturnIndex + 2, 'InvalidVoidBody');
+
+            return;
+        }
     }
 }
