@@ -221,6 +221,11 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $documentedReturnType = $tokens[$docBlockReturnIndex + 2]['content'];
+        $whiteSpacePosition = mb_strpos($documentedReturnType, ' ');
+        if ($whiteSpacePosition !== false) {
+            $documentedReturnType = mb_substr($documentedReturnType, 0, $whiteSpacePosition);
+        }
+
         if ($returnType !== 'void' || $documentedReturnType === 'void') {
             return;
         }
