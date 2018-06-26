@@ -232,6 +232,9 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         if ($this->documentedTypesContainFuzzyVoid($documentedReturnType)) {
             return;
         }
+        if ($this->bodyContainsYield($phpcsFile, $pointer)) {
+            return;
+        }
 
         // We need to skip for fake extension hooks.
         $scopeOpenerIndex = $tokens[$pointer]['scope_opener'];
@@ -253,5 +256,27 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $types = explode('|', $documentedReturnType);
 
         return in_array('null', $types, true);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $pointer
+     *
+     * @return bool
+     */
+    protected function bodyContainsYield(File $phpcsFile, int $pointer)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $methodStartIndex = $tokens[$pointer]['scope_opener'];
+        $methodEndIndex = $tokens[$pointer]['scope_closer'];
+
+        for ($i = $methodStartIndex + 1; $i < $methodEndIndex; ++$i) {
+            if ($this->isGivenKind([T_YIELD], $tokens[$i])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
