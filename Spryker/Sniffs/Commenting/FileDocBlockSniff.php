@@ -191,6 +191,15 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
             return $this->getLicense($path) ?: null;
         }
 
-        return null;
+        if (strpos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR) === 0) {
+            $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
+                . array_shift($pathArray) . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
+        } else {
+            $path = getcwd() . DIRECTORY_SEPARATOR;
+        }
+
+        return $this->getLicense($path) ?: null;
     }
 }
