@@ -14,15 +14,17 @@ use PHP_CodeSniffer\Files\File;
  */
 class SprykerConstantsSniff extends AbstractFileDocBlockSniff
 {
-    const EXPLANATION_CONSTANTS_INTERFACE = 'This interface declares global environment configuration keys. Do not use it for other class constants.';
+    const EXPLANATION_CONSTANTS_INTERFACE = 'Declares global environment configuration keys. Do not use it for other class constants.';
 
     /**
+     * We must support class for now, as well - for BC.
+     *
      * @return array
      */
     public function register(): array
     {
         return [
-            T_INTERFACE,
+            T_CLASS, T_INTERFACE,
         ];
     }
 
