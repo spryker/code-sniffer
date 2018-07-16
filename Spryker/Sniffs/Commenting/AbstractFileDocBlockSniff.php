@@ -140,16 +140,23 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 
         $this->clearFileDocBlock($phpCsFile, $stackPointer);
 
-        $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, '/**');
-        $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, static::YEAR));
-        $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' * ' . static::EXPECTED_COMMENT_SECOND_LINE_STRING);
-        $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, ' */');
-        $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addNewline($stackPointer);
+        $tokens = $phpCsFile->getTokens();
+        $line = $tokens[$stackPointer]['line'];
+        $fileDocBlockStartPosition = $stackPointer;
+        while ($tokens[$fileDocBlockStartPosition + 1]['line'] === $line) {
+            $fileDocBlockStartPosition++;
+        }
+
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
+        $phpCsFile->fixer->addContent($fileDocBlockStartPosition, '/**');
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
+        $phpCsFile->fixer->addContent($fileDocBlockStartPosition, ' * ' . sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, static::YEAR));
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
+        $phpCsFile->fixer->addContent($fileDocBlockStartPosition, ' * ' . static::EXPECTED_COMMENT_SECOND_LINE_STRING);
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
+        $phpCsFile->fixer->addContent($fileDocBlockStartPosition, ' */');
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
 
         $phpCsFile->fixer->endChangeset();
     }
@@ -162,7 +169,15 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
      */
     protected function clearFileDocBlock(File $phpCsFile, int $stackPointer): void
     {
-        $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_OPEN_TAG, $stackPointer) + 1;
+        $openTagIndex = $phpCsFile->findPrevious(T_OPEN_TAG, $stackPointer);
+
+        $tokens = $phpCsFile->getTokens();
+        $line = $tokens[$openTagIndex]['line'];
+        $fileDocBlockStartPosition = $openTagIndex;
+        while ($tokens[$fileDocBlockStartPosition + 1]['line'] === $line) {
+            $fileDocBlockStartPosition++;
+        }
+        $fileDocBlockStartPosition++;
 
         $currentPosition = $fileDocBlockStartPosition;
         $endPosition = $phpCsFile->findNext([T_NAMESPACE], $currentPosition);
@@ -265,9 +280,16 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 
         $this->clearFileDocBlock($phpCsFile, $stackPointer);
 
-        $phpCsFile->fixer->addNewline($stackPointer);
-        $phpCsFile->fixer->addContent($stackPointer, $license);
-        $phpCsFile->fixer->addNewline($stackPointer);
+        $tokens = $phpCsFile->getTokens();
+        $line = $tokens[$stackPointer]['line'];
+        $fileDocBlockStartPosition = $stackPointer;
+        while ($tokens[$fileDocBlockStartPosition + 1]['line'] === $line) {
+            $fileDocBlockStartPosition++;
+        }
+
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
+        $phpCsFile->fixer->addContent($fileDocBlockStartPosition, $license);
+        $phpCsFile->fixer->addNewline($fileDocBlockStartPosition);
 
         $phpCsFile->fixer->endChangeset();
     }
