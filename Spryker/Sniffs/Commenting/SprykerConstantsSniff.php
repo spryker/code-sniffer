@@ -128,7 +128,7 @@ class SprykerConstantsSniff extends AbstractFileDocBlockSniff
         }
 
         $namespace = $this->getInterfaceNamespace($phpCsFile, $stackPointer);
-        if (!preg_match('/^Spryker.*\\\\/', $namespace)) {
+        if (!preg_match('/^Spryker.*\\\\Shared\\\\/', $namespace)) {
             return false;
         }
 
