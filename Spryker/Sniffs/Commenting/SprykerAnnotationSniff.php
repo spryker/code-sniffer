@@ -123,6 +123,9 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
             if (substr($class, -9) === 'Interface' || substr($class, 0, 5) === '\\Orm\\') {
                 continue;
             }
+            if (!preg_match('/^[A-Z]/', $class)) {
+                continue;
+            }
             if ($this->isAbstract($class)) {
                 continue;
             }
