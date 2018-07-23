@@ -37,6 +37,7 @@ class FunctionSpacingSniff implements Sniff
         }
 
         $openingBraceIndex = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer + 1);
+        // Fix interface methods
         if (!$openingBraceIndex) {
             $openingParenthesisIndex = $phpCsFile->findNext(T_OPEN_PARENTHESIS, $stackPointer + 1);
             $closingParenthesisIndex = $tokens[$openingParenthesisIndex]['parenthesis_closer'];
@@ -75,11 +76,67 @@ class FunctionSpacingSniff implements Sniff
             return;
         }
 
+        $this->assertNewLineAtTheEnd($phpCsFile, $closingBraceIndex, $nextContentIndex);
+        $this->assertNewLineAtTheBeginning($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $closingBraceIndex
+     * @param int|null $nextContentIndex
+     * @return void
+     */
+    protected function assertNewLineAtTheEnd(File $phpCsFile, int $closingBraceIndex, ?int $nextContentIndex): void
+    {
+        $tokens = $phpCsFile->getTokens();
+
         if (!$nextContentIndex || $tokens[$nextContentIndex]['line'] - $tokens[$closingBraceIndex]['line'] <= 1) {
             $fix = $phpCsFile->addFixableError('Every function/method needs a newline afterwards', $closingBraceIndex, 'Concrete');
             if ($fix) {
                 $phpCsFile->fixer->addNewline($closingBraceIndex);
             }
+        }
+    }
+
+    /**
+     * Asserts newline at the beginning, including the doc block.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @return void
+     */
+    protected function assertNewLineAtTheBeginning(File $phpCsFile, int $stackPointer): void
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $line = $tokens[$stackPointer]['line'];
+        $firstTokenInLineIndex = $stackPointer;
+        while ($tokens[$firstTokenInLineIndex - 1]['line'] === $line) {
+            $firstTokenInLineIndex--;
+        }
+
+        $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $firstTokenInLineIndex - 1, null, true);
+        if ($tokens[$prevContentIndex]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
+            $firstTokenInLineIndex = $tokens[$prevContentIndex]['comment_opener'];
+            while ($tokens[$firstTokenInLineIndex - 1]['line'] === $line) {
+                $firstTokenInLineIndex--;
+            }
+        }
+
+        $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $firstTokenInLineIndex - 1, null, true);
+
+        // Do not mess with the start of the class
+        if ($tokens[$prevContentIndex]['type'] === 'T_OPEN_CURLY_BRACKET') {
+            return;
+        }
+
+        if ($tokens[$prevContentIndex]['line'] < $tokens[$firstTokenInLineIndex]['line'] - 1) {
+            return;
+        }
+
+        $fix = $phpCsFile->addFixableError('Every function/method needs a newline before', $firstTokenInLineIndex, 'Concrete');
+        if ($fix) {
+            $phpCsFile->fixer->addNewline($prevContentIndex);
         }
     }
 }
