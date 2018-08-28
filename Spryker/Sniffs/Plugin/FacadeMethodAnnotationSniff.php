@@ -27,7 +27,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
         $facadeName = $bundle . 'Facade';
 
         if (!$this->hasFacadeAnnotation($phpCsFile, $stackPointer)
-            && $this->fileExists($phpCsFile, $this->getFacadeClassName($phpCsFile))
+            && $this->fileExists($phpCsFile, $this->getFacadeInterfaceName($phpCsFile))
         ) {
             $fix = $phpCsFile->addFixableError('getFacade() annotation missing', $stackPointer, 'Missing');
             if ($fix) {
@@ -74,7 +74,7 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
         $this->addUseStatements(
             $phpCsFile,
             $stackPointer,
-            [$this->getFacadeClassName($phpCsFile)]
+            [$this->getFacadeInterfaceName($phpCsFile)]
         );
 
         $stackPointer = $this->getStackPointerOfClassBegin($phpCsFile, $stackPointer);
@@ -83,13 +83,13 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, ' */');
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
-            $phpCsFile->fixer->addContentBefore($stackPointer, ' * @method ' . $facadeName . ' getFacade()');
+            $phpCsFile->fixer->addContentBefore($stackPointer, ' * @method ' . $facadeName . 'Interface getFacade()');
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
         } else {
             $position = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
             $phpCsFile->fixer->addNewlineBefore($position);
-            $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $facadeName . ' getFacade()');
+            $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $facadeName . 'Interface getFacade()');
         }
 
         $phpCsFile->fixer->endChangeset();
@@ -100,16 +100,16 @@ class FacadeMethodAnnotationSniff extends AbstractPluginMethodAnnotationSniff
      *
      * @return string
      */
-    protected function getFacadeClassName(File $phpCsFile): string
+    protected function getFacadeInterfaceName(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 3);
         $bundleName = $classNameParts[2];
         array_push($classNameParts, 'Business');
-        array_push($classNameParts, $bundleName . 'Facade');
-        $facadeClassName = implode('\\', $classNameParts);
+        array_push($classNameParts, $bundleName . 'FacadeInterface');
+        $facadeInterfaceName = implode('\\', $classNameParts);
 
-        return $facadeClassName;
+        return $facadeInterfaceName;
     }
 }
