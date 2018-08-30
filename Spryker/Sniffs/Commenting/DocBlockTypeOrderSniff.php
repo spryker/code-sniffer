@@ -13,7 +13,7 @@ use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\SignatureTrait;
 
 /**
- * Makes sure doc block param/return types have the right order and don't duplicate.
+ * Makes sure doc block param/return types have the right order and do not duplicate.
  *
  * @author Mark Scherer
  * @license MIT
@@ -49,14 +49,12 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
      */
     public function process(File $phpCsFile, $stackPointer)
     {
-        $tokens = $phpCsFile->getTokens();
-
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
-
         if (!$docBlockEndIndex) {
             return;
         }
 
+        $tokens = $phpCsFile->getTokens();
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
         if ($this->hasInheritDoc($phpCsFile, $docBlockStartIndex, $docBlockEndIndex)) {
