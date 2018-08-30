@@ -26,7 +26,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     /**
      * Highest/First element will be last in list of param or return tag.
      *
-     * @var array
+     * @var string[]
      */
     protected $sortMap = [
         'void',
@@ -63,6 +63,104 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
             return;
         }
 
+        $docBlockParams = $this->getDocBlockParams($tokens, $docBlockStartIndex, $docBlockEndIndex);
+
+        $this->assertOrder($phpCsFile, $docBlockParams);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param array $docBlockParams
+     *
+     * @return void
+     */
+    protected function assertOrder(File $phpCsFile, array $docBlockParams): void
+    {
+        foreach ($docBlockParams as $docBlockParam) {
+            if (strpos($docBlockParam['type'], '$') !== false) {
+                continue;
+            }
+
+            $docBlockParamTypes = explode('|', $docBlockParam['type']);
+            if (count($docBlockParamTypes) === 1) {
+                continue;
+            }
+
+            $unique = array_unique($docBlockParamTypes);
+            if (count($docBlockParamTypes) !== count($unique)) {
+                $phpCsFile->addError('Duplicate type in `' . $docBlockParam['type'] . '`', $docBlockParam['index'], 'Duplicate');
+                continue;
+            }
+            $expectedOrder = $this->getExpectedOrder($docBlockParamTypes);
+            if ($expectedOrder === $docBlockParamTypes) {
+                continue;
+            }
+
+            $fix = $phpCsFile->addFixableError('`null` and falsey values should be the last element', $docBlockParam['index'], 'WrongOrder');
+            if (!$fix) {
+                continue;
+            }
+
+            $phpCsFile->fixer->beginChangeset();
+
+            $content = implode('|', $expectedOrder) . $docBlockParam['appendix'];
+            $phpCsFile->fixer->replaceToken($docBlockParam['index'], $content);
+
+            $phpCsFile->fixer->endChangeset();
+        }
+    }
+
+    /**
+     * @uses DocBlockTypeOrderSniff::compare()
+     *
+     * @param string[] $elements
+     *
+     * @return string[]
+     */
+    protected function getExpectedOrder(array $elements): array
+    {
+        global $sortOrder;
+
+        $sortOrder = array_reverse($this->sortMap);
+        usort($elements, [$this, "compare"]);
+
+        return $elements;
+    }
+
+    /**
+     * @param string $a
+     * @param string $b
+     *
+     * @return int
+     */
+    protected function compare(string $a, string $b): int
+    {
+        global $sortOrder;
+
+        $ai = array_search($a, $sortOrder);
+        $bi = array_search($b, $sortOrder);
+        if ($ai === false && $bi === false) {
+            return -1;
+        }
+        if ($ai !== false && $bi === false) {
+            return 1;
+        }
+        if ($bi !== false && $ai === false) {
+            return -1;
+        }
+
+        return $ai - $bi;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $docBlockStartIndex
+     * @param int $docBlockEndIndex
+     *
+     * @return array
+     */
+    protected function getDocBlockParams(array $tokens, int $docBlockStartIndex, int $docBlockEndIndex): array
+    {
         $docBlockParams = [];
         for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
@@ -98,91 +196,6 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
             ];
         }
 
-        $this->assertOrder($phpCsFile, $docBlockParams);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $docBlockParams
-     *
-     * @return void
-     */
-    protected function assertOrder(File $phpCsFile, array $docBlockParams): void
-    {
-        foreach ($docBlockParams as $docBlockParam) {
-            if (strpos($docBlockParam['type'], '$') !== false) {
-                continue;
-            }
-
-            $pieces = explode('|', $docBlockParam['type']);
-            if (count($pieces) === 1) {
-                continue;
-            }
-
-            $unique = array_unique($pieces);
-            if (count($pieces) !== count($unique)) {
-                $phpCsFile->addError('Duplicate type in `' . $docBlockParam['type'] . '`', $docBlockParam['index'], 'Duplicate');
-                continue;
-            }
-            $expectedOrder = $this->getExpectedOrder($pieces);
-            if ($expectedOrder === $pieces) {
-                continue;
-            }
-
-            $fix = $phpCsFile->addFixableError('`null` and falsey values should be the last element', $docBlockParam['index'], 'WrongOrder');
-            if (!$fix) {
-                continue;
-            }
-
-            $phpCsFile->fixer->beginChangeset();
-
-            $content = implode('|', $expectedOrder) . $docBlockParam['appendix'];
-            $phpCsFile->fixer->replaceToken($docBlockParam['index'], $content);
-
-            $phpCsFile->fixer->endChangeset();
-        }
-    }
-
-    /**
-     * @param array $pieces
-     *
-     * @return array
-     */
-    protected function getExpectedOrder(array $pieces): array
-    {
-        global $sortOrder;
-
-        $sortOrder = array_reverse($this->sortMap);
-        usort($pieces, [$this, "compare"]);
-
-        return $pieces;
-    }
-
-    /**
-     * @param string $a
-     * @param string $b
-     *
-     * @return int
-     */
-    protected function compare(string $a, string $b): int
-    {
-        global $sortOrder;
-
-        $ai = array_search($a, $sortOrder);
-        $bi = array_search($b, $sortOrder);
-        if ($ai === false && $bi === false) {
-            return -1;
-        }
-        if ($ai !== false && $bi === false) {
-            return 1;
-        }
-        if ($bi !== false && $ai === false) {
-            return -1;
-        }
-        if ($ai !== false && $bi !== false) {
-            return $ai - $bi;
-        }
-
-        return $a < $b ? -1 : 1;
+        return $docBlockParams;
     }
 }
