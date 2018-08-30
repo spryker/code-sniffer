@@ -164,7 +164,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return null|string
+     * @return string|null
      */
     protected function findCustomLicense(File $phpCsFile): ?string
     {
