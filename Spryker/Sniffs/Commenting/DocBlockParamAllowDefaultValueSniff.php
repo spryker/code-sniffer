@@ -100,7 +100,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
             if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'string', 'int', 'bool', 'float', 'self', 'parent'])) {
                 $type = $methodSignatureValue['typehint'];
-                if (!in_array($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
+                if (!$this->containsType($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
                     $pieces[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Typehint');
@@ -154,5 +154,29 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 }
             }
         }
+    }
+
+    /**
+     * @param string $type
+     * @param array $pieces
+     *
+     * @return bool
+     */
+    protected function containsType(string $type, array $pieces): bool
+    {
+        if (in_array($type, $pieces)) {
+            return true;
+        }
+        $longTypes = [
+            'int' => 'integer',
+            'bool' => 'boolean',
+        ];
+        if (!isset($longTypes[$type])) {
+            return false;
+        }
+
+        $longType = $longTypes[$type];
+
+        return in_array($longType, $pieces);
     }
 }

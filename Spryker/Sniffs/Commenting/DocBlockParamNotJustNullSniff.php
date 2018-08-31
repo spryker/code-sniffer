@@ -65,7 +65,6 @@ class DocBlockParamNotJustNullSniff extends AbstractSprykerSniff
             if (empty($methodSignature[$paramCount])) {
                 continue;
             }
-            $methodSignatureValue = $methodSignature[$paramCount];
             $paramCount++;
 
             $classNameIndex = $i + 2;

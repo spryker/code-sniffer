@@ -72,7 +72,6 @@ class ArrayDeclarationSniff implements Sniff
 
         // Check if there are multiple values. If so, then it has to be multiple lines
         // unless it is contained inside a function call or condition.
-        $valueCount = 0;
         $commas = [];
         for ($i = ($arrayStart + 1); $i < $arrayEnd; $i++) {
             // Skip bracketed statements, like function calls.
@@ -86,7 +85,6 @@ class ArrayDeclarationSniff implements Sniff
                 // at the end of the array.
                 $next = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), $arrayEnd, true);
                 if ($next !== false) {
-                    $valueCount++;
                     $commas[] = $i;
                 } else {
                     // There is a comma at the end of a single line array.
@@ -229,15 +227,6 @@ class ArrayDeclarationSniff implements Sniff
                 }
 
                 if ($keyUsed === false) {
-                    if ($tokens[($nextToken - 1)]['code'] === T_WHITESPACE) {
-                        $content = $tokens[($nextToken - 2)]['content'];
-                        if ($tokens[($nextToken - 1)]['content'] === $phpcsFile->eolChar) {
-                            $spaceLength = 'newline';
-                        } else {
-                            $spaceLength = $tokens[($nextToken - 1)]['length'];
-                        }
-                    }
-
                     $valueContent = $phpcsFile->findNext(
                         Tokens::$emptyTokens,
                         ($lastToken + 1),

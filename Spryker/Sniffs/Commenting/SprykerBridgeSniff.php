@@ -50,7 +50,7 @@ class SprykerBridgeSniff implements Sniff
             $methodName = $phpCsFile->getDeclarationName($index);
             if ($methodName !== '__construct') {
                 continue;
-            };
+            }
 
             $this->assertValidConstructor($phpCsFile, $index);
             $this->assertValidDocBlock($phpCsFile, $index);
