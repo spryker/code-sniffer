@@ -146,7 +146,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
     /**
      * @param array $token
      *
-     * @return null|string
+     * @return string|null
      */
     protected function detectType(array $token): ?string
     {
