@@ -135,7 +135,7 @@ Spryker (63 sniffs)
 - Spryker.WhiteSpace.ObjectAttributeSpacing
 - Spryker.WhiteSpace.OperatorSpacing
 
-Squiz (25 sniffs)
+Squiz (26 sniffs)
 -----------------
 - Squiz.Arrays.ArrayBracketSpacing
 - Squiz.Classes.LowercaseClassKeywords
@@ -144,6 +144,7 @@ Squiz (25 sniffs)
 - Squiz.ControlStructures.ControlSignature
 - Squiz.ControlStructures.ForEachLoopDeclaration
 - Squiz.ControlStructures.ForLoopDeclaration
+- Squiz.ControlStructures.InlineIfDeclaration
 - Squiz.ControlStructures.LowercaseDeclaration
 - Squiz.Functions.FunctionDeclaration
 - Squiz.Functions.FunctionDeclarationArgumentSpacing
