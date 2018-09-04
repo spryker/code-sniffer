@@ -32,6 +32,8 @@
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
     <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
 
+    <rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
+
     <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
     <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
 
