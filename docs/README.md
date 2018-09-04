@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 144 sniffs
+The Spryker standard contains 146 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -56,7 +56,7 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (13 sniffs)
+SlevomatCodingStandard (15 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
 - SlevomatCodingStandard.Commenting.EmptyComment
@@ -66,6 +66,8 @@ SlevomatCodingStandard (13 sniffs)
 - SlevomatCodingStandard.Namespaces.UnusedUses
 - SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash
 - SlevomatCodingStandard.Namespaces.UseFromSameNamespace
+- SlevomatCodingStandard.Namespaces.UseSpacing
+- SlevomatCodingStandard.PHP.ShortList
 - SlevomatCodingStandard.PHP.UselessSemicolon
 - SlevomatCodingStandard.TypeHints.LongTypeHints
 - SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue
