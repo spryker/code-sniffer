@@ -108,7 +108,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
                 continue;
             }
 
-             [$class, $method] = explode(' ', $tokens[$i + 2]['content'], 2);
+            [$class, $method] = explode(' ', $tokens[$i + 2]['content'], 2);
 
             $ignoredMethods = [
                 'getFactory()',
