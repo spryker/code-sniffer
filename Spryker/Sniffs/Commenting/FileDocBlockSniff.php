@@ -10,7 +10,7 @@ namespace Spryker\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 
 /**
- * Check if file has doc block comment and has the expected content
+ * Checks if file has doc block comment and has the expected content.
  */
 class FileDocBlockSniff extends AbstractFileDocBlockSniff
 {
@@ -39,7 +39,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
 
         if (!$this->existsFileDocBlock($phpCsFile, $stackPointer)) {
             if ($customLicense) {
-                $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'CustomFileDocBlockMissing');
+                $fix = $phpCsFile->addFixableError('No file doc block', $stackPointer, 'CustomFileDocBlockMissing');
                 if ($fix) {
                     $this->addCustomFileDocBlock($phpCsFile, 0, $customLicense);
                 }
@@ -48,6 +48,8 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
             }
             return;
         }
+
+        $this->assertNewlineBefore($phpCsFile, $stackPointer);
 
         if (!$this->isOwnFileDocBlock($phpCsFile, $stackPointer)) {
             return;
@@ -58,7 +60,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
         }
 
         if ($customLicense) {
-            $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'FileDocBlockWrong');
+            $fix = $phpCsFile->addFixableError('Wrong file doc block', $stackPointer, 'FileDocBlockWrong');
             if ($fix) {
                 $this->addCustomFileDocBlock($phpCsFile, 0, $customLicense);
             }
@@ -78,7 +80,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     protected function addFixableMissingDocBlock(File $phpCsFile, int $stackPointer): void
     {
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'FileDocBlockMissing');
+        $fix = $phpCsFile->addFixableError('No file doc block', $stackPointer, 'FileDocBlockMissing');
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
         }
@@ -155,7 +157,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     protected function addFixableExistingDocBlock(File $phpCsFile, int $stackPointer): void
     {
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'FileDocBlockWrong');
+        $fix = $phpCsFile->addFixableError('Wrong file doc block', $stackPointer, 'FileDocBlockWrong');
         if ($fix) {
             $this->addFileDocBlock($phpCsFile, 0);
         }
