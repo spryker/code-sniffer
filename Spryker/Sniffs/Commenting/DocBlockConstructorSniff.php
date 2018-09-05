@@ -55,11 +55,11 @@ class DocBlockConstructorSniff extends AbstractSprykerSniff
             return;
         }
 
-        if (!preg_match('/ (constructor|destructor)\.$/i', $tokens[$firstLineIndex]['content'])) {
+        if (!preg_match('/^\w+ (constructor|destructor)\.$/i', $tokens[$firstLineIndex]['content'])) {
             return;
         }
 
-        $fix = $phpcsFile->addFixableError($tokens[$firstLineIndex]['content'] . ' has unneeded header line.', $firstLineIndex, 'UnneededNoise');
+        $fix = $phpcsFile->addFixableError('Doc Block has unneeded header line.', $firstLineIndex, 'UnneededNoise');
         if (!$fix) {
             return;
         }
