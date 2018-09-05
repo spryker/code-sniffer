@@ -20,10 +20,11 @@ trait CommentingTrait
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
+     * @param string $needle
      *
      * @return bool
      */
-    protected function hasInheritDoc(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex)
+    protected function hasInheritDoc(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex, $needle = '@inheritdoc')
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -32,7 +33,7 @@ trait CommentingTrait
                 continue;
             }
             $content = strtolower($tokens[$i]['content']);
-            if (strpos($content, '@inheritdoc') === false) {
+            if (strpos($content, $needle) === false) {
                 continue;
             }
 

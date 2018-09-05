@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 147 sniffs
+The Spryker standard contains 148 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -75,7 +75,7 @@ SlevomatCodingStandard (16 sniffs)
 - SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 
-Spryker (64 sniffs)
+Spryker (65 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -83,6 +83,7 @@ Spryker (64 sniffs)
 - Spryker.Classes.MethodTypeHint
 - Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
+- Spryker.Commenting.DocBlockConstructor
 - Spryker.Commenting.DocBlockNoInlineAlignment
 - Spryker.Commenting.DocBlockParam
 - Spryker.Commenting.DocBlockParamAllowDefaultValue
