@@ -211,21 +211,61 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
         }
 
         if (!$this->existsFileDocBlock($phpCsFile, $stackPointer)) {
-            $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has no File Doc Block.', $stackPointer, 'CustomFileDocBlockMissing');
+            $fix = $phpCsFile->addFixableError('No file doc block', $stackPointer, 'CustomFileDocBlockMissing');
             if ($fix) {
                 $this->addFileDocBlock($phpCsFile, 0);
             }
             return;
         }
 
+        $this->assertNewlineBefore($phpCsFile, $stackPointer);
+
         if ($this->isCustomFileDocBlock($phpCsFile, $stackPointer, $license)) {
             return;
         }
 
-        $fix = $phpCsFile->addFixableError(basename($phpCsFile->getFilename()) . ' has the wrong file doc block', $stackPointer, 'CustomFileDocBlockWrong');
+        $fix = $phpCsFile->addFixableError('Wrong file doc block', $stackPointer, 'CustomFileDocBlockWrong');
         if ($fix) {
             $this->addCustomFileDocBlock($phpCsFile, 0, $license);
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function assertNewlineBefore(File $phpCsFile, int $stackPointer): void
+    {
+        $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+
+        $tokens = $phpCsFile->getTokens();
+
+        $prevIndex = $phpCsFile->findPrevious(T_WHITESPACE, $fileDocBlockStartPosition - 1, 0, true);
+
+        if ($tokens[$prevIndex]['line'] === $tokens[$fileDocBlockStartPosition]['line'] - 2) {
+            return;
+        }
+
+        $fix = $phpCsFile->addFixableError('Whitespace issue around file doc block', $stackPointer, 'FileDocBlockSpacing');
+        if (!$fix) {
+            return;
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+
+        if ($tokens[$prevIndex]['line'] > $tokens[$fileDocBlockStartPosition]['line'] - 2) {
+            $phpCsFile->fixer->addNewline($prevIndex);
+        } else {
+            $index = $prevIndex;
+            while ($index < $fileDocBlockStartPosition - 1) {
+                $index++;
+                $phpCsFile->fixer->replaceToken($index, '');
+            }
+        }
+
+        $phpCsFile->fixer->endChangeset();
     }
 
     /**

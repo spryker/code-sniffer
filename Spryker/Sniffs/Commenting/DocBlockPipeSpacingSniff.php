@@ -37,7 +37,7 @@ class DocBlockPipeSpacingSniff implements Sniff
         $description = '';
         $hint = $content;
         if (strpos($hint, ' ') !== false) {
-            list($hint, $description) = explode(' ', $content, 2);
+            [$hint, $description] = explode(' ', $content, 2);
         }
 
         if (strpos($hint, '|') === false) {

@@ -280,7 +280,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             $useStatement = trim($useStatement);
 
             if (strpos($useStatement, ' as ') !== false) {
-                list($useStatement, $className) = explode(' as ', $useStatement);
+                [$useStatement, $className] = explode(' as ', $useStatement);
             } else {
                 $className = $useStatement;
                 if (strpos($useStatement, '\\') !== false) {

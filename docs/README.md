@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 144 sniffs
+The Spryker standard contains 150 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -56,23 +56,27 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (13 sniffs)
+SlevomatCodingStandard (17 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
+- SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment
 - SlevomatCodingStandard.Commenting.EmptyComment
 - SlevomatCodingStandard.ControlStructures.DisallowYodaComparison
+- SlevomatCodingStandard.ControlStructures.NewWithParentheses
 - SlevomatCodingStandard.Exceptions.DeadCatch
 - SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
 - SlevomatCodingStandard.Namespaces.UnusedUses
 - SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash
 - SlevomatCodingStandard.Namespaces.UseFromSameNamespace
+- SlevomatCodingStandard.Namespaces.UseSpacing
+- SlevomatCodingStandard.PHP.ShortList
 - SlevomatCodingStandard.PHP.UselessSemicolon
 - SlevomatCodingStandard.TypeHints.LongTypeHints
 - SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue
 - SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 
-Spryker (64 sniffs)
+Spryker (66 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -80,6 +84,7 @@ Spryker (64 sniffs)
 - Spryker.Classes.MethodTypeHint
 - Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
+- Spryker.Commenting.DocBlockConstructor
 - Spryker.Commenting.DocBlockNoInlineAlignment
 - Spryker.Commenting.DocBlockParam
 - Spryker.Commenting.DocBlockParamAllowDefaultValue
@@ -89,6 +94,7 @@ Spryker (64 sniffs)
 - Spryker.Commenting.DocBlockReturnSelf
 - Spryker.Commenting.DocBlockReturnTag
 - Spryker.Commenting.DocBlockReturnVoid
+- Spryker.Commenting.DocBlockStructure
 - Spryker.Commenting.DocBlockTagGrouping
 - Spryker.Commenting.DocBlockTagOrder
 - Spryker.Commenting.DocBlockTestGroupAnnotation

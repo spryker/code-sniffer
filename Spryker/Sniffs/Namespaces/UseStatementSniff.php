@@ -45,7 +45,7 @@ class UseStatementSniff implements Sniff
      */
     public function register()
     {
-        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT, T_INSTANCEOF, T_CATCH];
+        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT, T_INSTANCEOF, T_CATCH, T_CLOSURE];
     }
 
     /**
@@ -70,26 +70,12 @@ class UseStatementSniff implements Sniff
             $this->checkUseForStatic($phpcsFile, $stackPtr);
         } elseif ($tokens[$stackPtr]['code'] === T_INSTANCEOF) {
             $this->checkUseForInstanceOf($phpcsFile, $stackPtr);
-        } elseif ($tokens[$stackPtr]['code'] === T_CATCH) {
-            $this->checkUseForCatch($phpcsFile, $stackPtr);
+        } elseif ($tokens[$stackPtr]['code'] === T_CATCH || $tokens[$stackPtr]['code'] === T_CALLABLE) {
+            $this->checkUseForCatchOrCallable($phpcsFile, $stackPtr);
         } else {
             $this->checkUseForSignature($phpcsFile, $stackPtr);
             $this->checkUseForReturnTypeHint($phpcsFile, $stackPtr);
         }
-    }
-
-    /**
-     * Checks extends, implements.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
-    protected function checkUseForClass(File $phpcsFile, int $stackPtr): void
-    {
-        $this->checkExtends($phpcsFile, $stackPtr);
-        $this->checkImplements($phpcsFile, $stackPtr);
     }
 
     /**
@@ -110,6 +96,20 @@ class UseStatementSniff implements Sniff
         foreach ($extends as $extend) {
             $this->fixStatement($phpcsFile, $extend, $stackPtr);
         }
+    }
+
+    /**
+     * Checks extends, implements.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function checkUseForClass(File $phpcsFile, int $stackPtr): void
+    {
+        $this->checkExtends($phpcsFile, $stackPtr);
+        $this->checkImplements($phpcsFile, $stackPtr);
     }
 
     /**
@@ -379,7 +379,7 @@ class UseStatementSniff implements Sniff
      *
      * @return void
      */
-    public function checkUseForCatch(File $phpcsFile, int $stackPtr): void
+    public function checkUseForCatchOrCallable(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

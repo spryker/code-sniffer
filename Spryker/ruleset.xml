@@ -23,6 +23,7 @@
     <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing"/>
 
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
 
@@ -31,11 +32,15 @@
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
     <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
 
+    <rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
+
     <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
+    <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
 
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment"/>
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>

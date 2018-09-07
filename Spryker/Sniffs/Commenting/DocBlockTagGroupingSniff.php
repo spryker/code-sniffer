@@ -51,7 +51,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
-        $hasInheritDoc = $this->hasInheritDoc($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
+        $hasInheritDoc = $this->hasInheritDoc($phpCsFile, $docBlockStartIndex, $docBlockEndIndex, '{@inheritdoc}');
         if ($hasInheritDoc) {
             return;
         }
