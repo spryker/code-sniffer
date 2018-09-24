@@ -16,8 +16,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
 {
-    const ANNOTATION_START_TEXT = 'Auto-generated group annotations';
-    const ANNOTATION_END_TEXT = 'Add your own group annotations below this line';
+    protected const ANNOTATION_START_TEXT = 'Auto-generated group annotations';
+    protected const ANNOTATION_END_TEXT = 'Add your own group annotations below this line';
 
     /**
      * @return array

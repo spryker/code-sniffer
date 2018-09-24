@@ -15,10 +15,10 @@ abstract class AbstractSprykerSniff implements Sniff
 {
     use BasicsTrait;
 
-    const NAMESPACE_SPRYKER = 'Spryker';
-    const NAMESPACE_SPRYKER_SHOP = 'SprykerShop';
-    const NAMESPACE_SPRYKER_SDK = 'SprykerSdk';
-    const NAMESPACE_SPRYKER_ECO = 'SprykerEco';
+    protected const NAMESPACE_SPRYKER = 'Spryker';
+    protected const NAMESPACE_SPRYKER_SHOP = 'SprykerShop';
+    protected const NAMESPACE_SPRYKER_SDK = 'SprykerSdk';
+    protected const NAMESPACE_SPRYKER_ECO = 'SprykerEco';
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile

@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Files\File;
  */
 class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
 {
-    const LAYER_PERSISTENCE = 'Persistence';
+    protected const LAYER_PERSISTENCE = 'Persistence';
 
     /**
      * @inheritdoc

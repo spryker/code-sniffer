@@ -14,9 +14,9 @@ use PHP_CodeSniffer\Files\File;
  */
 class FileDocBlockSniff extends AbstractFileDocBlockSniff
 {
-    const FIRST_COMMENT_LINE_POSITION = 5;
-    const SECOND_COMMENT_LINE_POSITION = 10;
-    const EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT = 14;
+    protected const FIRST_COMMENT_LINE_POSITION = 5;
+    protected const SECOND_COMMENT_LINE_POSITION = 10;
+    protected const EXPECTED_FILE_DOC_BLOCK_TOKEN_COUNT = 14;
 
     /**
      * This property can be filled within the ruleset configuration file
