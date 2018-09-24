@@ -15,7 +15,7 @@ matrix:
       env: PHPCS=1 DEFAULT=0
 
     - php: 7.1
-      env: PHPCS=1 PREFER_LOWEST=1      
+      env: PHPCS=1 DEFAULT=0 PREFER_LOWEST=1      
 
   fast_finish: true
 
