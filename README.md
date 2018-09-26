@@ -155,7 +155,7 @@ When migrating code sniffer for larger repositories with many developers working
 
 - Make always deliberate and scheduled code sniffer updates (lock down the sniffer to patch releases using `~` or even a specific version if needed).
 - Don't update code sniffer in any feature/bugfix branch, never run updated sniff rules on all branches.
-- Run updated sniffer ruleset on a branched master (e.g. master-cs) first.
+- Run updated sniffer ruleset on a branched master (e.g. master-cs) first and here update the lock file for it using `composer require/update`.
 - Once this one is merged, then apply those into the feature and bugfix branches using `git merge origin/master` and apply then the new coding standard on the newly written code on top.
 - This way all project branches only fail on CS after this delibare update, and never by accident.
 
