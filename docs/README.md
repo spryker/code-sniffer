@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 155 sniffs
+The Spryker standard contains 154 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -56,9 +56,8 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (21 sniffs)
+SlevomatCodingStandard (20 sniffs)
 ----------------------------------
-- SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
 - SlevomatCodingStandard.Classes.ClassConstantVisibility
 - SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment

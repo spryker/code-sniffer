@@ -39,7 +39,10 @@
     </rule>
     <rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
 
+    <!-- Disabled for now
     <rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
+    -->
+
     <rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
 
