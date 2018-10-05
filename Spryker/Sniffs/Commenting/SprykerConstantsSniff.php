@@ -14,7 +14,7 @@ use PHP_CodeSniffer\Files\File;
  */
 class SprykerConstantsSniff extends AbstractFileDocBlockSniff
 {
-    const EXPLANATION_CONSTANTS_INTERFACE = 'Declares global environment configuration keys. Do not use it for other class constants.';
+    protected const EXPLANATION_CONSTANTS_INTERFACE = 'Declares global environment configuration keys. Do not use it for other class constants.';
 
     /**
      * We must support class for now, as well - for BC.

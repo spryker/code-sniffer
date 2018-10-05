@@ -12,11 +12,11 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 {
-    const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © %s-present Spryker Systems GmbH. All rights reserved.';
-    const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
+    protected const EXPECTED_COMMENT_FIRST_LINE_STRING = 'Copyright © %s-present Spryker Systems GmbH. All rights reserved.';
+    protected const EXPECTED_COMMENT_SECOND_LINE_STRING = 'Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.';
 
-    const SPRYKER_NAMESPACE = 'Spryker';
-    const YEAR = '2016';
+    protected const SPRYKER_NAMESPACE = 'Spryker';
+    protected const YEAR = '2016';
 
     /**
      * @var array
