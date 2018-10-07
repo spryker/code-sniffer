@@ -28,6 +28,10 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      * @var array
      */
     protected $order = [
+        '@test',
+        '@expectedException',
+        '@expectedExceptionMessage',
+        '@dataProvider',
         '@deprecated',
         '@param',
         '@throws',
