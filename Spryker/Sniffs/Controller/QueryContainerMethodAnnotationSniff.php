@@ -5,14 +5,14 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Sniffs\Factory;
+namespace Spryker\Sniffs\Controller;
 
 use PHP_CodeSniffer\Files\File;
 
 /**
- * Spryker Factory classes should have a getQueryContainer() annotation.
+ * Spryker Controller classes should have a getQueryContainer() annotation.
  */
-class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
+class QueryContainerMethodAnnotationSniff extends AbstractControllerMethodAnnotationSniff
 {
     protected const LAYER_PERSISTENCE = 'Persistence';
 
@@ -21,7 +21,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      */
     public function process(File $phpCsFile, $stackPointer)
     {
-        if (!$this->isFactory($phpCsFile)) {
+        if (!$this->isController($phpCsFile, $stackPointer)) {
             return;
         }
 
@@ -106,7 +106,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
-        $classNameParts = array_slice($classNameParts, 0, -2);
+        $classNameParts = array_slice($classNameParts, 0, 3);
         $bundleName = $classNameParts[2];
         array_push($classNameParts, static::LAYER_PERSISTENCE);
         array_push($classNameParts, $bundleName . 'QueryContainerInterface');

@@ -5,14 +5,14 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Sniffs\Factory;
+namespace Spryker\Sniffs\Controller;
 
 use PHP_CodeSniffer\Files\File;
 
 /**
- * Spryker Factory classes should have a getQueryContainer() annotation.
+ * Spryker Controller classes should have a getRepository() annotation.
  */
-class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
+class RepositoryMethodAnnotationSniff extends AbstractControllerMethodAnnotationSniff
 {
     protected const LAYER_PERSISTENCE = 'Persistence';
 
@@ -21,19 +21,19 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      */
     public function process(File $phpCsFile, $stackPointer)
     {
-        if (!$this->isFactory($phpCsFile)) {
+        if (!$this->isController($phpCsFile, $stackPointer)) {
             return;
         }
 
         $bundle = $this->getModule($phpCsFile);
-        $queryContainerName = $bundle . 'QueryContainer';
+        $repositoryName = $bundle . 'Repository';
 
-        if (!$this->hasQueryContainerAnnotation($phpCsFile, $stackPointer)
-            && $this->fileExists($phpCsFile, $this->getQueryContainerInterfaceName($phpCsFile))
+        if (!$this->hasRepositoryAnnotation($phpCsFile, $stackPointer)
+            && $this->fileExists($phpCsFile, $this->getRepositoryInterfaceName($phpCsFile))
         ) {
-            $fix = $phpCsFile->addFixableError('getQueryContainer() annotation missing', $stackPointer, 'Missing');
+            $fix = $phpCsFile->addFixableError('getRepository() annotation missing', $stackPointer, 'Missing');
             if ($fix) {
-                $this->addQueryContainerAnnotation($phpCsFile, $stackPointer, $queryContainerName);
+                $this->addRepositoryAnnotation($phpCsFile, $stackPointer, $repositoryName);
             }
         }
     }
@@ -44,7 +44,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return bool
      */
-    protected function hasQueryContainerAnnotation(File $phpCsFile, int $stackPointer): bool
+    protected function hasRepositoryAnnotation(File $phpCsFile, int $stackPointer): bool
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -52,7 +52,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
         while ($position !== false) {
             $position = $phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
             if ($position !== false) {
-                if (strpos($tokens[$position + 2]['content'], 'getQueryContainer()') !== false) {
+                if (strpos($tokens[$position + 2]['content'], 'getRepository()') !== false) {
                     return true;
                 }
                 $position--;
@@ -65,11 +65,11 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param string $queryContainerName
+     * @param string $repositoryName
      *
      * @return void
      */
-    protected function addQueryContainerAnnotation(File $phpCsFile, int $stackPointer, string $queryContainerName): void
+    protected function addRepositoryAnnotation(File $phpCsFile, int $stackPointer, string $repositoryName): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -77,7 +77,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
             $this->addUseStatements(
                 $phpCsFile,
                 $stackPointer,
-                [$this->getQueryContainerInterfaceName($phpCsFile)]
+                [$this->getRepositoryInterfaceName($phpCsFile)]
             );
         }
 
@@ -85,13 +85,13 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, ' */');
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
-            $phpCsFile->fixer->addContentBefore($stackPointer, ' * @method ' . $queryContainerName . 'Interface getQueryContainer()');
+            $phpCsFile->fixer->addContentBefore($stackPointer, ' * @method ' . $repositoryName . 'Interface getRepository()');
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
         } else {
             $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
             $phpCsFile->fixer->addNewlineBefore($position);
-            $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $queryContainerName . 'Interface getQueryContainer()');
+            $phpCsFile->fixer->addContentBefore($position, ' * @method ' . $repositoryName . 'Interface getRepository()');
         }
 
         $phpCsFile->fixer->endChangeset();
@@ -102,16 +102,16 @@ class QueryContainerMethodAnnotationSniff extends AbstractFactoryMethodAnnotatio
      *
      * @return string
      */
-    protected function getQueryContainerInterfaceName(File $phpCsFile): string
+    protected function getRepositoryInterfaceName(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
-        $classNameParts = array_slice($classNameParts, 0, -2);
+        $classNameParts = array_slice($classNameParts, 0, 3);
         $bundleName = $classNameParts[2];
         array_push($classNameParts, static::LAYER_PERSISTENCE);
-        array_push($classNameParts, $bundleName . 'QueryContainerInterface');
-        $queryContainerInterfaceName = implode('\\', $classNameParts);
+        array_push($classNameParts, $bundleName . 'RepositoryInterface');
+        $repositoryInterfaceName = implode('\\', $classNameParts);
 
-        return $queryContainerInterfaceName;
+        return $repositoryInterfaceName;
     }
 }

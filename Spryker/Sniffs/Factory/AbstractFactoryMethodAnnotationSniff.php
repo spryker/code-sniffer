@@ -19,12 +19,48 @@ abstract class AbstractFactoryMethodAnnotationSniff extends AbstractMethodAnnota
      */
     protected function isFactory(File $phpCsFile): bool
     {
-        $className = $this->getClassName($phpCsFile);
+        if ($this->isBusinessFactory($phpCsFile)) {
+            return true;
+        }
 
-        return (
-            substr($className, -15) === 'BusinessFactory'
-            || substr($className, -20) === 'CommunicationFactory'
-            || substr($className, -18) === 'PersistenceFactory'
-        );
+        if ($this->isCommunicationFactory($phpCsFile)) {
+            return true;
+        }
+
+        if ($this->isPersistenceFactory($phpCsFile)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isBusinessFactory(File $phpCsFile): bool
+    {
+        return substr($this->getClassName($phpCsFile), -15) === 'BusinessFactory';
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isCommunicationFactory(File $phpCsFile): bool
+    {
+        return substr($this->getClassName($phpCsFile), -20) === 'CommunicationFactory';
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isPersistenceFactory(File $phpCsFile): bool
+    {
+        return substr($this->getClassName($phpCsFile), -18) === 'PersistenceFactory';
     }
 }
