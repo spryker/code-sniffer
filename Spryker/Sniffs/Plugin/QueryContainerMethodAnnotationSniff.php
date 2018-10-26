@@ -25,8 +25,8 @@ class QueryContainerMethodAnnotationSniff extends AbstractPluginMethodAnnotation
             return;
         }
 
-        $bundle = $this->getModule($phpCsFile);
-        $queryContainerName = $bundle . 'QueryContainer';
+        $module = $this->getModule($phpCsFile);
+        $queryContainerName = $module . 'QueryContainer';
 
         if (!$this->hasQueryContainerAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getQueryContainerInterfaceName($phpCsFile))
@@ -107,9 +107,9 @@ class QueryContainerMethodAnnotationSniff extends AbstractPluginMethodAnnotation
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 3);
-        $bundleName = $classNameParts[2];
+        $moduleName = $classNameParts[2];
         array_push($classNameParts, static::LAYER_PERSISTENCE);
-        array_push($classNameParts, $bundleName . 'QueryContainerInterface');
+        array_push($classNameParts, $moduleName . 'QueryContainerInterface');
         $queryContainerInterfaceName = implode('\\', $classNameParts);
 
         return $queryContainerInterfaceName;

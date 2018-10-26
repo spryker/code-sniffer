@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 154 sniffs
+The Spryker standard contains 181 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -79,12 +79,17 @@ SlevomatCodingStandard (20 sniffs)
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 
-Spryker (67 sniffs)
+Spryker (94 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
 - Spryker.Classes.MethodDeclaration
 - Spryker.Classes.MethodTypeHint
+- Spryker.CollectionType.ConfigMethodAnnotation
+- Spryker.CollectionType.FacadeMethodAnnotation
+- Spryker.CollectionType.FactoryMethodAnnotation
+- Spryker.CollectionType.QueryContainerMethodAnnotation
+- Spryker.CollectionType.RepositoryMethodAnnotation
 - Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
 - Spryker.Commenting.DocBlockConstructor
@@ -113,16 +118,30 @@ Spryker (67 sniffs)
 - Spryker.Commenting.SprykerBridge
 - Spryker.Commenting.SprykerConstants
 - Spryker.Commenting.SprykerFacade
+- Spryker.Console.FacadeMethodAnnotation
+- Spryker.Console.FactoryMethodAnnotation
+- Spryker.Console.QueryContainerMethodAnnotation
+- Spryker.Console.RepositoryMethodAnnotation
 - Spryker.ControlStructures.ConditionalExpressionOrder
 - Spryker.ControlStructures.ControlStructureSpacing
 - Spryker.ControlStructures.NoInlineAssignment
+- Spryker.Controller.FacadeMethodAnnotation
+- Spryker.Controller.FactoryMethodAnnotation
+- Spryker.Controller.QueryContainerMethodAnnotation
+- Spryker.Controller.RepositoryMethodAnnotation
+- Spryker.DependencyProvider.ConfigMethodAnnotation
 - Spryker.DependencyProvider.FacadeNotInBridgeReturned
+- Spryker.Facade.EntityManagerMethodAnnotation
 - Spryker.Facade.FactoryMethodAnnotation
+- Spryker.Facade.RepositoryMethodAnnotation
 - Spryker.Factory.ConfigMethodAnnotation
 - Spryker.Factory.CreateVsGetMethods
+- Spryker.Factory.EntityManagerMethodAnnotation
+- Spryker.Factory.FacadeMethodAnnotation
 - Spryker.Factory.NoPrivateMethods
 - Spryker.Factory.OneNewPerMethod
 - Spryker.Factory.QueryContainerMethodAnnotation
+- Spryker.Factory.RepositoryMethodAnnotation
 - Spryker.Formatting.ArrayDeclaration
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.Namespaces.SprykerNamespace
@@ -136,8 +155,16 @@ Spryker (67 sniffs)
 - Spryker.PHP.PreferCastOverFunction
 - Spryker.PHP.RemoveFunctionAlias
 - Spryker.PHP.ShortCast
+- Spryker.Plugin.ConfigMethodAnnotation
 - Spryker.Plugin.FacadeMethodAnnotation
 - Spryker.Plugin.FactoryMethodAnnotation
+- Spryker.Plugin.QueryContainerMethodAnnotation
+- Spryker.Plugin.RepositoryMethodAnnotation
+- Spryker.Type.ConfigMethodAnnotation
+- Spryker.Type.FacadeMethodAnnotation
+- Spryker.Type.FactoryMethodAnnotation
+- Spryker.Type.QueryContainerMethodAnnotation
+- Spryker.Type.RepositoryMethodAnnotation
 - Spryker.WhiteSpace.CommaSpacing
 - Spryker.WhiteSpace.ConcatenationSpacing
 - Spryker.WhiteSpace.EmptyEnclosingLine

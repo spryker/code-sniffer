@@ -23,8 +23,8 @@ class FactoryMethodAnnotationSniff extends AbstractControllerMethodAnnotationSni
             return;
         }
 
-        $bundle = $this->getModule($phpCsFile);
-        $factoryName = $bundle . 'CommunicationFactory';
+        $module = $this->getModule($phpCsFile);
+        $factoryName = $module . 'CommunicationFactory';
         if (!$this->hasFactoryAnnotation($phpCsFile, $stackPointer) && $this->fileExists($phpCsFile, $this->getFactoryClassName($phpCsFile))) {
             $fix = $phpCsFile->addFixableError('getFactory() annotation missing', $stackPointer, 'Missing');
             if ($fix) {
@@ -100,8 +100,8 @@ class FactoryMethodAnnotationSniff extends AbstractControllerMethodAnnotationSni
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 4);
-        $bundleName = $classNameParts[2];
-        array_push($classNameParts, $bundleName . 'CommunicationFactory');
+        $moduleName = $classNameParts[2];
+        array_push($classNameParts, $moduleName . 'CommunicationFactory');
         $factoryClassName = implode('\\', $classNameParts);
 
         return $factoryClassName;

@@ -25,8 +25,8 @@ class RepositoryMethodAnnotationSniff extends AbstractCollectionTypeMethodAnnota
             return;
         }
 
-        $bundle = $this->getModule($phpCsFile);
-        $repositoryName = $bundle . 'Repository';
+        $module = $this->getModule($phpCsFile);
+        $repositoryName = $module . 'Repository';
 
         if (!$this->hasRepositoryAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getRepositoryInterfaceName($phpCsFile))
@@ -107,9 +107,9 @@ class RepositoryMethodAnnotationSniff extends AbstractCollectionTypeMethodAnnota
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 3);
-        $bundleName = $classNameParts[2];
+        $moduleName = $classNameParts[2];
         array_push($classNameParts, static::LAYER_PERSISTENCE);
-        array_push($classNameParts, $bundleName . 'RepositoryInterface');
+        array_push($classNameParts, $moduleName . 'RepositoryInterface');
         $repositoryInterfaceName = implode('\\', $classNameParts);
 
         return $repositoryInterfaceName;

@@ -23,8 +23,8 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
             return;
         }
 
-        $bundle = $this->getModule($phpCsFile);
-        $factoryName = $bundle . 'BusinessFactory';
+        $module = $this->getModule($phpCsFile);
+        $factoryName = $module . 'BusinessFactory';
 
         $className = $this->getFactoryClassName($phpCsFile);
         if (!$this->hasFactoryAnnotation($phpCsFile, $stackPointer) && $className && $this->fileExists($phpCsFile, $className)) {
@@ -100,8 +100,8 @@ class FactoryMethodAnnotationSniff extends AbstractFacadeMethodAnnotationSniff
             return null;
         }
 
-        $bundleName = $classNameParts[2];
-        array_push($classNameParts, $bundleName . 'BusinessFactory');
+        $moduleName = $classNameParts[2];
+        array_push($classNameParts, $moduleName . 'BusinessFactory');
         $factoryClassName = implode('\\', $classNameParts);
 
         return $factoryClassName;

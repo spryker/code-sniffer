@@ -23,8 +23,8 @@ class ConfigMethodAnnotationSniff extends AbstractDependencyProviderMethodAnnota
             return;
         }
 
-        $bundle = $this->getModule($phpCsFile);
-        $configName = $bundle . 'Config';
+        $module = $this->getModule($phpCsFile);
+        $configName = $module . 'Config';
 
         if (!$this->hasConfigAnnotation($phpCsFile, $stackPointer) && $this->fileExists($phpCsFile, $this->getConfigClassName($phpCsFile))) {
             $fix = $phpCsFile->addFixableError('getConfig() annotation missing', $stackPointer, 'Missing');
@@ -101,8 +101,8 @@ class ConfigMethodAnnotationSniff extends AbstractDependencyProviderMethodAnnota
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 3);
-        $bundleName = $classNameParts[2];
-        array_push($classNameParts, $bundleName . 'Config');
+        $moduleName = $classNameParts[2];
+        array_push($classNameParts, $moduleName . 'Config');
         $configClassName = implode('\\', $classNameParts);
 
         return $configClassName;

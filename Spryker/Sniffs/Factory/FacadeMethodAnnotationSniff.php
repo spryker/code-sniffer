@@ -23,8 +23,8 @@ class FacadeMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
             return;
         }
 
-        $bundle = $this->getModule($phpCsFile);
-        $facadeName = $bundle . 'Facade';
+        $module = $this->getModule($phpCsFile);
+        $facadeName = $module . 'Facade';
 
         if (!$this->hasFacadeAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getFacadeInterfaceName($phpCsFile))
@@ -103,9 +103,9 @@ class FacadeMethodAnnotationSniff extends AbstractFactoryMethodAnnotationSniff
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 3);
-        $bundleName = $classNameParts[2];
+        $moduleName = $classNameParts[2];
         array_push($classNameParts, 'Business');
-        array_push($classNameParts, $bundleName . 'FacadeInterface');
+        array_push($classNameParts, $moduleName . 'FacadeInterface');
         $facadeInterfaceName = implode('\\', $classNameParts);
 
         return $facadeInterfaceName;

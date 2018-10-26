@@ -25,8 +25,8 @@ class EntityManagerMethodAnnotationSniff extends AbstractFacadeMethodAnnotationS
             return;
         }
 
-        $bundle = $this->getModule($phpCsFile);
-        $entityManagerName = $bundle . 'EntityManager';
+        $module = $this->getModule($phpCsFile);
+        $entityManagerName = $module . 'EntityManager';
 
         if (!$this->hasEntityManagerAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getEntityManagerInterfaceName($phpCsFile))
@@ -107,9 +107,9 @@ class EntityManagerMethodAnnotationSniff extends AbstractFacadeMethodAnnotationS
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 3);
-        $bundleName = $classNameParts[2];
+        $moduleName = $classNameParts[2];
         array_push($classNameParts, static::LAYER_PERSISTENCE);
-        array_push($classNameParts, $bundleName . 'EntityManagerInterface');
+        array_push($classNameParts, $moduleName . 'EntityManagerInterface');
         $entityManagerInterfaceName = implode('\\', $classNameParts);
 
         return $entityManagerInterfaceName;
