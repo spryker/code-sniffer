@@ -125,12 +125,12 @@ Spryker (67 sniffs)
 - Spryker.Factory.QueryContainerMethodAnnotation
 - Spryker.Formatting.ArrayDeclaration
 - Spryker.Internal.SprykerNoDemoshop
+- Spryker.Namespaces.FunctionNamespace
 - Spryker.Namespaces.SprykerNamespace
 - Spryker.Namespaces.SprykerNoCrossNamespace
 - Spryker.Namespaces.SprykerNoPyz
 - Spryker.Namespaces.UseStatement
 - Spryker.Namespaces.UseWithAliasing
-- Spryker.PHP.FunctionNamespace
 - Spryker.PHP.NoIsNull
 - Spryker.PHP.PhpSapiConstant
 - Spryker.PHP.PreferCastOverFunction
