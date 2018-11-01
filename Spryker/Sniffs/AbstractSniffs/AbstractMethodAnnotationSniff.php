@@ -103,6 +103,16 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return string
+     */
+    protected function getMethodAnnotationUseFileName(File $phpCsFile): string
+    {
+        return trim($this->getMethodAnnotationFileName($phpCsFile), '\\');
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
@@ -114,8 +124,10 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         $this->addUseStatements(
             $phpCsFile,
             $stackPointer,
-            [$this->getMethodAnnotationFileName($phpCsFile)]
+            [$this->getMethodAnnotationUseFileName($phpCsFile)]
         );
+
+        $stackPointer = $this->getStackPointerOfClassBegin($phpCsFile, $stackPointer);
 
         if (!$this->hasDocBlock($phpCsFile, $stackPointer)) {
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
@@ -186,5 +198,21 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         $fileName = $basePath . $classFileName . '.php';
 
         return file_exists($fileName);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return int
+     */
+    protected function getStackPointerOfClassBegin(File $phpCsFile, int $stackPointer): int
+    {
+        $abstractPosition = (int)$phpCsFile->findPrevious(T_ABSTRACT, $stackPointer);
+        if ($abstractPosition) {
+            return $abstractPosition;
+        }
+
+        return $stackPointer;
     }
 }
