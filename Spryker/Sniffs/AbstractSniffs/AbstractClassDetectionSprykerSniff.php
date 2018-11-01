@@ -293,4 +293,106 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
 
         return false;
     }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isQueryContainer(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->extendsAbstractQueryContainer($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function extendsAbstractQueryContainer(File $phpCsFile, int $stackPointer): bool
+    {
+        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
+
+        // We do not force-annotate on abstract classes
+        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
+        if ($abstractClassTypeIndex !== false) {
+            return false;
+        }
+
+        if ($extendedClassName === 'AbstractQueryContainer') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isRepository(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->extendsAbstractRepository($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function extendsAbstractRepository(File $phpCsFile, int $stackPointer): bool
+    {
+        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
+
+        // We do not force-annotate on abstract classes
+        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
+        if ($abstractClassTypeIndex !== false) {
+            return false;
+        }
+
+        if ($extendedClassName === 'AbstractRepository') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isEntityManager(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->extendsAbstractEntityManager($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function extendsAbstractEntityManager(File $phpCsFile, int $stackPointer): bool
+    {
+        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
+
+        // We do not force-annotate on abstract classes
+        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
+        if ($abstractClassTypeIndex !== false) {
+            return false;
+        }
+
+        if ($extendedClassName === 'AbstractEntityManager') {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -65,6 +65,18 @@ class FactoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
             return true;
         }
 
+        if ($this->isQueryContainer($phpCsFile, $stackPointer)) {
+            return true;
+        }
+
+        if ($this->isRepository($phpCsFile, $stackPointer)) {
+            return true;
+        }
+
+        if ($this->isEntityManager($phpCsFile, $stackPointer)) {
+            return true;
+        }
+
         return false;
     }
 
