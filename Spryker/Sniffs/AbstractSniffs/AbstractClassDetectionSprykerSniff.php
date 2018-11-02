@@ -18,7 +18,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function extendsAbstract(File $phpCsFile, int $stackPointer, string $abstractName)
+    protected function extendsAbstract(File $phpCsFile, int $stackPointer, string $abstractName): bool
     {
         $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
 
