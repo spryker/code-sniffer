@@ -103,16 +103,6 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
-    protected function getMethodAnnotationUseFileName(File $phpCsFile): string
-    {
-        return trim($this->getMethodAnnotationFileName($phpCsFile), '\\');
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return void
@@ -120,12 +110,6 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     protected function addMethodAnnotation(File $phpCsFile, int $stackPointer): void
     {
         $phpCsFile->fixer->beginChangeset();
-
-        $this->addUseStatements(
-            $phpCsFile,
-            $stackPointer,
-            [$this->getMethodAnnotationUseFileName($phpCsFile)]
-        );
 
         $stackPointer = $this->getStackPointerOfClassBegin($phpCsFile, $stackPointer);
 
