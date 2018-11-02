@@ -42,7 +42,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function hasCorrectName(File $phpCsFile, string $predefinedName)
+    protected function hasCorrectName(File $phpCsFile, string $predefinedName): bool
     {
         $className = $this->getClassName($phpCsFile);
         $moduleName = $this->getModule($phpCsFile);
