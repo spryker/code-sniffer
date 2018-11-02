@@ -53,7 +53,7 @@ class FactoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
             return true;
         }
 
-        if ($this->isFacade($phpCsFile)) {
+        if ($this->isFacade($phpCsFile, $stackPointer)) {
             return true;
         }
 

@@ -13,31 +13,57 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
 {
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @param string $abstractName
      *
      * @return bool
      */
-    protected function isProvider(File $phpCsFile): bool
+    protected function extendsAbstract(File $phpCsFile, int $stackPointer, string $abstractName)
     {
-        $className = $this->getClassName($phpCsFile);
-        $moduleName = $this->getModule($phpCsFile);
+        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
 
-        $providerName = $moduleName . 'DependencyProvider';
-        $stringLength = strlen($providerName);
-        $relevantClassNamePart = substr($className, -$stringLength);
+        // We do not force-annotate on abstract classes
+        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
 
-        return ($relevantClassNamePart === $providerName) && $this->isCoreProvider($phpCsFile);
+        if ($abstractClassTypeIndex !== false) {
+            return false;
+        }
+
+        if ($extendedClassName === $abstractName) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param string $predefinedName
      *
      * @return bool
      */
-    protected function isCoreProvider(File $phpCsFile): bool
+    protected function hasCorrectName(File $phpCsFile, string $predefinedName)
     {
-        $namespace = $this->getNamespace($phpCsFile);
+        $className = $this->getClassName($phpCsFile);
+        $moduleName = $this->getModule($phpCsFile);
 
-        return ($namespace === static::NAMESPACE_SPRYKER);
+        $correctName = $moduleName . $predefinedName;
+        $stringLength = strlen($correctName);
+        $relevantClassNamePart = substr($className, -$stringLength);
+
+        return $relevantClassNamePart === $correctName;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isProvider(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->hasCorrectName($phpCsFile, 'DependencyProvider') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractBundleDependencyProvider');
     }
 
     /**
@@ -48,31 +74,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isController(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->extendsAbstractController($phpCsFile, $stackPointer);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function extendsAbstractController(File $phpCsFile, int $stackPointer): bool
-    {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
-
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-
-        if ($abstractClassTypeIndex !== false) {
-            return false;
-        }
-
-        if ($extendedClassName === 'AbstractController') {
-            return true;
-        }
-
-        return false;
+        return $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractController');
     }
 
     /**
@@ -83,30 +85,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isCollectionType(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->extendsAbstractCollectionType($phpCsFile, $stackPointer);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function extendsAbstractCollectionType(File $phpCsFile, int $stackPointer): bool
-    {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
-
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-        if ($abstractClassTypeIndex !== false) {
-            return false;
-        }
-
-        if ($extendedClassName === 'AbstractCollectionType') {
-            return true;
-        }
-
-        return false;
+        return $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractCollectionType');
     }
 
     /**
@@ -117,7 +96,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isConsole(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->extendsConsole($phpCsFile, $stackPointer);
+        return $this->extendsAbstract($phpCsFile, $stackPointer, 'Console');
     }
 
     /**
@@ -126,17 +105,29 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function extendsConsole(File $phpCsFile, int $stackPointer): bool
+    protected function isFacade(File $phpCsFile, int $stackPointer): bool
     {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
+        return $this->hasCorrectName($phpCsFile, 'Facade') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractFacade');
+    }
 
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-        if ($abstractClassTypeIndex !== false) {
-            return false;
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isFactory(File $phpCsFile, int $stackPointer): bool
+    {
+        if ($this->isBusinessFactory($phpCsFile, $stackPointer)) {
+            return true;
         }
 
-        if ($extendedClassName === 'Console') {
+        if ($this->isCommunicationFactory($phpCsFile, $stackPointer)) {
+            return true;
+        }
+
+        if ($this->isPersistenceFactory($phpCsFile, $stackPointer)) {
             return true;
         }
 
@@ -145,71 +136,38 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
      *
      * @return bool
      */
-    protected function isFacade(File $phpCsFile): bool
+    protected function isBusinessFactory(File $phpCsFile, int $stackPointer): bool
     {
-        $className = $this->getClassName($phpCsFile);
-        $moduleName = $this->getModule($phpCsFile);
-
-        $facadeName = $moduleName . 'Facade';
-        $stringLength = strlen($facadeName);
-        $relevantClassNamePart = substr($className, -$stringLength);
-
-        return ($relevantClassNamePart === $facadeName);
+        return $this->hasCorrectName($phpCsFile, 'BusinessFactory') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractBusinessFactory');
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
      *
      * @return bool
      */
-    protected function isFactory(File $phpCsFile): bool
+    protected function isCommunicationFactory(File $phpCsFile, int $stackPointer): bool
     {
-        if ($this->isBusinessFactory($phpCsFile)) {
-            return true;
-        }
-
-        if ($this->isCommunicationFactory($phpCsFile)) {
-            return true;
-        }
-
-        if ($this->isPersistenceFactory($phpCsFile)) {
-            return true;
-        }
-
-        return false;
+        return $this->hasCorrectName($phpCsFile, 'CommunicationFactory') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractCommunicationFactory');
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
      *
      * @return bool
      */
-    protected function isBusinessFactory(File $phpCsFile): bool
+    protected function isPersistenceFactory(File $phpCsFile, int $stackPointer): bool
     {
-        return substr($this->getClassName($phpCsFile), -15) === 'BusinessFactory';
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
-    protected function isCommunicationFactory(File $phpCsFile): bool
-    {
-        return substr($this->getClassName($phpCsFile), -20) === 'CommunicationFactory';
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
-    protected function isPersistenceFactory(File $phpCsFile): bool
-    {
-        return substr($this->getClassName($phpCsFile), -18) === 'PersistenceFactory';
+        return $this->hasCorrectName($phpCsFile, 'PersistenceFactory') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractPersistenceFactory');
     }
 
     /**
@@ -220,8 +178,12 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isPlugin(File $phpCsFile, int $stackPointer): bool
     {
-        if ($this->isFileInPluginDirectory($phpCsFile) && $this->extendsAbstractPlugin($phpCsFile, $stackPointer)) {
-            return true;
+        if (!$this->isFileInPluginDirectory($phpCsFile)) {
+            return false;
+        }
+
+        if (!$this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractPlugin')) {
+            return false;
         }
 
         return false;
@@ -243,55 +205,9 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function extendsAbstractPlugin(File $phpCsFile, int $stackPointer): bool
-    {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
-
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-        if ($abstractClassTypeIndex !== false) {
-            return false;
-        }
-
-        if ($extendedClassName === 'AbstractPlugin') {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isType(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->extendsAbstractType($phpCsFile, $stackPointer);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function extendsAbstractType(File $phpCsFile, int $stackPointer): bool
-    {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
-
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-        if ($abstractClassTypeIndex !== false) {
-            return false;
-        }
-
-        if ($extendedClassName === 'AbstractType') {
-            return true;
-        }
-
-        return false;
+        return $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractType');
     }
 
     /**
@@ -302,30 +218,8 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isQueryContainer(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->extendsAbstractQueryContainer($phpCsFile, $stackPointer);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function extendsAbstractQueryContainer(File $phpCsFile, int $stackPointer): bool
-    {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
-
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-        if ($abstractClassTypeIndex !== false) {
-            return false;
-        }
-
-        if ($extendedClassName === 'AbstractQueryContainer') {
-            return true;
-        }
-
-        return false;
+        return $this->hasCorrectName($phpCsFile, 'QueryContainer') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractQueryContainer');
     }
 
     /**
@@ -336,30 +230,8 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isRepository(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->extendsAbstractRepository($phpCsFile, $stackPointer);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function extendsAbstractRepository(File $phpCsFile, int $stackPointer): bool
-    {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
-
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-        if ($abstractClassTypeIndex !== false) {
-            return false;
-        }
-
-        if ($extendedClassName === 'AbstractRepository') {
-            return true;
-        }
-
-        return false;
+        return $this->hasCorrectName($phpCsFile, 'Repository') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractRepository');
     }
 
     /**
@@ -370,29 +242,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isEntityManager(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->extendsAbstractEntityManager($phpCsFile, $stackPointer);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
-    protected function extendsAbstractEntityManager(File $phpCsFile, int $stackPointer): bool
-    {
-        $extendedClassName = $phpCsFile->findExtendedClassName($stackPointer);
-
-        // We do not force-annotate on abstract classes
-        $abstractClassTypeIndex = $phpCsFile->findPrevious(T_ABSTRACT, $stackPointer - 1);
-        if ($abstractClassTypeIndex !== false) {
-            return false;
-        }
-
-        if ($extendedClassName === 'AbstractEntityManager') {
-            return true;
-        }
-
-        return false;
+        return $this->hasCorrectName($phpCsFile, 'EntityManager') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractEntityManager');
     }
 }

@@ -41,11 +41,11 @@ class EntityManagerMethodAnnotationSniff extends AbstractMethodAnnotationSniff
      */
     protected function getSnifferIsApplicable(File $phpCsFile, int $stackPointer): bool
     {
-        if ($this->isFacade($phpCsFile)) {
+        if ($this->isFacade($phpCsFile, $stackPointer)) {
             return true;
         }
 
-        if ($this->isFactory($phpCsFile)) {
+        if ($this->isFactory($phpCsFile, $stackPointer)) {
             return true;
         }
 

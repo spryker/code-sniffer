@@ -53,11 +53,11 @@ class RepositoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
             return true;
         }
 
-        if ($this->isFacade($phpCsFile)) {
+        if ($this->isFacade($phpCsFile, $stackPointer)) {
             return true;
         }
 
-        if ($this->isFactory($phpCsFile)) {
+        if ($this->isFactory($phpCsFile, $stackPointer)) {
             return true;
         }
 

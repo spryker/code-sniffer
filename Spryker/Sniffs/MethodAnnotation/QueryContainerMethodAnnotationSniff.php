@@ -53,7 +53,7 @@ class QueryContainerMethodAnnotationSniff extends AbstractMethodAnnotationSniff
             return true;
         }
 
-        if ($this->isFactory($phpCsFile)) {
+        if ($this->isFactory($phpCsFile, $stackPointer)) {
             return true;
         }
 

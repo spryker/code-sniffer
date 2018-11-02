@@ -41,7 +41,7 @@ class ConfigMethodAnnotationSniff extends AbstractMethodAnnotationSniff
      */
     protected function getSnifferIsApplicable(File $phpCsFile, int $stackPointer): bool
     {
-        if ($this->isProvider($phpCsFile)) {
+        if ($this->isProvider($phpCsFile, $stackPointer)) {
             return true;
         }
 
@@ -49,7 +49,7 @@ class ConfigMethodAnnotationSniff extends AbstractMethodAnnotationSniff
             return true;
         }
 
-        if ($this->isFactory($phpCsFile)) {
+        if ($this->isFactory($phpCsFile, $stackPointer)) {
             return true;
         }
 

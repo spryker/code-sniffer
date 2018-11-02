@@ -53,7 +53,7 @@ class FacadeMethodAnnotationSniff extends AbstractMethodAnnotationSniff
             return true;
         }
 
-        if ($this->isCommunicationFactory($phpCsFile)) {
+        if ($this->isCommunicationFactory($phpCsFile, $stackPointer)) {
             return true;
         }
 
