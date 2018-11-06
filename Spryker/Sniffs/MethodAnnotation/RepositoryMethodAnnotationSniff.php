@@ -61,10 +61,6 @@ class RepositoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
             return true;
         }
 
-        if ($this->isPlugin($phpCsFile, $stackPointer)) {
-            return true;
-        }
-
         if ($this->isType($phpCsFile, $stackPointer)) {
             return true;
         }
