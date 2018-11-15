@@ -9,6 +9,9 @@ namespace Spryker\Sniffs\AbstractSniffs;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use SlevomatCodingStandard\Helpers\ClassHelper;
+use SlevomatCodingStandard\Helpers\EmptyFileException;
+use SlevomatCodingStandard\Helpers\TokenHelper;
 use Spryker\Traits\BasicsTrait;
 
 abstract class AbstractSprykerSniff implements Sniff
@@ -91,10 +94,35 @@ abstract class AbstractSprykerSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
+     * @return string|null
+     */
+    protected function getClassNameWithNamespace(File $phpCsFile): ?string
+    {
+        try {
+            $classNameWithNameSpace = ClassHelper::getFullyQualifiedName(
+                $phpCsFile,
+                $phpCsFile->findPrevious(TokenHelper::$typeKeywordTokenCodes, TokenHelper::getLastTokenPointer($phpCsFile))
+            );
+        } catch (EmptyFileException $e) {
+            $classNameWithNameSpace = null;
+        }
+
+        return $classNameWithNameSpace;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
      * @return string
      */
     protected function getClassName(File $phpCsFile): string
     {
+        $namespace = $this->getClassNameWithNamespace($phpCsFile);
+
+        if ($namespace) {
+            return trim($namespace, '\\');
+        }
+
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
         $directoryPosition = array_search('src', array_values($fileNameParts));
