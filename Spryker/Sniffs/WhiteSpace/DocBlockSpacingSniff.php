@@ -23,7 +23,7 @@ class DocBlockSpacingSniff implements Sniff
      */
     public function register()
     {
-        return [T_CLASS, T_INTERFACE, T_TRAIT, T_FUNCTION, T_VARIABLE, T_PROPERTY];
+        return [T_CLASS, T_INTERFACE, T_TRAIT, T_FUNCTION, T_PROPERTY];
     }
 
     /**
