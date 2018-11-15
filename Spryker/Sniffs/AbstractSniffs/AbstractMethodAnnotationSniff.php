@@ -8,6 +8,7 @@
 namespace Spryker\Sniffs\AbstractSniffs;
 
 use PHP_CodeSniffer\Files\File;
+use SlevomatCodingStandard\Helpers\DocCommentHelper;
 
 abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSprykerSniff
 {
@@ -158,9 +159,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
      */
     protected function hasDocBlock(File $phpCsFile, int $stackPointer): bool
     {
-        $tokens = $phpCsFile->getTokens();
-
-        return ($tokens[$stackPointer - 2]['type'] === 'T_DOC_COMMENT_CLOSE_TAG');
+        return DocCommentHelper::hasDocComment($phpCsFile, $stackPointer);
     }
 
     /**
