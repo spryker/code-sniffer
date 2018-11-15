@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 154 sniffs
+The Spryker standard contains 156 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -79,7 +79,7 @@ SlevomatCodingStandard (20 sniffs)
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 
-Spryker (67 sniffs)
+Spryker (69 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -117,14 +117,17 @@ Spryker (67 sniffs)
 - Spryker.ControlStructures.ControlStructureSpacing
 - Spryker.ControlStructures.NoInlineAssignment
 - Spryker.DependencyProvider.FacadeNotInBridgeReturned
-- Spryker.Facade.FactoryMethodAnnotation
-- Spryker.Factory.ConfigMethodAnnotation
 - Spryker.Factory.CreateVsGetMethods
 - Spryker.Factory.NoPrivateMethods
 - Spryker.Factory.OneNewPerMethod
-- Spryker.Factory.QueryContainerMethodAnnotation
 - Spryker.Formatting.ArrayDeclaration
 - Spryker.Internal.SprykerNoDemoshop
+- Spryker.MethodAnnotation.ConfigMethodAnnotation
+- Spryker.MethodAnnotation.EntityManagerMethodAnnotation
+- Spryker.MethodAnnotation.FacadeMethodAnnotation
+- Spryker.MethodAnnotation.FactoryMethodAnnotation
+- Spryker.MethodAnnotation.QueryContainerMethodAnnotation
+- Spryker.MethodAnnotation.RepositoryMethodAnnotation
 - Spryker.Namespaces.FunctionNamespace
 - Spryker.Namespaces.SprykerNamespace
 - Spryker.Namespaces.SprykerNoCrossNamespace
@@ -136,10 +139,9 @@ Spryker (67 sniffs)
 - Spryker.PHP.PreferCastOverFunction
 - Spryker.PHP.RemoveFunctionAlias
 - Spryker.PHP.ShortCast
-- Spryker.Plugin.FacadeMethodAnnotation
-- Spryker.Plugin.FactoryMethodAnnotation
 - Spryker.WhiteSpace.CommaSpacing
 - Spryker.WhiteSpace.ConcatenationSpacing
+- Spryker.WhiteSpace.DocBlockSpacing
 - Spryker.WhiteSpace.EmptyEnclosingLine
 - Spryker.WhiteSpace.EmptyLines
 - Spryker.WhiteSpace.FunctionSpacing
