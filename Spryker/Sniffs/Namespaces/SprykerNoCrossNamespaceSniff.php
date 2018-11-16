@@ -56,7 +56,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
             return;
         }
 
-        if (preg_match('#^(SprykerTest|PyzTest)#', $className)) {
+        if (preg_match('#^PyzTest#', $className)) {
             return;
         }
 
