@@ -11,6 +11,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\ClassHelper;
 use SlevomatCodingStandard\Helpers\EmptyFileException;
+use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 use Spryker\Traits\BasicsTrait;
 
@@ -99,15 +100,19 @@ abstract class AbstractSprykerSniff implements Sniff
     protected function getClassNameWithNamespace(File $phpCsFile): ?string
     {
         try {
-            $classNameWithNameSpace = ClassHelper::getFullyQualifiedName(
-                $phpCsFile,
-                $phpCsFile->findPrevious(TokenHelper::$typeKeywordTokenCodes, TokenHelper::getLastTokenPointer($phpCsFile))
-            );
+            $lastToken = TokenHelper::getLastTokenPointer($phpCsFile);
         } catch (EmptyFileException $e) {
-            $classNameWithNameSpace = null;
+            return null;
         }
 
-        return $classNameWithNameSpace;
+        if (!NamespaceHelper::findCurrentNamespaceName($phpCsFile, $lastToken)) {
+            return null;
+        }
+
+        return ClassHelper::getFullyQualifiedName(
+            $phpCsFile,
+            $phpCsFile->findPrevious(TokenHelper::$typeKeywordTokenCodes, $lastToken)
+        );
     }
 
     /**
