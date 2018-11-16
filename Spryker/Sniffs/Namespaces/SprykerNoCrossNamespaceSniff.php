@@ -52,11 +52,11 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
         }
         $namespaces = implode('|', $namespaces);
 
-        if (preg_match('#^(SprykerTest|PyzTest)#', $className, $matches)) {
+        if (!preg_match('#^\w+\\\\(' . $namespaces . ')\\\\#', $className, $matches)) {
             return;
         }
 
-        if (!preg_match('#^\w+\\\\(' . $namespaces . ')\\\\#', $className, $matches)) {
+        if (preg_match('#^(SprykerTest|PyzTest)#', $className)) {
             return;
         }
 
