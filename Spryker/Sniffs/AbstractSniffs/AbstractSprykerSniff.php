@@ -9,6 +9,10 @@ namespace Spryker\Sniffs\AbstractSniffs;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use SlevomatCodingStandard\Helpers\ClassHelper;
+use SlevomatCodingStandard\Helpers\EmptyFileException;
+use SlevomatCodingStandard\Helpers\NamespaceHelper;
+use SlevomatCodingStandard\Helpers\TokenHelper;
 use Spryker\Traits\BasicsTrait;
 
 abstract class AbstractSprykerSniff implements Sniff
@@ -91,10 +95,39 @@ abstract class AbstractSprykerSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
+     * @return string|null
+     */
+    protected function getClassNameWithNamespace(File $phpCsFile): ?string
+    {
+        try {
+            $lastToken = TokenHelper::getLastTokenPointer($phpCsFile);
+        } catch (EmptyFileException $e) {
+            return null;
+        }
+
+        if (!NamespaceHelper::findCurrentNamespaceName($phpCsFile, $lastToken)) {
+            return null;
+        }
+
+        return ClassHelper::getFullyQualifiedName(
+            $phpCsFile,
+            $phpCsFile->findPrevious(TokenHelper::$typeKeywordTokenCodes, $lastToken)
+        );
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
      * @return string
      */
     protected function getClassName(File $phpCsFile): string
     {
+        $namespace = $this->getClassNameWithNamespace($phpCsFile);
+
+        if ($namespace) {
+            return trim($namespace, '\\');
+        }
+
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
         $directoryPosition = array_search('src', array_values($fileNameParts));
@@ -283,6 +316,10 @@ abstract class AbstractSprykerSniff implements Sniff
 
         if (!empty($tokens[$beginningOfLine - 2]) && $tokens[$beginningOfLine - 2]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
             return $beginningOfLine - 2;
+        }
+
+        if (!empty($tokens[$beginningOfLine - 3]) && $tokens[$beginningOfLine - 3]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
+            return $beginningOfLine - 3;
         }
 
         return null;

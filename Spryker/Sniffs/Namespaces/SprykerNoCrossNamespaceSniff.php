@@ -56,6 +56,10 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
             return;
         }
 
+        if (preg_match('#^PyzTest#', $className)) {
+            return;
+        }
+
         $useStatements = $this->getUseStatements($phpcsFile);
         foreach ($useStatements as $useStatement) {
             $this->checkUseStatement($phpcsFile, $useStatement, $matches[1]);
