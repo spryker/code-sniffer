@@ -17,7 +17,7 @@
     "squizlabs/php_codesniffer": "^3.0"
   },
   "require-dev": {
-    "phpstan/phpstan-shim": "^0.9.2",
+    "phpstan/phpstan-shim": "^0.10.0",
     "phpunit/phpunit": "<5.0"
   },
   "scripts": {
