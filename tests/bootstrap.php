@@ -6,3 +6,5 @@ $manualAutoload = dirname(__DIR__) . '/vendor/squizlabs/php_codesniffer/autoload
 if (!class_exists(\PHP_CodeSniffer\Config::class) && file_exists($manualAutoload)) {
     require $manualAutoload;
 }
+
+\PHP_CodeSniffer\Autoload::load('PHP_CodeSniffer\Util\Tokens');
