@@ -181,4 +181,4 @@ Squiz (25 sniffs)
 
 Zend (1 sniff)
 ---------------
-- Zend.Files.ClosingTag;
+- Zend.Files.ClosingTag

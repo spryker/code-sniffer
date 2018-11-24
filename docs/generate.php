@@ -19,7 +19,7 @@ $content = implode(PHP_EOL, $output);
 $content = <<<TEXT
 # Spryker Code Sniffer
 
-$content;
+$content
 TEXT;
 
 $file = __DIR__ . DIRECTORY_SEPARATOR . 'README.md';
