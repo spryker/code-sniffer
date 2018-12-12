@@ -538,23 +538,21 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return array
      */
-    protected function getDocBlockReturnTypes(File $phpCsFile, $stackPointer): array
+    protected function getDocBlockReturnTypes(File $phpCsFile, int $stackPointer): array
     {
-        $returnTypes = [];
-
         $docBlock = DocCommentHelper::getDocComment($phpCsFile, $stackPointer);
 
         if ($docBlock === null) {
-            return $returnTypes;
+            return [];
         }
 
-        preg_match('/@return\s+[\\\|a-zA-Z]+/', $docBlock, $returnTypes);
+        preg_match('/@return\s+[\\\|a-zA-Z]+/', $docBlock, $matches);
 
-        if ($returnTypes === []) {
-            return $returnTypes;
+        if (!$matches) {
+            return [];
         }
 
-        $returnTypes = $returnTypes[0];
+        $returnTypes = $matches[0];
         $returnTypes = trim(str_replace('@return', '', $returnTypes));
         $returnTypes = explode('|', $returnTypes);
 

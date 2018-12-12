@@ -49,7 +49,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
             return;
         }
 
-        $errorMessage = 'Method does not have a return `nullable` statement in doc block.';
+        $errorMessage = 'Method does not have a return `null` typehint in doc block.';
         $phpCsFile->addError($errorMessage, $stackPointer, 'ReturnNullableMissing');
     }
 }
