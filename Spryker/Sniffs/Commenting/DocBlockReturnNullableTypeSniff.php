@@ -1,27 +1,27 @@
 <?php
 
 /**
- * This file is part of the Spryker Suite.
+ * MIT License
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Tokens;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 {
     /**
+     * @see Tokens.php
+     *
      * @return int[]
-     * @see    Tokens.php
      */
     public function register(): array
     {
         return [
-            T_FUNCTION
+            T_FUNCTION,
         ];
     }
 
@@ -29,9 +29,9 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return int|void
+     * @return void
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $returnType = FunctionHelper::findReturnTypeHint($phpCsFile, $stackPointer);
 

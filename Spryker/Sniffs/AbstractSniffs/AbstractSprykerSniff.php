@@ -534,7 +534,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param $stackPointer
+     * @param int $stackPointer
      *
      * @return array
      */
