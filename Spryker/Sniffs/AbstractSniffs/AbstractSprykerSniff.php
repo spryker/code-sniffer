@@ -10,6 +10,7 @@ namespace Spryker\Sniffs\AbstractSniffs;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\ClassHelper;
+use SlevomatCodingStandard\Helpers\DocCommentHelper;
 use SlevomatCodingStandard\Helpers\EmptyFileException;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
@@ -529,5 +530,34 @@ abstract class AbstractSprykerSniff implements Sniff
         }
 
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param $stackPointer
+     *
+     * @return array
+     */
+    protected function getDocBlockReturnTypes(File $phpCsFile, $stackPointer): array
+    {
+        $returnTypes = [];
+
+        $docBlock = DocCommentHelper::getDocComment($phpCsFile, $stackPointer);
+
+        if ($docBlock === null) {
+            return $returnTypes;
+        }
+
+        preg_match('/@return\s+[\\\|a-zA-Z]+/', $docBlock, $returnTypes);
+
+        if ($returnTypes === []) {
+            return $returnTypes;
+        }
+
+        $returnTypes = $returnTypes[0];
+        $returnTypes = trim(str_replace('@return', '', $returnTypes));
+        $returnTypes = explode('|', $returnTypes);
+
+        return $returnTypes;
     }
 }
