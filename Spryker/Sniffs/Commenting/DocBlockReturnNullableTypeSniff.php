@@ -49,8 +49,6 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         $docBlockReturnTypes = $this->getDocBlockReturnTypes($phpCsFile, $stackPointer);
 
         if ($docBlockReturnTypes === []) {
-            $phpCsFile->addError($errorMessage, $stackPointer, 'ReturnNullableMissing');
-
             return;
         }
 
@@ -80,7 +78,9 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         $returnTypes = $returnTypesToken['content'];
         $returnTypes = trim($returnTypes, '|') . '|null';
 
+        $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->replaceToken($returnTypesToken['column'], $returnTypes);
+        $phpCsFile->fixer->endChangeset();
     }
 
     /**
