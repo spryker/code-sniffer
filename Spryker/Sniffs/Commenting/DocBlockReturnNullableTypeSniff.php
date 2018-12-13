@@ -70,11 +70,12 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     {
         $returnTypesToken = $this->getDocBlockReturnTypesToken($phpCsFile, $stackPointer);
 
-        $returnTypes = $returnTypesToken['content'];
+        $tokenIndex = $returnTypesToken['index'];
+        $returnTypes = $returnTypesToken['token']['content'];
         $returnTypes = trim($returnTypes, '|') . '|null';
 
         $phpCsFile->fixer->beginChangeset();
-        $phpCsFile->fixer->replaceToken($returnTypesToken['column'], $returnTypes);
+        $phpCsFile->fixer->replaceToken($tokenIndex, $returnTypes);
         $phpCsFile->fixer->endChangeset();
     }
 
@@ -103,7 +104,10 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
                 true
             );
 
-            return $tokens[$returnTypesTokenIndex];
+            return [
+                'index' => $returnTypesTokenIndex,
+                'token' => $tokens[$returnTypesTokenIndex]
+            ];
         }
     }
 }
