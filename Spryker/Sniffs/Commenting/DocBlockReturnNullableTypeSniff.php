@@ -15,9 +15,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 {
     /**
-     * @see Tokens.php
-     *
-     * @return int[]
+     * @inheritdoc
      */
     public function register(): array
     {
@@ -27,12 +25,9 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
+     * @inheritdoc
      */
-    public function process(File $phpCsFile, $stackPointer): void
+    public function process(File $phpCsFile, $stackPointer)
     {
         $errorMessage = 'Method does not have a return `null` typehint in doc block.';
 
