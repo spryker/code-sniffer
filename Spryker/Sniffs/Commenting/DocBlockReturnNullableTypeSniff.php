@@ -8,6 +8,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use SlevomatCodingStandard\Helpers\DocCommentHelper;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
@@ -33,6 +34,8 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      */
     public function process(File $phpCsFile, $stackPointer): void
     {
+        $errorMessage = 'Method does not have a return `null` typehint in doc block.';
+
         $returnType = FunctionHelper::findReturnTypeHint($phpCsFile, $stackPointer);
 
         if ($returnType === null) {
@@ -45,11 +48,67 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 
         $docBlockReturnTypes = $this->getDocBlockReturnTypes($phpCsFile, $stackPointer);
 
+        if ($docBlockReturnTypes === []) {
+            $phpCsFile->addError($errorMessage, $stackPointer, 'ReturnNullableMissing');
+
+            return;
+        }
+
         if (in_array('null', $docBlockReturnTypes)) {
             return;
         }
 
-        $errorMessage = 'Method does not have a return `null` typehint in doc block.';
-        $phpCsFile->addError($errorMessage, $stackPointer, 'ReturnNullableMissing');
+        $fixable = $phpCsFile->addFixableError($errorMessage, $stackPointer, 'ReturnNullableMissing');
+
+        if (!$fixable) {
+            return;
+        }
+
+        $this->fixDocBlockReturnType($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function fixDocBlockReturnType(File $phpCsFile, int $stackPointer): void
+    {
+        $returnTypesToken = $this->getDocBlockReturnTypesToken($phpCsFile, $stackPointer);
+
+        $returnTypes = $returnTypesToken['content'];
+        $returnTypes = trim($returnTypes, '|') . '|null';
+
+        $phpCsFile->fixer->replaceToken($returnTypesToken['column'], $returnTypes);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return array
+     */
+    protected function getDocBlockReturnTypesToken(File $phpCsFile, int $stackPointer): array
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $docBlockStartIndex = DocCommentHelper::findDocCommentOpenToken($phpCsFile, $stackPointer);
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
+
+        for ($i = $docBlockEndIndex; $i >= $docBlockStartIndex; $i--) {
+            if ($tokens[$i]['content'] !== '@return') {
+                continue;
+            }
+
+            $returnTypesTokenIndex = $phpCsFile->findNext(
+                [T_DOC_COMMENT_WHITESPACE],
+                $i + 1,
+                null,
+                true
+            );
+
+            return $tokens[$returnTypesTokenIndex];
+        }
     }
 }
