@@ -106,7 +106,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 
             return [
                 'index' => $returnTypesTokenIndex,
-                'token' => $tokens[$returnTypesTokenIndex]
+                'token' => $tokens[$returnTypesTokenIndex],
             ];
         }
     }
