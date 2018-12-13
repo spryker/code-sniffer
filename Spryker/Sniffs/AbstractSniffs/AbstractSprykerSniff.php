@@ -546,7 +546,7 @@ abstract class AbstractSprykerSniff implements Sniff
             return [];
         }
 
-        preg_match('/(@return\s+)(.*)/', $docBlock, $matches);
+        preg_match('/(@return\s+)(\S+)/', $docBlock, $matches);
 
         if (!$matches) {
             return [];
