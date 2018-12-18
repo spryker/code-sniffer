@@ -22,7 +22,7 @@
   },
   "scripts": {
     "docs": "php docs/generate.php",
-    "docs-listing": "phpcs -e --standard=Spryker/ruleset.xml",
+    "docs-listing": "phpcs -e --standard=SprykerStrict/ruleset.xml",
     "add-standard": "phpcs --config-set installed_paths $(pwd)",
     "increase-severity": "sed -i.bak 's/<severity>0<\\/severity>/<!--<severity>0<\\/severity>-->/' Spryker/ruleset.xml",
     "reset-ruleset": [
@@ -36,7 +36,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Spryker\\": "Spryker"
+      "Spryker\\": "Spryker",
+      "SprykerStrict\\": "SprykerStrict"
     }
   },
   "bin": [

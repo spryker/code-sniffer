@@ -48,6 +48,11 @@ The command `phpcs` just sniffs, `phpcbf` fixes.
 
 You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of your test fixture folders.
 
+### Standards
+You can always switch the standard to the stricter one named `SprykerStrict`.
+It lies in the same folder as `Spryker` and includes itself all the `Spryker`'s sniffs along with its own (strict) sniffs.
+The full list of strict sniffs you can find in the [list of included sniffs](/docs) under the `SprykerStrict` section.
+
 ### How to include in your IDE
 E.g. for PHPStorm:
 * Open Settings -> Tools -> External Tools
@@ -72,7 +77,6 @@ vendor/spryker/code-sniffer/                          # Base directory
 
 The base directory and rule set can be used in configuration now.
 
-
 ```
 vendor/bin/phpcs --config-set installed_paths vendor/spryker/code-sniffer/
 vendor/bin/phpcs --config-set default_standard Spryker
@@ -96,6 +100,17 @@ This can be configured in the Development bundle config:
     public function getCodingStandard()
     {
         return '/path/to/your/ruleset.xml';
+    }
+    
+    /**
+     * Either a relative or full path to the stricter ruleset.xml or a name of an installed
+     * standard (see `phpcs -i` for a list of available ones).
+     *
+     * @return string
+     */
+    public function getCodingStandardStrict()
+    {
+        return '/path/to/your/ruleset_strict.xml';
     }
 ```
 If you use it for custom projects, just use `--standard` to point to your ruleset file.

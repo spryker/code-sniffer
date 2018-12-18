@@ -152,6 +152,10 @@ Spryker (69 sniffs)
 - Spryker.WhiteSpace.ObjectAttributeSpacing
 - Spryker.WhiteSpace.OperatorSpacing
 
+SprykerStrict (1 sniff)
+------------------------
+- SprykerStrict.TypeHints.TypeHintDeclaration
+
 Squiz (25 sniffs)
 -----------------
 - Squiz.Arrays.ArrayBracketSpacing

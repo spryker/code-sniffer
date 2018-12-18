@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Sniffs\TypeHints;
+namespace SprykerStrict\Sniffs\TypeHints;
 
 use PHP_CodeSniffer\Files\File;
 use SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff as SlevomatTypeHintDeclarationSniff;
