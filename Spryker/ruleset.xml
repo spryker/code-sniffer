@@ -51,6 +51,14 @@
 
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
+    <rule ref="Spryker.TypeHints.TypeHintDeclaration">
+        <exclude name="Spryker.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
+        <exclude name="Spryker.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
+        <exclude name="Spryker.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
+        <exclude name="Spryker.TypeHints.TypeHintDeclaration.UselessParameterAnnotation"/>
+        <exclude name="Spryker.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
     <rule ref="SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment"/>
 

@@ -139,6 +139,7 @@ Spryker (69 sniffs)
 - Spryker.PHP.PreferCastOverFunction
 - Spryker.PHP.RemoveFunctionAlias
 - Spryker.PHP.ShortCast
+- Spryker.TypeHints.TypeHintDeclaration
 - Spryker.WhiteSpace.CommaSpacing
 - Spryker.WhiteSpace.ConcatenationSpacing
 - Spryker.WhiteSpace.DocBlockSpacing
