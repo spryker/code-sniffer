@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 156 sniffs
+The SprykerStrict standard contains 157 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -139,7 +139,6 @@ Spryker (69 sniffs)
 - Spryker.PHP.PreferCastOverFunction
 - Spryker.PHP.RemoveFunctionAlias
 - Spryker.PHP.ShortCast
-- Spryker.TypeHints.TypeHintDeclaration
 - Spryker.WhiteSpace.CommaSpacing
 - Spryker.WhiteSpace.ConcatenationSpacing
 - Spryker.WhiteSpace.DocBlockSpacing

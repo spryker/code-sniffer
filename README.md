@@ -50,7 +50,7 @@ You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of you
 
 ### Standards
 You can always switch the standard to the stricter one named `SprykerStrict`.
-It lies in the same folder as `Spryker` and includes itself all the `Spryker`'s sniffs along with its own (strict) sniffs.
+It is an extension of the `Spryker` standard with its own (strict) sniffs added on top.
 The full list of strict sniffs you can find in the [list of included sniffs](/docs) under the `SprykerStrict` section.
 
 ### How to include in your IDE
