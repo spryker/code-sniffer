@@ -264,7 +264,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function bodyContainsYield(File $phpcsFile, int $pointer)
+    protected function bodyContainsYield(File $phpcsFile, int $pointer): bool
     {
         $tokens = $phpcsFile->getTokens();
 

@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The Spryker standard contains 156 sniffs
+The SprykerStrict standard contains 157 sniffs
 
 Generic (22 sniffs)
 -------------------
@@ -150,6 +150,10 @@ Spryker (69 sniffs)
 - Spryker.WhiteSpace.MethodSpacing
 - Spryker.WhiteSpace.ObjectAttributeSpacing
 - Spryker.WhiteSpace.OperatorSpacing
+
+SprykerStrict (1 sniff)
+------------------------
+- SprykerStrict.TypeHints.TypeHintDeclaration
 
 Squiz (25 sniffs)
 -----------------
