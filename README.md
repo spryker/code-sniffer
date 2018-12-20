@@ -100,17 +100,6 @@ This can be configured in the Development bundle config:
     {
         return '/path/to/your/ruleset.xml';
     }
-    
-    /**
-     * Either a relative or full path to the stricter ruleset.xml or a name of an installed
-     * standard (see `phpcs -i` for a list of available ones).
-     *
-     * @return string
-     */
-    public function getCodingStandardStrict()
-    {
-        return '/path/to/your/ruleset_strict.xml';
-    }
 ```
 If you use it for custom projects, just use `--standard` to point to your ruleset file.
 
@@ -135,6 +124,14 @@ Make sure that you include the Spryker core standard ruleset in your custom one,
 
     <!-- Define your own sniffs here -->
 </ruleset>
+```
+If you want to use the `SprykerStrict` standard in your project, you should replace the string:
+```xml
+<rule ref="vendor/spryker/code-sniffer/Spryker/ruleset.xml"/>
+```
+with this one:
+```xml
+<rule ref="vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml"/>
 ```
 
 ## Custom licensing
