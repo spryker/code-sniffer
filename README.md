@@ -48,6 +48,10 @@ The command `phpcs` just sniffs, `phpcbf` fixes.
 
 You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of your test fixture folders.
 
+### Standards
+You can always switch the standard to the stricter one named `SprykerStrict`.
+It is an extension of the `Spryker` standard with its own (strict) sniffs added on top.
+
 ### How to include in your IDE
 E.g. for PHPStorm:
 * Open Settings -> Tools -> External Tools
@@ -71,7 +75,6 @@ vendor/spryker/code-sniffer/                          # Base directory
 ```
 
 The base directory and rule set can be used in configuration now.
-
 
 ```
 vendor/bin/phpcs --config-set installed_paths vendor/spryker/code-sniffer/
@@ -121,6 +124,14 @@ Make sure that you include the Spryker core standard ruleset in your custom one,
 
     <!-- Define your own sniffs here -->
 </ruleset>
+```
+If you want to use the `SprykerStrict` standard in your project, you should replace the string:
+```xml
+<rule ref="vendor/spryker/code-sniffer/Spryker/ruleset.xml"/>
+```
+with this one:
+```xml
+<rule ref="vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml"/>
 ```
 
 ## Custom licensing
