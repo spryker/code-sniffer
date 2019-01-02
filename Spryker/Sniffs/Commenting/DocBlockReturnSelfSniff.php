@@ -78,7 +78,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
 
             $returnTypes = $this->getReturnTypes($phpCsFile, $stackPointer);
             $this->assertChainableReturnType($phpCsFile, $stackPointer, $parts, $returnTypes);
-            $this->fixClassToThis($phpCsFile, $stackPointer, $classNameIndex, $parts, $appendix, $returnTypes);
+            $this->fixClassToThis($phpCsFile, $classNameIndex, $parts, $appendix, $returnTypes);
         }
     }
 
@@ -162,15 +162,14 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
      * @param int $classNameIndex
-     * @param array $parts
+     * @param string[] $parts
      * @param string $appendix
-     * @param array $returnTypes
+     * @param string[] $returnTypes
      *
      * @return void
      */
-    protected function fixClassToThis(File $phpCsFile, int $stackPointer, int $classNameIndex, array $parts, string $appendix, array $returnTypes): void
+    protected function fixClassToThis(File $phpCsFile, int $classNameIndex, array $parts, string $appendix, array $returnTypes): void
     {
         $ownClassName = '\\' . $this->getClassName($phpCsFile);
 
