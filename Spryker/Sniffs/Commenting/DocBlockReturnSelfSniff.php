@@ -13,6 +13,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Doc blocks should type-hint returning itself as $this for fluent interface to work.
+ * Chainable methods declared as such must not have any other return type in code.
  */
 class DocBlockReturnSelfSniff extends AbstractSprykerSniff
 {
@@ -45,7 +46,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@return'])) {
+            if ($tokens[$i]['content'] !== '@return') {
                 continue;
             }
 
@@ -74,14 +75,17 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
 
             $parts = explode('|', $content);
             $this->assertCorrectDocBlockParts($phpCsFile, $classNameIndex, $parts, $appendix);
-            $this->fixClassToThis($phpCsFile, $stackPointer, $classNameIndex, $parts, $appendix);
+
+            $returnTypes = $this->getReturnTypes($phpCsFile, $stackPointer);
+            $this->assertChainableReturnType($phpCsFile, $stackPointer, $parts, $returnTypes);
+            $this->fixClassToThis($phpCsFile, $stackPointer, $classNameIndex, $parts, $appendix, $returnTypes);
         }
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
-     * @param array $parts
+     * @param string[] $parts
      * @param string $appendix
      *
      * @return void
@@ -162,10 +166,11 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      * @param int $classNameIndex
      * @param array $parts
      * @param string $appendix
+     * @param array $returnTypes
      *
      * @return void
      */
-    protected function fixClassToThis(File $phpCsFile, int $stackPointer, int $classNameIndex, array $parts, string $appendix): void
+    protected function fixClassToThis(File $phpCsFile, int $stackPointer, int $classNameIndex, array $parts, string $appendix, array $returnTypes): void
     {
         $ownClassName = '\\' . $this->getClassName($phpCsFile);
 
@@ -183,7 +188,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
             return;
         }
 
-        $isFluentInterfaceMethod = $this->isFluentInterfaceMethod($phpCsFile, $stackPointer);
+        $isFluentInterfaceMethod = $returnTypes === ['$this'];
         if (!$isFluentInterfaceMethod) {
             return;
         }
@@ -206,20 +211,21 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return bool
+     * @return string[]
      */
-    protected function isFluentInterfaceMethod(File $phpCsFile, int $stackPointer): bool
+    protected function getReturnTypes(File $phpCsFile, int $stackPointer): array
     {
         $tokens = $phpCsFile->getTokens();
 
         // We skip for interface methods
         if (empty($tokens[$stackPointer]['scope_opener']) || empty($tokens[$stackPointer]['scope_closer'])) {
-            return false;
+            return [];
         }
 
         $scopeOpener = $tokens[$stackPointer]['scope_opener'];
         $scopeCloser = $tokens[$stackPointer]['scope_closer'];
 
+        $returnTypes = [];
         for ($i = $scopeOpener; $i < $scopeCloser; $i++) {
             if ($tokens[$i]['code'] !== T_RETURN) {
                 continue;
@@ -227,14 +233,27 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
 
             $contentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $i + 1, $scopeCloser, true);
             if (!$contentIndex) {
-                return false;
+                continue;
             }
 
-            if ($tokens[$contentIndex]['content'] === '$this') {
-                return true;
-            }
+            $returnTypes[] = $tokens[$contentIndex]['content'];
         }
 
-        return false;
+        return $returnTypes;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @param string[] $parts
+     * @param string[] $returnTypes
+     *
+     * @return void
+     */
+    protected function assertChainableReturnType(File $phpCsFile, int $stackPointer, array $parts, array $returnTypes): void
+    {
+        if ($parts === ['$this'] && $returnTypes !== ['$this']) {
+            $phpCsFile->addError('Chainable method (@return $this) cannot have multiple return types in code.', $stackPointer, 'InvalidChainable');
+        }
     }
 }
