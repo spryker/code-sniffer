@@ -238,7 +238,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
             $returnTypes[] = $tokens[$contentIndex]['content'];
         }
 
-        return $returnTypes;
+        return array_unique($returnTypes);
     }
 
     /**
