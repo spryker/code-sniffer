@@ -255,7 +255,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      */
     protected function assertChainableReturnType(File $phpCsFile, int $stackPointer, array $parts, array $returnTypes): void
     {
-        if ($parts === ['$this'] && $returnTypes !== ['$this']) {
+        if ($returnTypes && $parts === ['$this'] && $returnTypes !== ['$this']) {
             $phpCsFile->addError('Chainable method (@return $this) cannot have multiple return types in code.', $stackPointer, 'InvalidChainable');
         }
     }
