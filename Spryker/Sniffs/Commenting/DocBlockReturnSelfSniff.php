@@ -230,6 +230,10 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
                 continue;
             }
 
+            if (in_array(T_CLOSURE, $tokens[$i]['conditions'])) {
+                continue;
+            }
+
             $contentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $i + 1, $scopeCloser, true);
             if (!$contentIndex) {
                 continue;
