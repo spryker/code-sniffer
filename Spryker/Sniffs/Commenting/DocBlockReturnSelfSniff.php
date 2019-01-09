@@ -9,6 +9,7 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
+use SlevomatCodingStandard\Helpers\FunctionHelper;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -237,6 +238,14 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
             $contentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $i + 1, $scopeCloser, true);
             if (!$contentIndex) {
                 continue;
+            }
+
+            if ($tokens[$contentIndex]['code'] === T_PARENT) {
+                $parentMethodName = $tokens[$contentIndex + 2]['content'];
+
+                if ($parentMethodName === FunctionHelper::getName($phpCsFile, $stackPointer)) {
+                    continue;
+                }
             }
 
             $returnTypes[] = $tokens[$contentIndex]['content'];
