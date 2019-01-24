@@ -1,9 +1,9 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 159 sniffs
+The SprykerStrict standard contains 166 sniffs
 
-Generic (22 sniffs)
+Generic (23 sniffs)
 -------------------
 - Generic.Arrays.DisallowLongArraySyntax
 - Generic.CodeAnalysis.ForLoopShouldBeWhileLoop
@@ -24,6 +24,7 @@ Generic (22 sniffs)
 - Generic.PHP.ForbiddenFunctions
 - Generic.PHP.LowerCaseConstant
 - Generic.PHP.LowerCaseKeyword
+- Generic.PHP.LowerCaseType
 - Generic.PHP.NoSilencedErrors
 - Generic.WhiteSpace.DisallowTabIndent
 - Generic.WhiteSpace.ScopeIndent
@@ -41,6 +42,13 @@ PSR1 (3 sniffs)
 - PSR1.Files.SideEffects
 - PSR1.Methods.CamelCapsMethodName
 
+PSR12 (4 sniffs)
+----------------
+- PSR12.Classes.ClassInstantiation
+- PSR12.Keywords.ShortFormTypeKeywords
+- PSR12.Namespaces.CompoundNamespaceDepth
+- PSR12.Operators.OperatorSpacing
+
 PSR2 (12 sniffs)
 ----------------
 - PSR2.Classes.ClassDeclaration
@@ -56,10 +64,11 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (20 sniffs)
+SlevomatCodingStandard (22 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
 - SlevomatCodingStandard.Classes.ClassConstantVisibility
+- SlevomatCodingStandard.Classes.UnusedPrivateElements
 - SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment
 - SlevomatCodingStandard.Commenting.EmptyComment
 - SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch
@@ -72,6 +81,7 @@ SlevomatCodingStandard (20 sniffs)
 - SlevomatCodingStandard.Namespaces.UseFromSameNamespace
 - SlevomatCodingStandard.Namespaces.UseSpacing
 - SlevomatCodingStandard.PHP.ShortList
+- SlevomatCodingStandard.PHP.TypeCast
 - SlevomatCodingStandard.PHP.UselessSemicolon
 - SlevomatCodingStandard.TypeHints.LongTypeHints
 - SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue
