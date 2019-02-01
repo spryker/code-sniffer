@@ -164,8 +164,8 @@ class ArrayDeclarationSniff implements Sniff
                     $lastToken = $nextToken;
                 }
 
-                $nextToken = $tokens[$nextToken]['bracket_closer'];
-                $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($nextToken + 1), null, true);
+                $bracketCloseIndex = $tokens[$nextToken]['bracket_closer'];
+                $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($bracketCloseIndex + 1), null, true);
                 if ($tokens[$nextToken]['code'] !== T_COMMA) {
                     $nextToken--;
                 } else {
