@@ -13,10 +13,10 @@
   ],
   "require": {
     "php": ">=7.1",
-    "slevomat/coding-standard": "^4.8.3",
-    "squizlabs/php_codesniffer": "^3.0"
+    "slevomat/coding-standard": "^4.8.3"
   },
   "require-dev": {
+    "dereuromark/composer-prefer-lowest": "^0.1.2",
     "phpstan/phpstan-shim": "^0.10.0",
     "phpunit/phpunit": "<5.0"
   },
