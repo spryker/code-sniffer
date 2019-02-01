@@ -32,7 +32,7 @@
     "cs-check": "phpcs --colors -v -p -s --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
     "cs-fix": "phpcbf --colors -v --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
     "test": "phpunit",
-    "phpstan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 4 Spryker/Sniffs/"
+    "phpstan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 4 Spryker/Sniffs/ SprykerStrict/Sniffs/"
   },
   "autoload": {
     "psr-4": {
