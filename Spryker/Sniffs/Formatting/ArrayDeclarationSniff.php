@@ -146,12 +146,16 @@ class ArrayDeclarationSniff implements Sniff
                     $lastToken = $nextToken;
                 }
 
-                $nextToken = $tokens[$tokens[$nextToken]['parenthesis_opener']]['parenthesis_closer'];
-                $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($nextToken + 1), null, true);
-                if ($tokens[$nextToken]['code'] !== T_COMMA) {
-                    $nextToken--;
+                $parenthesisCloseIndex = $tokens[$tokens[$nextToken]['parenthesis_opener']]['parenthesis_closer'];
+                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, ($parenthesisCloseIndex + 1), null, true);
+                if (!$nextTokenIndex) {
+                    break;
+                }
+
+                if ($tokens[$nextTokenIndex]['code'] !== T_COMMA) {
+                    $nextToken = $nextTokenIndex - 1;
                 } else {
-                    $lastToken = $nextToken;
+                    $lastToken = $nextTokenIndex;
                 }
 
                 continue;
@@ -165,11 +169,15 @@ class ArrayDeclarationSniff implements Sniff
                 }
 
                 $bracketCloseIndex = $tokens[$nextToken]['bracket_closer'];
-                $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($bracketCloseIndex + 1), null, true);
-                if ($tokens[$nextToken]['code'] !== T_COMMA) {
-                    $nextToken--;
+                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, ($bracketCloseIndex + 1), null, true);
+                if (!$nextTokenIndex) {
+                    break;
+                }
+
+                if ($tokens[$nextTokenIndex]['code'] !== T_COMMA) {
+                    $nextToken = $nextTokenIndex - 1;
                 } else {
-                    $lastToken = $nextToken;
+                    $lastToken = $nextTokenIndex;
                 }
 
                 continue;
@@ -182,11 +190,15 @@ class ArrayDeclarationSniff implements Sniff
                 }
 
                 $nextToken = $tokens[$nextToken]['scope_closer'];
-                $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($nextToken + 1), null, true);
-                if ($tokens[$nextToken]['code'] !== T_COMMA) {
-                    $nextToken--;
+                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, ($nextToken + 1), null, true);
+                if (!$nextTokenIndex) {
+                    break;
+                }
+
+                if ($tokens[$nextTokenIndex]['code'] !== T_COMMA) {
+                    $nextToken = $nextTokenIndex - 1;
                 } else {
-                    $lastToken = $nextToken;
+                    $lastToken = $nextTokenIndex;
                 }
 
                 continue;
