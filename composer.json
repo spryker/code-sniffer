@@ -17,7 +17,7 @@
   },
   "require-dev": {
     "dereuromark/composer-prefer-lowest": "^0.1.2",
-    "phpstan/phpstan-shim": "^0.10.0",
+    "phpstan/phpstan-shim": "^0.11.1",
     "phpunit/phpunit": "<5.0"
   },
   "scripts": {
@@ -32,7 +32,7 @@
     "cs-check": "phpcs --colors -v -p -s --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
     "cs-fix": "phpcbf --colors -v --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
     "test": "phpunit",
-    "phpstan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 4 Spryker/Sniffs/"
+    "phpstan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 4 Spryker/Sniffs/ SprykerStrict/Sniffs/"
   },
   "autoload": {
     "psr-4": {

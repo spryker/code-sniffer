@@ -258,10 +258,9 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         foreach ($exceptions as $exception) {
             $exception = $this->normalizeClassName($exception, $useStatements);
             if (empty($exception['fullClass'])) {
-                // We skip for complex scnarios
-                if ($annotations) {
-                    $phpCsFile->addError('Doc Block @throw annotation missing', $docBlockEndIndex, 'ThrowMissingManual');
-                }
+                // We skip for complex scenarios
+                $phpCsFile->addError('Doc Block @throw annotation missing', $docBlockEndIndex, 'ThrowMissingManual');
+
                 continue;
             }
 
