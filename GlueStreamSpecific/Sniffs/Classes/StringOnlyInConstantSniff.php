@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace StreamSpecific\Glue\Sniffs\Classes;
+namespace GlueStreamSpecific\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
