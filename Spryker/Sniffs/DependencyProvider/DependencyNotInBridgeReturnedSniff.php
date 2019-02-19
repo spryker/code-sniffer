@@ -16,7 +16,7 @@ class DependencyNotInBridgeReturnedSniff extends AbstractSprykerSniff
         'facade',
         'client',
         'service',
-        'resource'
+        'resource',
     ];
 
     /**
@@ -122,7 +122,7 @@ class DependencyNotInBridgeReturnedSniff extends AbstractSprykerSniff
     {
         $dependencyType = $this->getDependencyType($statement);
 
-        return  sprintf(
+        return sprintf(
             '%s returns a %2$s directly. Fix this by adding a bridge and injecting the given %2$s.',
             $className,
             $dependencyType
