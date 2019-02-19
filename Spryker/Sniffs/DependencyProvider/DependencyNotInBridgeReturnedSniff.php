@@ -10,13 +10,15 @@ namespace Spryker\Sniffs\DependencyProvider;
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
-/**
- * Spryker Locator should not return Facades directly, use a bridge instead.
- *
- * Note: This sniff will only run on Spryker Core files.
- */
-class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
+class DependencyNotInBridgeReturnedSniff extends AbstractSprykerSniff
 {
+    protected const DEPENDENCY_TYPES = [
+        'facade',
+        'client',
+        'service',
+        'resource'
+    ];
+
     /**
      * @inheritdoc
      */
@@ -36,13 +38,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
             return;
         }
 
-        if ($this->isFacadeNotInBridgeReturned($phpCsFile, $stackPointer)) {
-            $phpCsFile->addError(
-                $this->getClassName($phpCsFile) . ' returns a facade directly. Fix this by adding a bridge and injecting the given facade.',
-                $stackPointer,
-                'BridgeMissing'
-            );
-        }
+        $this->assertDependencyNotInBridgeReturned($phpCsFile, $stackPointer);
     }
 
     /**
@@ -78,9 +74,9 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return bool
+     * @return void
      */
-    protected function isFacadeNotInBridgeReturned(File $phpCsFile, int $stackPointer): bool
+    protected function assertDependencyNotInBridgeReturned(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
         $returnPointer = (int)$phpCsFile->findNext(T_RETURN, $stackPointer);
@@ -88,12 +84,17 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
 
         $statementTokens = array_slice($tokens, $returnPointer, $endOfLinePointer - $returnPointer);
         $statement = $this->parseTokensContent($statementTokens);
+        $regExp = sprintf(
+            '/return \$container->getLocator\(\)->(.*?)\(\)->(%s)\(\)/',
+            implode('|', static::DEPENDENCY_TYPES)
+        );
 
-        if (preg_match('/return \$container->getLocator\(\)->(.*?)\(\)->facade\(\)/', $statement)) {
-            return true;
+        if (!preg_match($regExp, $statement)) {
+            return;
         }
 
-        return false;
+        $errorMessage = $this->getErrorMessage($this->getClassName($phpCsFile), $statement);
+        $phpCsFile->addError($errorMessage, $stackPointer, 'BridgeMissing');
     }
 
     /**
@@ -109,5 +110,35 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
         }
 
         return $statement;
+    }
+
+    /**
+     * @param string $className
+     * @param string $statement
+     *
+     * @return string
+     */
+    protected function getErrorMessage(string $className, string $statement): string
+    {
+        $dependencyType = $this->getDependencyType($statement);
+
+        return  sprintf(
+            '%s returns a %2$s directly. Fix this by adding a bridge and injecting the given %2$s.',
+            $className,
+            $dependencyType
+        );
+    }
+
+    /**
+     * @param string $statement
+     *
+     * @return string
+     */
+    protected function getDependencyType(string $statement): string
+    {
+        $regExp = sprintf('/(?<=->)(%s)(?=\(\))/', implode('|', static::DEPENDENCY_TYPES));
+        preg_match($regExp, $statement, $dependencyType);
+
+        return $dependencyType[0] ?? 'dependency';
     }
 }
