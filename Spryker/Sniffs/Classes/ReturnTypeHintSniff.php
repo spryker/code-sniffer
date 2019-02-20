@@ -47,6 +47,7 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         }
 
         if (!$this->isChainingMethod($phpcsFile, $stackPtr)) {
+            $this->assertNotThisOrStatic($phpcsFile, $stackPtr);
             return;
         }
 
@@ -74,7 +75,6 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         }
         $phpcsFile->fixer->endChangeset();
     }
-
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
@@ -116,5 +116,51 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         }
 
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function assertNotThisOrStatic(File $phpCsFile, int $stackPointer): void
+    {
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
+
+        if (!$docBlockEndIndex) {
+            return;
+        }
+
+        $tokens = $phpCsFile->getTokens();
+
+        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
+            if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
+                continue;
+            }
+            if ($tokens[$i]['content'] !== '@return') {
+                continue;
+            }
+
+            $classNameIndex = $i + 2;
+
+            if ($tokens[$classNameIndex]['type'] !== 'T_DOC_COMMENT_STRING') {
+                continue;
+            }
+
+            $content = $tokens[$classNameIndex]['content'];
+            if (!$content || strpos($content, '\\') !== 0) {
+                continue;
+            }
+
+            $classNameWithNamespace = $this->getClassNameWithNamespace($phpCsFile);
+            if ($content !== $classNameWithNamespace) {
+                continue;
+            }
+
+            $phpCsFile->addError('Class name repeated, expected `self` or `$this`.', $classNameIndex, 'TypeHint.Invalid.Class');
+        }
     }
 }
