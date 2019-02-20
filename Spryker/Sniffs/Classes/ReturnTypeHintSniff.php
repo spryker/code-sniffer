@@ -54,7 +54,7 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         if ($returnTokenType !== 'T_SELF') {
             // Then we can only warn, but not auto-fix
             $phpcsFile->addError('Chaining methods (@return $this) should not have any return-type-hint.', $startIndex, 'TypeHint.Invalid.Self');
-            
+
             return;
         }
 
