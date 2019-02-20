@@ -27,10 +27,14 @@ class StringOnlyInConstantSniff extends AbstractSprykerSniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $decName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $stackPtr);
+        $tokenIndex = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $stackPtr);
         $tokens = $phpcsFile->getTokens();
 
-        if ($tokens[$decName]['level'] === 1) {
+        if (!$tokenIndex) {
+            return;
+        }
+
+        if ($tokens[$tokenIndex]['level'] === 1) {
             return;
         }
 
