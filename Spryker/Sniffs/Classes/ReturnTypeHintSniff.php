@@ -75,6 +75,7 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         }
         $phpcsFile->fixer->endChangeset();
     }
+
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
