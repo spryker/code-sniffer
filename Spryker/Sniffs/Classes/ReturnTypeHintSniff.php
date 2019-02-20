@@ -50,6 +50,11 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
             return;
         }
 
+        // We skip for interface methods
+        if (empty($tokens[$stackPtr]['scope_opener']) || empty($tokens[$stackPtr]['scope_closer'])) {
+            return [];
+        }
+
         $returnTokenType = $tokens[$startIndex]['type'];
         if ($returnTokenType !== 'T_SELF') {
             // Then we can only warn, but not auto-fix
