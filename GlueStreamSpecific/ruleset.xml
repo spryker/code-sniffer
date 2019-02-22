@@ -6,6 +6,6 @@
         All sniffs in ./Sniffs will be auto loaded
     </description>
 
-    <rule ref="GlueStreamSpecific.Classes.StringOnlyInConstant"/>
+    <rule ref="GlueStreamSpecific.Classes.DependencyProviderStringInConstantOnly"/>
 
 </ruleset>

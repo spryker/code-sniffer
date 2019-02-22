@@ -10,7 +10,8 @@ namespace GlueStreamSpecific\Sniffs\Classes;
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
-class StringOnlyInConstantSniff extends AbstractSprykerSniff
+
+class DependencyProviderStringInConstantOnlySniff extends AbstractSprykerSniff
 {
     /**
      * @inheritdoc
@@ -30,6 +31,10 @@ class StringOnlyInConstantSniff extends AbstractSprykerSniff
         $tokenIndex = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $stackPtr);
         $tokens = $phpcsFile->getTokens();
 
+        if (!$this->isDependencyProvider($phpcsFile)) {
+            return;
+        }
+
         if (!$tokenIndex) {
             return;
         }
@@ -43,5 +48,18 @@ class StringOnlyInConstantSniff extends AbstractSprykerSniff
             $tokens[$stackPtr]['content']
         ];
         $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isDependencyProvider(File $phpCsFile): bool
+    {
+        $className = $this->getClassName($phpCsFile);
+        $hasCorrectSufix = (substr($className, -18) === 'DependencyProvider');
+
+        return $hasCorrectSufix;
     }
 }
