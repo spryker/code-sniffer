@@ -46,12 +46,21 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
             return;
         }
 
-        $returnTokenType = $tokens[$startIndex]['type'];
-        if ($returnTokenType !== 'T_SELF') {
+        if (!$this->isChainingMethod($phpcsFile, $stackPtr)) {
+            $this->assertNotThisOrStatic($phpcsFile, $stackPtr);
             return;
         }
 
-        if (!$this->isChainingMethod($phpcsFile, $stackPtr)) {
+        // We skip for interface methods
+        if (empty($tokens[$stackPtr]['scope_opener']) || empty($tokens[$stackPtr]['scope_closer'])) {
+            return [];
+        }
+
+        $returnTokenType = $tokens[$startIndex]['type'];
+        if ($returnTokenType !== 'T_SELF') {
+            // Then we can only warn, but not auto-fix
+            $phpcsFile->addError('Chaining methods (@return $this) should not have any return-type-hint.', $startIndex, 'TypeHint.Invalid.Self');
+
             return;
         }
 
@@ -108,5 +117,51 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         }
 
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function assertNotThisOrStatic(File $phpCsFile, int $stackPointer): void
+    {
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
+
+        if (!$docBlockEndIndex) {
+            return;
+        }
+
+        $tokens = $phpCsFile->getTokens();
+
+        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
+            if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
+                continue;
+            }
+            if ($tokens[$i]['content'] !== '@return') {
+                continue;
+            }
+
+            $classNameIndex = $i + 2;
+
+            if ($tokens[$classNameIndex]['type'] !== 'T_DOC_COMMENT_STRING') {
+                continue;
+            }
+
+            $content = $tokens[$classNameIndex]['content'];
+            if (!$content || strpos($content, '\\') !== 0) {
+                continue;
+            }
+
+            $classNameWithNamespace = $this->getClassNameWithNamespace($phpCsFile);
+            if ($content !== $classNameWithNamespace) {
+                continue;
+            }
+
+            $phpCsFile->addError('Class name repeated, expected `self` or `$this`.', $classNameIndex, 'TypeHint.Invalid.Class');
+        }
     }
 }
