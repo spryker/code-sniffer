@@ -11,55 +11,18 @@ use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 
-class DependencyProviderStringInConstantOnlySniff extends AbstractSprykerSniff
+class DependencyProviderStringInConstantOnlySniff extends AbstractStringInConstantOnlySniff
 {
-    /**
-     * @inheritdoc
-     */
-    public function register()
-    {
-        return [
-            T_CONSTANT_ENCAPSED_STRING,
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokenIndex = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $stackPtr);
-        $tokens = $phpcsFile->getTokens();
-
-        if (!$this->isDependencyProvider($phpcsFile)) {
-            return;
-        }
-
-        if (!$tokenIndex) {
-            return;
-        }
-
-        if ($tokens[$tokenIndex]['level'] === 1) {
-            return;
-        }
-
-        $error = '%s string should be introduced as a class or module constant.';
-        $data = [
-            $tokens[$stackPtr]['content']
-        ];
-        $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
-    }
-
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return bool
      */
-    protected function isDependencyProvider(File $phpCsFile): bool
+    protected function isRuleApplicable(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
-        $hasCorrectSufix = (substr($className, -18) === 'DependencyProvider');
+        $hasCorrectSuffix = (substr($className, -18) === 'DependencyProvider');
 
-        return $hasCorrectSufix;
+        return $hasCorrectSuffix;
     }
 }
