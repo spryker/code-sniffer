@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="Glue specific ruleset">
+    <description>
+        Glue specific Coding Standard (experimental).
+
+        All sniffs in ./Sniffs will be auto loaded
+    </description>
+
+    <rule ref="GlueStreamSpecific.Classes.DependencyProviderStringInConstantOnly"/>
+
+</ruleset>
