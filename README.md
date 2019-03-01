@@ -183,7 +183,7 @@ Add them to the corresponding category inside Sniffs folder and add tests in `te
 
 To run all sniffs on themselves, use
 ```
-vendor/bin/phpcs --standard=Spryker/ruleset.xml Spryker/Sniffs/ -v -s ./
+composer cs-check
 ```
 
 Don't forget to test your changes:
