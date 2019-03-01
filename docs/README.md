@@ -129,7 +129,7 @@ Spryker (71 sniffs)
 - Spryker.ControlStructures.ConditionalExpressionOrder
 - Spryker.ControlStructures.ControlStructureSpacing
 - Spryker.ControlStructures.NoInlineAssignment
-- Spryker.DependencyProvider.FacadeNotInBridgeReturned
+- Spryker.DependencyProvider.DependencyNotInBridgeReturned
 - Spryker.Factory.CreateVsGetMethods
 - Spryker.Factory.NoPrivateMethods
 - Spryker.Factory.OneNewPerMethod
