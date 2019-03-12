@@ -13,6 +13,7 @@ Please see the Spryker Coding conventions for details.
 https://github.com/squizlabs/PHP_CodeSniffer/wiki
 
 ## Usage
+
 ### How to use in Spryker projects
 Make sure you include the sniffer as `require-dev` dependency:
 ```
@@ -158,7 +159,7 @@ The following is an example for CircleCI but will also be compatible with any ot
 You basically just add `- vendor/bin/console code:sniff:style` the the list.
 
 
-Please see the [Spryker Demoshop](https://github.com/spryker/demoshop) repository for details. It is used there.
+Please see the [Spryker Suite](https://github.com/spryker-shop/suite) project repository for details. It is used there.
 
 ## Migration tips
 
