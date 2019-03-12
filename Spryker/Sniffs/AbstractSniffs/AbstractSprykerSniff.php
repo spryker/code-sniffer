@@ -231,7 +231,7 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return bool
      */
-    protected function contains(File $phpcsFile, $search, $start, $end, $skipNested = true): bool
+    protected function contains(File $phpcsFile, $search, int $start, int $end, bool $skipNested = true): bool
     {
         $tokens = $phpcsFile->getTokens();
 
