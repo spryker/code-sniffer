@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": ">=7.1",
-    "slevomat/coding-standard": "^4.8.3"
+    "slevomat/coding-standard": "^5.0.1"
   },
   "require-dev": {
     "dereuromark/composer-prefer-lowest": "^0.1.2",
