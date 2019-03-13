@@ -89,7 +89,7 @@ class DependencyNotInBridgeReturnedSniff extends AbstractSprykerSniff
             implode('|', static::DEPENDENCY_TYPES)
         );
 
-        if (!preg_match($regExp, $statement)) {
+        if (!preg_match($regExp, $statement) || $this->isInternalModuleDependency($phpCsFile, $statement)) {
             return;
         }
 
@@ -140,5 +140,45 @@ class DependencyNotInBridgeReturnedSniff extends AbstractSprykerSniff
         preg_match($regExp, $statement, $dependencyType);
 
         return $dependencyType[0] ?? 'dependency';
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param string $statement
+     *
+     * @return bool
+     */
+    protected function isInternalModuleDependency(File $phpCsFile, string $statement): bool
+    {
+        $moduleName = $this->getModuleNameFromFilename($phpCsFile->getFilename());
+        $dependencyModuleName = $this->getDependencyModuleNameFromStatement($statement);
+
+        return $moduleName !== null && $dependencyModuleName !== null && strcasecmp($moduleName, $dependencyModuleName) === 0;
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @return string|null
+     */
+    protected function getModuleNameFromFilename(string $filename): ?string
+    {
+        $regEx = '/(?<=\/)\w+(?=DependencyProvider.php)/';
+        preg_match($regEx, $filename, $matches);
+
+        return $matches[0] ?? null;
+    }
+
+    /**
+     * @param string $statement
+     *
+     * @return string|null
+     */
+    protected function getDependencyModuleNameFromStatement(string $statement): ?string
+    {
+        $regEx = '/(?<=\-\>)\w+(?=\(\)->\w+\(\)$)/';
+        preg_match($regEx, $statement, $matches);
+
+        return $matches[0] ?? null;
     }
 }
