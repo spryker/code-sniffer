@@ -32,6 +32,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
     {
         if (!$this->isSprykerNamespace($phpCsFile, $stackPointer) || $this->isIgnorableBundle($phpCsFile)) {
             $this->checkCustomFileDocBlock($phpCsFile, $stackPointer);
+
             return;
         }
 
@@ -46,6 +47,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
             } else {
                 $this->addFixableMissingDocBlock($phpCsFile, $stackPointer);
             }
+
             return;
         }
 
@@ -64,6 +66,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
             if ($fix) {
                 $this->addCustomFileDocBlock($phpCsFile, 0, $customLicense);
             }
+
             return;
         }
 

@@ -35,6 +35,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
         if ($tokens[$stackPtr]['code'] === T_OBJECT_OPERATOR || $tokens[$stackPtr]['code'] === T_DOUBLE_COLON) {
             $this->checkMethodCalls($phpcsFile, $stackPtr);
+
             return;
         }
 

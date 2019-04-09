@@ -145,6 +145,7 @@ class Tokenizer
         if ($this->verbose) {
             return $pieces;
         }
+
         return [implode(' ', $pieces)];
     }
 }

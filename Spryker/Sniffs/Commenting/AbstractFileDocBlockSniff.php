@@ -79,6 +79,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
 
         if (!file_exists($path . '.license')) {
             $this->licenseMap[$path] = '';
+
             return '';
         }
 
@@ -215,6 +216,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
             if ($fix) {
                 $this->addFileDocBlock($phpCsFile, 0);
             }
+
             return;
         }
 

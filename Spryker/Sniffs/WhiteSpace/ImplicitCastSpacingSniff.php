@@ -33,6 +33,7 @@ class ImplicitCastSpacingSniff implements Sniff
 
         if ($tokens[$stackPtr]['code'] === T_INC || $tokens[$stackPtr]['code'] === T_DEC) {
             $this->processIncDec($phpcsFile, $stackPtr);
+
             return;
         }
 
@@ -72,6 +73,7 @@ class ImplicitCastSpacingSniff implements Sniff
                 $phpcsFile->fixer->replaceToken($stackPtr + 1, '');
                 $phpcsFile->fixer->endChangeset();
             }
+
             return;
         }
 
@@ -87,6 +89,7 @@ class ImplicitCastSpacingSniff implements Sniff
                 $phpcsFile->fixer->replaceToken($stackPtr - 1, '');
                 $phpcsFile->fixer->endChangeset();
             }
+
             return;
         }
     }

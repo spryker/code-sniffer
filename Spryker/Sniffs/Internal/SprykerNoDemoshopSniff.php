@@ -66,6 +66,7 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
         $file = substr($phpCsFile->getFilename(), 0, $positionSprykerCore) . '/composer.json';
         if (!is_file($file)) {
             static::$isDemoshop = false;
+
             return static::$isDemoshop;
         }
 

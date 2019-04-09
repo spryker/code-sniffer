@@ -36,6 +36,7 @@ class SprykerFacadeSniff implements Sniff
 
         if ($this->isFacadeInterface($phpCsFile, $stackPointer)) {
             $this->checkInterface($phpCsFile, $stackPointer);
+
             return;
         }
 

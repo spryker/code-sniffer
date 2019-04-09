@@ -62,6 +62,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
             $anotherPossibleCastIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($possibleCastIndex - 1), null, true);
             if ($tokens[$anotherPossibleCastIndex]['code'] === T_BOOLEAN_NOT) {
                 $phpcsFile->addError($error, $stackPtr, 'DoubleNot');
+
                 return;
             }
         }
@@ -69,6 +70,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
         // We don't want to fix stuff with bad inline assignment
         if ($this->contains($phpcsFile, 'T_EQUAL', $openingBraceIndex + 1, $closingBraceIndex - 1)) {
             $phpcsFile->addError($error, $stackPtr, 'NoInlineAssignment');
+
             return;
         }
 

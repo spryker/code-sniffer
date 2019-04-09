@@ -58,6 +58,7 @@ class ConditionalExpressionOrderSniff implements Sniff
         ) {
             // Not fixable
             $phpCsFile->addError($error, $stackPointer, 'YodaNotAllowed');
+
             return;
         }
 

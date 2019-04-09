@@ -48,6 +48,7 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
 
         if (!$this->isChainingMethod($phpcsFile, $stackPtr)) {
             $this->assertNotThisOrStatic($phpcsFile, $stackPtr);
+
             return;
         }
 

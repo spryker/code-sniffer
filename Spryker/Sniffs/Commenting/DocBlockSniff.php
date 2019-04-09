@@ -40,6 +40,7 @@ class DocBlockSniff extends AbstractSprykerSniff
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         if ($tokens[$nextIndex]['content'] === '__construct' || $tokens[$nextIndex]['content'] === '__destruct') {
             $this->checkConstructorAndDestructor($phpcsFile, $stackPtr);
+
             return;
         }
 
@@ -58,6 +59,7 @@ class DocBlockSniff extends AbstractSprykerSniff
         $returnType = $this->detectReturnTypeVoid($phpcsFile, $stackPtr);
         if ($returnType === null) {
             $phpcsFile->addError('Method does not have a doc block: ' . $tokens[$nextIndex]['content'] . '()', $nextIndex, 'DocBlockMissing');
+
             return;
         }
 

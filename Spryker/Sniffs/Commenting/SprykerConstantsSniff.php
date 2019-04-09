@@ -52,6 +52,7 @@ class SprykerConstantsSniff extends AbstractFileDocBlockSniff
 
         if (!$docBlockEndIndex) {
             $this->addNewDocBlock($phpCsFile, $stackPointer);
+
             return;
         }
 
