@@ -517,9 +517,7 @@ abstract class AbstractSprykerSniff implements Sniff
             return false;
         }
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
-        for ($i = $docBlockStartIndex + 1;
-             $i < $docBlockEndIndex;
-             $i++) {
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
