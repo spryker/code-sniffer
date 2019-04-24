@@ -538,6 +538,10 @@ class UseStatementSniff implements Sniff
             return;
         }
 
+        if ($tokens[$startIndex]['type'] === 'T_NULLABLE') {
+            $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, $startIndex + 3, true);
+        }
+
         $lastIndex = null;
         $j = $startIndex;
         $extractedUseStatement = '';
