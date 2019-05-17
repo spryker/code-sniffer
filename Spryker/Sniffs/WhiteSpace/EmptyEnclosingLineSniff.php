@@ -38,6 +38,7 @@ class EmptyEnclosingLineSniff implements Sniff
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
             $error = 'Possible parse error: %s missing opening or closing brace';
             $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
+
             return;
         }
 
@@ -66,6 +67,7 @@ class EmptyEnclosingLineSniff implements Sniff
 
                 $phpcsFile->fixer->endChangeset();
             }
+
             return;
         }
 

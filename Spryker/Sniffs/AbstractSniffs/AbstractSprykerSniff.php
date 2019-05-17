@@ -524,6 +524,7 @@ abstract class AbstractSprykerSniff implements Sniff
             if (!in_array($tokens[$i]['content'], ['@deprecated'])) {
                 continue;
             }
+
             return true;
         }
 

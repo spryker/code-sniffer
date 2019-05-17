@@ -80,6 +80,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
         $prevIndex = $phpCsFile->findPrevious(T_DOC_COMMENT_STRING, $nextIndex - 1, $docBlockStartIndex + 1);
         if (!$prevIndex) {
             $this->checkBeginningOfDocBlock($phpCsFile, $docBlockStartIndex, $nextIndex);
+
             return;
         }
 

@@ -78,6 +78,7 @@ class DocBlockReturnTagSniff extends AbstractScopeSniff
         if (!$commentWithReturn) {
             $error = 'Missing @return tag in function comment';
             $phpcsFile->addError($error, $stackPtr, 'Missing');
+
             return;
         }
 
@@ -88,6 +89,7 @@ class DocBlockReturnTagSniff extends AbstractScopeSniff
             if ($fixable) {
                 $phpcsFile->fixer->replaceToken($commentWithReturn, '');
             }
+
             return;
         }
     }

@@ -71,6 +71,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
 
         if (!$docCommentEndPosition) {
             $this->addCommentWithGroupAnnotation($phpCsFile, $stackPointer, $namespaceParts);
+
             return;
         }
 

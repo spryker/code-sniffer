@@ -95,6 +95,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
 
         if (count($docBlockParams) !== count($methodSignature)) {
             $phpCsFile->addError('Doc Block params do not match method signature', $stackPointer, 'SignatureMismatch');
+
             return;
         }
 

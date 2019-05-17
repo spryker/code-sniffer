@@ -38,6 +38,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         if ($tokens[$nextIndex]['content'] === '__construct' || $tokens[$nextIndex]['content'] === '__destruct') {
             $this->checkConstructorAndDestructor($phpcsFile, $nextIndex);
+
             return;
         }
 
@@ -63,6 +64,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
             if (!$docBlockReturnIndex && !$hasInheritDoc) {
                 $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnMissingInInterface');
             }
+
             return;
         }
 
@@ -76,11 +78,13 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         if ($docBlockReturnIndex) {
             $this->assertExisting($phpcsFile, $stackPtr, $docBlockReturnIndex, $returnType);
+
             return;
         }
 
         if ($returnType === null) {
             $phpcsFile->addError('Method does not have a return statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnMissing');
+
             return;
         }
 

@@ -96,6 +96,7 @@ class ControlStructureSpacingSniff implements Sniff
             if ($fix) {
                 $phpcsFile->fixer->addContent($prevIndex, ' ');
             }
+
             return;
         }
 
@@ -128,6 +129,7 @@ class ControlStructureSpacingSniff implements Sniff
             if ($fix) {
                 $phpcsFile->fixer->addContent($stackPtr, ' ');
             }
+
             return;
         }
 

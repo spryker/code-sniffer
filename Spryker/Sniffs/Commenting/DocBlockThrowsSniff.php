@@ -76,6 +76,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             }
 
             $phpCsFile->addError('Throw token found, but no annotation for it.', $docBlockEndIndex, 'ThrowAnnotationMissing');
+
             return;
         }
 
@@ -95,6 +96,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         $error = 'Doc Block annotation @var for variable missing';
         if ($defaultValueType === null) {
             $phpCsFile->addError($error, $docBlockEndIndex, 'VarAnnotationMissing');
+
             return;
         }
 

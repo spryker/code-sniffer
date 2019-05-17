@@ -134,6 +134,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
             if ($typeTag === null || $contentTag === null) {
                 $phpCsFile->addError('Invalid Inline Doc Block', $startIndex, 'DocBlockInvalid');
+
                 return;
             }
 
@@ -205,6 +206,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         preg_match('|^(.+?)(\s+)(.+?)\s*$|', $comment, $contentMatches);
         if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
             $phpCsFile->addError('Invalid Inline Doc Block content', $contentIndex, 'ContentInvalid');
+
             return [];
         }
 
