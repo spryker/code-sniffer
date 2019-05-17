@@ -13,7 +13,7 @@ use PHP_CodeSniffer\Util\Tokens;
 trait BasicsTrait
 {
     /**
-     * @param string|array $search
+     * @param string|int|array $search
      * @param array $token
      *
      * @return bool
