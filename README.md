@@ -171,9 +171,18 @@ When migrating code sniffer for larger repositories with many developers working
 - Once this one is merged, then apply those into the feature and bugfix branches using `git merge origin/master` and apply then the new coding standard on the newly written code on top.
 - This way all project branches only fail on CS after this delibare update, and never by accident.
 
+### Excluding core sniffs
 Note that you are never forced to adapt the whole standard changes at once (even though recommended).
 You can, for migration purposes, also exclude/silence certain sniffs on project level, if that helps.
 At the same time, you can also further stricten them or add additional ones and let us know about them (and their usefuleness) via issue.
+
+See CS sniffer docs for details, but in general using `severity` of `0` can silence a rule or a subset of it:
+```xml
+<rule ref="SlevomatCodingStandard.ControlStructures.ControlStructureSpacing">
+    <severity>0</severity>
+</rule>
+```
+This deactives the whole ControlStructureSpacing sniff.
 
 ## Excluding test related comparison files
 If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.
