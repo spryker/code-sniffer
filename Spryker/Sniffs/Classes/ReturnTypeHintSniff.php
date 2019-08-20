@@ -54,7 +54,7 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
 
         // We skip for interface methods
         if (empty($tokens[$stackPtr]['scope_opener']) || empty($tokens[$stackPtr]['scope_closer'])) {
-            return [];
+            return;
         }
 
         $returnTokenType = $tokens[$startIndex]['type'];
