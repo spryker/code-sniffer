@@ -14,7 +14,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 /**
  * Ensures Doc Blocks for class properties contains the nullable type hint last.
  *
- * @author Mark Scherer
+ * @author Mark Scherer, Ehsan Zanjani, Karoly Gerner
  * @license MIT
  */
 class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
@@ -70,45 +70,12 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
         }
 
         $commentStringValue = $tokens[$commentStringIndex]['content'];
-
         if (!preg_match('/null\|/', $commentStringValue)) {
             return;
         }
 
         $types = str_replace('null|', '', $commentStringValue). '|null';
-
-        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $varCommentTagIndex, $commentStringValue);
-
-    }
-
-    /**
-     * @param array $token
-     *
-     * @return string|null
-     */
-    protected function detectType(array $token): ?string
-    {
-        if ($this->isGivenKind(T_OPEN_SHORT_ARRAY, $token)) {
-            return 'array';
-        }
-
-        if ($this->isGivenKind(T_LNUMBER, $token)) {
-            return 'int';
-        }
-
-        if ($this->isGivenKind(T_CONSTANT_ENCAPSED_STRING, $token)) {
-            return 'string';
-        }
-
-        if ($this->isGivenKind([T_FALSE, T_TRUE], $token)) {
-            return 'bool';
-        }
-
-        if ($this->isGivenKind(T_NULL, $token)) {
-            return 'null';
-        }
-
-        return null;
+        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $varCommentTagIndex, $commentStringValue, $types);
     }
 
     /**
@@ -119,43 +86,11 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function handleWrongOrder(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType): void
+    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType, string $fixes): void
     {
-        $error = 'Doc Block annotation @var is nullable and has a wrong type order';
-        $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
-
-        return;
-
-        $error .= ', type `' . $defaultValueType . '` detected';
-        $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
-        if (!$fix) {
-            return;
-        }
-
-        $index = $phpCsFile->findPrevious(Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
-        if (!$index) {
-            $index = $docBlockStartIndex;
-        }
-
-        $phpCsFile->fixer->beginChangeset();
-//        $phpCsFile->fixer->addNewline($index);
-//        $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
-        $phpCsFile->fixer->endChangeset();
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockEndIndex
-     * @param int $docBlockStartIndex
-     * @param string|null $defaultValueType
-     *
-     * @return void
-     */
-    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType): void
-    {
-        $error = 'Doc Block annotation @var for variable missing';
+        $error = 'Doc Block annotation @var for variable null is in wrong order';
         if ($defaultValueType === null) {
-            $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
+            $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockWrongOrder');
 
             return;
         }
@@ -172,7 +107,6 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
         }
 
         $phpCsFile->fixer->beginChangeset();
-        $phpCsFile->fixer->addNewline($index);
         $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
         $phpCsFile->fixer->endChangeset();
     }
