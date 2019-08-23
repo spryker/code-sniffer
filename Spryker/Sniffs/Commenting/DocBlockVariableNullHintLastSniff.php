@@ -69,45 +69,40 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
             return;
         }
 
-        $commentStringValue = $tokens[$commentStringIndex]['content'];
-        if (!preg_match('/null\|/', $commentStringValue)) {
+        $wrongOrderCommentStringValue = $tokens[$commentStringIndex]['content'];
+        if (!preg_match('/null\|/', $wrongOrderCommentStringValue)) {
             return;
         }
 
-        $types = str_replace('null|', '', $commentStringValue). '|null';
-        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $varCommentTagIndex, $commentStringValue, $types);
+        $correctedOrderCommentStringValue = str_replace('null|', '', $wrongOrderCommentStringValue). '|null';
+        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $commentStringIndex, $wrongOrderCommentStringValue, $correctedOrderCommentStringValue);
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockEndIndex
      * @param int $docBlockStartIndex
-     * @param string|null $defaultValueType
+     * @param string $wrongOrderCommentStringValue
+     * @param string $correctedOrderCommentStringValue
      *
      * @return void
      */
-    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType, string $fixes): void
+    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, ?string $wrongOrderCommentStringValue, string $correctedOrderCommentStringValue): void
     {
         $error = 'Doc Block annotation @var for variable null is in wrong order';
-        if ($defaultValueType === null) {
+        if ($wrongOrderCommentStringValue === null) {
             $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockWrongOrder');
 
             return;
         }
 
-        $error .= ', type `' . $defaultValueType . '` detected';
+        $error .= ', type `' . $wrongOrderCommentStringValue . '` detected';
         $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
         if (!$fix) {
             return;
         }
 
-        $index = $phpCsFile->findPrevious(Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
-        if (!$index) {
-            $index = $docBlockStartIndex;
-        }
-
         $phpCsFile->fixer->beginChangeset();
-        $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
+        $phpCsFile->fixer->replaceToken($commentStringIndex, $correctedOrderCommentStringValue);
         $phpCsFile->fixer->endChangeset();
     }
 }
