@@ -48,7 +48,7 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
             }
 
             if ($tokens[$i]['content'] === '@var') {
-                $this->fixVarHint($phpCsFile, $i, $docBlockEndIndex);
+                $this->validateVarTypeHint($phpCsFile, $i, $docBlockEndIndex, $tokens);
                 break;
             }
         }
@@ -62,10 +62,22 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixVarHint(File $phpCsFile, int $varCommentTagIndex, int $docBlockEndIndex): void
+    protected function validateVarTypeHint(File $phpCsFile, int $varCommentTagIndex, int $docBlockEndIndex, array $tokens): void
     {
-        $tokens = $phpCsFile->getTokens();
+        $commentStringIndex = $phpCsFile->findNext(T_DOC_COMMENT_STRING, $varCommentTagIndex, $docBlockEndIndex);
+        if (!$commentStringIndex) {
+            return;
+        }
 
+        $commentStringValue = $tokens[$commentStringIndex]['content'];
+
+        if (!preg_match('/null\|/', $commentStringValue)) {
+            return;
+        }
+
+        $types = str_replace('null|', '', $commentStringValue). '|null';
+
+        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $varCommentTagIndex, $commentStringValue);
 
     }
 
@@ -97,6 +109,38 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
         }
 
         return null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $docBlockEndIndex
+     * @param int $docBlockStartIndex
+     * @param string|null $defaultValueType
+     *
+     * @return void
+     */
+    protected function handleWrongOrder(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType): void
+    {
+        $error = 'Doc Block annotation @var is nullable and has a wrong type order';
+        $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
+
+        return;
+
+        $error .= ', type `' . $defaultValueType . '` detected';
+        $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
+        if (!$fix) {
+            return;
+        }
+
+        $index = $phpCsFile->findPrevious(Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
+        if (!$index) {
+            $index = $docBlockStartIndex;
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+//        $phpCsFile->fixer->addNewline($index);
+//        $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
+        $phpCsFile->fixer->endChangeset();
     }
 
     /**
