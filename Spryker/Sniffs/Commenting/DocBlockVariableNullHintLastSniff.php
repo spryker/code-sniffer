@@ -12,7 +12,7 @@ use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * Ensures Doc Blocks for variables contains the nullable type hint last.
+ * Ensures Doc Blocks for class properties contains the nullable type hint last.
  *
  * @author Mark Scherer
  * @license MIT
@@ -66,7 +66,7 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        
+
     }
 
     /**
