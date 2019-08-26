@@ -191,7 +191,7 @@ You can otherwise always create a custom and rather unique folder name and manua
 ## Writing new sniffs
 Add them to the corresponding category inside Sniffs folder and add tests in `tests` with the same folder structure.
 
-To run all sniffs on themselves, use
+To run all sniffs on themselves, use inside this sniffer repository root:
 ```
 composer cs-check
 ```
@@ -203,7 +203,7 @@ composer test
 
 Also run `composer docs` to generate new sniff list.
 
-Note: You need to run `composer update` first, to get those scripts above working from this repository root.
+Note: To get those scripts above working from this repository root you need to run `composer update` first.
 
 #### Tokenizing Tool
 When coding new sniffs it really helps to see what the code looks like in regards of the token arrays.
