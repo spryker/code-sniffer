@@ -203,6 +203,8 @@ composer test
 
 Also run `composer docs` to generate new sniff list.
 
+Note: You need to run `composer update` first, to get those scripts above working from this repository root.
+
 #### Tokenizing Tool
 When coding new sniffs it really helps to see what the code looks like in regards of the token arrays.
 So we can parse a PHP file into its tokens using the following tool:
