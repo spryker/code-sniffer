@@ -80,7 +80,7 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
             return;
         }
 
-        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $commentStringIndex, $content, $appendix);
+        $this->handleInvalidOrder($phpCsFile, $docBlockEndIndex, $commentStringIndex, $content, $appendix);
     }
 
     /**
@@ -92,7 +92,7 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, string $content, string $appendix): void
+    protected function handleInvalidOrder(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, string $content, string $appendix): void
     {
         $content = str_replace('null|', '', $content) . '|null';
         $content = implode('|', array_unique(explode('|', $content)));
