@@ -42,6 +42,12 @@ class FunctionNamespaceSniff implements Sniff
             return;
         }
 
+        // We check that this is a function but not new operator
+        $newIndex = $phpcsFile->findPrevious([T_WHITESPACE, T_NS_SEPARATOR], ($stackPtr - 1), null, true);
+        if (!$newIndex || $tokens[$newIndex]['type'] === 'T_NEW') {
+            return;
+        }
+
         // We skip for non trivial cases
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($separatorIndex - 1), null, true);
         if (!$previous || $tokens[$previous]['type'] === 'T_STRING') {
