@@ -8,7 +8,6 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -52,13 +51,13 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
                 break;
             }
         }
-
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $varCommentTagIndex
      * @param int $docBlockEndIndex
+     * @param array $tokens
      *
      * @return void
      */
@@ -69,24 +68,38 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
             return;
         }
 
-        $wrongOrderCommentStringValue = $tokens[$commentStringIndex]['content'];
-        if (!preg_match('/null\|/', $wrongOrderCommentStringValue)) {
+        $content = $tokens[$commentStringIndex]['content'];
+        $appendix = '';
+        $spacePos = strpos($content, ' ');
+        if ($spacePos) {
+            $appendix = substr($content, $spacePos);
+            $content = substr($content, 0, $spacePos);
+        }
+
+        if (!preg_match('/null\|/', $content)) {
             return;
         }
 
-        $correctedOrderCommentStringValue = str_replace('null|', '', $wrongOrderCommentStringValue). '|null';
-        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $commentStringIndex, $wrongOrderCommentStringValue, $correctedOrderCommentStringValue);
+        $content = str_replace('null|', '', $content) . '|null';
+        $content = implode('|', array_unique(explode('|', $content)));
+
+        if ($appendix) {
+            $content .= $appendix;
+        }
+
+        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $commentStringIndex, $content, $content);
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartIndex
-     * @param string $wrongOrderCommentStringValue
+     * @param int $docBlockEndIndex
+     * @param int $commentStringIndex
      * @param string $correctedOrderCommentStringValue
+     * @param string|null $wrongOrderCommentStringValue
      *
      * @return void
      */
-    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, ?string $wrongOrderCommentStringValue, string $correctedOrderCommentStringValue): void
+    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, string $correctedOrderCommentStringValue, ?string $wrongOrderCommentStringValue): void
     {
         $error = 'Doc Block annotation @var for variable null is in wrong order';
         if ($wrongOrderCommentStringValue === null) {
