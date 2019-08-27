@@ -80,42 +80,41 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
             return;
         }
 
-        $content = str_replace('null|', '', $content) . '|null';
-        $content = implode('|', array_unique(explode('|', $content)));
-
-        if ($appendix) {
-            $content .= $appendix;
-        }
-
-        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $commentStringIndex, $content, $content);
+        $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $commentStringIndex, $content, $appendix);
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockEndIndex
      * @param int $commentStringIndex
-     * @param string $correctedOrderCommentStringValue
-     * @param string|null $wrongOrderCommentStringValue
+     * @param string $content
+     * @param string $appendix
      *
      * @return void
      */
-    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, string $correctedOrderCommentStringValue, ?string $wrongOrderCommentStringValue): void
+    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, string $content, string $appendix): void
     {
+        $content = str_replace('null|', '', $content) . '|null';
+        $content = implode('|', array_unique(explode('|', $content)));
+        if ($appendix) {
+            $content .= $appendix;
+        }
+
         $error = 'Doc Block annotation @var for variable null is in wrong order';
-        if ($wrongOrderCommentStringValue === null) {
+        if ($content === null) {
             $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockWrongOrder');
 
             return;
         }
 
-        $error .= ', type `' . $wrongOrderCommentStringValue . '` detected';
+        $error .= ', type `' . $content . '` expected.';
         $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
         if (!$fix) {
             return;
         }
 
         $phpCsFile->fixer->beginChangeset();
-        $phpCsFile->fixer->replaceToken($commentStringIndex, $correctedOrderCommentStringValue);
+        $phpCsFile->fixer->replaceToken($commentStringIndex, $content);
         $phpCsFile->fixer->endChangeset();
     }
 }
