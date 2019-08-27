@@ -100,14 +100,8 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
             $content .= $appendix;
         }
 
-        $error = 'Doc Block annotation @var for variable null is in wrong order';
-        if ($content === null) {
-            $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockWrongOrder');
-
-            return;
-        }
-
-        $error .= ', type `' . $content . '` expected.';
+        $error = 'Doc Block annotation @var for type `null` has a wrong order';
+        $error .= ', `' . $content . '` expected.';
         $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
         if (!$fix) {
             return;
