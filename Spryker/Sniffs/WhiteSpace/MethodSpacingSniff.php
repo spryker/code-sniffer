@@ -53,7 +53,7 @@ class MethodSpacingSniff extends AbstractSprykerSniff
 
         $parenthesisEndIndex = $tokens[$parenthesisIndex]['parenthesis_closer'];
 
-        $braceStartIndex = $phpcsFile->findNext(T_WHITESPACE, ($parenthesisEndIndex + 1), null, true);
+        $braceStartIndex = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], ($parenthesisEndIndex + 1));
         if ($tokens[$braceStartIndex]['code'] !== T_OPEN_CURLY_BRACKET) {
             return;
         }
