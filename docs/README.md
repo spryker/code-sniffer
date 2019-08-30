@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 169 sniffs
+The SprykerStrict standard contains 170 sniffs
 
 Generic (23 sniffs)
 -------------------
@@ -91,7 +91,7 @@ SlevomatCodingStandard (24 sniffs)
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 
-Spryker (72 sniffs)
+Spryker (73 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -120,6 +120,7 @@ Spryker (72 sniffs)
 - Spryker.Commenting.DocBlockTypeOrder
 - Spryker.Commenting.DocBlockVar
 - Spryker.Commenting.DocBlockVarNotJustNull
+- Spryker.Commenting.DocBlockVariableNullHintLast
 - Spryker.Commenting.FileDocBlock
 - Spryker.Commenting.FullyQualifiedClassNameInDocBlock
 - Spryker.Commenting.InlineDocBlock
