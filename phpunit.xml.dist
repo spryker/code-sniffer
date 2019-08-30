@@ -2,7 +2,6 @@
 <phpunit>
     <testsuites>
         <testsuite name="Spryker CodeSniffer Test Suite">
-            <file>./vendor/squizlabs/php_codesniffer/tests/AllTests.php</file>
         </testsuite>
     </testsuites>
 

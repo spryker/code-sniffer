@@ -18,7 +18,7 @@
   "require-dev": {
     "dereuromark/composer-prefer-lowest": "^0.1.2",
     "phpstan/phpstan-shim": "^0.11.1",
-    "phpunit/phpunit": "<5.0"
+    "phpunit/phpunit": "^7.0 || ^8.0"
   },
   "scripts": {
     "docs": "php docs/generate.php",
