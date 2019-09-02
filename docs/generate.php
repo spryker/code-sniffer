@@ -20,6 +20,7 @@ $content = <<<TEXT
 # Spryker Code Sniffer
 
 $content
+
 TEXT;
 
 $file = __DIR__ . DIRECTORY_SEPARATOR . 'README.md';
