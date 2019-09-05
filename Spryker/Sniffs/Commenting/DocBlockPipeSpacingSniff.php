@@ -16,9 +16,9 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class DocBlockPipeSpacingSniff implements Sniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_DOC_COMMENT_STRING,
@@ -26,7 +26,7 @@ class DocBlockPipeSpacingSniff implements Sniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

@@ -22,7 +22,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_VARIABLE,
@@ -62,7 +62,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@var'])) {
+            if (!in_array($tokens[$i]['content'], ['@var'], true)) {
                 continue;
             }
 

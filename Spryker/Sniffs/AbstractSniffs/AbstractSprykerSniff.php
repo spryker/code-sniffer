@@ -153,7 +153,7 @@ abstract class AbstractSprykerSniff implements Sniff
     {
         $useStatements = $this->parseUseStatements($phpCsFile, $stackPointer);
         foreach ($missingUses as $missingUse) {
-            if (!in_array($missingUse, $useStatements)) {
+            if (!in_array($missingUse, $useStatements, true)) {
                 $this->addMissingUse($phpCsFile, $stackPointer, $missingUse);
             }
         }
@@ -163,7 +163,7 @@ abstract class AbstractSprykerSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return array
+     * @return string[]
      */
     protected function parseUseStatements(File $phpCsFile, int $stackPointer): array
     {
@@ -521,7 +521,7 @@ abstract class AbstractSprykerSniff implements Sniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@deprecated'])) {
+            if (!in_array($tokens[$i]['content'], ['@deprecated'], true)) {
                 continue;
             }
 
@@ -535,7 +535,7 @@ abstract class AbstractSprykerSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return array
+     * @return string[]
      */
     protected function getDocBlockReturnTypes(File $phpCsFile, int $stackPointer): array
     {

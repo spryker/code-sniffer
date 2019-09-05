@@ -33,15 +33,15 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
     ];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_CLASS, T_INTERFACE, T_TRAIT];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

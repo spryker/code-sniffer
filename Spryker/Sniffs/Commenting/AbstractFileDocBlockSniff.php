@@ -19,7 +19,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     protected const YEAR = '2016';
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $sprykerNamespaces = [
         'Spryker',
@@ -29,7 +29,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $sprykerTestNamespaces = [
         'SprykerTest',
@@ -39,7 +39,7 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $sprykerApplications = [
         'Client',
@@ -52,12 +52,12 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
     /**
      * Cache of licenses to avoid file lookups.
      *
-     * @var array
+     * @var string[]
      */
     protected $licenseMap = [];
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {
@@ -107,8 +107,8 @@ abstract class AbstractFileDocBlockSniff extends AbstractSprykerSniff
             }
 
             $secondNamespaceString = $phpCsFile->getTokens()[$secondNamespaceTokenPosition]['content'];
-            $isSprykerClass = (in_array($firstNamespaceString, $this->sprykerNamespaces) && in_array($secondNamespaceString, $this->sprykerApplications));
-            $isSprykerTestClass = in_array($firstNamespaceString, $this->sprykerTestNamespaces) && in_array($secondNamespaceString, $this->sprykerApplications);
+            $isSprykerClass = (in_array($firstNamespaceString, $this->sprykerNamespaces, true) && in_array($secondNamespaceString, $this->sprykerApplications, true));
+            $isSprykerTestClass = in_array($firstNamespaceString, $this->sprykerTestNamespaces, true) && in_array($secondNamespaceString, $this->sprykerApplications, true);
 
             return ($isSprykerClass || $isSprykerTestClass);
         }

@@ -24,15 +24,15 @@ class ShortCastSniff implements Sniff
     ];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_BOOL_CAST, T_INT_CAST, T_BOOLEAN_NOT];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

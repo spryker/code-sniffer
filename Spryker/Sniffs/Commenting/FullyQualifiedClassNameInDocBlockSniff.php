@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 {
     /**
-     * @var array
+     * @var string[]
      */
     public static $whitelistedTypes = [
         'string', 'int', 'integer', 'float', 'bool', 'boolean', 'resource', 'null', 'void', 'callable',
@@ -24,9 +24,9 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     ];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS,
@@ -39,7 +39,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -57,7 +57,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@return', '@param', '@throws', '@var', '@method', '@property'])) {
+            if (!in_array($tokens[$i]['content'], ['@return', '@param', '@throws', '@var', '@method', '@property'], true)) {
                 continue;
             }
 
@@ -133,7 +133,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
                 $arrayOfObject++;
                 $className = substr($className, 0, -2);
             }
-            if (in_array($className, static::$whitelistedTypes)) {
+            if (in_array($className, static::$whitelistedTypes, true)) {
                 continue;
             }
             $useStatement = $this->findUseStatementForClassName($phpCsFile, $className);
@@ -259,7 +259,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return array
+     * @return string[]
      */
     protected function parseUseStatements(File $phpCsFile): array
     {

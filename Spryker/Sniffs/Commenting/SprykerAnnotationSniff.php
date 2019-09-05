@@ -16,7 +16,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class SprykerAnnotationSniff extends AbstractSprykerSniff
 {
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {

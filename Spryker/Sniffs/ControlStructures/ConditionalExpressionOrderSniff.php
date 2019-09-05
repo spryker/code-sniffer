@@ -20,15 +20,15 @@ class ConditionalExpressionOrderSniff implements Sniff
     use BasicsTrait;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return Tokens::$comparisonTokens;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {

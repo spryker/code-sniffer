@@ -37,7 +37,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_FUNCTION,
@@ -158,7 +158,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@param', '@return'])) {
+            if (!in_array($tokens[$i]['content'], ['@param', '@return'], true)) {
                 continue;
             }
 

@@ -15,7 +15,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function register(): array
     {
@@ -25,7 +25,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -47,7 +47,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
             return;
         }
 
-        if (in_array('null', $docBlockReturnTypes)) {
+        if (in_array('null', $docBlockReturnTypes, true)) {
             return;
         }
 

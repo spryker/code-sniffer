@@ -30,7 +30,7 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         $comparison = Tokens::$comparisonTokens;
         $operators = Tokens::$operators;

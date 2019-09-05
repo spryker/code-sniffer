@@ -20,7 +20,7 @@ use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 class DocBlockReturnTagSniff extends AbstractScopeSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __construct()
     {
@@ -35,7 +35,7 @@ class DocBlockReturnTagSniff extends AbstractScopeSniff
         $tokens = $phpcsFile->getTokens();
 
         $method = $phpcsFile->findNext(T_STRING, ($stackPtr + 1));
-        $returnRequired = !in_array($tokens[$method]['content'], ['__construct', '__destruct']);
+        $returnRequired = !in_array($tokens[$method]['content'], ['__construct', '__destruct'], true);
 
         $find = [
         T_COMMENT,

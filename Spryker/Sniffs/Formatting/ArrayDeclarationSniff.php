@@ -25,9 +25,9 @@ use PHP_CodeSniffer\Util\Tokens;
 class ArrayDeclarationSniff implements Sniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_OPEN_SHORT_ARRAY,
@@ -35,7 +35,7 @@ class ArrayDeclarationSniff implements Sniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

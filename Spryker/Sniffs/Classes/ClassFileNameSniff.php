@@ -28,9 +28,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class ClassFileNameSniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS,
@@ -39,7 +39,7 @@ class ClassFileNameSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

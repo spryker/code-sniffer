@@ -21,12 +21,12 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
     /**
      * This property can be filled within the ruleset configuration file
      *
-     * @var array
+     * @var string[]
      */
     public $ignorableBundles = [];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -96,7 +96,7 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
      */
     protected function isIgnorableBundle(File $phpCsFile): bool
     {
-        return (in_array($this->getModule($phpCsFile), $this->ignorableBundles));
+        return (in_array($this->getModule($phpCsFile), $this->ignorableBundles, true));
     }
 
     /**

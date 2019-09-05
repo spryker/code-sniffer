@@ -19,7 +19,7 @@ class SprykerBridgeSniff implements Sniff
     use BridgeTrait;
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {
