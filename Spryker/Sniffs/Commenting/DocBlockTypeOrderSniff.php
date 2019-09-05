@@ -120,7 +120,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
         global $sortOrder;
 
         $sortOrder = array_reverse($this->sortMap);
-        usort($elements, [$this, "compare"]);
+        usort($elements, [$this, 'compare']);
 
         return $elements;
     }
@@ -135,8 +135,8 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     {
         global $sortOrder;
 
-        $aIndex = array_search($a, $sortOrder);
-        $bIndex = array_search($b, $sortOrder);
+        $aIndex = array_search($a, $sortOrder, true);
+        $bIndex = array_search($b, $sortOrder, true);
         if ($aIndex === false) {
             return -1;
         }

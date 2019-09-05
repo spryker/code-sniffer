@@ -131,9 +131,9 @@ abstract class AbstractSprykerSniff implements Sniff
 
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
-        $directoryPosition = array_search('src', array_values($fileNameParts));
+        $directoryPosition = array_search('src', array_values($fileNameParts), true);
         if (!$directoryPosition) {
-            $directoryPosition = array_search('tests', array_values($fileNameParts)) + 1;
+            $directoryPosition = array_search('tests', array_values($fileNameParts), true) + 1;
         }
         $classNameParts = array_slice($fileNameParts, $directoryPosition + 1);
         $className = implode('\\', $classNameParts);

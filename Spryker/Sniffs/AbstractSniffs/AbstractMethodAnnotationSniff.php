@@ -172,7 +172,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
-        $sourceDirectoryPosition = array_search('src', $fileNameParts);
+        $sourceDirectoryPosition = array_search('src', $fileNameParts, true);
         $basePathParts = array_slice($fileNameParts, 0, $sourceDirectoryPosition + 1);
 
         $basePath = implode(DIRECTORY_SEPARATOR, $basePathParts) . DIRECTORY_SEPARATOR;
