@@ -4,6 +4,7 @@ sudo: false
 
 php:
   - 7.1
+  - 7.4snapshot
 
 env:
   global:
@@ -25,7 +26,7 @@ before_script:
   - if [[ $PREFER_LOWEST == 1 ]]; then composer require --dev dereuromark/composer-prefer-lowest; fi
 
 script:
-  - if [[ $DEFAULT == 1 ]]; then vendor/bin/phpunit; fi
+  - if [[ $DEFAULT == 1 ]]; then composer phpstan; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then vendor/bin/validate-prefer-lowest; fi
 
   - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
