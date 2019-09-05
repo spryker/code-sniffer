@@ -37,14 +37,18 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         $previousIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $stackPointer - 1, null, true);
-        if (!$this->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC], $tokens[$previousIndex])) {
+        if ($previousIndex && $tokens[$previousIndex]['code'] === T_STATIC) {
+            $previousIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $previousIndex - 1, null, true);
+        }
+
+        if (!$this->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE], $tokens[$previousIndex])) {
             return;
         }
 
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
 
         if (!$docBlockEndIndex) {
-            $phpCsFile->addError('Doc Block for variable missing', $stackPointer, 'VarDocBlockMissing');
+            $phpCsFile->addError('Doc Block for property missing', $stackPointer, 'VarDocBlockMissing');
 
             return;
         }
@@ -89,7 +93,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         }
 
         if (empty($content)) {
-            $error = 'Doc Block type for annotation @var for variable missing';
+            $error = 'Doc Block type for property annotation @var missing';
             if ($defaultValueType) {
                 $error .= ', type `' . $defaultValueType . '` detected';
             }
@@ -111,7 +115,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         }
 
         if (count($parts) > 1 || $defaultValueType === 'null') {
-            $fix = $phpCsFile->addFixableError('Doc Block type for annotation @var incorrect, type `' . $defaultValueType . '` missing', $stackPointer, 'VarTypeIncorrect');
+            $fix = $phpCsFile->addFixableError('Doc Block type for property annotation @var incorrect, type `' . $defaultValueType . '` missing', $stackPointer, 'VarTypeIncorrect');
             if ($fix) {
                 $phpCsFile->fixer->replaceToken($classNameIndex, implode('|', $parts) . '|' . $defaultValueType . $appendix);
             }
@@ -119,7 +123,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Doc Block type `' . $content . '` for annotation @var incorrect, type `' . $defaultValueType . '` expected', $stackPointer, 'VarTypeIncorrect');
+        $fix = $phpCsFile->addFixableError('Doc Block type `' . $content . '` for property annotation @var incorrect, type `' . $defaultValueType . '` expected', $stackPointer, 'VarTypeIncorrect');
         if ($fix) {
             $phpCsFile->fixer->replaceToken($classNameIndex, $defaultValueType . $appendix);
         }
@@ -188,7 +192,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      */
     protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType): void
     {
-        $error = 'Doc Block annotation @var for variable missing';
+        $error = 'Doc Block annotation @var for property missing';
         if ($defaultValueType === null) {
             $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
 
@@ -221,7 +225,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      */
     protected function handleMissingVarType(File $phpCsFile, int $varIndex, ?string $defaultValueType): void
     {
-        $error = 'Doc Block type for annotation @var for variable missing';
+        $error = 'Doc Block type for property annotation @var missing';
         if ($defaultValueType === null) {
             $phpCsFile->addError($error, $varIndex, 'VarTypeMissing');
 
