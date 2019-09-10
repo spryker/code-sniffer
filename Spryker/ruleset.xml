@@ -145,10 +145,7 @@
     <rule ref="SlevomatCodingStandard.PHP.TypeCast"/>
     <rule ref="Generic.PHP.LowerCaseType"/>
 
-    <rule ref="PSR12.Classes.ClassInstantiation"/>
-    <rule ref="PSR12.Keywords.ShortFormTypeKeywords"/>
-    <rule ref="PSR12.Namespaces.CompoundNamespaceDepth"/>
-    <rule ref="PSR12.Operators.OperatorSpacing"/>
+    <rule ref="PSR12"/>
 
     <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference" />
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
