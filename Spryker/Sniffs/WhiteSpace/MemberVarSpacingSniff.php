@@ -20,7 +20,7 @@ use PHP_CodeSniffer\Util\Tokens;
 class MemberVarSpacingSniff extends AbstractVariableSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function processMemberVar(File $phpcsFile, $stackPtr)
     {
@@ -64,7 +64,7 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function processVariable(File $phpcsFile, $stackPtr)
     {
@@ -72,7 +72,7 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected function processVariableInString(File $phpcsFile, $stackPtr)
     {

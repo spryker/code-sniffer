@@ -16,9 +16,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class InlineDocBlockSniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_FUNCTION,
@@ -26,7 +26,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -195,7 +195,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $contentIndex
      *
-     * @return array
+     * @return string[]
      */
     protected function findErrors(File $phpCsFile, int $contentIndex): array
     {

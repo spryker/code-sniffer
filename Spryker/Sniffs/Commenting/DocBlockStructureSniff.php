@@ -23,7 +23,7 @@ class DocBlockStructureSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_DOC_COMMENT_OPEN_TAG,

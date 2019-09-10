@@ -26,15 +26,15 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
     ];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_STRING];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

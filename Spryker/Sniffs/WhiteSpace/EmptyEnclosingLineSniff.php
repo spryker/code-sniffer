@@ -16,9 +16,9 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class EmptyEnclosingLineSniff implements Sniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS,
@@ -28,7 +28,7 @@ class EmptyEnclosingLineSniff implements Sniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

@@ -20,7 +20,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     protected const ANNOTATION_END_TEXT = 'Add your own group annotations below this line';
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {
@@ -65,7 +65,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param array $expectedGroupAnnotations
+     * @param string[] $expectedGroupAnnotations
      *
      * @return void
      */
@@ -91,7 +91,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param array $expectedAnnotations
+     * @param string[] $expectedAnnotations
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docCommentEndPosition
-     * @param array $namespaceParts
+     * @param string[] $namespaceParts
      *
      * @return void
      */
@@ -157,7 +157,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return array
+     * @return string[]
      */
     protected function getNamespaceParts(File $phpCsFile, int $stackPointer): array
     {
@@ -192,7 +192,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return array
+     * @return string[]
      */
     protected function getAnnotations(File $phpCsFile, int $stackPointer): array
     {
@@ -225,9 +225,9 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $namespaceParts
+     * @param string[] $namespaceParts
      *
-     * @return array
+     * @return string[]
      */
     protected function getExpectedAnnotations(File $phpCsFile, array $namespaceParts): array
     {
@@ -327,8 +327,8 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $givenGroupAnnotationParts
-     * @param array $expectedGroupAnnotations
+     * @param string[] $givenGroupAnnotationParts
+     * @param string[] $expectedGroupAnnotations
      *
      * @return bool
      */

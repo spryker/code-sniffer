@@ -21,7 +21,7 @@ class DocBlockSpacingSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_CLASS, T_INTERFACE, T_TRAIT, T_FUNCTION, T_PROPERTY];
     }

@@ -19,15 +19,15 @@ class SprykerNamespaceSniff implements Sniff
     use BasicsTrait;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_CLASS, T_INTERFACE];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

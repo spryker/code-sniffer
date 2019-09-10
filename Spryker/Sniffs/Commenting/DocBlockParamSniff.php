@@ -26,7 +26,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_FUNCTION,
@@ -62,7 +62,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@param'])) {
+            if (!in_array($tokens[$i]['content'], ['@param'], true)) {
                 continue;
             }
 

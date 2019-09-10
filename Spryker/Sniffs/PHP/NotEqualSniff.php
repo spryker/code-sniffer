@@ -23,15 +23,15 @@ class NotEqualSniff implements Sniff
     ];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_IS_NOT_EQUAL];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

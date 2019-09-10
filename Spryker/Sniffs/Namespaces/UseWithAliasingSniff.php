@@ -19,15 +19,15 @@ class UseWithAliasingSniff extends AbstractSprykerSniff
     use UseStatementsTrait;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_AS];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

@@ -24,9 +24,9 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     protected $fileExists = false;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CLASS,
@@ -46,7 +46,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     abstract protected function getMethodFileAddedName(File $phpCsFile): string;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {

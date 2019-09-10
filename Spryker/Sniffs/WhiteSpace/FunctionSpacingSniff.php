@@ -17,15 +17,15 @@ use PHP_CodeSniffer\Util\Tokens;
 class FunctionSpacingSniff implements Sniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_FUNCTION];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {
@@ -65,7 +65,7 @@ class FunctionSpacingSniff implements Sniff
 
         // Ignore closures
         $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $closingBraceIndex + 1, null, true);
-        if (in_array($tokens[$nextIndex]['content'], [';', ',', ')'])) {
+        if (in_array($tokens[$nextIndex]['content'], [';', ',', ')'], true)) {
             return;
         }
 

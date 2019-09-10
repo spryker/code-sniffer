@@ -21,15 +21,15 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_FUNCTION];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

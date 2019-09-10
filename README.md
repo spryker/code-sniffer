@@ -4,10 +4,10 @@
 [![License](https://poser.pugx.org/spryker/code-sniffer/license.svg)](https://packagist.org/packages/spryker/code-sniffer)
 [![Total Downloads](https://poser.pugx.org/spryker/code-sniffer/d/total.svg)](https://packagist.org/packages/spryker/code-sniffer)
 
-This sniffer package follows [PSR-2](http://www.php-fig.org/psr/psr-2/) completely and ships with a lot of additional fixers on top (incl PSR-12).
+This sniffer package follows [PSR-2](http://www.php-fig.org/psr/psr-2/) completely and ships with a lot of additional fixers on top (incl. PSR-12).
 Please see the Spryker Coding conventions for details.
 
-[List of included sniffs](/docs)
+[List of included sniffs.](/docs)
 
 ## Documentation
 https://github.com/squizlabs/PHP_CodeSniffer/wiki

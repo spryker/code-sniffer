@@ -17,9 +17,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_FUNCTION,
@@ -27,7 +27,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpCsFile, $stackPointer)
     {

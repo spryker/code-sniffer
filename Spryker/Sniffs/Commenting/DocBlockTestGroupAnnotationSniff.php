@@ -17,7 +17,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
 {
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {
@@ -153,7 +153,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return array
+     * @return string[]
      */
     protected function getNamespaceParts(File $phpCsFile, int $stackPointer): array
     {

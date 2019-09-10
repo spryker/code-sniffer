@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 170 sniffs
+The SprykerStrict standard contains 171 sniffs
 
 Generic (23 sniffs)
 -------------------
@@ -42,9 +42,10 @@ PSR1 (3 sniffs)
 - PSR1.Files.SideEffects
 - PSR1.Methods.CamelCapsMethodName
 
-PSR12 (4 sniffs)
+PSR12 (5 sniffs)
 ----------------
 - PSR12.Classes.ClassInstantiation
+- PSR12.Functions.NullableTypeDeclaration
 - PSR12.Keywords.ShortFormTypeKeywords
 - PSR12.Namespaces.CompoundNamespaceDepth
 - PSR12.Operators.OperatorSpacing

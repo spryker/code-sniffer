@@ -18,15 +18,15 @@ class PhpSapiConstantSniff implements Sniff
     protected const PHP_SAPI = 'PHP_SAPI';
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_STRING];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

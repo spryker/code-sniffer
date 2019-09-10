@@ -17,15 +17,15 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class ImplicitCastSpacingSniff implements Sniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_BOOLEAN_NOT, T_NONE, T_ASPERAND, T_INC, T_DEC];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

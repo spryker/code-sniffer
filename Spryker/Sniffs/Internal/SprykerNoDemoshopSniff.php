@@ -21,15 +21,15 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
     protected static $isDemoshop = null;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_NAMESPACE];
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {

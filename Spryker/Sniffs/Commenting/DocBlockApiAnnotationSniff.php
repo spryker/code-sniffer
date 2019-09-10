@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class DocBlockApiAnnotationSniff implements Sniff
 {
     /**
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {

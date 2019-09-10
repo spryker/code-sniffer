@@ -27,7 +27,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_FUNCTION,
@@ -59,7 +59,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@param'])) {
+            if (!in_array($tokens[$i]['content'], ['@param'], true)) {
                 continue;
             }
 
@@ -98,7 +98,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'string', 'int', 'bool', 'float', 'self', 'parent'])) {
+            if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'string', 'int', 'bool', 'float', 'self', 'parent'], true)) {
                 $type = $methodSignatureValue['typehint'];
                 if (!$this->containsType($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
                     $pieces[] = $type;
@@ -113,7 +113,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($methodSignatureValue['default']) {
                 $type = $methodSignatureValue['default'];
 
-                if (!in_array($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
+                if (!in_array($type, $pieces, true) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
                     $pieces[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
@@ -127,7 +127,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($methodSignatureValue['nullable']) {
                 $type = 'null';
 
-                if (!in_array($type, $pieces)) {
+                if (!in_array($type, $pieces, true)) {
                     $pieces[] = $type;
                     $error = 'Doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
@@ -140,7 +140,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
             if (!$methodSignatureValue['default'] && !$methodSignatureValue['nullable']) {
                 $error = 'Doc block error: `' . $content . '` seems to be having a wrong `null` type hinted, argument is not nullable though.';
-                if (in_array('null', $pieces)) {
+                if (in_array('null', $pieces, true)) {
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'WrongNullable');
                     if ($fix) {
                         foreach ($pieces as $k => $v) {
@@ -158,13 +158,13 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
     /**
      * @param string $type
-     * @param array $pieces
+     * @param string[] $pieces
      *
      * @return bool
      */
     protected function containsType(string $type, array $pieces): bool
     {
-        if (in_array($type, $pieces)) {
+        if (in_array($type, $pieces, true)) {
             return true;
         }
         $longTypes = [
@@ -177,6 +177,6 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
         $longType = $longTypes[$type];
 
-        return in_array($longType, $pieces);
+        return in_array($longType, $pieces, true);
     }
 }

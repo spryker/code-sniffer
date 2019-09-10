@@ -16,9 +16,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_DOC_COMMENT_TAG,
@@ -27,7 +27,7 @@ class DocBlockNoInlineAlignmentSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {
