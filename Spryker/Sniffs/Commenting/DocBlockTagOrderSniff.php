@@ -25,7 +25,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     /**
      * All other tags will go above those
      *
-     * @var array
+     * @var string[]
      */
     protected $order = [
         '@deprecated',

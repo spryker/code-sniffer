@@ -18,7 +18,7 @@ class RemoveFunctionAliasSniff implements Sniff
     /**
      * @see http://php.net/manual/en/aliases.php
      *
-     * @var array
+     * @var string[]
      */
     public static $matching = [
         'is_integer' => 'is_int',
@@ -50,9 +50,20 @@ class RemoveFunctionAliasSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
+        $this->checkFixableAliases($phpcsFile, $stackPtr);
+    }
 
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function checkFixableAliases(File $phpcsFile, int $stackPtr): void
+    {
         $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];
+
+        $tokens = $phpcsFile->getTokens();
 
         $tokenContent = $tokens[$stackPtr]['content'];
         $key = strtolower($tokenContent);
