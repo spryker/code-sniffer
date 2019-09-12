@@ -188,7 +188,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return array
+     * @return string[]
      */
     protected function getGroupAnnotationParts(File $phpCsFile, int $stackPointer): array
     {

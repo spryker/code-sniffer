@@ -17,9 +17,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class NoInlineAssignmentSniff extends AbstractSprykerSniff
 {
     /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {
