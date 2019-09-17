@@ -126,7 +126,6 @@ class FunctionSpacingSniff implements Sniff
             }
         }
 
-        var_dump($tokens[$firstTokenInLineIndex]);
         $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $firstTokenInLineIndex - 1, null, true);
 
         // Do not mess with the start of the class
