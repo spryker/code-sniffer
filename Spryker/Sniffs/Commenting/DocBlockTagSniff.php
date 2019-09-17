@@ -11,7 +11,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
- * No invalid tags used.
+ * No invalid tags used. Basically @ followed by text.
  */
 class DocBlockTagSniff implements Sniff
 {
@@ -40,7 +40,7 @@ class DocBlockTagSniff implements Sniff
             [$hint, $description] = explode(' ', $content, 2);
         }
 
-        if (!preg_match('#^@[a-z]+$#i', $hint)) {
+        if (!preg_match('#^@[a-z]+.+$#i', $hint)) {
             $phpcsFile->addError('Invalid tag `' . $hint . '`', $stackPtr, 'Invalid');
         }
     }
