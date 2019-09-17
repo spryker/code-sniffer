@@ -314,6 +314,12 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     }
 
     /**
+     * Parses types respecting | union and () grouping.
+     *
+     * E.g.: `(string|int)[]|\ArrayObject` is parsed as `(string|int)[]` and `\ArrayObject`.
+     *
+     * The replace map trick is easier than a regex when keeping the () grouping per type.
+     *
      * @param string $content
      *
      * @return string[]
