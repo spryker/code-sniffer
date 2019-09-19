@@ -32,9 +32,14 @@ trait CommentingTrait
             if (empty($tokens[$i]['content'])) {
                 continue;
             }
-            $content = strtolower($tokens[$i]['content']);
-            if (strpos($content, $needle) === false) {
+            $content = $tokens[$i]['content'];
+            $pos = stripos($content, $needle);
+            if ($pos === false) {
                 continue;
+            }
+
+            if ($pos && strpos($needle, '@') === 0 && substr($content, $pos - 1, $pos) === '{') {
+                return false;
             }
 
             return true;

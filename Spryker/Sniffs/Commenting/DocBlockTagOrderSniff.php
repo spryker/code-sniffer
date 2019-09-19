@@ -29,6 +29,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      */
     protected $order = [
         '@deprecated',
+        '@see',
         '@param',
         '@throws',
         '@return',
@@ -61,11 +62,6 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
         }
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
-
-        $hasInheritDoc = $this->hasInheritDoc($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
-        if ($hasInheritDoc) {
-            return;
-        }
 
         $tags = $this->readTags($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
         $tags = $this->checkAnnotationTagOrder($tags);
