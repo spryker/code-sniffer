@@ -15,7 +15,8 @@ use PHP_CodeSniffer\Files\File;
 trait CommentingTrait
 {
     /**
-     * Looks for either `@inheritdoc` or `{@inheritdoc}`.
+     * Looks for either `@inheritDoc` or `{@inheritDoc}`.
+     * Also allows `@inheritdoc` or `{@inheritdoc}` aliases.
      *
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
@@ -24,7 +25,7 @@ trait CommentingTrait
      *
      * @return bool
      */
-    protected function hasInheritDoc(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex, $needle = '@inheritdoc')
+    protected function hasInheritDoc(File $phpCsFile, $docBlockStartIndex, $docBlockEndIndex, $needle = '@inheritDoc')
     {
         $tokens = $phpCsFile->getTokens();
 
