@@ -26,6 +26,63 @@ abstract class AbstractSprykerSniff implements Sniff
     protected const NAMESPACE_SPRYKER_ECO = 'SprykerEco';
 
     /**
+     * @var string[] These markers must remain as inline comments
+     */
+    protected static $phpStormMarkers = [
+        '@noinspection',
+    ];
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPtr
+     *
+     * @return bool
+     */
+    protected function isPhpStormMarker(File $phpCsFile, int $stackPtr): bool
+    {
+        $tokens = $phpCsFile->getTokens();
+        $line = $tokens[$stackPtr]['line'];
+        if ($tokens[$stackPtr]['type'] !== 'T_DOC_COMMENT_OPEN_TAG') {
+            return false;
+        }
+        $end = $tokens[$stackPtr]['comment_closer'] - 1;
+        if ($line !== $tokens[$end]['line']) {
+            return false; // Not an inline comment
+        }
+        foreach (static::$phpStormMarkers as $marker) {
+            if ($phpCsFile->findNext(T_DOC_COMMENT_TAG, $stackPtr + 1, $end, false, $marker) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get level of indentation, 0 based.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $index
+     *
+     * @return int
+     */
+    protected function getIndentationLevel(File $phpcsFile, int $index): int
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $whitespace = $this->getIndentationWhitespace($phpcsFile, $index);
+        $char = $this->getIndentationCharacter($whitespace);
+
+        $level = $tokens[$index]['column'] - 1;
+
+        if ($char === "\t") {
+            return $level;
+        }
+
+        return (int)($level / 4);
+    }
+
+    /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
      * @return string
@@ -418,26 +475,6 @@ abstract class AbstractSprykerSniff implements Sniff
         }
 
         return $whitespace;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $prevIndex
-     *
-     * @return int
-     */
-    protected function getIndentationColumn(File $phpcsFile, int $prevIndex): int
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $firstIndex = $this->getFirstTokenOfLine($tokens, $prevIndex);
-
-        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, ($firstIndex + 1), null, true);
-        if ($tokens[$nextIndex]['line'] !== $tokens[$prevIndex]['line']) {
-            return 0;
-        }
-
-        return $tokens[$nextIndex]['column'] - 1;
     }
 
     /**

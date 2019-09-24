@@ -52,7 +52,7 @@ class FunctionSpacingSniff implements Sniff
             }
 
             if ($tokens[$nextContentIndex]['line'] - $tokens[$semicolonIndex]['line'] <= 1) {
-                $fix = $phpCsFile->addFixableError('Every function/method needs a newline afterwards', $closingParenthesisIndex, 'Abstract');
+                $fix = $phpCsFile->addFixableError('Every function/method needs a newline afterwards', $closingParenthesisIndex, 'AbstractAfter');
                 if ($fix) {
                     $phpCsFile->fixer->addNewline($semicolonIndex);
                 }
@@ -92,7 +92,7 @@ class FunctionSpacingSniff implements Sniff
         $tokens = $phpCsFile->getTokens();
 
         if (!$nextContentIndex || $tokens[$nextContentIndex]['line'] - $tokens[$closingBraceIndex]['line'] <= 1) {
-            $fix = $phpCsFile->addFixableError('Every function/method needs a newline afterwards', $closingBraceIndex, 'Concrete');
+            $fix = $phpCsFile->addFixableError('Every function/method needs a newline afterwards', $closingBraceIndex, 'ConcreteAfter');
             if ($fix) {
                 $phpCsFile->fixer->addNewline($closingBraceIndex);
             }
@@ -118,8 +118,9 @@ class FunctionSpacingSniff implements Sniff
         }
 
         $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $firstTokenInLineIndex - 1, null, true);
-        if ($tokens[$prevContentIndex]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
+        if ($tokens[$prevContentIndex]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
             $firstTokenInLineIndex = $tokens[$prevContentIndex]['comment_opener'];
+            $line = $tokens[$firstTokenInLineIndex]['line'];
             while ($tokens[$firstTokenInLineIndex - 1]['line'] === $line) {
                 $firstTokenInLineIndex--;
             }
@@ -136,9 +137,11 @@ class FunctionSpacingSniff implements Sniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError('Every function/method needs a newline before', $firstTokenInLineIndex, 'Concrete');
+        $fix = $phpCsFile->addFixableError('Every function/method needs a newline before', $firstTokenInLineIndex, 'ConcreteBefore');
         if ($fix) {
+            $phpCsFile->fixer->beginChangeset();
             $phpCsFile->fixer->addNewline($prevContentIndex);
+            $phpCsFile->fixer->endChangeset();
         }
     }
 }

@@ -158,7 +158,6 @@ The following is an example for CircleCI but will also be compatible with any ot
 ```
 You basically just add `- vendor/bin/console code:sniff:style` the the list.
 
-
 Please see the [Spryker Suite](https://github.com/spryker-shop/suite) project repository for details. It is used there.
 
 ## Migration tips

@@ -1,9 +1,9 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 171 sniffs
+The SprykerStrict standard contains 177 sniffs
 
-Generic (23 sniffs)
+Generic (24 sniffs)
 -------------------
 - Generic.Arrays.DisallowLongArraySyntax
 - Generic.CodeAnalysis.ForLoopShouldBeWhileLoop
@@ -27,6 +27,7 @@ Generic (23 sniffs)
 - Generic.PHP.LowerCaseType
 - Generic.PHP.NoSilencedErrors
 - Generic.WhiteSpace.DisallowTabIndent
+- Generic.WhiteSpace.IncrementDecrementSpacing
 - Generic.WhiteSpace.ScopeIndent
 
 PEAR (4 sniffs)
@@ -92,7 +93,7 @@ SlevomatCodingStandard (24 sniffs)
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 
-Spryker (73 sniffs)
+Spryker (77 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -102,6 +103,8 @@ Spryker (73 sniffs)
 - Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
 - Spryker.Commenting.DocBlockConstructor
+- Spryker.Commenting.DocBlockInherit
+- Spryker.Commenting.DocBlockNoEmpty
 - Spryker.Commenting.DocBlockNoInlineAlignment
 - Spryker.Commenting.DocBlockParam
 - Spryker.Commenting.DocBlockParamAllowDefaultValue
@@ -113,6 +116,7 @@ Spryker (73 sniffs)
 - Spryker.Commenting.DocBlockReturnTag
 - Spryker.Commenting.DocBlockReturnVoid
 - Spryker.Commenting.DocBlockStructure
+- Spryker.Commenting.DocBlockTag
 - Spryker.Commenting.DocBlockTagGrouping
 - Spryker.Commenting.DocBlockTagOrder
 - Spryker.Commenting.DocBlockTestGroupAnnotation
@@ -122,6 +126,7 @@ Spryker (73 sniffs)
 - Spryker.Commenting.DocBlockVar
 - Spryker.Commenting.DocBlockVarNotJustNull
 - Spryker.Commenting.DocBlockVariableNullHintLast
+- Spryker.Commenting.DocComment
 - Spryker.Commenting.FileDocBlock
 - Spryker.Commenting.FullyQualifiedClassNameInDocBlock
 - Spryker.Commenting.InlineDocBlock
@@ -172,7 +177,7 @@ SprykerStrict (1 sniff)
 ------------------------
 - SprykerStrict.TypeHints.TypeHintDeclaration
 
-Squiz (25 sniffs)
+Squiz (26 sniffs)
 -----------------
 - Squiz.Arrays.ArrayBracketSpacing
 - Squiz.Classes.LowercaseClassKeywords
@@ -192,6 +197,7 @@ Squiz (25 sniffs)
 - Squiz.Scope.MemberVarScope
 - Squiz.Scope.MethodScope
 - Squiz.Scope.StaticThisUsage
+- Squiz.WhiteSpace.CastSpacing
 - Squiz.WhiteSpace.ControlStructureSpacing
 - Squiz.WhiteSpace.LanguageConstructSpacing
 - Squiz.WhiteSpace.LogicalOperatorSpacing
