@@ -16,7 +16,7 @@ class TypeHintDeclarationSniff extends SlevomatTypeHintDeclarationSniff
     use BridgeTrait;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $pointer): void
     {
