@@ -13,7 +13,8 @@ use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\SignatureTrait;
 
 /**
- * Doc block {inheritDoc} should come before any tags.
+ * Doc block {@inheritDoc} should come before any tags.
+ * Also lowercase {@inheritdoc} usage should be always canonical {@inheritDoc}.
  */
 class DocBlockInheritSniff extends AbstractSprykerSniff
 {
@@ -59,6 +60,11 @@ class DocBlockInheritSniff extends AbstractSprykerSniff
 
         for ($i = $openingTagIndex + 1; $i < $closingTagIndex; $i++) {
             if ($tokens[$i]['code'] !== T_DOC_COMMENT_STRING || empty($tokens[$i]['content'])) {
+                continue;
+            }
+
+            if (stripos($tokens[$i]['content'], static::INHERIT_DOC) === 0) {
+                $this->assertCasing($phpcsFile, $i);
                 continue;
             }
 
@@ -173,5 +179,30 @@ class DocBlockInheritSniff extends AbstractSprykerSniff
         }
 
         return null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $index
+     *
+     * @return void
+     */
+    protected function assertCasing(File $phpcsFile, int $index): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        if ($tokens[$index]['content'] === static::INHERIT_DOC) {
+            return;
+        }
+
+        $message = sprintf('Casing of `%s` is not expected casing `%s`.', $tokens[$index]['content'], static::INHERIT_DOC);
+        $phpcsFile->addFixableWarning($message, $index, 'Casing');
+
+        $phpcsFile->fixer->beginChangeset();
+
+        $content = str_ireplace(strtolower(static::INHERIT_DOC), static::INHERIT_DOC, $tokens[$index]['content']);
+        $phpcsFile->fixer->replaceToken($index, $content);
+
+        $phpcsFile->fixer->endChangeset();
     }
 }
