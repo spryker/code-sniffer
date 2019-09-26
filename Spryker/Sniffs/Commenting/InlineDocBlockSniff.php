@@ -149,7 +149,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block content: ' . implode(', ', $errors), $i, 'DocBlockContentInvalid');
+            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block content: ' . implode(', ', $errors), $i, 'Invalid');
             if (!$fix) {
                 continue;
             }
@@ -203,9 +203,9 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
         $comment = $tokens[$contentIndex]['content'];
 
-        preg_match('|^(.+?)(\s+)(.+?)\s*$|', $comment, $contentMatches);
+        preg_match('#^(.+?)(\s+)(.+?)\s*$#', $comment, $contentMatches);
         if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
-            $phpCsFile->addError('Invalid Inline Doc Block content', $contentIndex, 'ContentInvalid');
+            $phpCsFile->addError('Invalid Inline Doc Block content, expected `type $var` style', $contentIndex, 'ContentInvalid');
 
             return [];
         }

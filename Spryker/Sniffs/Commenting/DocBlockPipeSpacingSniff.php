@@ -40,6 +40,12 @@ class DocBlockPipeSpacingSniff implements Sniff
             [$hint, $description] = explode(' ', $content, 2);
         }
 
+        // Bugfix for https://github.com/squizlabs/PHP_CodeSniffer/issues/2613
+        $trailingWhitespace = '';
+        if (!$description && $this->isInlineDocBlock($phpcsFile, $stackPtr) && preg_match( '#(\s+)$#', $content, $matches)) {
+            $trailingWhitespace = $matches[1];
+        }
+
         if (strpos($hint, '|') === false) {
             return;
         }
@@ -70,7 +76,7 @@ class DocBlockPipeSpacingSniff implements Sniff
             $desc = ' ' . $desc;
         }
 
-        $newContent = implode('|', $hints) . $desc;
+        $newContent = implode('|', $hints) . $desc . $trailingWhitespace;
 
         if ($newContent !== $content) {
             $fix = $phpcsFile->addFixableError('There should be no space around pipes in doc blocks.', $stackPtr, 'InvalidSpaceAroundPipes');
@@ -78,5 +84,26 @@ class DocBlockPipeSpacingSniff implements Sniff
                 $phpcsFile->fixer->replaceToken($stackPtr, $newContent);
             }
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return bool
+     */
+    protected function isInlineDocBlock(File $phpcsFile, int $stackPtr): bool
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $closeIndex = $phpcsFile->findNext(T_DOC_COMMENT_CLOSE_TAG, $stackPtr + 1);
+        if (!$closeIndex) {
+            return false;
+        }
+
+        $line = $tokens[$stackPtr]['line'];
+        $closingLine = $tokens[$closeIndex]['line'];
+
+        return $line === $closingLine;
     }
 }
