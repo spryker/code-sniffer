@@ -42,7 +42,7 @@ class DocBlockPipeSpacingSniff implements Sniff
 
         // Bugfix for https://github.com/squizlabs/PHP_CodeSniffer/issues/2613
         $trailingWhitespace = '';
-        if (!$description && $this->isInlineDocBlock($phpcsFile, $stackPtr) && preg_match( '#(\s+)$#', $content, $matches)) {
+        if (!$description && $this->isInlineDocBlock($phpcsFile, $stackPtr) && preg_match('#(\s+)$#', $content, $matches)) {
             $trailingWhitespace = $matches[1];
         }
 
