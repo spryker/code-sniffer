@@ -126,7 +126,8 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
         $secondLineComment = $fileDockBlockTokens[static::SECOND_COMMENT_LINE_POSITION]['content'];
 
         if ($firstLineComment !== sprintf(static::EXPECTED_COMMENT_FIRST_LINE_STRING, static::YEAR)
-            || $secondLineComment !== static::EXPECTED_COMMENT_SECOND_LINE_STRING) {
+            || $secondLineComment !== static::EXPECTED_COMMENT_SECOND_LINE_STRING
+        ) {
             return true;
         }
 

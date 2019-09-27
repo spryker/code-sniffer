@@ -146,6 +146,13 @@
     <rule ref="Generic.PHP.LowerCaseType"/>
 
     <rule ref="PSR12"/>
+    <!-- Disabled for now - contradics existing PSR2 rule -->
+    <rule ref="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine">
+        <severity>0</severity>
+    </rule>
+    <rule ref="PSR12.ControlStructures.BooleanOperatorPlacement">
+        <severity>0</severity>
+    </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
