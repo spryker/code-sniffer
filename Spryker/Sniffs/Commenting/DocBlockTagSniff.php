@@ -12,9 +12,13 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * No invalid tags used. Basically @ followed by text.
+ * Also lowercase inheritdoc usage should be always canonical inheritDoc.
  */
 class DocBlockTagSniff implements Sniff
 {
+    protected const INHERIT_DOC_FULL = '@inheritDoc';
+    protected const INHERIT_DOC_FULL_INVALID = '@inheritdoc';
+
     /**
      * @inheritDoc
      */
@@ -35,13 +39,51 @@ class DocBlockTagSniff implements Sniff
         $content = $tokens[$stackPtr]['content'];
 
         $description = '';
-        $hint = $content;
-        if (strpos($hint, ' ') !== false) {
-            [$hint, $description] = explode(' ', $content, 2);
+        $tag = $content;
+        if (strpos($tag, ' ') !== false) {
+            [$tag, $description] = explode(' ', $content, 2);
         }
 
-        if (!preg_match('#^@[a-z]+.+$#i', $hint)) {
-            $phpcsFile->addError('Invalid tag `' . $hint . '`', $stackPtr, 'Invalid');
+        if (!preg_match('#^@[a-z]+.+$#i', $tag)) {
+            $phpcsFile->addError('Invalid tag `' . $tag . '`', $stackPtr, 'Invalid');
+
+            return;
         }
+
+        $this->assertInheritDocCasing($phpcsFile, $stackPtr, $tag, $description);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     * @param string $tag
+     * @param string $description
+     *
+     * @return void
+     */
+    protected function assertInheritDocCasing(File $phpcsFile, int $stackPtr, string $tag, string $description): void
+    {
+        if ($tag === static::INHERIT_DOC_FULL) {
+            return;
+        }
+
+        $fixedTag = str_ireplace(static::INHERIT_DOC_FULL_INVALID, static::INHERIT_DOC_FULL, $tag);
+
+        if ($fixedTag === $tag) {
+            return;
+        }
+
+        $message = sprintf('Casing of tag `%s` is not expected casing `%s`.', $tag, static::INHERIT_DOC_FULL);
+        $phpcsFile->addFixableWarning($message, $stackPtr, 'Casing');
+
+        $phpcsFile->fixer->beginChangeset();
+
+        if ($description) {
+            $fixedTag .= ' ' . $description;
+        }
+
+        $phpcsFile->fixer->replaceToken($stackPtr, $fixedTag);
+
+        $phpcsFile->fixer->endChangeset();
     }
 }

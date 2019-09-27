@@ -68,7 +68,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
             return;
         }
 
-        // If inheritdoc is present assume the parent contains it
+        // If inheritDoc is present assume the parent contains it
         if (!$docBlockReturnIndex && $hasInheritDoc) {
             return;
         }
