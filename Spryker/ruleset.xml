@@ -155,6 +155,12 @@
     <rule ref="PSR12.Properties.ConstantVisibility.NotFound">
         <severity>0</severity>
     </rule>
+    <rule ref="PSR12.ControlStructures.ControlStructureSpacing.LineIndent">
+        <severity>0</severity>
+    </rule>
+    <rule ref="PSR12.ControlStructures.ControlStructureSpacing.CloseParenthesisLine">
+        <severity>0</severity>
+    </rule>
     <!-- Disabled for now - contradics existing PSR2 rule -->
     <rule ref="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine">
         <severity>0</severity>
