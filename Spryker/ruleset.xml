@@ -147,7 +147,7 @@
 
     <rule ref="PSR12"/>
 
-    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference" />
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
 
     <rule ref="Squiz.Scope.MemberVarScope"/>
