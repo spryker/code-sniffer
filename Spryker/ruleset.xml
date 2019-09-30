@@ -44,16 +44,20 @@
     -->
 
     <rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
 
     <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
     <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
+
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
 
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
     <rule ref="SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment"/>
 
+    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
+    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.ControlStructureSpacing.IncorrectLinesCountBeforeControlStructure"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.ControlStructureSpacing">
         <properties>
@@ -81,15 +85,12 @@
     <rule ref="Generic.CodeAnalysis.JumbledIncrementer"/>
     <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
     <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
-    <!-- Disabled for now
-    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
-    -->
+
     <rule ref="Squiz.Commenting.DocCommentAlignment"/>
 
     <rule ref="PEAR.ControlStructures.ControlSignature"/>
     <rule ref="Squiz.ControlStructures.ForEachLoopDeclaration"/>
     <rule ref="Squiz.ControlStructures.LowercaseDeclaration"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison"/>
 
     <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
         <severity>0</severity>
@@ -99,6 +100,7 @@
     <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
         <severity>0</severity>
     </rule>
+
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
         <properties>
             <property name="ignoreBlankLines" value="false"/>
@@ -134,9 +136,7 @@
 
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
     <rule ref="Generic.Formatting.NoSpaceAfterCast"/>
-    <!-- Disabled for now
-    <rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops"/>
-    -->
+
     <rule ref="Squiz.PHP.Eval"/>
     <rule ref="Generic.PHP.ForbiddenFunctions"/>
     <rule ref="Squiz.PHP.NonExecutableCode"/>
@@ -145,7 +145,16 @@
     <rule ref="SlevomatCodingStandard.PHP.TypeCast"/>
     <rule ref="Generic.PHP.LowerCaseType"/>
 
-    <rule ref="PSR12"/>
+    <rule ref="PSR12">
+        <!-- Disabled for now - contradics currect standard with too much fallout -->
+        <exclude name="PSR12.Files.FileHeader"/>
+        <exclude name="PSR12.Files.DeclareStatement"/>
+        <exclude name="PSR12.Files.OpenTag"/>
+    </rule>
+    <!-- Disabled for now - bug -->
+    <rule ref="PSR12.Properties.ConstantVisibility.NotFound">
+        <severity>0</severity>
+    </rule>
     <!-- Disabled for now - contradics existing PSR2 rule -->
     <rule ref="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine">
         <severity>0</severity>
@@ -154,19 +163,12 @@
         <severity>0</severity>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
-    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
-
     <rule ref="Squiz.Scope.MemberVarScope"/>
     <rule ref="Squiz.Scope.MethodScope"/>
     <rule ref="Squiz.Scope.StaticThisUsage"/>
 
     <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
     <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
-
-    <!-- Disabled for now as it was buggy, using own MemberVarSpacingSniff
-    <rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>
-    -->
 
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
