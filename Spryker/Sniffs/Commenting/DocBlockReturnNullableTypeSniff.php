@@ -12,6 +12,9 @@ use SlevomatCodingStandard\Helpers\DocCommentHelper;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
+/**
+ * Checks for missing |null in docblock return annotations.
+ */
 class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 {
     /**
