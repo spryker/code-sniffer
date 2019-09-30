@@ -8,6 +8,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -149,7 +150,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block content: ' . implode(', ', $errors), $i, 'Invalid');
+            $fix = $phpCsFile->addFixableError('Invalid Inline Doc Block content: ' . implode(', ', $errors), $i, 'DocBlockContentInvalid');
             if (!$fix) {
                 continue;
             }
@@ -205,7 +206,11 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
         preg_match('#^(.+?)(\s+)(.+?)\s*$#', $comment, $contentMatches);
         if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
-            $phpCsFile->addError('Invalid Inline Doc Block content, expected `type $var` style', $contentIndex, 'ContentInvalid');
+            if ($this->hasReturnAsFollowingToken($phpCsFile, $contentIndex)) {
+                return [];
+            }
+
+            $phpCsFile->addError('Invalid Inline Doc Block content, expected `{Type} ${var}` style', $contentIndex, 'ContentInvalid');
 
             return [];
         }
@@ -221,5 +226,23 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         }
 
         return $errors;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $contentIndex
+     *
+     * @return bool
+     */
+    protected function hasReturnAsFollowingToken(File $phpCsFile, int $contentIndex): bool
+    {
+        $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $contentIndex + 1, null, true);
+        if (!$nextIndex) {
+            return false;
+        }
+
+        $tokens = $phpCsFile->getTokens();
+
+        return $tokens[$nextIndex]['code'] === T_RETURN;
     }
 }
