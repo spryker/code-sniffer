@@ -1,9 +1,9 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 177 sniffs
+The SprykerStrict standard contains 186 sniffs
 
-Generic (24 sniffs)
+Generic (25 sniffs)
 -------------------
 - Generic.Arrays.DisallowLongArraySyntax
 - Generic.CodeAnalysis.ForLoopShouldBeWhileLoop
@@ -20,6 +20,7 @@ Generic (24 sniffs)
 - Generic.Functions.FunctionCallArgumentSpacing
 - Generic.NamingConventions.UpperCaseConstantName
 - Generic.PHP.DeprecatedFunctions
+- Generic.PHP.DisallowAlternativePHPTags
 - Generic.PHP.DisallowShortOpenTag
 - Generic.PHP.ForbiddenFunctions
 - Generic.PHP.LowerCaseConstant
@@ -43,13 +44,21 @@ PSR1 (3 sniffs)
 - PSR1.Files.SideEffects
 - PSR1.Methods.CamelCapsMethodName
 
-PSR12 (5 sniffs)
-----------------
+PSR12 (13 sniffs)
+-----------------
+- PSR12.Classes.AnonClassDeclaration
 - PSR12.Classes.ClassInstantiation
+- PSR12.Classes.ClosingBrace
+- PSR12.ControlStructures.BooleanOperatorPlacement
+- PSR12.ControlStructures.ControlStructureSpacing
+- PSR12.Files.ImportStatement
 - PSR12.Functions.NullableTypeDeclaration
+- PSR12.Functions.ReturnTypeDeclaration
 - PSR12.Keywords.ShortFormTypeKeywords
 - PSR12.Namespaces.CompoundNamespaceDepth
 - PSR12.Operators.OperatorSpacing
+- PSR12.Properties.ConstantVisibility
+- PSR12.Traits.UseDeclaration
 
 PSR2 (12 sniffs)
 ----------------
