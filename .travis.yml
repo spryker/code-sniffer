@@ -16,7 +16,7 @@ matrix:
       env: CHECKS=1 DEFAULT=0
 
     - php: 7.1
-      env: CHECKS=1 DEFAULT=0 PREFER_LOWEST=1
+      env: DEFAULT=0 PREFER_LOWEST=1
 
   fast_finish: true
 
@@ -27,6 +27,8 @@ before_script:
 
 script:
   - if [[ $DEFAULT == 1 ]]; then composer phpstan; fi
+  
+  - if [[ $PREFER_LOWEST == 1 ]]; then composer cs-check; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then vendor/bin/validate-prefer-lowest; fi
 
   - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
