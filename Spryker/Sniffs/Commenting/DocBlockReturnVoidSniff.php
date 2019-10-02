@@ -276,7 +276,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $methodEndIndex = $tokens[$pointer]['scope_closer'];
 
         for ($i = $methodStartIndex + 1; $i < $methodEndIndex; ++$i) {
-            if ($this->isGivenKind([T_YIELD], $tokens[$i])) {
+            if ($this->isGivenKind([T_YIELD, T_YIELD_FROM], $tokens[$i])) {
                 return true;
             }
         }
