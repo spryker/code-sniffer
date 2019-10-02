@@ -27,6 +27,8 @@ before_script:
 
 script:
   - if [[ $DEFAULT == 1 ]]; then composer phpstan; fi
+  
+  - if [[ $PREFER_LOWEST == 1 ]]; then composer cs-check; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then vendor/bin/validate-prefer-lowest; fi
 
   - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
