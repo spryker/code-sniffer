@@ -152,12 +152,6 @@
         <exclude name="PSR12.Files.OpenTag"/>
     </rule>
     <!-- Disabled for now - bug -->
-    <rule ref="PSR12.Traits.UseDeclaration.UseAfterBrace">
-        <severity>0</severity>
-    </rule>
-    <rule ref="PSR12.Properties.ConstantVisibility.NotFound">
-        <severity>0</severity>
-    </rule>
     <rule ref="PSR12.ControlStructures.ControlStructureSpacing.LineIndent">
         <severity>0</severity>
     </rule>
