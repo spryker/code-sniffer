@@ -4,11 +4,11 @@
   "type": "phpcodesniffer-standard",
   "license": "MIT",
   "keywords": ["framework", "codesniffer", "phpcs", "standards"],
-  "homepage": "http://spryker.com",
+  "homepage": "https://spryker.com",
   "authors": [
     {
       "name": "Spryker",
-      "homepage": "http://spryker.com"
+      "homepage": "https://spryker.com"
     }
   ],
   "require": {
@@ -37,8 +37,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Spryker\\": "Spryker",
-      "SprykerStrict\\": "SprykerStrict"
+      "Spryker\\": "Spryker/",
+      "SprykerStrict\\": "SprykerStrict/"
     }
   },
   "bin": [
