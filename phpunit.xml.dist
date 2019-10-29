@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit>
     <testsuites>
-        <testsuite name="Spryker CodeSniffer Test Suite">
+        <testsuite name="spryker-code-sniffer">
         </testsuite>
     </testsuites>
 
