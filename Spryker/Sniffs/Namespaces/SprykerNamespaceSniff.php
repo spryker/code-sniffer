@@ -38,12 +38,12 @@ class SprykerNamespaceSniff implements Sniff
 
         $filename = $phpcsFile->getFilename();
 
-        preg_match('#/(src|tests)/(YvesUnit|YvesFunctional|Spryker|Unit/Spryker|Functional/Spryker|Acceptance)/(.+)#', $filename, $matches);
+        preg_match('#/src/(Spryker.*)/(.+)#', $filename, $matches);
         if (!$matches) {
             return;
         }
 
-        $extractedPath = $matches[2] . '/' . $matches[3];
+        $extractedPath = $matches[1] . '/' . $matches[2];
         $pathWithoutFilename = substr($extractedPath, 0, strrpos($extractedPath, DIRECTORY_SEPARATOR));
 
         $namespace = $namespaceStatement['namespace'];
