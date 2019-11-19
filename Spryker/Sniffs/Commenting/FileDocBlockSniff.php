@@ -188,6 +188,20 @@ class FileDocBlockSniff extends AbstractFileDocBlockSniff
 
             return $this->getLicense($path) ?: null;
         }
+
+        if (strpos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR . 'spryker-shop' . DIRECTORY_SEPARATOR) === 0) {
+            $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
+            array_shift($pathArray);
+            array_shift($pathArray);
+            array_shift($pathArray);
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
+                . 'spryker' . DIRECTORY_SEPARATOR . 'spryker-shop' . DIRECTORY_SEPARATOR
+                . 'Bundles' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
+
+            return $this->getLicense($path) ?: null;
+        }
+
         if (strpos($path, DIRECTORY_SEPARATOR . 'Bundles' . DIRECTORY_SEPARATOR) === 0) {
             $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
             array_shift($pathArray);
