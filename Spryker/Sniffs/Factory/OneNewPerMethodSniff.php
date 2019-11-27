@@ -32,7 +32,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
      */
     public function process(File $phpCsFile, $stackPointer)
     {
-        if ($this->isFactory($phpCsFile) && $this->isSprykerClass($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
+        if ($this->isFactory($phpCsFile) && $this->isSprykerNamespace($phpCsFile) && $this->hasMoreThenOneNewInMethod($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
             $phpCsFile->addError(
                 $classMethod . ' contains more then one new. Fix this by extract a method.',
@@ -40,18 +40,6 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
                 'OnlyOneNewAllowed'
             );
         }
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
-    protected function isSprykerClass(File $phpCsFile): bool
-    {
-        $namespace = $this->getNamespace($phpCsFile);
-
-        return ($namespace === static::NAMESPACE_SPRYKER);
     }
 
     /**

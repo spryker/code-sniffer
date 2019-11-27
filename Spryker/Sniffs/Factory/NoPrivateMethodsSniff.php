@@ -48,18 +48,6 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
-    protected function isSprykerNamespace(File $phpCsFile): bool
-    {
-        $namespace = $this->getNamespace($phpCsFile);
-
-        return ($namespace === static::NAMESPACE_SPRYKER);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return bool
