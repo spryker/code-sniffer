@@ -342,7 +342,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         $currentLicense = str_replace(["\r\n", "\r"], "\n", $currentLicense);
         $expectedLicense = str_replace(["\r\n", "\r"], "\n", $expectedLicense);
 
-        return $currentLicense === $expectedLicense;
+        return trim($currentLicense) === trim($expectedLicense);
     }
 
     /**
