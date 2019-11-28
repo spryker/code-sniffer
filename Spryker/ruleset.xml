@@ -146,7 +146,7 @@
     <rule ref="Generic.PHP.LowerCaseType"/>
 
     <rule ref="PSR12">
-        <!-- Disabled for now - contradics currect standard with too much fallout -->
+        <!-- Disabled for now - contradics current standard with too much fallout -->
         <exclude name="PSR12.Files.FileHeader"/>
         <exclude name="PSR12.Files.DeclareStatement"/>
         <exclude name="PSR12.Files.OpenTag"/>
