@@ -138,14 +138,16 @@ with this one:
 ## Custom licensing
 You can provide a custom license via `.license` file in your repository root.
 It must be a PHP doc block (valid PHP) including a trailing new line.
+You can also leave the file empty to have "no license doc block".
 
-For MIT projects we recommend (given a LICENSE file provided in your root, as well):
+For MIT repositories we recommend (having a `LICENSE` file provided in your root, as well):
 ```
 /**
  * MIT License
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 ```
+The 2nd sentence can be customized to your needs.
 
 ## Integrating into CI testing and PRs
 The following is an example for CircleCI but will also be compatible with any other CI system:

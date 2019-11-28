@@ -8,11 +8,12 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Checks if Spryker Constants classes have a note about ENV config.
  */
-class SprykerConstantsSniff extends AbstractFileDocBlockSniff
+class SprykerConstantsSniff extends AbstractSprykerSniff
 {
     protected const EXPLANATION_CONSTANTS_INTERFACE = 'Declares global environment configuration keys. Do not use it for other class constants.';
 

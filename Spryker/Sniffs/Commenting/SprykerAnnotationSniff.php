@@ -31,7 +31,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      */
     public function process(File $phpCsFile, $stackPointer)
     {
-        if (!$this->isCore($phpCsFile)) {
+        if (!$this->isSprykerNamespace($phpCsFile)) {
             return;
         }
 

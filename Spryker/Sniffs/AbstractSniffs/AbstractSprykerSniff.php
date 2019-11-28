@@ -21,9 +21,6 @@ abstract class AbstractSprykerSniff implements Sniff
     use BasicsTrait;
 
     protected const NAMESPACE_SPRYKER = 'Spryker';
-    protected const NAMESPACE_SPRYKER_SHOP = 'SprykerShop';
-    protected const NAMESPACE_SPRYKER_SDK = 'SprykerSdk';
-    protected const NAMESPACE_SPRYKER_ECO = 'SprykerEco';
 
     /**
      * @var string[] These markers must remain as inline comments
@@ -56,6 +53,18 @@ abstract class AbstractSprykerSniff implements Sniff
         }
 
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return bool
+     */
+    protected function isSprykerNamespace(File $phpCsFile): bool
+    {
+        $namespace = $this->getNamespace($phpCsFile);
+
+        return strpos($namespace, static::NAMESPACE_SPRYKER) === 0;
     }
 
     /**
@@ -93,27 +102,6 @@ abstract class AbstractSprykerSniff implements Sniff
         $classNameParts = explode('\\', $className);
 
         return $classNameParts[0];
-    }
-
-    /**
-     * Core detection (including Eco).
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
-    protected function isCore(File $phpCsFile): bool
-    {
-        $namespace = $this->getNamespace($phpCsFile);
-
-        $coreNamespaces = [
-            static::NAMESPACE_SPRYKER,
-            static::NAMESPACE_SPRYKER_SDK,
-            static::NAMESPACE_SPRYKER_SHOP,
-            static::NAMESPACE_SPRYKER_ECO,
-        ];
-
-        return in_array($namespace, $coreNamespaces, true);
     }
 
     /**
@@ -515,5 +503,41 @@ abstract class AbstractSprykerSniff implements Sniff
         $returnTypes = explode('|', $returnTypes);
 
         return $returnTypes;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $fileDocBlockStartPosition
+     *
+     * @return void
+     */
+    protected function assertNewlineBefore(File $phpCsFile, int $fileDocBlockStartPosition): void
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $prevIndex = $phpCsFile->findPrevious(T_WHITESPACE, $fileDocBlockStartPosition - 1, 0, true);
+
+        if ($tokens[$prevIndex]['line'] === $tokens[$fileDocBlockStartPosition]['line'] - 2) {
+            return;
+        }
+
+        $fix = $phpCsFile->addFixableError('Whitespace issue around file doc block', $fileDocBlockStartPosition, 'FileDocBlockSpacing');
+        if (!$fix) {
+            return;
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+
+        if ($tokens[$prevIndex]['line'] > $tokens[$fileDocBlockStartPosition]['line'] - 2) {
+            $phpCsFile->fixer->addNewline($prevIndex);
+        } else {
+            $index = $prevIndex;
+            while ($index < $fileDocBlockStartPosition - 1) {
+                $index++;
+                $phpCsFile->fixer->replaceToken($index, '');
+            }
+        }
+
+        $phpCsFile->fixer->endChangeset();
     }
 }
