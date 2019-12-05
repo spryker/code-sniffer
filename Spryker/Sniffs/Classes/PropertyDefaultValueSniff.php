@@ -50,7 +50,7 @@ class PropertyDefaultValueSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('Unnecessary default value for `' . $tokens[$stackPtr]['content']. '`', $defaultValueIndex, 'Unnecessary');
+        $fix = $phpcsFile->addFixableError('Unnecessary default value for `' . $tokens[$stackPtr]['content'] . '`', $defaultValueIndex, 'Unnecessary');
         if (!$fix) {
             return;
         }
