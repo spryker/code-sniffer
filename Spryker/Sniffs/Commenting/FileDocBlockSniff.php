@@ -12,18 +12,16 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Checks if PHP class file has file doc block comment and has the expected content.
+ * Use an empty .license file in your ROOT to remove all license doc blocks.
  */
 class FileDocBlockSniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritDoc
+     * This property can be filled within the ruleset configuration file
+     *
+     * @var string[]
      */
-    public function register(): array
-    {
-        return [
-            T_NAMESPACE,
-        ];
-    }
+    public $ignorableModules = [];
 
     /**
      * Spryker default license text.
@@ -45,11 +43,14 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     protected $licenseMap = [];
 
     /**
-     * This property can be filled within the ruleset configuration file
-     *
-     * @var string[]
+     * @inheritDoc
      */
-    public $ignorableModules = [];
+    public function register(): array
+    {
+        return [
+            T_NAMESPACE,
+        ];
+    }
 
     /**
      * @inheritDoc
@@ -156,7 +157,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     {
         $customLicense = $this->findLicense($phpCsFile);
         if (!$customLicense) {
-            return $this->getDefaultLicense();
+            return $this->getDefaultLicense($phpCsFile);
         }
 
         return $customLicense === 'none' ? '' : $customLicense;
@@ -248,10 +249,18 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
+     * Gets default license if the class file is a Spryker namespaced one.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
      * @return string
      */
-    protected function getDefaultLicense(): string
+    protected function getDefaultLicense(File $phpCsFile): string
     {
+        if (!$this->isSprykerNamespace($phpCsFile)) {
+            return '';
+        }
+
         return $this->buildLicense(static::$defaultLicense);
     }
 
