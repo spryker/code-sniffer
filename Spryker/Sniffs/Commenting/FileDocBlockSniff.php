@@ -182,6 +182,14 @@ class FileDocBlockSniff extends AbstractSprykerSniff
                 . 'spryker' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR
                 . 'Bundles' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
 
+            $customLicense = $this->findCustomLicense($path) ?: null;
+            if ($customLicense) {
+                return $customLicense;
+            }
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
+                . 'spryker' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR;
+
             return $this->findCustomLicense($path) ?: null;
         }
 
@@ -195,6 +203,14 @@ class FileDocBlockSniff extends AbstractSprykerSniff
                 . 'spryker' . DIRECTORY_SEPARATOR . 'spryker-shop' . DIRECTORY_SEPARATOR
                 . 'Bundles' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
 
+            $customLicense = $this->findCustomLicense($path) ?: null;
+            if ($customLicense) {
+                return $customLicense;
+            }
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
+                . 'spryker' . DIRECTORY_SEPARATOR . 'spryker-shop' . DIRECTORY_SEPARATOR;
+
             return $this->findCustomLicense($path) ?: null;
         }
 
@@ -204,7 +220,10 @@ class FileDocBlockSniff extends AbstractSprykerSniff
 
             $path = getcwd() . DIRECTORY_SEPARATOR . 'Bundles' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
 
-            return $this->findCustomLicense($path) ?: null;
+            $customLicense = $this->findCustomLicense($path) ?: null;
+            if ($customLicense) {
+                return $customLicense;
+            }
         }
 
         if (strpos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR) === 0) {
