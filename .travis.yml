@@ -2,7 +2,7 @@ language: php
 
 php:
   - 7.1
-  - 7.4snapshot
+  - 7.4
 
 env:
   global:
@@ -18,6 +18,9 @@ matrix:
 
   fast_finish: true
 
+before_install:
+  - if [[ ${TRAVIS_PHP_VERSION} != "7.4" ]]; then phpenv config-rm xdebug.ini ; fi
+
 before_script:
   - if [[ $PREFER_LOWEST != 1 ]]; then composer install --prefer-source --no-interaction; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then composer update --prefer-lowest --prefer-dist --no-interaction --prefer-stable; fi
@@ -25,12 +28,11 @@ before_script:
 
 script:
   - if [[ $DEFAULT == 1 ]]; then composer phpstan; fi
-  
+
   - if [[ $PREFER_LOWEST == 1 ]]; then composer cs-check; fi
   - if [[ $PREFER_LOWEST == 1 ]]; then vendor/bin/validate-prefer-lowest; fi
 
   - if [[ $CHECKS == 1 ]]; then composer cs-check; fi
-  - if [[ $CHECKS == 1 ]]; then composer phpstan; fi
 
 cache:
     directories:
