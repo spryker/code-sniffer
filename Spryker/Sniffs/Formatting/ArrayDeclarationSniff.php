@@ -131,7 +131,8 @@ class ArrayDeclarationSniff implements Sniff
         // Find all the double arrows that reside in this scope.
         for ($nextToken = ($stackPtr + 1); $nextToken < $arrayEnd; $nextToken++) {
             // Skip bracketed statements, like function calls.
-            if ($tokens[$nextToken]['code'] === T_OPEN_PARENTHESIS
+            if (
+                $tokens[$nextToken]['code'] === T_OPEN_PARENTHESIS
                 && (isset($tokens[$nextToken]['parenthesis_owner']) === false
                     || $tokens[$nextToken]['parenthesis_owner'] !== $stackPtr)
             ) {
@@ -204,7 +205,8 @@ class ArrayDeclarationSniff implements Sniff
                 continue;
             }
 
-            if ($tokens[$nextToken]['code'] !== T_DOUBLE_ARROW
+            if (
+                $tokens[$nextToken]['code'] !== T_DOUBLE_ARROW
                 && $tokens[$nextToken]['code'] !== T_COMMA
             ) {
                 continue;

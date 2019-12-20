@@ -53,7 +53,8 @@ class ConditionalExpressionOrderSniff implements Sniff
         $error = 'Usage of Yoda conditions is not allowed. Switch the expression order.';
         $prevContent = $tokens[$prevIndex]['content'];
 
-        if (!$this->isGivenKind(Tokens::$assignmentTokens, $tokens[$prevIndex])
+        if (
+            !$this->isGivenKind(Tokens::$assignmentTokens, $tokens[$prevIndex])
             && !$this->isGivenKind(Tokens::$booleanOperators, $tokens[$prevIndex])
             && $prevContent !== '('
         ) {

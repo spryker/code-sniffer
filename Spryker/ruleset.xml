@@ -151,18 +151,15 @@
         <exclude name="PSR12.Files.DeclareStatement"/>
         <exclude name="PSR12.Files.OpenTag"/>
     </rule>
-    <!-- Disabled for now - bug -->
-    <rule ref="PSR12.ControlStructures.ControlStructureSpacing.LineIndent">
+
+    <!-- Disabled - these are contradictory to PSR12 (and PSR12 overrules PSR2) -->
+    <rule ref="PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace">
         <severity>0</severity>
     </rule>
-    <rule ref="PSR12.ControlStructures.ControlStructureSpacing.CloseParenthesisLine">
+    <rule ref="Squiz.ControlStructures.ForLoopDeclaration.SpacingAfterSecond">
         <severity>0</severity>
     </rule>
-    <!-- Disabled for now - contradics existing PSR2 rule -->
-    <rule ref="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine">
-        <severity>0</severity>
-    </rule>
-    <rule ref="PSR12.ControlStructures.BooleanOperatorPlacement">
+    <rule ref="Squiz.ControlStructures.ForLoopDeclaration.SpacingAfterFirst">
         <severity>0</severity>
     </rule>
 

@@ -47,7 +47,8 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         // Skip default values in function declarations.
-        if ($tokens[$stackPtr]['code'] === T_EQUAL
+        if (
+            $tokens[$stackPtr]['code'] === T_EQUAL
             || $tokens[$stackPtr]['code'] === T_MINUS
         ) {
             if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
