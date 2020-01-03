@@ -85,40 +85,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockEndIndex
-     * @param int $docBlockStartIndex
-     * @param string|null $defaultValueType
-     *
-     * @return void
-     */
-    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType): void
-    {
-        $error = 'Doc Block annotation @var for variable missing';
-        if ($defaultValueType === null) {
-            $phpCsFile->addError($error, $docBlockEndIndex, 'VarAnnotationMissing');
-
-            return;
-        }
-
-        $error .= ', type `' . $defaultValueType . '` detected';
-        $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
-        if (!$fix) {
-            return;
-        }
-
-        $index = $phpCsFile->findPrevious(Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
-        if (!$index) {
-            $index = $docBlockStartIndex;
-        }
-
-        $phpCsFile->fixer->beginChangeset();
-        $phpCsFile->fixer->addNewline($index);
-        $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
-        $phpCsFile->fixer->endChangeset();
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
      * @return array
@@ -170,6 +136,12 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             }
 
             if ($tokens[($index + 2)]['code'] !== T_DOC_COMMENT_STRING) {
+                $throwTags[] = [
+                    'index' => $index,
+                    'fullClass' => null,
+                    'class' => null,
+                ];
+
                 continue;
             }
 
