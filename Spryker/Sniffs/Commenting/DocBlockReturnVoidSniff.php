@@ -78,6 +78,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
         if ($docBlockReturnIndex) {
             $this->assertExisting($phpcsFile, $stackPtr, $docBlockReturnIndex, $returnType);
+            $this->assertTypeHint($phpcsFile, $stackPtr, $docBlockReturnIndex);
 
             return;
         }
@@ -176,7 +177,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     }
 
     /**
-     * For right now we only try to detect void.
+     * For right now we only try to detect void inside function/method.
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index
@@ -224,11 +225,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $documentedReturnType = $tokens[$docBlockReturnIndex + 2]['content'];
-        $whiteSpacePosition = mb_strpos($documentedReturnType, ' ');
-        if ($whiteSpacePosition !== false) {
-            $documentedReturnType = mb_substr($documentedReturnType, 0, $whiteSpacePosition);
-        }
+        $documentedReturnType = $this->documentedReturnType($tokens, $docBlockReturnIndex);
 
         if ($returnType !== 'void' || $documentedReturnType === 'void') {
             return;
@@ -248,6 +245,58 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         $phpcsFile->addError('Method is void, but doc block states otherwise.', $docBlockReturnIndex + 2, 'InvalidVoidBody');
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     * @param int $docBlockReturnIndex
+     *
+     * @return void
+     */
+    protected function assertTypeHint(File $phpcsFile, int $stackPtr, int $docBlockReturnIndex): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $parenthesisCloserIndex = $tokens[$stackPtr]['parenthesis_closer'];
+        $scopeOpenerIndex = $tokens[$stackPtr]['scope_opener'];
+        $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $parenthesisCloserIndex + 1, $scopeOpenerIndex, true);
+
+        if ($tokens[$nextIndex]['code'] !== T_COLON) {
+            return;
+        }
+
+        $documentedReturnType = $this->documentedReturnType($tokens, $docBlockReturnIndex);
+
+        $typeHintIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $nextIndex + 1, $scopeOpenerIndex, true);
+        if (!$typeHintIndex) {
+            return;
+        }
+
+        // ?... cannot be about void anymore
+        $nullable = false;
+        if ($tokens[$typeHintIndex]['code'] === T_NULLABLE) {
+            $nullable = true;
+            $typeHintIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $typeHintIndex + 1, $scopeOpenerIndex, true);
+            if (!$typeHintIndex) {
+                return;
+            }
+        }
+
+        $typehint = $tokens[$typeHintIndex]['content'];
+        if ($nullable) {
+            $typehint = '?' . $typehint;
+        }
+
+        if ($documentedReturnType !== 'void' && $typeHintIndex !== 'void') {
+            return;
+        }
+        if ($documentedReturnType === $typehint) {
+            return;
+        }
+
+        $message = sprintf('Return typehint `%s` does not match documented return type `%s`.', $typehint, $documentedReturnType);
+        $phpcsFile->addError($message, $typeHintIndex, 'ReturnTypeMismatch');
     }
 
     /**
@@ -282,5 +331,22 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
 
         return false;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $docBlockReturnIndex
+     *
+     * @return string
+     */
+    protected function documentedReturnType(array $tokens, int $docBlockReturnIndex): string
+    {
+        $documentedReturnType = $tokens[$docBlockReturnIndex + 2]['content'];
+        $whiteSpacePosition = mb_strpos($documentedReturnType, ' ');
+        if ($whiteSpacePosition !== false) {
+            $documentedReturnType = mb_substr($documentedReturnType, 0, $whiteSpacePosition);
+        }
+
+        return $documentedReturnType;
     }
 }

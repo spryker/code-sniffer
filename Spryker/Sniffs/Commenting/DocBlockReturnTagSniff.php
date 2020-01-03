@@ -8,96 +8,57 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * Verifies that a `@return` tag exists for all functions and methods and that it does not exist
- * for all constructors and destructors.
+ * Verifies that a `@return` tag description does not start with $ sign to avoid accidental variable copy-and-paste.
  *
  * @author Mark Scherer
  * @license MIT
  */
-class DocBlockReturnTagSniff extends AbstractScopeSniff
+class DocBlockReturnTagSniff extends AbstractSprykerSniff
 {
     /**
      * @inheritDoc
      */
-    public function __construct()
+    public function register()
     {
-        parent::__construct([T_CLASS], [T_FUNCTION]);
+        return [T_DOC_COMMENT_TAG];
     }
 
     /**
      * @inheritDoc
      */
-    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
+    public function process(File $phpcsFile, $stackPtr)
+    {
+        $this->assertDescription($phpcsFile, $stackPtr);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function assertDescription(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
-
-        $method = $phpcsFile->findNext(T_STRING, ($stackPtr + 1));
-        $returnRequired = !in_array($tokens[$method]['content'], ['__construct', '__destruct'], true);
-
-        $find = [
-        T_COMMENT,
-        T_DOC_COMMENT,
-        T_CLASS,
-        T_FUNCTION,
-        T_OPEN_TAG,
-        ];
-
-        $commentEnd = $phpcsFile->findPrevious($find, ($stackPtr - 1));
-
-        if ($commentEnd === false) {
+        if ($tokens[$stackPtr]['content'] !== '@return') {
             return;
         }
 
-        if ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT) {
+        $nextIndex = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $stackPtr + 1, $stackPtr + 3);
+        if (!$nextIndex) {
             return;
         }
 
-        $commentStart = ($phpcsFile->findPrevious(T_DOC_COMMENT, ($commentEnd - 1), null, true) + 1);
-
-        $commentWithReturn = null;
-        for ($i = $commentEnd; $i >= $commentStart; $i--) {
-            $currentComment = $tokens[$i]['content'];
-            if (strpos($currentComment, '@return ') !== false) {
-                $commentWithReturn = $i;
-                break;
-            }
-        }
-
-        if (!$commentWithReturn && !$returnRequired) {
+        $content = $tokens[$nextIndex]['content'];
+        if (strpos($content, ' ') === false) {
             return;
         }
 
-        if ($commentWithReturn && $returnRequired) {
+        [$hint, $description] = explode(' ', $content, 2);
+        if (!$description || substr($description, 0, 1) !== '$') {
             return;
         }
 
-        // A class method should have @return
-        if (!$commentWithReturn) {
-            $error = 'Missing @return tag in function comment';
-            $phpcsFile->addError($error, $stackPtr, 'Missing');
-
-            return;
-        }
-
-        // Constructor/destructor should not have @return
-        if ($commentWithReturn) {
-            $error = 'Unexpected @return tag in constructor/destructor comment';
-            $fixable = $phpcsFile->addFixableError($error, $commentWithReturn, 'Unexpected');
-            if ($fixable) {
-                $phpcsFile->fixer->replaceToken($commentWithReturn, '');
-            }
-
-            return;
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
-    {
+        $phpcsFile->addError('Description for return annotation must not start with `$`/variable. Use normal sentence instead.', $nextIndex, 'Invalid');
     }
 }

@@ -13,7 +13,7 @@ use SlevomatCodingStandard\Helpers\FunctionHelper;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * Checks for missing |null in docblock return annotations.
+ * Checks for missing/superfluous `|null` in docblock return annotations.
  */
 class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 {
@@ -32,35 +32,73 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      */
     public function process(File $phpCsFile, $stackPointer)
     {
-        $errorMessage = 'Method does not have a return `null` typehint in doc block.';
-
         $returnType = FunctionHelper::findReturnTypeHint($phpCsFile, $stackPointer);
 
         if ($returnType === null) {
             return;
         }
 
-        if (!$returnType->isNullable()) {
-            return;
-        }
-
         $docBlockReturnTypes = $this->getDocBlockReturnTypes($phpCsFile, $stackPointer);
 
-        if ($docBlockReturnTypes === []) {
+        if (!$returnType->isNullable()) {
+            $this->assertNotNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
+
             return;
         }
 
+        $this->assertRequiredNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @param string[] $docBlockReturnTypes
+     *
+     * @return void
+     */
+    public function assertNotNullableReturnType(File $phpCsFile, int $stackPointer, array $docBlockReturnTypes): void
+    {
+        if (!$docBlockReturnTypes) {
+            return;
+        }
+        if (!in_array('null', $docBlockReturnTypes, true)) {
+            return;
+        }
+
+        $errorMessage = 'Method should not have `null` in return type in doc block.';
+        $fix = $phpCsFile->addFixableError($errorMessage, $stackPointer, 'ReturnNullableInvalid');
+
+        if (!$fix) {
+            return;
+        }
+
+        $this->removeNullFromDocBlockReturnType($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @param string[] $docBlockReturnTypes
+     *
+     * @return void
+     */
+    public function assertRequiredNullableReturnType(File $phpCsFile, int $stackPointer, array $docBlockReturnTypes): void
+    {
+        if (!$docBlockReturnTypes) {
+            return;
+        }
         if (in_array('null', $docBlockReturnTypes, true)) {
             return;
         }
 
-        $fixable = $phpCsFile->addFixableError($errorMessage, $stackPointer, 'ReturnNullableMissing');
+        $errorMessage = 'Method does not have `null` in return type in doc block.';
+        $fix = $phpCsFile->addFixableError($errorMessage, $stackPointer, 'ReturnNullableMissing');
 
-        if (!$fixable) {
+        if (!$fix) {
             return;
         }
 
-        $this->fixDocBlockReturnType($phpCsFile, $stackPointer);
+        $this->addNullToDocBlockReturnType($phpCsFile, $stackPointer);
     }
 
     /**
@@ -69,7 +107,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixDocBlockReturnType(File $phpCsFile, int $stackPointer): void
+    protected function addNullToDocBlockReturnType(File $phpCsFile, int $stackPointer): void
     {
         $returnTypesToken = $this->getDocBlockReturnTypesToken($phpCsFile, $stackPointer);
 
@@ -79,6 +117,29 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 
         $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->replaceToken($tokenIndex, $returnTypes);
+        $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function removeNullFromDocBlockReturnType(File $phpCsFile, int $stackPointer): void
+    {
+        $returnTypesToken = $this->getDocBlockReturnTypesToken($phpCsFile, $stackPointer);
+
+        $tokenIndex = $returnTypesToken['index'];
+        $returnTypes = explode('|', $returnTypesToken['token']['content']);
+        foreach ($returnTypes as $key => $returnType) {
+            if ($returnType === 'null') {
+                unset($returnTypes[$key]);
+            }
+        }
+
+        $phpCsFile->fixer->beginChangeset();
+        $phpCsFile->fixer->replaceToken($tokenIndex, implode('|', $returnTypes));
         $phpCsFile->fixer->endChangeset();
     }
 
