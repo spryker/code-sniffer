@@ -99,7 +99,7 @@ class MockSniff extends AbstractSprykerSniff
             }
 
             $contentIndex = $this->getDocBlockReturnTypeContentIndex($phpcsFile, $stackPtr);
-            if (!$returnTypeHint) {
+            if ($contentIndex === null) {
                 return;
             }
 
@@ -139,7 +139,7 @@ class MockSniff extends AbstractSprykerSniff
     /**
      * @param array $docBlockReturnTypes
      *
-     * @return void
+     * @return bool
      */
     protected function hasMockObjectAnnotation(array $docBlockReturnTypes): bool
     {
