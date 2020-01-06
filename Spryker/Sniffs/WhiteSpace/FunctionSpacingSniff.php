@@ -61,6 +61,10 @@ class FunctionSpacingSniff implements Sniff
             return;
         }
 
+        if (empty($tokens[$openingBraceIndex]['scope_closer'])) {
+            return;
+        }
+
         $closingBraceIndex = $tokens[$openingBraceIndex]['scope_closer'];
 
         // Ignore closures
