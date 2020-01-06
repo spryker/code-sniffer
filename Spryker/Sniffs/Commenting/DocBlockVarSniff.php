@@ -113,9 +113,16 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         if ($defaultValueType === 'array' && strpos($content, '[]') !== false) {
             return;
         }
+        if ($defaultValueType === 'false' && in_array('bool', $parts, true)) {
+            return;
+        }
+
+        if ($defaultValueType === 'false') {
+            $defaultValueType = 'bool';
+        }
 
         if (count($parts) > 1 || $defaultValueType === 'null') {
-            $fix = $phpCsFile->addFixableError('Doc Block type for property annotation @var incorrect, type `' . $defaultValueType . '` missing', $stackPointer, 'VarTypeIncorrect');
+            $fix = $phpCsFile->addFixableError('Doc Block type for property annotation @var incorrect, type `' . $defaultValueType . '` missing', $stackPointer, 'VarTypeMissing');
             if ($fix) {
                 $phpCsFile->fixer->replaceToken($classNameIndex, implode('|', $parts) . '|' . $defaultValueType . $appendix);
             }
@@ -171,8 +178,12 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             return 'string';
         }
 
-        if ($this->isGivenKind([T_FALSE, T_TRUE], $token)) {
+        if ($this->isGivenKind([T_TRUE], $token)) {
             return 'bool';
+        }
+
+        if ($this->isGivenKind([T_FALSE], $token)) {
+            return 'false';
         }
 
         if ($this->isGivenKind(T_NULL, $token)) {
@@ -197,6 +208,10 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
 
             return;
+        }
+
+        if ($defaultValueType === 'false') {
+            $defaultValueType = 'bool';
         }
 
         $error .= ', type `' . $defaultValueType . '` detected';
@@ -230,6 +245,10 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             $phpCsFile->addError($error, $varIndex, 'VarTypeMissing');
 
             return;
+        }
+
+        if ($defaultValueType === 'false') {
+            $defaultValueType = 'bool';
         }
 
         $error .= ', type `' . $defaultValueType . '` detected';
