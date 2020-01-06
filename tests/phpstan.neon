@@ -1,3 +1,5 @@
 parameters:
     autoload_files:
         - %rootDir%/../../../tests/bootstrap.php
+    ignoreErrors:
+        - '#Method .+ should return .+|void but return statement is missing.#'

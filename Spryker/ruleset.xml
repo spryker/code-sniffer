@@ -58,14 +58,7 @@
 
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.ControlStructureSpacing.IncorrectLinesCountBeforeControlStructure"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.ControlStructureSpacing">
-        <properties>
-            <property name="tokensToCheck" type="array">
-                <element value="T_RETURN"/>
-            </property>
-        </properties>
-    </rule>
+    <rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing"/>
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
