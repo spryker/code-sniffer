@@ -65,6 +65,18 @@ class MockSniff extends AbstractSprykerSniff
             return;
         }
 
+        $this->removeReturnTypeHint($phpcsFile, $stackPtr, $returnTypeHint);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     * @param \SlevomatCodingStandard\Helpers\ReturnTypeHint $returnTypeHint
+     *
+     * @return void
+     */
+    protected function removeReturnTypeHint(File $phpcsFile, int $stackPtr, ReturnTypeHint $returnTypeHint): void
+    {
         $colonPointer = $phpcsFile->findPrevious(T_COLON, $returnTypeHint->getStartPointer(), $stackPtr);
         if (!$colonPointer) {
             return;
@@ -116,9 +128,65 @@ class MockSniff extends AbstractSprykerSniff
             return;
         }
 
+        if ($hasMockAnnotation && $returnTypeHint && $returnTypeHint->getTypeHint() !== 'MockObject' && count($docBlockReturnTypes) > 2) {
+            $phpcsFile->addError('Return typehint must not be used for complex mocks.', $stackPtr, 'InvalidReturnType');
+
+            return;
+        }
+
         if ($hasMockAnnotation && count($docBlockReturnTypes) < 2) {
             $phpcsFile->addError('Return type annotation is missing the class that is mocked.', $stackPtr, 'MissingReturnType');
+
+            return;
         }
+
+        if ($hasMockAnnotation && !$returnTypeHint && count($docBlockReturnTypes) === 2) {
+            $returnType = null;
+            foreach ($docBlockReturnTypes as $docBlockReturnType) {
+                if (strpos($docBlockReturnType, 'MockObject') !== false) {
+                    continue;
+                }
+
+                $returnType = $docBlockReturnType;
+            }
+
+            if (!$returnType) {
+                return;
+            }
+
+            $fix = $phpcsFile->addFixableError('Return typehint `' . $returnType . '` is missing.', $stackPtr, 'MissingTypeHint');
+            if (!$fix) {
+                return;
+            }
+
+            $this->addReturnTypeHint($phpcsFile, $stackPtr, $returnType);
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     * @param string $returnTypeHint
+     *
+     * @return void
+     */
+    protected function addReturnTypeHint(File $phpcsFile, int $stackPtr, string $returnTypeHint): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $closeParenthesisPointer = $tokens[$stackPtr]['parenthesis_closer'];
+        if (!$closeParenthesisPointer) {
+            return;
+        }
+
+        $content = $tokens[$closeParenthesisPointer]['content'];
+        $content .= ': ' . $returnTypeHint;
+
+        $phpcsFile->fixer->beginChangeset();
+
+        $phpcsFile->fixer->replaceToken($closeParenthesisPointer, $content);
+
+        $phpcsFile->fixer->endChangeset();
     }
 
     /**
@@ -129,7 +197,8 @@ class MockSniff extends AbstractSprykerSniff
      */
     protected function isTest(File $phpcsFile, int $stackPtr): bool
     {
-        if (substr($phpcsFile->getFilename(), -8) !== 'Test.php') {
+        $filename = $phpcsFile->getFilename();
+        if (substr($filename, -8) !== 'Test.php' && substr($filename, -9) !== 'Mocks.php') {
             return false;
         }
 
