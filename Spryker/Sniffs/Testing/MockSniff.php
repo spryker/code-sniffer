@@ -150,7 +150,7 @@ class MockSniff extends AbstractSprykerSniff
                 $returnType = $docBlockReturnType;
             }
 
-            if (!$returnType) {
+            if (!$returnType || substr($returnType, -5) === 'Trait') {
                 return;
             }
 
