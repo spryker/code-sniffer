@@ -7,6 +7,7 @@
 
 namespace Spryker\Sniffs\AbstractSniffs;
 
+use PHP_CodeSniffer\Exceptions\DeepExitException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\ClassHelper;
@@ -543,5 +544,213 @@ abstract class AbstractSprykerSniff implements Sniff
         }
 
         $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     *
+     * @return int
+     */
+    protected function getMethodSignatureLength(File $phpcsFile, int $stackPtr): int
+    {
+        $tokens = $phpcsFile->getTokens();
+        if ($tokens[$stackPtr]['code'] !== T_FUNCTION) {
+            throw new DeepExitException('This can only be run on a method signature.');
+        }
+        $openParenthesisPosition = $tokens[$stackPtr]['parenthesis_opener'];
+        $closeParenthesisPosition = $tokens[$stackPtr]['parenthesis_closer'];
+
+        $methodProperties = $phpcsFile->getMethodProperties($stackPtr);
+        $methodParameters = $phpcsFile->getMethodParameters($stackPtr);
+        if ($this->areTokensOnTheSameLine($tokens, $openParenthesisPosition, $closeParenthesisPosition)) {
+            return $this->getMethodSingleLineSignatureLength($tokens, $stackPtr);
+        }
+
+        return $this->getMethodSignatureMultilineLength($tokens, $stackPtr, $methodProperties, $methodParameters);
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $firstPosition
+     * @param int $secondPosition
+     *
+     * @return bool
+     */
+    protected function areTokensOnTheSameLine(array $tokens, int $firstPosition, int $secondPosition): bool
+    {
+        return $tokens[$firstPosition]['line'] === $tokens[$secondPosition]['line'];
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $stackPtr
+     *
+     * @return int
+     */
+    protected function getMethodSingleLineSignatureLength(array $tokens, int $stackPtr): int
+    {
+        $position = $this->getEOLPosition($tokens, $stackPtr);
+
+        return $tokens[$position]['column'] - 1;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $position
+     *
+     * @return int
+     */
+    protected function getEOLPosition(array $tokens, int $position): int
+    {
+        while (strpos($tokens[$position]['content'], PHP_EOL) === false) {
+            $position++;
+        }
+
+        return $position;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $stackPtr
+     * @param array $methodProperties
+     * @param array $methodParameters
+     *
+     * @return int
+     */
+    protected function getMethodSignatureMultilineLength(
+        array $tokens,
+        int $stackPtr,
+        array $methodProperties,
+        array $methodParameters
+    ): int {
+        $totalLength = $this->getMethodSingleLineSignatureLength($tokens, $stackPtr);
+        $firstLineEndPosition = $this->getEOLPosition($tokens, $stackPtr);
+        foreach ($methodParameters as $parameter) {
+            if ($tokens[$parameter['token']]['line'] === $tokens[$stackPtr]['line']) {
+                //the parameters are on the first line of the signature.
+                if ($tokens[$firstLineEndPosition - 1]['code'] === T_COMMA) {
+                    //space after comma.
+                    $totalLength++;
+                }
+                continue;
+            }
+            $totalLength += $this->getParameterTotalLength($parameter);
+            if ($parameter['comma_token'] !== false) {
+                //comma + space
+                $totalLength += 2;
+            }
+        }
+        //closing parenthesis
+        $totalLength++;
+        // column (:) and space before the returnType
+        $totalLength += mb_strlen($methodProperties['return_type']) + 2;
+
+        return $totalLength;
+    }
+
+    /**
+     * @param array $methodParameter
+     *
+     * @return int
+     */
+    protected function getParameterTotalLength(array $methodParameter): int
+    {
+        $length = 0;
+        $length += mb_strlen($methodParameter['content']);
+
+        return $length;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function makeMethodSignatureSingleLine(File $phpcsFile, int $stackPtr): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $openParenthesisPosition = $tokens[$stackPtr]['parenthesis_opener'];
+        $closeParenthesisPosition = $tokens[$stackPtr]['parenthesis_closer'];
+        //if null, it's an interface or abstract method.
+        $scopeOpenerPosition = $tokens[$stackPtr]['scope_opener'] ?? null;
+        $parameters = $phpcsFile->getMethodParameters($stackPtr);
+        $properties = $phpcsFile->getMethodProperties($stackPtr);
+        $returnTypePosition = $properties['return_type_token'];
+        $indentation = $this->getIndentationWhitespace($phpcsFile, $stackPtr);
+
+        $content = [];
+        foreach ($parameters as $parameter) {
+            $content[] = $parameter['content'];
+        }
+        $formattedParameters = implode(', ', $content);
+
+        $phpcsFile->fixer->beginChangeset();
+        if ($scopeOpenerPosition !== null) {
+            $this->removeEverythingBetweenPositions($phpcsFile, $closeParenthesisPosition, $scopeOpenerPosition);
+            $phpcsFile->fixer->addContentBefore($scopeOpenerPosition, "\n" . $indentation);
+            if ($returnTypePosition !== false) {
+                $phpcsFile->fixer->addContent($closeParenthesisPosition, ': ' . $tokens[$returnTypePosition]['content']);
+            }
+        }
+        $this->removeEverythingBetweenPositions($phpcsFile, $openParenthesisPosition, $closeParenthesisPosition);
+        $phpcsFile->fixer->addContentBefore($closeParenthesisPosition, $formattedParameters);
+        $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function makeMethodSignatureMultiline(File $phpcsFile, int $stackPtr): void
+    {
+        $tokens = $phpcsFile->getTokens();
+        $openParenthesisPosition = $tokens[$stackPtr]['parenthesis_opener'];
+        $closeParenthesisPosition = $tokens[$stackPtr]['parenthesis_closer'];
+        //if null, it's an interface or abstract method.
+        $scopeOpenerPosition = $tokens[$stackPtr]['scope_opener'] ?? null;
+
+        $parameters = $phpcsFile->getMethodParameters($stackPtr);
+
+        $formattedParameters = "\n";
+        $parameterContent = [];
+        $indentation = $this->getIndentationWhitespace($phpcsFile, $stackPtr);
+        foreach ($parameters as $parameter) {
+            $parameterContent[] = str_repeat($indentation, 2) . $parameter['content'];
+        }
+        $formattedParameters .= implode(",\n", $parameterContent);
+        $formattedParameters .= "\n$indentation";
+
+        $phpcsFile->fixer->beginChangeset();
+        $this->removeEverythingBetweenPositions($phpcsFile, $openParenthesisPosition, $closeParenthesisPosition);
+        $phpcsFile->fixer->addContentBefore($closeParenthesisPosition, $formattedParameters);
+        if ($scopeOpenerPosition !== null) {
+            if (!$this->areTokensOnTheSameLine($tokens, $closeParenthesisPosition, $scopeOpenerPosition)) {
+                $endOfPreviousLine = $this->getEOLPosition($tokens, $closeParenthesisPosition);
+                $this->removeEverythingBetweenPositions($phpcsFile, $endOfPreviousLine - 1, $scopeOpenerPosition);
+                $phpcsFile->fixer->addContentBefore($scopeOpenerPosition, ' ');
+            }
+        }
+        $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $fromPosition
+     * @param int $toPosition
+     *
+     * @return void
+     */
+    protected function removeEverythingBetweenPositions(File $phpcsFile, int $fromPosition, int $toPosition): void
+    {
+        for ($i = $fromPosition + 1; $i < $toPosition; $i++) {
+            $phpcsFile->fixer->replaceToken($i, '');
+        }
     }
 }
