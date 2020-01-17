@@ -355,8 +355,12 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
      *
      * @return string
      */
-    protected function generateClassNameMapForUnionType(File $phpCsFile, int $classNameIndex, string $className, array $subClassNames): string
-    {
+    protected function generateClassNameMapForUnionType(
+        File $phpCsFile,
+        int $classNameIndex,
+        string $className,
+        array $subClassNames
+    ): string {
         foreach ($subClassNames as $i => $subClassName) {
             if (strpos($subClassName, '\\') !== false) {
                 continue;

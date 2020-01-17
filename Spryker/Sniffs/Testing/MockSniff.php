@@ -54,8 +54,12 @@ class MockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertNoReturnTypehint(File $phpcsFile, int $stackPtr, ?ReturnTypeHint $returnTypeHint, array $docBlockReturnTypes): void
-    {
+    protected function assertNoReturnTypehint(
+        File $phpcsFile,
+        int $stackPtr,
+        ?ReturnTypeHint $returnTypeHint,
+        array $docBlockReturnTypes
+    ): void {
         if (!$returnTypeHint || $returnTypeHint->getTypeHint() !== 'MockObject') {
             return;
         }
@@ -100,8 +104,12 @@ class MockSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertDocBlockReturnAnnotation(File $phpcsFile, int $stackPtr, array $docBlockReturnTypes, ?ReturnTypeHint $returnTypeHint): void
-    {
+    protected function assertDocBlockReturnAnnotation(
+        File $phpcsFile,
+        int $stackPtr,
+        array $docBlockReturnTypes,
+        ?ReturnTypeHint $returnTypeHint
+    ): void {
         $hasMockAnnotation = $this->hasMockObjectAnnotation($docBlockReturnTypes);
 
         if (!$hasMockAnnotation && $returnTypeHint && $returnTypeHint->getTypeHint() === 'MockObject') {

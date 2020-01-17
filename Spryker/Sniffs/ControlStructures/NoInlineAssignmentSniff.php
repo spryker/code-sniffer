@@ -63,8 +63,12 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function isFixableInlineAssignment(File $phpcsFile, int $startIndex, int $endIndex, int &$indexEqualSign): bool
-    {
+    protected function isFixableInlineAssignment(
+        File $phpcsFile,
+        int $startIndex,
+        int $endIndex,
+        int &$indexEqualSign
+    ): bool {
         $tokens = $phpcsFile->getTokens();
 
         $hasInlineAssignment = false;

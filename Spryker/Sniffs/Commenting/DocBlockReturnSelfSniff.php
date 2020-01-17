@@ -91,8 +91,12 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertCorrectDocBlockParts(File $phpCsFile, int $classNameIndex, array $parts, string $appendix): void
-    {
+    protected function assertCorrectDocBlockParts(
+        File $phpCsFile,
+        int $classNameIndex,
+        array $parts,
+        string $appendix
+    ): void {
         $result = [];
         foreach ($parts as $key => $part) {
             if ($part !== 'self') {
@@ -170,8 +174,13 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixClassToThis(File $phpCsFile, int $classNameIndex, array $parts, string $appendix, array $returnTypes): void
-    {
+    protected function fixClassToThis(
+        File $phpCsFile,
+        int $classNameIndex,
+        array $parts,
+        string $appendix,
+        array $returnTypes
+    ): void {
         $ownClassName = '\\' . $this->getClassName($phpCsFile);
 
         $result = [];
@@ -262,8 +271,12 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertChainableReturnType(File $phpCsFile, int $stackPointer, array $parts, array $returnTypes): void
-    {
+    protected function assertChainableReturnType(
+        File $phpCsFile,
+        int $stackPointer,
+        array $parts,
+        array $returnTypes
+    ): void {
         if ($returnTypes && $parts === ['$this'] && $returnTypes !== ['$this']) {
             $phpCsFile->addError('Chainable method (@return $this) cannot have multiple return types in code.', $stackPointer, 'InvalidChainable');
         }
