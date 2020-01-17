@@ -41,6 +41,11 @@
     "test": "phpunit",
     "stan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 5 Spryker/Sniffs/ SprykerStrict/Sniffs/"
   },
+  "autoload-dev": {
+    "psr-4": {
+      "CodeSnifferTest\\": "tests/"
+    }
+  },
   "bin": [
     "bin/tokenize"
   ],
