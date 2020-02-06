@@ -65,7 +65,8 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
      */
     protected function runSniffer(File $phpCsFile, int $stackPointer): void
     {
-        if (!$this->hasMethodAnnotation($phpCsFile, $stackPointer)
+        if (
+            !$this->hasMethodAnnotation($phpCsFile, $stackPointer)
             && $this->fileExists($phpCsFile, $this->getMethodAnnotationFileName($phpCsFile))
         ) {
             $fix = $phpCsFile->addFixableError($this->getMethodName() . '() annotation missing', $stackPointer, 'Missing');

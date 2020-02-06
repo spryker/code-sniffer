@@ -53,7 +53,8 @@ class EmptyLinesSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        if ($tokens[$stackPtr]['content'] === $phpcsFile->eolChar
+        if (
+            $tokens[$stackPtr]['content'] === $phpcsFile->eolChar
             && isset($tokens[($stackPtr + 1)])
             && $tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar
             && isset($tokens[($stackPtr + 2)])

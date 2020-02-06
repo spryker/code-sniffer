@@ -55,7 +55,8 @@ class DocBlockApiAnnotationSniff implements Sniff
         $namespace = $this->getNamespace($phpCsFile, $stackPointer);
         $name = $this->getClassOrInterfaceName($phpCsFile, $stackPointer);
 
-        if ($this->isFacade($namespace, $name)
+        if (
+            $this->isFacade($namespace, $name)
             || $this->isClient($namespace, $name)
             || $this->isQueryContainer($namespace, $name)
             || $this->isPlugin($namespace, $name)
