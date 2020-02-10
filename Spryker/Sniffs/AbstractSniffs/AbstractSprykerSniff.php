@@ -592,7 +592,7 @@ abstract class AbstractSprykerSniff implements Sniff
      */
     protected function getMethodSingleLineSignatureLength(array $tokens, int $stackPtr): int
     {
-        $position = $this->getEOLPosition($tokens, $stackPtr);
+        $position = $this->getLineEndingPosition($tokens, $stackPtr);
 
         return $tokens[$position]['column'] - 1;
     }
@@ -603,9 +603,9 @@ abstract class AbstractSprykerSniff implements Sniff
      *
      * @return int
      */
-    protected function getEOLPosition(array $tokens, int $position): int
+    protected function getLineEndingPosition(array $tokens, int $position): int
     {
-        while (strpos($tokens[$position]['content'], PHP_EOL) === false) {
+        while (!empty($tokens[$position]) && strpos($tokens[$position]['content'], PHP_EOL) === false) {
             $position++;
         }
 
@@ -627,7 +627,7 @@ abstract class AbstractSprykerSniff implements Sniff
         array $methodParameters
     ): int {
         $totalLength = $this->getMethodSingleLineSignatureLength($tokens, $stackPtr);
-        $firstLineEndPosition = $this->getEOLPosition($tokens, $stackPtr);
+        $firstLineEndPosition = $this->getLineEndingPosition($tokens, $stackPtr);
         foreach ($methodParameters as $parameter) {
             if ($tokens[$parameter['token']]['line'] === $tokens[$stackPtr]['line']) {
                 //the parameters are on the first line of the signature.
@@ -732,7 +732,7 @@ abstract class AbstractSprykerSniff implements Sniff
         $phpcsFile->fixer->addContentBefore($closeParenthesisPosition, $formattedParameters);
         if ($scopeOpenerPosition !== null) {
             if (!$this->areTokensOnTheSameLine($tokens, $closeParenthesisPosition, $scopeOpenerPosition)) {
-                $endOfPreviousLine = $this->getEOLPosition($tokens, $closeParenthesisPosition);
+                $endOfPreviousLine = $this->getLineEndingPosition($tokens, $closeParenthesisPosition);
                 $this->removeEverythingBetweenPositions($phpcsFile, $endOfPreviousLine - 1, $scopeOpenerPosition);
                 $phpcsFile->fixer->addContentBefore($scopeOpenerPosition, ' ');
             }
