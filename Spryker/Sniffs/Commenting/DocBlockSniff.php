@@ -168,6 +168,7 @@ class DocBlockSniff extends AbstractSprykerSniff
             if ($this->isGivenKind([T_FUNCTION], $tokens[$i])) {
                 $endIndex = $tokens[$i]['scope_closer'];
                 $i = $endIndex;
+
                 continue;
             }
 

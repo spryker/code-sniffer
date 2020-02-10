@@ -205,14 +205,17 @@ abstract class AbstractSprykerSniff implements Sniff
         for ($i = $start; $i <= $end; $i++) {
             if ($skipNested && $tokens[$i]['code'] === T_OPEN_PARENTHESIS) {
                 $i = $tokens[$i]['parenthesis_closer'];
+
                 continue;
             }
             if ($skipNested && $tokens[$i]['code'] === T_OPEN_SHORT_ARRAY) {
                 $i = $tokens[$i]['bracket_closer'];
+
                 continue;
             }
             if ($skipNested && $tokens[$i]['code'] === T_OPEN_CURLY_BRACKET) {
                 $i = $tokens[$i]['bracket_closer'];
+
                 continue;
             }
 
@@ -254,6 +257,7 @@ abstract class AbstractSprykerSniff implements Sniff
         for ($i = $openingBraceIndex + 1; $i < $closingBraceIndex; $i++) {
             if ($tokens[$i]['type'] === 'T_OPEN_PARENTHESIS') {
                 $i = $tokens[$i]['parenthesis_closer'];
+
                 continue;
             }
             if (in_array($tokens[$i]['code'], $whitelistedCodes)) {

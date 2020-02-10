@@ -65,6 +65,7 @@ class DocBlockInheritSniff extends AbstractSprykerSniff
 
             if (stripos($tokens[$i]['content'], static::INHERIT_DOC) === 0) {
                 $this->assertCasing($phpcsFile, $i);
+
                 continue;
             }
 

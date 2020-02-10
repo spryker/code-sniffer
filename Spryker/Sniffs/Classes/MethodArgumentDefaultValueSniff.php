@@ -48,6 +48,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
             if ($this->isGivenKind(T_VARIABLE, $token)) {
                 $lastArgumentIndex = $i;
+
                 continue;
             }
 
@@ -85,6 +86,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
             if ($this->isGivenKind(T_EQUAL, $token)) {
                 $i = (int)$phpcsFile->findPrevious(T_VARIABLE, $i - 1) ?: null;
                 $i = (int)$phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true) ?: null;
+
                 continue;
             }
 

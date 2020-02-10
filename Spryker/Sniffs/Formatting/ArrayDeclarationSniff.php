@@ -77,6 +77,7 @@ class ArrayDeclarationSniff implements Sniff
             // Skip bracketed statements, like function calls.
             if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS) {
                 $i = $tokens[$i]['parenthesis_closer'];
+
                 continue;
             }
 
@@ -137,6 +138,7 @@ class ArrayDeclarationSniff implements Sniff
                     || $tokens[$nextToken]['parenthesis_owner'] !== $stackPtr)
             ) {
                 $nextToken = $tokens[$nextToken]['parenthesis_closer'];
+
                 continue;
             }
 
@@ -252,6 +254,7 @@ class ArrayDeclarationSniff implements Sniff
                 }
 
                 $lastToken = $nextToken;
+
                 continue;
             }
 
@@ -326,7 +329,9 @@ class ArrayDeclarationSniff implements Sniff
                     $error = 'The first value in a multi-value array must be on a new line';
                     //FIXME indentation
                     $phpcsFile->addError($error, $stackPtr, 'FirstValueNoNewline');
+
                     continue;
+
                     /*
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'FirstValueNoNewline');
                     if ($fix === true) {

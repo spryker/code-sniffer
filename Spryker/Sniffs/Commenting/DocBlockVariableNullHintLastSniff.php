@@ -48,6 +48,7 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
 
             if ($tokens[$i]['content'] === '@var') {
                 $this->validateVarTypeHint($phpCsFile, $i, $docBlockEndIndex, $tokens);
+
                 break;
             }
         }
