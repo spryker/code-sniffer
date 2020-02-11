@@ -8,6 +8,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use RuntimeException;
 use SlevomatCodingStandard\Helpers\DocCommentHelper;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
@@ -147,6 +148,8 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
+     * @throws \RuntimeException
+     *
      * @return array
      */
     protected function getDocBlockReturnTypesToken(File $phpCsFile, int $stackPointer): array
@@ -173,5 +176,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
                 'token' => $tokens[$returnTypesTokenIndex],
             ];
         }
+
+        throw new RuntimeException('No token found.');
     }
 }

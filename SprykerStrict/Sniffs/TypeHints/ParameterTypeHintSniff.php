@@ -8,10 +8,10 @@
 namespace SprykerStrict\Sniffs\TypeHints;
 
 use PHP_CodeSniffer\Files\File;
-use SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff as SlevomatTypeHintDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff as SlevomatParameterTypeHintSniff;
 use Spryker\Traits\BridgeTrait;
 
-class TypeHintDeclarationSniff extends SlevomatTypeHintDeclarationSniff
+class ParameterTypeHintSniff extends SlevomatParameterTypeHintSniff
 {
     use BridgeTrait;
 

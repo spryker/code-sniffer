@@ -12,6 +12,7 @@ if (!empty($_SERVER['PWD'])) {
 foreach ($options as $file) {
     if (file_exists($file)) {
         define('SNIFFER_COMPOSER_INSTALL', $file);
+
         break;
     }
 }

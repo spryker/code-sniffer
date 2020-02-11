@@ -83,6 +83,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
             $unique = array_unique($docBlockParamTypes);
             if (count($docBlockParamTypes) !== count($unique)) {
                 $phpCsFile->addError('Duplicate type in `' . $docBlockParam['type'] . '`', $docBlockParam['index'], 'Duplicate');
+
                 continue;
             }
             $expectedOrder = $this->getExpectedOrder($docBlockParamTypes);

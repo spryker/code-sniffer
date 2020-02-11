@@ -57,6 +57,7 @@ class SprykerBridgeSniff implements Sniff
 
             $this->assertValidConstructor($phpCsFile, $index);
             $this->assertValidDocBlock($phpCsFile, $index);
+
             break;
         }
     }

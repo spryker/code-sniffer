@@ -9,12 +9,20 @@
     <!-- Including general Spryker standard -->
     <rule ref="../Spryker/ruleset.xml"/>
 
-    <rule ref="SprykerStrict.TypeHints.TypeHintDeclaration">
-        <exclude name="SprykerStrict.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
-        <exclude name="SprykerStrict.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
-        <exclude name="SprykerStrict.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
-        <exclude name="SprykerStrict.TypeHints.TypeHintDeclaration.UselessParameterAnnotation"/>
-        <exclude name="SprykerStrict.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+    <rule ref="SprykerStrict.TypeHints.ParameterTypeHint">
+        <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
+        <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.UselessAnnotation"/>
+        <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.UselessDocComment"/>
+        <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
+    </rule>
+    <rule ref="SprykerStrict.TypeHints.PropertyTypeHint">
+        <exclude name="SprykerStrict.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
+        <exclude name="SprykerStrict.TypeHints.PropertyTypeHint.UselessAnnotation"/>
+        <exclude name="SprykerStrict.TypeHints.PropertyTypeHint.UselessDocComment"/>
+        <exclude name="SprykerStrict.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
+        <properties>
+            <property name="enableNativeTypeHint" type="bool" value="false"/>
+        </properties>
     </rule>
 
 </ruleset>

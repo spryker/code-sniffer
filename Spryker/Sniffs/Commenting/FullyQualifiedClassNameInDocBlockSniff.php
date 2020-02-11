@@ -159,6 +159,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
                     $message = 'The typehint seems to be missing for `%s`';
                 }
                 $phpCsFile->addError(sprintf($message, $className), $classNameIndex, 'ClassNameInvalid');
+
                 continue;
             }
             $classNames[$key] = $useStatement . ($arrayOfObject ? str_repeat('[]', $arrayOfObject) : '');
@@ -227,6 +228,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             }
 
             $namespaceStart = $id + 1;
+
             break;
         }
         if (!$namespaceStart) {
@@ -370,6 +372,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
                     $message = 'The typehint seems to be missing for `%s`';
                 }
                 $phpCsFile->addError(sprintf($message, $subClassName), $classNameIndex, 'ClassNameInvalid');
+
                 continue;
             }
             $subClassNames[$i] = $useStatement;

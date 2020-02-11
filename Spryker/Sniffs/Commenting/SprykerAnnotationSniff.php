@@ -140,6 +140,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
                     $i,
                     'Annotation.Interface.Missing'
                 );
+
                 continue;
             }
 

@@ -83,7 +83,7 @@ SlevomatCodingStandard (24 sniffs)
 - SlevomatCodingStandard.Classes.UnusedPrivateElements
 - SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment
 - SlevomatCodingStandard.Commenting.EmptyComment
-- SlevomatCodingStandard.ControlStructures.ControlStructureSpacing
+- SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing
 - SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch
 - SlevomatCodingStandard.ControlStructures.DisallowYodaComparison
 - SlevomatCodingStandard.ControlStructures.NewWithParentheses
@@ -185,9 +185,10 @@ Spryker (80 sniffs)
 - Spryker.WhiteSpace.ObjectAttributeSpacing
 - Spryker.WhiteSpace.OperatorSpacing
 
-SprykerStrict (1 sniff)
+SprykerStrict (2 sniffs)
 ------------------------
-- SprykerStrict.TypeHints.TypeHintDeclaration
+- SprykerStrict.TypeHints.ParameterTypeHint
+- SprykerStrict.TypeHints.PropertyTypeHint
 
 Squiz (26 sniffs)
 -----------------

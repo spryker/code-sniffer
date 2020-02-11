@@ -74,18 +74,21 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             // We need to skip for complex assignments
             if ($this->isGivenKind(Tokens::$booleanOperators, $tokens[$currentToken])) {
                 $hasInlineAssignment = false;
+
                 break;
             }
 
             // Negations we also cannot handle just yet
             if ($tokens[$currentToken]['code'] === T_BOOLEAN_NOT) {
                 $hasInlineAssignment = false;
+
                 break;
             }
 
             // Comparison inside is also more complex
             if ($this->isGivenKind(Tokens::$comparisonTokens, $tokens[$currentToken])) {
                 $hasInlineAssignment = false;
+
                 break;
             }
 
