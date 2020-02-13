@@ -18,7 +18,7 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
     /**
      * @var int
      */
-    public $methodSignatureLengthHardBreak = 120;
+    public $methodSignatureLengthHardBreak = 200;
 
     /**
      * @var int
@@ -60,32 +60,121 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
             ) {
                 return;
             }
-            $phpcsFile->addFixableError('The parameters on this method definition needs to be multi-line.', $stackPtr, 'multiline');
-        }
-
-        if (!$isSingleLineSignature) {
-            //multiline allowed when signature is longer than the hard break
-            if ($signatureLength >= $this->methodSignatureLengthHardBreak) {
+            $fix = $phpcsFile->addFixableError('The parameters on this method definition need to be multi-line.', $stackPtr, 'Multiline');
+            if (!$fix) {
                 return;
             }
-            //multiline allowed after the soft break if the number of parameters is too high.
-            if (
-                $signatureLength >= $this->methodSignatureLengthSoftBreak
-                && $parametersCount >= $this->methodSignatureNumberParameterSoftBreak
-            ) {
-                return;
-            }
-            $phpcsFile->addFixableError('The parameters on this method definition needs to be on a single line.', $stackPtr, 'inline');
-        }
 
-        if ($phpcsFile->fixer->enabled === false) {
-            return;
-        }
-        if ($isSingleLineSignature) {
             $this->makeMethodSignatureMultiline($phpcsFile, $stackPtr);
 
             return;
         }
+
+        //multiline allowed when signature is longer than the soft break
+        if ($signatureLength >= $this->methodSignatureLengthSoftBreak) {
+            return;
+        }
+        //multiline allowed if parameters is too high.
+        if (
+            $parametersCount >= $this->methodSignatureNumberParameterSoftBreak
+        ) {
+            return;
+        }
+        $fix = $phpcsFile->addFixableError('The parameters on this method definition need to be on a single line.', $stackPtr, 'Inline');
+        if ($fix) {
+            return;
+        }
+
         $this->makeMethodSignatureSingleLine($phpcsFile, $stackPtr);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function makeMethodSignatureSingleLine(File $phpcsFile, int $stackPtr): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $openParenthesisPosition = $tokens[$stackPtr]['parenthesis_opener'];
+        $closeParenthesisPosition = $tokens[$stackPtr]['parenthesis_closer'];
+        //if null, it's an interface or abstract method.
+        $scopeOpenerPosition = $tokens[$stackPtr]['scope_opener'] ?? null;
+        $parameters = $phpcsFile->getMethodParameters($stackPtr);
+        $properties = $phpcsFile->getMethodProperties($stackPtr);
+        $returnTypePosition = $properties['return_type_token'];
+        $indentation = $this->getIndentationWhitespace($phpcsFile, $stackPtr);
+
+        $content = [];
+        foreach ($parameters as $parameter) {
+            $content[] = $parameter['content'];
+        }
+        $formattedParameters = implode(', ', $content);
+
+        $phpcsFile->fixer->beginChangeset();
+        if ($scopeOpenerPosition !== null) {
+            $this->removeEverythingBetweenPositions($phpcsFile, $closeParenthesisPosition, $scopeOpenerPosition);
+            $phpcsFile->fixer->addContentBefore($scopeOpenerPosition, "\n" . $indentation);
+            if ($returnTypePosition !== false) {
+                $phpcsFile->fixer->addContent($closeParenthesisPosition, ': ' . $tokens[$returnTypePosition]['content']);
+            }
+        }
+        $this->removeEverythingBetweenPositions($phpcsFile, $openParenthesisPosition, $closeParenthesisPosition);
+        $phpcsFile->fixer->addContentBefore($closeParenthesisPosition, $formattedParameters);
+        $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function makeMethodSignatureMultiline(File $phpcsFile, int $stackPtr): void
+    {
+        $tokens = $phpcsFile->getTokens();
+        $openParenthesisPosition = $tokens[$stackPtr]['parenthesis_opener'];
+        $closeParenthesisPosition = $tokens[$stackPtr]['parenthesis_closer'];
+        //if null, it's an interface or abstract method.
+        $scopeOpenerPosition = $tokens[$stackPtr]['scope_opener'] ?? null;
+
+        $parameters = $phpcsFile->getMethodParameters($stackPtr);
+
+        $formattedParameters = "\n";
+        $parameterContent = [];
+        $indentation = $this->getIndentationWhitespace($phpcsFile, $stackPtr);
+        foreach ($parameters as $parameter) {
+            $parameterContent[] = str_repeat($indentation, 2) . $parameter['content'];
+        }
+        $formattedParameters .= implode(",\n", $parameterContent);
+        $formattedParameters .= "\n$indentation";
+
+        $phpcsFile->fixer->beginChangeset();
+        $this->removeEverythingBetweenPositions($phpcsFile, $openParenthesisPosition, $closeParenthesisPosition);
+        $phpcsFile->fixer->addContentBefore($closeParenthesisPosition, $formattedParameters);
+        if ($scopeOpenerPosition !== null) {
+            if (!$this->areTokensOnTheSameLine($tokens, $closeParenthesisPosition, $scopeOpenerPosition)) {
+                $endOfPreviousLine = $this->getLineEndingPosition($tokens, $closeParenthesisPosition);
+                $this->removeEverythingBetweenPositions($phpcsFile, $endOfPreviousLine - 1, $scopeOpenerPosition);
+                $phpcsFile->fixer->addContentBefore($scopeOpenerPosition, ' ');
+            }
+        }
+        $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $fromPosition
+     * @param int $toPosition
+     *
+     * @return void
+     */
+    protected function removeEverythingBetweenPositions(File $phpcsFile, int $fromPosition, int $toPosition): void
+    {
+        for ($i = $fromPosition + 1; $i < $toPosition; $i++) {
+            $phpcsFile->fixer->replaceToken($i, '');
+        }
     }
 }
