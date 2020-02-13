@@ -54,7 +54,8 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
         $parametersCount = count($phpcsFile->getMethodParameters($stackPtr));
         if ($isSingleLineSignature) {
             //single line only allowed when the length don't go over the hard break or there are no parameters
-            if ($signatureLength <= $this->methodSignatureLengthHardBreak
+            if (
+                $signatureLength <= $this->methodSignatureLengthHardBreak
                 || $parametersCount === 0
             ) {
                 return;
@@ -68,7 +69,8 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
                 return;
             }
             //multiline allowed after the soft break if the number of parameters is too high.
-            if ($signatureLength >= $this->methodSignatureLengthSoftBreak
+            if (
+                $signatureLength >= $this->methodSignatureLengthSoftBreak
                 && $parametersCount >= $this->methodSignatureNumberParameterSoftBreak
             ) {
                 return;

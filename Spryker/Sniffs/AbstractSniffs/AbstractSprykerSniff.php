@@ -635,6 +635,7 @@ abstract class AbstractSprykerSniff implements Sniff
                     //space after comma.
                     $totalLength++;
                 }
+
                 continue;
             }
             $totalLength += $this->getParameterTotalLength($parameter);
