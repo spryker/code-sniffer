@@ -82,8 +82,13 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function fixContent(File $phpcsFile, int $stackPtr, string $key, int $openingBraceIndex, int $closingBraceIndex): void
-    {
+    protected function fixContent(
+        File $phpcsFile,
+        int $stackPtr,
+        string $key,
+        int $openingBraceIndex,
+        int $closingBraceIndex
+    ): void {
         $needsBrackets = $this->needsBrackets($phpcsFile, $openingBraceIndex, $closingBraceIndex);
 
         $cast = '(' . static::$matching[$key] . ')';

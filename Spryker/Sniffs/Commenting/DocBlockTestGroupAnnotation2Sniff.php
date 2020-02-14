@@ -95,8 +95,11 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function addCommentWithGroupAnnotation(File $phpCsFile, int $stackPointer, array $expectedAnnotations): void
-    {
+    protected function addCommentWithGroupAnnotation(
+        File $phpCsFile,
+        int $stackPointer,
+        array $expectedAnnotations
+    ): void {
         $tokens = $phpCsFile->getTokens();
 
         $startPosition = $stackPointer;
@@ -258,8 +261,11 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function findGroupTagPosition(File $phpCsFile, int $docCommentStartPosition, int $firstDocCommentTagPosition): ?int
-    {
+    protected function findGroupTagPosition(
+        File $phpCsFile,
+        int $docCommentStartPosition,
+        int $firstDocCommentTagPosition
+    ): ?int {
         $tokens = $phpCsFile->getTokens();
         $docEndIndex = $tokens[$docCommentStartPosition]['comment_closer'];
 
@@ -305,8 +311,11 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getGroupTagPositionEnd(File $phpCsFile, int $docCommentStartPosition, int $firstGroupTagPosition): int
-    {
+    protected function getGroupTagPositionEnd(
+        File $phpCsFile,
+        int $docCommentStartPosition,
+        int $firstGroupTagPosition
+    ): int {
         $tokens = $phpCsFile->getTokens();
 
         $docCommentCloserPosition = $tokens[$docCommentStartPosition]['comment_closer'];
@@ -332,8 +341,10 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      *
      * @return bool
      */
-    protected function containsExpectedGroupAnnotations(array $givenGroupAnnotationParts, array $expectedGroupAnnotations): bool
-    {
+    protected function containsExpectedGroupAnnotations(
+        array $givenGroupAnnotationParts,
+        array $expectedGroupAnnotations
+    ): bool {
         if (count($givenGroupAnnotationParts) === 0) {
             return false;
         }

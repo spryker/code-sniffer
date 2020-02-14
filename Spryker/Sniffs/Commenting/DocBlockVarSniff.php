@@ -201,8 +201,12 @@ class DocBlockVarSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function handleMissingVar(File $phpCsFile, int $docBlockEndIndex, int $docBlockStartIndex, ?string $defaultValueType): void
-    {
+    protected function handleMissingVar(
+        File $phpCsFile,
+        int $docBlockEndIndex,
+        int $docBlockStartIndex,
+        ?string $defaultValueType
+    ): void {
         $error = 'Doc Block annotation @var for property missing';
         if ($defaultValueType === null) {
             $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');

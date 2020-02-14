@@ -62,8 +62,12 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function validateVarTypeHint(File $phpCsFile, int $varCommentTagIndex, int $docBlockEndIndex, array $tokens): void
-    {
+    protected function validateVarTypeHint(
+        File $phpCsFile,
+        int $varCommentTagIndex,
+        int $docBlockEndIndex,
+        array $tokens
+    ): void {
         $commentStringIndex = $phpCsFile->findNext(T_DOC_COMMENT_STRING, $varCommentTagIndex, $docBlockEndIndex);
         if (!$commentStringIndex) {
             return;
@@ -93,8 +97,13 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function handleInvalidOrder(File $phpCsFile, int $docBlockEndIndex, int $commentStringIndex, string $content, string $appendix): void
-    {
+    protected function handleInvalidOrder(
+        File $phpCsFile,
+        int $docBlockEndIndex,
+        int $commentStringIndex,
+        string $content,
+        string $appendix
+    ): void {
         $content = str_replace('null|', '', $content) . '|null';
         $content = implode('|', array_unique(explode('|', $content)));
         if ($appendix) {

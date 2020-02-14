@@ -83,8 +83,11 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    public function assertRequiredNullableReturnType(File $phpCsFile, int $stackPointer, array $docBlockReturnTypes): void
-    {
+    public function assertRequiredNullableReturnType(
+        File $phpCsFile,
+        int $stackPointer,
+        array $docBlockReturnTypes
+    ): void {
         if (!$docBlockReturnTypes) {
             return;
         }

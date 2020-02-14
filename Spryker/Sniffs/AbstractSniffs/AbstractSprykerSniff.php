@@ -7,6 +7,7 @@
 
 namespace Spryker\Sniffs\AbstractSniffs;
 
+use PHP_CodeSniffer\Exceptions\DeepExitException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use SlevomatCodingStandard\Helpers\ClassHelper;
@@ -543,5 +544,124 @@ abstract class AbstractSprykerSniff implements Sniff
         }
 
         $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     *
+     * @return int
+     */
+    protected function getMethodSignatureLength(File $phpcsFile, int $stackPtr): int
+    {
+        $tokens = $phpcsFile->getTokens();
+        if ($tokens[$stackPtr]['code'] !== T_FUNCTION) {
+            throw new DeepExitException('This can only be run on a method signature.');
+        }
+        $openParenthesisPosition = $tokens[$stackPtr]['parenthesis_opener'];
+        $closeParenthesisPosition = $tokens[$stackPtr]['parenthesis_closer'];
+
+        $methodProperties = $phpcsFile->getMethodProperties($stackPtr);
+        $methodParameters = $phpcsFile->getMethodParameters($stackPtr);
+        if ($this->areTokensOnTheSameLine($tokens, $openParenthesisPosition, $closeParenthesisPosition)) {
+            return $this->getMethodSingleLineSignatureLength($tokens, $stackPtr);
+        }
+
+        return $this->getMethodSignatureMultilineLength($tokens, $stackPtr, $methodProperties, $methodParameters);
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $firstPosition
+     * @param int $secondPosition
+     *
+     * @return bool
+     */
+    protected function areTokensOnTheSameLine(array $tokens, int $firstPosition, int $secondPosition): bool
+    {
+        return $tokens[$firstPosition]['line'] === $tokens[$secondPosition]['line'];
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $stackPtr
+     *
+     * @return int
+     */
+    protected function getMethodSingleLineSignatureLength(array $tokens, int $stackPtr): int
+    {
+        $position = $this->getLineEndingPosition($tokens, $stackPtr);
+
+        return $tokens[$position]['column'] - 1;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $position
+     *
+     * @return int
+     */
+    protected function getLineEndingPosition(array $tokens, int $position): int
+    {
+        while (!empty($tokens[$position]) && strpos($tokens[$position]['content'], PHP_EOL) === false) {
+            $position++;
+        }
+
+        return $position;
+    }
+
+    /**
+     * @param array $tokens
+     * @param int $stackPtr
+     * @param array $methodProperties
+     * @param array $methodParameters
+     *
+     * @return int
+     */
+    protected function getMethodSignatureMultilineLength(
+        array $tokens,
+        int $stackPtr,
+        array $methodProperties,
+        array $methodParameters
+    ): int {
+        $totalLength = $this->getMethodSingleLineSignatureLength($tokens, $stackPtr);
+        $firstLineEndPosition = $this->getLineEndingPosition($tokens, $stackPtr);
+        foreach ($methodParameters as $parameter) {
+            if ($tokens[$parameter['token']]['line'] === $tokens[$stackPtr]['line']) {
+                //the parameters are on the first line of the signature.
+                if ($tokens[$firstLineEndPosition - 1]['code'] === T_COMMA) {
+                    //space after comma.
+                    $totalLength++;
+                }
+
+                continue;
+            }
+            $totalLength += $this->getParameterTotalLength($parameter);
+            if ($parameter['comma_token'] !== false) {
+                //comma + space
+                $totalLength += 2;
+            }
+        }
+        //closing parenthesis
+        $totalLength++;
+        // column (:) and space before the returnType
+        $totalLength += mb_strlen($methodProperties['return_type']) + 2;
+
+        return $totalLength;
+    }
+
+    /**
+     * @param array $methodParameter
+     *
+     * @return int
+     */
+    protected function getParameterTotalLength(array $methodParameter): int
+    {
+        $length = 0;
+        $length += mb_strlen($methodParameter['content']);
+
+        return $length;
     }
 }

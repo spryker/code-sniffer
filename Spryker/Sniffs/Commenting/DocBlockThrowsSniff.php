@@ -207,8 +207,12 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function compareExceptionsAndAnnotations(File $phpCsFile, array $exceptions, array $annotations, int $docBlockEndIndex): void
-    {
+    protected function compareExceptionsAndAnnotations(
+        File $phpCsFile,
+        array $exceptions,
+        array $annotations,
+        int $docBlockEndIndex
+    ): void {
         $useStatements = $this->getUseStatements($phpCsFile);
 
         foreach ($annotations as $annotation) {

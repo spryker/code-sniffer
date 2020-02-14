@@ -221,8 +221,11 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      *
      * @return int|null
      */
-    protected function findGroupTagPosition(File $phpCsFile, int $docCommentStartPosition, int $firstDocCommentTagPosition): ?int
-    {
+    protected function findGroupTagPosition(
+        File $phpCsFile,
+        int $docCommentStartPosition,
+        int $firstDocCommentTagPosition
+    ): ?int {
         $tokens = $phpCsFile->getTokens();
         $docEndIndex = $tokens[$docCommentStartPosition]['comment_closer'];
 
@@ -268,8 +271,11 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      *
      * @return int
      */
-    protected function getGroupTagPositionEnd(File $phpCsFile, int $docCommentStartPosition, int $firstGroupTagPosition): int
-    {
+    protected function getGroupTagPositionEnd(
+        File $phpCsFile,
+        int $docCommentStartPosition,
+        int $firstGroupTagPosition
+    ): int {
         $tokens = $phpCsFile->getTokens();
 
         $docCommentCloserPosition = $tokens[$docCommentStartPosition]['comment_closer'];

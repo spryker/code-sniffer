@@ -164,8 +164,12 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function addReturnAnnotation(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex, string $returnType = 'void'): void
-    {
+    protected function addReturnAnnotation(
+        File $phpcsFile,
+        int $docBlockStartIndex,
+        int $docBlockEndIndex,
+        string $returnType = 'void'
+    ): void {
         $indentation = $this->getIndentationWhitespace($phpcsFile, $docBlockEndIndex);
 
         $lastLineEndIndex = $phpcsFile->findPrevious([T_DOC_COMMENT_WHITESPACE], $docBlockEndIndex - 1, null, true);
@@ -222,8 +226,12 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
      *
      * @return void
      */
-    protected function assertExisting(File $phpcsFile, int $pointer, int $docBlockReturnIndex, ?string $returnType): void
-    {
+    protected function assertExisting(
+        File $phpcsFile,
+        int $pointer,
+        int $docBlockReturnIndex,
+        ?string $returnType
+    ): void {
         $tokens = $phpcsFile->getTokens();
 
         $documentedReturnType = $this->documentedReturnType($tokens, $docBlockReturnIndex);
