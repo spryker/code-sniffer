@@ -127,7 +127,15 @@
 
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
 
-    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <rule ref="Generic.PHP.DeprecatedFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array">
+                <element key="delete" value="unset"/>
+                <element key="create_function" value="null"/>
+                <element key="each" value="null"/>
+            </property>
+        </properties>
+    </rule>
     <rule ref="Generic.Formatting.NoSpaceAfterCast"/>
 
     <rule ref="Squiz.PHP.Eval"/>
