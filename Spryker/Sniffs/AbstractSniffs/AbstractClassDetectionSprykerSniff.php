@@ -127,6 +127,30 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      *
      * @return bool
      */
+    protected function isClient(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->hasCorrectName($phpCsFile, 'Client') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractClient');
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    protected function isService(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->hasCorrectName($phpCsFile, 'Service') &&
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractService');
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
     protected function isFactory(File $phpCsFile, int $stackPointer): bool
     {
         if ($this->isBusinessFactory($phpCsFile, $stackPointer)) {
