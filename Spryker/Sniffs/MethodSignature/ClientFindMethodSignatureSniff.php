@@ -10,7 +10,7 @@ namespace Spryker\Sniffs\MethodSignature;
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractFindMethodSignatureSniff;
 
-class ServiceFindFindMethodSignatureSniff extends AbstractFindMethodSignatureSniff
+class ClientFindMethodSignatureSniff extends AbstractFindMethodSignatureSniff
 {
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
@@ -20,6 +20,6 @@ class ServiceFindFindMethodSignatureSniff extends AbstractFindMethodSignatureSni
      */
     protected function isSniffApplicable(File $phpCsFile, int $stackPointer): bool
     {
-        return $this->isService($phpCsFile, $stackPointer);
+        return $this->isClient($phpCsFile, $stackPointer);
     }
 }

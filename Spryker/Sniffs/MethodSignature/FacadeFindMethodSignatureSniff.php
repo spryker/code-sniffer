@@ -10,7 +10,7 @@ namespace Spryker\Sniffs\MethodSignature;
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractFindMethodSignatureSniff;
 
-class FacadeFindFindMethodSignatureSniff extends AbstractFindMethodSignatureSniff
+class FacadeFindMethodSignatureSniff extends AbstractFindMethodSignatureSniff
 {
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
