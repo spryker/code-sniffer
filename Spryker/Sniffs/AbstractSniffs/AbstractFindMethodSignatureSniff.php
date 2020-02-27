@@ -19,9 +19,6 @@ abstract class AbstractFindMethodSignatureSniff extends AbstractClassDetectionSp
     protected const CODE_METHOD_MUST_BE_NULLABLE = 'MethodMustBeNullable';
     protected const CODE_METHOD_MUST_NOT_BE_NULLABLE = 'MethodMustNotBeNullable';
 
-    protected const MESSAGE_PATTERN_METHOD_MUST_BE_NULLABLE = 'The method %s() return type must be nullable. Please change the signature.';
-    protected const MESSAGE_PATTERN_METHOD_MUST_NOT_BE_NULLABLE = 'The method %s() return type must not be nullable. Please change the signature.';
-
     protected const NAME_PREFIX_METHOD_FIND = 'find';
     protected const NAME_PREFIX_METHOD_GET = 'get';
 
@@ -106,7 +103,7 @@ abstract class AbstractFindMethodSignatureSniff extends AbstractClassDetectionSp
 
         if (strpos($methodName, static::NAME_PREFIX_METHOD_FIND) === 0 && !$isMethodNullable) {
             $phpCsFile->addError(
-                sprintf(static::MESSAGE_PATTERN_METHOD_MUST_BE_NULLABLE, $methodName),
+                sprintf('The method %s() return type must be nullable. Please change the signature.', $methodName),
                 $methodPointer,
                 static::CODE_METHOD_MUST_BE_NULLABLE
             );
@@ -114,7 +111,7 @@ abstract class AbstractFindMethodSignatureSniff extends AbstractClassDetectionSp
 
         if (strpos($methodName, static::NAME_PREFIX_METHOD_GET) === 0 && $isMethodNullable) {
             $phpCsFile->addError(
-                sprintf(static::MESSAGE_PATTERN_METHOD_MUST_NOT_BE_NULLABLE, $methodName),
+                sprintf('The method %s() return type must not be nullable. Please change the signature.', $methodName),
                 $methodPointer,
                 static::CODE_METHOD_MUST_NOT_BE_NULLABLE
             );
