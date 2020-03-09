@@ -22,7 +22,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
     public function register(): array
     {
         // We skip T_FOR, T_WHILE for now as they can have valid inline assignment
-        return [T_FOREACH, T_IF, T_SWITCH, T_OBJECT_OPERATOR, T_DOUBLE_COLON];
+        return [T_FOREACH, T_IF, T_ELSEIF, T_SWITCH, T_OBJECT_OPERATOR, T_DOUBLE_COLON];
     }
 
     /**
@@ -47,7 +47,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
 
         $closingBraceIndex = $tokens[$openingBraceIndex]['parenthesis_closer'];
 
-        $hasInlineAssignment = $this->contains($phpcsFile, T_EQUAL, $openingBraceIndex, $closingBraceIndex);
+        $hasInlineAssignment = $this->contains($phpcsFile, T_EQUAL, $openingBraceIndex + 1, $closingBraceIndex - 1);
         if (!$hasInlineAssignment) {
             return;
         }
