@@ -8,7 +8,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Sniffs\AbstractSniffs\AbstractApiClassDetectionSprykerSniff;
 use Spryker\Tools\Traits\CommentingTrait;
 use Spryker\Tools\Traits\SignatureTrait;
 
@@ -16,7 +16,7 @@ use Spryker\Tools\Traits\SignatureTrait;
  * Doc block {@inheritDoc} should come before any tags.
  * Also lowercase {@inheritdoc} usage should be always canonical {@inheritDoc}.
  */
-class DocBlockInheritSniff extends AbstractSprykerSniff
+class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
 {
     use CommentingTrait;
     use SignatureTrait;
@@ -102,6 +102,8 @@ class DocBlockInheritSniff extends AbstractSprykerSniff
         }
 
         $firstTagIndex = $this->getFirstTagIndex($phpcsFile, $openingTagIndex, $closingTagIndex);
+        $this->assertNoFollowingTextForCoreClasses($phpcsFile, $inheritDocIndex, $closingTagIndex, $firstTagIndex);
+
         if (!$firstTagIndex) {
             return;
         }
@@ -205,5 +207,33 @@ class DocBlockInheritSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->replaceToken($index, $content);
 
         $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $inheritDocIndex
+     * @param int $closingTagIndex
+     * @param int|null $firstTagIndex
+     *
+     * @return void
+     */
+    protected function assertNoFollowingTextForCoreClasses(File $phpcsFile, int $inheritDocIndex, int $closingTagIndex, ?int $firstTagIndex): void
+    {
+        if ($firstTagIndex) {
+            $possibleTextIndex = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $inheritDocIndex + 1, $firstTagIndex - 1);
+        } else {
+            $possibleTextIndex = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $inheritDocIndex + 1, $closingTagIndex - 1);
+        }
+
+        if (!$possibleTextIndex) {
+            return;
+        }
+
+        $sprykerApiClass = $this->sprykerApiClass($phpcsFile, $inheritDocIndex);
+        if ($sprykerApiClass === null || $sprykerApiClass === static::API_PLUGIN) {
+            return;
+        }
+
+        $phpcsFile->addError('No specification text allowed after ' . static::INHERIT_DOC . ' for API core classes', $possibleTextIndex, 'InvalidText');
     }
 }
