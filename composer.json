@@ -30,7 +30,10 @@
   "autoload-dev": {
     "psr-4": {
       "CodeSnifferTest\\": "tests/"
-    }
+    },
+    "files": [
+      "vendor/squizlabs/php_codesniffer/autoload.php"
+    ]
   },
   "scripts": {
     "docs": "php docs/generate.php",
@@ -41,9 +44,9 @@
       "sed -i.bak 's/<!--<severity>0<\\/severity>-->/<severity>0<\\/severity>/' Spryker/ruleset.xml",
       "rm -f Spryker/ruleset.xml.bak"
     ],
-    "cs-check": "phpcs --colors -p -s --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
-    "cs-fix": "phpcbf --colors -p --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
-    "test": "phpunit",
+    "cs-check": "vendor/bin/phpcs --colors -p -s --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
+    "cs-fix": "vendor/bin/phpcbf --colors -p --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
+    "test": "vendor/bin/phpunit",
     "stan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 5 Spryker/Sniffs/ SprykerStrict/Sniffs/"
   },
   "bin": [
