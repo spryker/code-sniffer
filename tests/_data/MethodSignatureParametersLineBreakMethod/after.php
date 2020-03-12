@@ -4,7 +4,7 @@ namespace Spryker;
 
 class FixMe
 {
-    public function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckon(
+    public function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckonAndPleaseAutoFixedSoIDontHaveToDoItManually(
         string $foo,
         ?int $barbarbarbarbar = null
     ): ?array {
@@ -32,7 +32,7 @@ class FixMe
 
     abstract function shouldBeSingleLine5($foo);
 
-    abstract function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckon2(
+    abstract function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckonAndPleaseAutoFixedSoIDontHaveToDoItManually2(
         string $foo,
         ?int $barbarbarbarbar = null
     );

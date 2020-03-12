@@ -4,7 +4,7 @@ namespace Spryker;
 
 class FixMe
 {
-    public function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckon(string $foo, ?int $barbarbarbarbar = null): ?array
+    public function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckonAndPleaseAutoFixedSoIDontHaveToDoItManually(string $foo, ?int $barbarbarbarbar = null): ?array
     {
     }
 
@@ -35,7 +35,7 @@ class FixMe
         $foo
     );
 
-    abstract function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckon2(string $foo, ?int $barbarbarbarbar = null);
+    abstract function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckonAndPleaseAutoFixedSoIDontHaveToDoItManually2(string $foo, ?int $barbarbarbarbar = null);
 
     //the following are correct and should not show errors.
 

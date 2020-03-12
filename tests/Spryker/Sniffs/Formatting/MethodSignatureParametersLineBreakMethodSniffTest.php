@@ -7,12 +7,18 @@ use Spryker\Sniffs\Formatting\MethodSignatureParametersLineBreakMethodSniff;
 
 class MethodSignatureParametersLineBreakMethodSniffTest extends TestCase
 {
-    public function testMethodSignatureParametersLineBreakMethodSniffer()
+    /**
+     * @return void
+     */
+    public function testMethodSignatureParametersLineBreakMethodSniffer(): void
     {
         $this->assertSnifferFindsFixableErrors(new MethodSignatureParametersLineBreakMethodSniff(), 7);
     }
 
-    public function testMethodSignatureParametersLineBreakMethodFixer()
+    /**
+     * @return void
+     */
+    public function testMethodSignatureParametersLineBreakMethodFixer(): void
     {
         $this->assertSnifferCanFixErrors(new MethodSignatureParametersLineBreakMethodSniff(), 7);
     }
