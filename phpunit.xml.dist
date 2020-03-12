@@ -2,13 +2,15 @@
 <phpunit>
     <testsuites>
         <testsuite name="spryker-code-sniffer">
+            <directory>tests/Spryker/</directory>
         </testsuite>
     </testsuites>
 
     <!-- Prevent coverage reports from looking in tests, vendors, config folders -->
     <filter>
         <whitelist>
-            <directory suffix=".php">./Spryker/Sniffs</directory>
+            <directory suffix=".php">Spryker/Sniffs/</directory>
+            <directory suffix=".php">SprykerStrict/Sniffs/</directory>
         </whitelist>
     </filter>
 </phpunit>

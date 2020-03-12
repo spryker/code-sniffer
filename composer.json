@@ -27,6 +27,11 @@
       "SprykerStrict\\": "SprykerStrict/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "CodeSnifferTest\\": "tests/"
+    }
+  },
   "scripts": {
     "docs": "php docs/generate.php",
     "docs-listing": "phpcs -e --standard=SprykerStrict/ruleset.xml",
@@ -40,11 +45,6 @@
     "cs-fix": "phpcbf --colors -p --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
     "test": "phpunit",
     "stan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 5 Spryker/Sniffs/ SprykerStrict/Sniffs/"
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "CodeSnifferTest\\": "tests/"
-    }
   },
   "bin": [
     "bin/tokenize"
