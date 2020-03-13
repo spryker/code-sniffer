@@ -11,24 +11,20 @@ class FixMe
     public function shouldBeSingleLine(
         int $test
     ): int {
-
     }
 
     public function shouldBeSingleLine2(
         int $test
     ) {
-
     }
 
     public function shouldBeSingleLine3(
         int $test) {
-
     }
 
     public function shouldBeSingleLine4(int $foo,
         string $bar
     ) {
-
     }
 
     abstract function shouldBeSingleLine5(
@@ -60,7 +56,6 @@ class FixMe
 
     public function isCorrect(int $test)
     {
-
     }
 
     public function thisIsATrulyVeryLengthyFunctionNameAndShouldNotBeMultiLinedIReckonButItDefinitelyShouldBeIgnored(): ?array
