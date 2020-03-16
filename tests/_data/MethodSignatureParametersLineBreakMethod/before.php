@@ -4,38 +4,34 @@ namespace Spryker;
 
 class FixMe
 {
-    public function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckon(string $foo, ?int $barbarbarbarbar = null): ?array
+    public function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckonAndPleaseAutoFixedSoIDontHaveToDoItManually(string $foo, ?int $barbarbarbarbar = null): ?array
     {
     }
 
     public function shouldBeSingleLine(
         int $test
     ): int {
-
     }
 
     public function shouldBeSingleLine2(
         int $test
     ) {
-
     }
 
     public function shouldBeSingleLine3(
         int $test) {
-
     }
 
     public function shouldBeSingleLine4(int $foo,
         string $bar
     ) {
-
     }
 
     abstract function shouldBeSingleLine5(
         $foo
     );
 
-    abstract function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckon2(string $foo, ?int $barbarbarbarbar = null);
+    abstract function thisIsAVeryLongFunctionNameAndShouldBeMultiLinedIReckonAndPleaseAutoFixedSoIDontHaveToDoItManually2(string $foo, ?int $barbarbarbarbar = null);
 
     //the following are correct and should not show errors.
 
@@ -60,7 +56,6 @@ class FixMe
 
     public function isCorrect(int $test)
     {
-
     }
 
     public function thisIsATrulyVeryLengthyFunctionNameAndShouldNotBeMultiLinedIReckonButItDefinitelyShouldBeIgnored(): ?array

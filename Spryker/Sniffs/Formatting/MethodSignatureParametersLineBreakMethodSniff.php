@@ -18,7 +18,7 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
     /**
      * @var int
      */
-    public $methodSignatureLengthHardBreak = 200;
+    public $methodSignatureLengthHardBreak = 160;
 
     /**
      * @var int
@@ -60,6 +60,7 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
             ) {
                 return;
             }
+
             $fix = $phpcsFile->addFixableError('The parameters on this method definition need to be multi-line.', $stackPtr, 'Multiline');
             if (!$fix) {
                 return;
@@ -74,7 +75,7 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
         if ($signatureLength >= $this->methodSignatureLengthSoftBreak) {
             return;
         }
-        //multiline allowed if parameters is too high.
+        //multiline allowed if parameter count is too high.
         if (
             $parametersCount >= $this->methodSignatureNumberParameterSoftBreak
         ) {
