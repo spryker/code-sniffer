@@ -19,6 +19,7 @@
     <exclude-pattern>*\.json</exclude-pattern>
 
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
+
     <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
