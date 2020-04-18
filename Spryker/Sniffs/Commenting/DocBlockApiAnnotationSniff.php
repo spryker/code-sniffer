@@ -37,7 +37,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         if ($apiClass === null || !$this->isPublicMethod($phpCsFile, $stackPointer) || $this->isConstructor($phpCsFile, $stackPointer)) {
             // To be finalized once all plugins are detected properly.
             //$this->assertNoApiTag($phpCsFile, $stackPointer);
-
             return;
         }
 
