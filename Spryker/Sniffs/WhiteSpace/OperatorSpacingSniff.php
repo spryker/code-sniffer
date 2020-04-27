@@ -149,7 +149,7 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
             } elseif ($tokens[$stackPtr - 2]['line'] === $tokens[$stackPtr]['line']) {
                 $content = $tokens[($stackPtr - 1)]['content'];
                 if ($content !== ' ') {
-                    $error = sprintf("Expected 1 space before \"%s\"; %s found", $operator, strlen($content));
+                    $error = sprintf('Expected 1 space before "%s"; %s found', $operator, strlen($content));
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'TooManySpacesBefore');
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($stackPtr - 1, ' ');
@@ -166,7 +166,7 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
             } elseif ($tokens[$stackPtr + 2]['line'] === $tokens[$stackPtr]['line']) {
                 $content = $tokens[($stackPtr + 1)]['content'];
                 if ($content !== ' ') {
-                    $error = sprintf("Expected 1 space after \"%s\"; %s found", $operator, strlen($content));
+                    $error = sprintf('Expected 1 space after "%s"; %s found', $operator, strlen($content));
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'TooManySpacesAfter');
                     if ($fix) {
                         $phpcsFile->fixer->replaceToken($stackPtr + 1, ' ');
