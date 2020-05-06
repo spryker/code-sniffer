@@ -59,7 +59,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@param'], true)) {
+            if ($tokens[$i]['content'] !== '@param') {
                 continue;
             }
 
