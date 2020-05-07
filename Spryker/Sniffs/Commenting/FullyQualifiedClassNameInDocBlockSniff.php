@@ -69,11 +69,17 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 
             $content = $tokens[$classNameIndex]['content'];
 
-            $appendix = '';
-            $spaceIndex = strpos($content, ' ');
-            if ($spaceIndex) {
-                $appendix = substr($content, $spaceIndex);
-                $content = substr($content, 0, $spaceIndex);
+            preg_match('#(.+<[^>]+>)#', $content, $matches);
+            if ($matches) {
+                $appendix = substr($content, strlen($matches[1]));
+                $content = $matches[1];
+            } else {
+                $appendix = '';
+                $spaceIndex = strpos($content, ' ');
+                if ($spaceIndex) {
+                    $appendix = substr($content, $spaceIndex);
+                    $content = substr($content, 0, $spaceIndex);
+                }
             }
 
             if (!$content) {
@@ -126,6 +132,11 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         $result = [];
 
         foreach ($classNames as $key => $className) {
+            if (strpos($className, 'array<') === 0 || strpos($className, 'iterable<') === 0) {
+                // We skip for now
+                continue;
+            }
+
             $arrayOfObject = 0;
             while (substr($className, -2) === '[]') {
                 $arrayOfObject++;
