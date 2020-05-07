@@ -132,7 +132,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         $result = [];
 
         foreach ($classNames as $key => $className) {
-            if (strpos($className, 'array<') === 0) {
+            if (strpos($className, 'array<') === 0 || strpos($className, 'iterable<') === 0) {
                 // We skip for now
                 continue;
             }
