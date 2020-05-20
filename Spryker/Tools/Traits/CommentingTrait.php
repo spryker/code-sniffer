@@ -68,7 +68,7 @@ trait CommentingTrait
     }
 
     /**
-     * Checks for ...<\Foo\Bar>.
+     * Checks for ...<...>.
      *
      * @param string[] $docBlockTypes
      *
