@@ -68,16 +68,22 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             }
 
             $content = $tokens[$classNameIndex]['content'];
+            $appendix = '';
+
+            $variablePos = strpos($content, ' $');
+            if ($variablePos !== false) {
+                $content = substr($content, 0, $variablePos);
+                $appendix = substr($content, $variablePos);
+            }
 
             preg_match('#(.+<[^>]+>)#', $content, $matches);
             if ($matches) {
-                $appendix = substr($content, strlen($matches[1]));
+                $appendix = substr($content, strlen($matches[1])) . $appendix;
                 $content = $matches[1];
             } else {
-                $appendix = '';
                 $spaceIndex = strpos($content, ' ');
                 if ($spaceIndex) {
-                    $appendix = substr($content, $spaceIndex);
+                    $appendix = substr($content, $spaceIndex) . $appendix;
                     $content = substr($content, 0, $spaceIndex);
                 }
             }
@@ -386,7 +392,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
                 if (substr($subClassName, 0, 1) === '$') {
                     $message = 'The typehint seems to be missing for `%s`';
                 }
-                $phpCsFile->addError(sprintf($message, $subClassName), $classNameIndex, 'ClassNameInvalid');
+                $phpCsFile->addError(sprintf($message, $subClassName), $classNameIndex, 'ClassNameInvalidUnion');
 
                 continue;
             }
