@@ -54,6 +54,8 @@ class DocBlockParamSniff extends AbstractSprykerSniff
 
         $methodSignature = $this->getMethodSignature($phpCsFile, $stackPointer);
         if (!$methodSignature) {
+            $this->assertNoParams($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
+
             return;
         }
 
@@ -115,6 +117,29 @@ class DocBlockParamSniff extends AbstractSprykerSniff
             $error = 'Doc Block param variable `' . $docBlockParam['variable'] . '` should be `' . $variableName . '`';
             // For now just report (buggy yet)
             $phpCsFile->addError($error, $docBlockParam['index'], 'VariableWrong');
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $docBlockStartIndex
+     * @param int $docBlockEndIndex
+     *
+     * @return void
+     */
+    protected function assertNoParams(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): void
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
+            if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
+                continue;
+            }
+            if ($tokens[$i]['content'] !== '@param') {
+                continue;
+            }
+
+            $phpCsFile->addError('Doc Block param does not match method signature and should be removed', $i, 'ExtraParam');
         }
     }
 }
