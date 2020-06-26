@@ -72,8 +72,8 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 
             $variablePos = strpos($content, ' $');
             if ($variablePos !== false) {
-                $content = substr($content, 0, $variablePos);
                 $appendix = substr($content, $variablePos);
+                $content = substr($content, 0, $variablePos);
             }
 
             preg_match('#(.+<[^>]+>)#', $content, $matches);
