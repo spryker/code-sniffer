@@ -12,10 +12,6 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Traits\UseStatementsTrait;
-use const T_CLASS_C;
-use const T_DOUBLE_COLON;
-use const T_NEW;
-use const T_STRING;
 
 /**
  * Ensures Doc Blocks for throws annotations are correct.
