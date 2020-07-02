@@ -126,7 +126,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             if ($classIndex && $doubleColonIndex) {
                 $exceptions[] = [
                     'start' => $classIndex,
-                    'end' => $classIndex+1,
+                    'end' => $classIndex + 1,
                     'fullClass' => $tokens[$classIndex]['content'],
                     'class' => $tokens[$classIndex]['content'],
                 ];
