@@ -104,16 +104,35 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             }
 
             $newIndex = $phpCsFile->findNext(T_NEW, $i + 1, $scopeCloser);
-            if (!$newIndex) {
+
+            $classIndex = $phpCsFile->findNext(T_STRING, $i + 1, $scopeCloser);
+            $doubleColonIndex = $phpCsFile->findNext(T_DOUBLE_COLON, $i + 1, $scopeCloser);
+
+            if (!$newIndex && !$classIndex && !$doubleColonIndex) {
                 continue;
             }
 
-            $contentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $newIndex + 1, $scopeCloser, true);
-            if (!$contentIndex) {
+            if ($newIndex) {
+                $contentIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $newIndex + 1, $scopeCloser, true);
+                if (!$contentIndex) {
+                    continue;
+                }
+
+                $exceptions[] = $this->extractException($phpCsFile, $contentIndex);
+
                 continue;
             }
 
-            $exceptions[] = $this->extractException($phpCsFile, $contentIndex);
+            if ($classIndex && $doubleColonIndex) {
+                $exceptions[] = [
+                    'start' => $classIndex,
+                    'end' => $classIndex + 1,
+                    'fullClass' => $tokens[$classIndex]['content'],
+                    'class' => $tokens[$classIndex]['content'],
+                ];
+
+                continue;
+            }
         }
 
         return $exceptions;
