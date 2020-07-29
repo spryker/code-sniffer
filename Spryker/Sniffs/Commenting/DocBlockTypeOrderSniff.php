@@ -71,15 +71,10 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     protected function assertOrder(File $phpCsFile, array $docBlockParams): void
     {
         foreach ($docBlockParams as $docBlockParam) {
-            if (strpos($docBlockParam['type'], '$') !== false) {
-                continue;
-            }
-
             $docBlockParamTypes = explode('|', $docBlockParam['type']);
             if (count($docBlockParamTypes) === 1) {
                 continue;
             }
-
             $unique = array_unique($docBlockParamTypes);
             if (count($docBlockParamTypes) !== count($unique)) {
                 $phpCsFile->addError('Duplicate type in `' . $docBlockParam['type'] . '`', $docBlockParam['index'], 'Duplicate');
