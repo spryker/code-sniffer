@@ -72,11 +72,11 @@ class DocBlockReturnTagSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param $nextIndex
+     * @param int $nextIndex
      *
      * @return void
      */
-    protected function assertDescription(File $phpcsFile, $nextIndex): void
+    protected function assertDescription(File $phpcsFile, int $nextIndex): void
     {
         $tokens = $phpcsFile->getTokens();
 
