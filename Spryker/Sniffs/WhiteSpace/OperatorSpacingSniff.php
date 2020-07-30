@@ -75,7 +75,7 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
         if ($tokens[$stackPtr]['code'] === T_BITWISE_AND) {
             // If its not a reference, then we expect one space either side of the
             // bitwise operator.
-            if ($phpcsFile->isReference($stackPtr) === false) {
+            if (!$phpcsFile->isReference($stackPtr)) {
                 // Check there is one space before the & operator.
                 if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
                     $error = 'Expected 1 space before "&" operator; 0 found';
@@ -91,6 +91,14 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
                     $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfterAmp');
                     if ($fix) {
                         $phpcsFile->fixer->addContent($stackPtr, ' ');
+                    }
+                }
+            } else {
+                if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
+                    $error = 'Expected 0 spaces after reference operator';
+                    $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfterReference');
+                    if ($fix) {
+                        $phpcsFile->fixer->replaceToken($stackPtr + 1, '');
                     }
                 }
             }

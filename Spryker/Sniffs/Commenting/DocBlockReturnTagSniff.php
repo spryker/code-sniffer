@@ -12,6 +12,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Verifies that a `@return` tag description does not start with $ sign to avoid accidental variable copy-and-paste.
+ * Also checks duplicates.
  *
  * @author Mark Scherer
  * @license MIT
@@ -31,15 +32,8 @@ class DocBlockReturnTagSniff extends AbstractSprykerSniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $this->assertDescription($phpcsFile, $stackPtr);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function assertDescription(File $phpcsFile, $stackPtr): void
-    {
         $tokens = $phpcsFile->getTokens();
+
         if ($tokens[$stackPtr]['content'] !== '@return') {
             return;
         }
@@ -48,6 +42,43 @@ class DocBlockReturnTagSniff extends AbstractSprykerSniff
         if (!$nextIndex) {
             return;
         }
+
+        $this->assertTypes($phpcsFile, $nextIndex);
+        $this->assertDescription($phpcsFile, $nextIndex);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $nextIndex
+     *
+     * @return void
+     */
+    protected function assertTypes(File $phpcsFile, int $nextIndex): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $content = $tokens[$nextIndex]['content'];
+        $returnTypes = explode('|', $content);
+
+        $unique = array_unique($returnTypes);
+        if (count($unique) !== count($returnTypes)) {
+            $after = implode('|', $unique);
+            $fix = $phpcsFile->addFixableError(sprintf('Types are duplicate: `%s`, expected `%s`.', $content, $after), $nextIndex, 'DuplicateTypes');
+            if ($fix) {
+                $phpcsFile->fixer->replaceToken($nextIndex, $after);
+            }
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $nextIndex
+     *
+     * @return void
+     */
+    protected function assertDescription(File $phpcsFile, int $nextIndex): void
+    {
+        $tokens = $phpcsFile->getTokens();
 
         $content = $tokens[$nextIndex]['content'];
         if (strpos($content, ' ') === false) {

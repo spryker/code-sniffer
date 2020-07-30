@@ -75,9 +75,10 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
             }
 
             $parts = explode('|', $content);
-            $this->assertCorrectDocBlockParts($phpCsFile, $classNameIndex, $parts, $appendix);
-
             $returnTypes = $this->getReturnTypes($phpCsFile, $stackPointer);
+
+            $this->assertCorrectDocBlockParts($phpCsFile, $classNameIndex, $parts, $returnTypes, $appendix);
+
             $this->assertChainableReturnType($phpCsFile, $stackPointer, $parts, $returnTypes);
             $this->fixClassToThis($phpCsFile, $classNameIndex, $parts, $appendix, $returnTypes);
         }
@@ -87,6 +88,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
      * @param string[] $parts
+     * @param string[] $returnTypes
      * @param string $appendix
      *
      * @return void
@@ -95,11 +97,15 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
         File $phpCsFile,
         int $classNameIndex,
         array $parts,
+        array $returnTypes,
         string $appendix
     ): void {
         $result = [];
         foreach ($parts as $key => $part) {
             if ($part !== 'self') {
+                continue;
+            }
+            if ($returnTypes !== ['$this']) {
                 continue;
             }
 
@@ -156,7 +162,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        if (!in_array($tokens[$stackPointer]['code'], [T_FUNCTION])) {
+        if (!in_array($tokens[$stackPointer]['code'], [T_FUNCTION], true)) {
             return false;
         }
 
@@ -240,7 +246,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if (in_array(T_CLOSURE, $tokens[$i]['conditions'])) {
+            if (in_array(T_CLOSURE, $tokens[$i]['conditions'], true)) {
                 continue;
             }
 
@@ -257,7 +263,21 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
                 }
             }
 
-            $returnTypes[] = $tokens[$contentIndex]['content'];
+            $content = $tokens[$contentIndex]['content'];
+
+            $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $contentIndex + 1, $scopeCloser, true);
+            if (!$nextIndex) {
+                continue;
+            }
+            if ($tokens[$nextIndex]['code'] !== T_SEMICOLON) {
+                $k = $nextIndex;
+                while ($k < $scopeCloser && $tokens[$k]['code'] !== T_SEMICOLON) {
+                    $content .= $tokens[$k]['content'];
+                    $k++;
+                }
+            }
+
+            $returnTypes[] = $content;
         }
 
         return array_unique($returnTypes);
