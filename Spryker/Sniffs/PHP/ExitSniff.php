@@ -11,7 +11,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
- * Do not use functions that are problematic or not safe for upgrading.
+ * Do not use exit functions without argument. Check aliasing.
  */
 class ExitSniff implements Sniff
 {
