@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version: [
-            '7.3',
+            '7.4',
             'nightly'
         ]
 
@@ -96,9 +96,3 @@ jobs:
 
       - name: Codecept run
         run: composer test
-
-      - name: CodeStyle checks
-        run: composer cs-check
-
-      - name: PHPStan checks
-        run: composer stan
