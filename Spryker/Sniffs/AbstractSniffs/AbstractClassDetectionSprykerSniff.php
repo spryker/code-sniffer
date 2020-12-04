@@ -202,11 +202,11 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return int
+     * @return bool
      */
-    protected function isFileInPluginDirectory(File $phpCsFile): int
+    protected function isFileInPluginDirectory(File $phpCsFile): bool
     {
-        return preg_match('/Communication\/Plugin/', $phpCsFile->getFilename());
+        return (bool)preg_match('/Communication\/Plugin/', $phpCsFile->getFilename());
     }
 
     /**

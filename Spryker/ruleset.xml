@@ -50,7 +50,6 @@
     <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
 
     <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
-    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
 
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
