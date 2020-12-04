@@ -103,6 +103,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             // skip those.
             if (in_array($tokens[$i]['code'], [T_FN, T_CLOSURE])) {
                 $i = $tokens[$i]['scope_closer'];
+
                 continue;
             }
 
