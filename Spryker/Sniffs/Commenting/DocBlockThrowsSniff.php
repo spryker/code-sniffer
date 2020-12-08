@@ -99,6 +99,14 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         $scopeCloser = $tokens[$stackPointer]['scope_closer'];
 
         for ($i = $scopeOpener; $i < $scopeCloser; $i++) {
+            // We don't want to detect throws from nested scopes, so we'll just
+            // skip those.
+            if (in_array($tokens[$i]['code'], [T_FN, T_CLOSURE])) {
+                $i = $tokens[$i]['scope_closer'];
+
+                continue;
+            }
+
             if ($tokens[$i]['code'] !== T_THROW) {
                 continue;
             }
