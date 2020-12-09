@@ -11,6 +11,7 @@
         <whitelist>
             <directory suffix=".php">Spryker/Sniffs/</directory>
             <directory suffix=".php">SprykerStrict/Sniffs/</directory>
+            <directory suffix=".php">GlueStreamSpecific/Sniffs/</directory>
         </whitelist>
     </filter>
 </phpunit>
