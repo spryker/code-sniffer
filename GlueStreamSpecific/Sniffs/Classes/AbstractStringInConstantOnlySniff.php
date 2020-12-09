@@ -10,11 +10,10 @@ namespace GlueStreamSpecific\Sniffs\Classes;
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
-
 abstract class AbstractStringInConstantOnlySniff extends AbstractSprykerSniff
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function register()
     {
@@ -24,7 +23,7 @@ abstract class AbstractStringInConstantOnlySniff extends AbstractSprykerSniff
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -45,7 +44,7 @@ abstract class AbstractStringInConstantOnlySniff extends AbstractSprykerSniff
 
         $error = '%s string should be introduced as a class or module constant.';
         $data = [
-            $tokens[$stackPtr]['content']
+            $tokens[$stackPtr]['content'],
         ];
         $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
     }

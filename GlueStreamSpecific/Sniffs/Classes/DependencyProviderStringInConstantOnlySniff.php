@@ -8,8 +8,6 @@
 namespace GlueStreamSpecific\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
-use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
-
 
 class DependencyProviderStringInConstantOnlySniff extends AbstractStringInConstantOnlySniff
 {

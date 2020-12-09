@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="code-sniffer">
+    <config name="installed_paths" value="../../spryker/code-sniffer"/>
+
+    <arg name="tab-width" value="4"/>
+    <arg value="nps"/>
+
+    <file>Spryker/</file>
+    <file>SprykerStrict/</file>
+    <file>GlueStreamSpecific/</file>
+    <file>tests/Spryker/</file>
+    <file>docs/</file>
+    <file>bin/</file>
+
+    <rule ref="SprykerStrict"/>
+
+    <exclude-pattern>/Spryker/tests/files/</exclude-pattern>
+
+</ruleset>

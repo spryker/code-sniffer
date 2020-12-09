@@ -44,10 +44,10 @@
       "sed -i.bak 's/<!--<severity>0<\\/severity>-->/<severity>0<\\/severity>/' Spryker/ruleset.xml",
       "rm -f Spryker/ruleset.xml.bak"
     ],
-    "cs-check": "vendor/bin/phpcs --colors -p -s --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
-    "cs-fix": "vendor/bin/phpcbf --colors -p --extensions=php --standard=SprykerStrict --ignore=/Spryker/tests/files/ bin/ docs/ Spryker/ SprykerStrict/",
+    "cs-check": "vendor/bin/phpcs --extensions=php",
+    "cs-fix": "vendor/bin/phpcbf --extensions=php",
     "test": "vendor/bin/phpunit",
-    "stan": "vendor/bin/phpstan.phar analyse -c tests/phpstan.neon -l 5 Spryker/Sniffs/ SprykerStrict/Sniffs/"
+    "stan": "vendor/bin/phpstan.phar analyse"
   },
   "bin": [
     "bin/tokenize"
