@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 196 sniffs
+The SprykerStrict standard contains 197 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -196,7 +196,7 @@ SprykerStrict (2 sniffs)
 - SprykerStrict.TypeHints.ParameterTypeHint
 - SprykerStrict.TypeHints.PropertyTypeHint
 
-Squiz (26 sniffs)
+Squiz (27 sniffs)
 -----------------
 - Squiz.Arrays.ArrayBracketSpacing
 - Squiz.Classes.LowercaseClassKeywords
@@ -218,6 +218,7 @@ Squiz (26 sniffs)
 - Squiz.Scope.StaticThisUsage
 - Squiz.WhiteSpace.CastSpacing
 - Squiz.WhiteSpace.ControlStructureSpacing
+- Squiz.WhiteSpace.FunctionOpeningBraceSpace
 - Squiz.WhiteSpace.LanguageConstructSpacing
 - Squiz.WhiteSpace.LogicalOperatorSpacing
 - Squiz.WhiteSpace.ScopeClosingBrace
