@@ -17,6 +17,8 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 {
     protected const INHERIT_DOC = '{@inheritDoc}';
 
+    protected const SPECIFICATION = 'Specification:';
+
     /**
      * @inheritDoc
      */
@@ -39,8 +41,8 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             //$this->assertNoApiTag($phpCsFile, $stackPointer);
             return;
         }
-
         $this->assertApiAnnotation($phpCsFile, $stackPointer, $apiClass);
+        $this->assertSpecification($phpCsFile, $stackPointer);
     }
 
     /**
@@ -51,13 +53,13 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      */
     protected function findApiAnnotationIndex(File $phpCsFile, int $stackPointer): ?int
     {
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         if (!$docCommentOpenerPosition) {
             return null;
         }
 
         $tokens = $phpCsFile->getTokens();
-        $docCommentClosingPosition = $tokens[$docCommentOpenerPosition]['comment_closer'];
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
         if (!$docCommentClosingPosition) {
             return null;
         }
@@ -95,7 +97,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return;
         }
 
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         $firstDocCommentTagPosition = $phpCsFile->findNext(T_DOC_COMMENT_TAG, $docCommentOpenerPosition);
 
         if (!$firstDocCommentTagPosition) {
@@ -169,7 +171,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return;
         }
 
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         if (!$docCommentOpenerPosition) {
             return;
         }
@@ -223,6 +225,105 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     }
 
     /**
+     * Asserts that "Specification:" is used for interface, and must not be used for concrete class.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function assertSpecification(File $phpCsFile, int $stackPointer): void
+    {
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if(!$docCommentOpenerPosition) {
+            return;
+        }
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
+        if(!$docCommentClosingPosition) {
+            return;
+        }
+
+        $tokens = $phpCsFile->getTokens();
+        $specificationPosition = $this->getContentPositionInRange(
+            static::SPECIFICATION,
+            $tokens,
+            $docCommentOpenerPosition,
+            $docCommentClosingPosition
+        );
+        $isInterface = $this->isInterface( $phpCsFile, $stackPointer);
+
+        if ($isInterface && $specificationPosition) {
+            return;
+        }
+
+        if (!$isInterface && !$specificationPosition) {
+            return;
+        }
+
+        if ($isInterface && !$specificationPosition) {
+            $phpCsFile->addErrorOnLine('Cannot fix missing specification for API interface', $tokens[$stackPointer]['line'], 'SpecificationNotFixable');
+            return;
+        }
+
+        if (!$isInterface && $specificationPosition) {
+           $phpCsFile->addErrorOnLine(static::SPECIFICATION . ' can be used only for interfaces', $tokens[$specificationPosition]['line'], 'SpecificationNotFixable');
+        }
+    }
+
+    /**
+     * @param string $content
+     * @param array $tokens
+     * @param int $beginRange
+     * @param int $endRange
+     *
+     * @return null/int
+     */
+    protected function getContentPositionInRange(string $content, array $tokens, int $beginRange = 0, int $endRange = 0): ?int
+    {
+        for ($i = $beginRange + 1; $i < $endRange; $i++) {
+            if (stripos($tokens[$i]['content'], $content) === false) {
+                continue;
+            }
+
+            return $i;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return int
+     */
+    protected function getDocOpenerPosition(File $phpCsFile, int $stackPointer): ?int
+    {
+        return $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) ?
+            $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) :
+            null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return int
+     */
+    protected function getDocClosingPosition(File $phpCsFile, int $stackPointer): ?int
+    {
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if (!$docCommentOpenerPosition) {
+            return null;
+        }
+        $tokens = $phpCsFile->getTokens();
+
+        return $tokens[$docCommentOpenerPosition]['comment_closer'] ?
+            $tokens[$docCommentOpenerPosition]['comment_closer'] :
+            null;
+    }
+
+    /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
@@ -230,27 +331,23 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      */
     protected function assertInheritDocTag(File $phpCsFile, int $stackPointer): void
     {
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         if (!$docCommentOpenerPosition) {
             return;
         }
 
-        $tokens = $phpCsFile->getTokens();
-        $docCommentClosingPosition = $tokens[$docCommentOpenerPosition]['comment_closer'];
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
         if (!$docCommentClosingPosition) {
             return;
         }
 
-        $hasInheritDoc = false;
-        for ($i = $docCommentOpenerPosition + 1; $i < $docCommentClosingPosition; $i++) {
-            if (stripos($tokens[$i]['content'], '@inheritDoc') === false) {
-                continue;
-            }
-
-            $hasInheritDoc = true;
-
-            break;
-        }
+        $tokens = $phpCsFile->getTokens();
+        $hasInheritDoc = (bool)$this->getContentPositionInRange(
+            '@inheritDoc',
+            $tokens,
+            $docCommentOpenerPosition,
+            $docCommentClosingPosition
+        );
 
         if ($hasInheritDoc) {
             return;
