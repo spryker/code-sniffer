@@ -525,9 +525,12 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
 
         $fix = $phpCsFile->addFixableError(
-        sprintf('`%s` missing for API method.', static::INHERIT_DOC),
-        $docCommentOpenerPosition,
-        'InheritDocMissing'
+            sprintf(
+                '`%s` missing for API method.',
+                static::INHERIT_DOC
+            ),
+            $docCommentOpenerPosition,
+            'InheritDocMissing'
         );
         if (!$fix) {
             return;
