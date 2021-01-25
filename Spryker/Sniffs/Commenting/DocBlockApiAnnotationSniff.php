@@ -17,7 +17,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 {
     protected const INHERIT_DOC = '{@inheritDoc}';
 
-    protected const SPECIFICATION = 'Specification:';
+    protected const SPECIFICATION_TAG = 'Specification';
 
     /**
      * @inheritDoc
@@ -225,7 +225,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     }
 
     /**
-     * Asserts that "Specification:" is used for interface, and must not be used for concrete class.
+     * Asserts that "Specification:" is used for interface, Plugin or Config, and must not be used for concrete class.
      *
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
@@ -243,31 +243,166 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return;
         }
 
+        if ($this->specificationAllowedClass($phpCsFile, $stackPointer)) {
+            $this->assertSpecificationAllowed($phpCsFile, $stackPointer);
+            return;
+        }
+
+        if ($this->specificationRequiredClass($phpCsFile, $stackPointer)) {
+            $this->assertSpecificationRequired($phpCsFile, $stackPointer);
+            return;
+        }
+
+        if ($this->specificationForbiddenClass($phpCsFile, $stackPointer)) {
+           $this->assertSpecificationForbidden($phpCsFile, $stackPointer);
+        }
+    }
+
+    /**
+     * @param File $phpCsFile
+     * @param int $stackPointer
+     */
+    public function assertSpecificationAllowed(File $phpCsFile, int $stackPointer): void
+    {
+        $this->validateSpecification($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param File $phpCsFile
+     * @param int $stackPointer
+     */
+    public function assertSpecificationRequired(File $phpCsFile, int $stackPointer): void
+    {
         $tokens = $phpCsFile->getTokens();
+        $specificationPresent = $this->validateSpecification($phpCsFile, $stackPointer);
+        if (!$specificationPresent) {
+            $phpCsFile->addErrorOnLine(
+                'Cannot fix missing specification for API',
+                $tokens[$stackPointer]['line'],
+                'SpecificationNotFixable');
+        }
+    }
+
+    public function validateSpecification(File $phpCsFile, int $stackPointer): ?int
+    {
+        $tokens = $phpCsFile->getTokens();
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
+
         $specificationPosition = $this->getContentPositionInRange(
-            static::SPECIFICATION,
+            static::SPECIFICATION_TAG,
             $tokens,
             $docCommentOpenerPosition,
             $docCommentClosingPosition
         );
-        $isInterface = $this->isInterface( $phpCsFile, $stackPointer);
+        if (!$specificationPosition) {
+            return null;
+        }
+        $this->assertSpecificationFormat($phpCsFile, $specificationPosition);
 
-        if ($isInterface && $specificationPosition) {
-            return;
+        return $specificationPosition;
+    }
+
+    public function assertSpecificationFormat(File $phpCsFile, int $stackPointer): void
+    {
+        $tokens = $phpCsFile->getTokens();
+        $tokenContent = $tokens[$stackPointer]['content'];
+        if ($tokenContent !== sprintf('%s:', static::SPECIFICATION_TAG)) {
+            $this->addTypoInSpecificationTagFixableError($phpCsFile, $stackPointer);
         }
 
-        if (!$isInterface && !$specificationPosition) {
-            return;
-        }
+    }
 
-        if ($isInterface && !$specificationPosition) {
-            $phpCsFile->addErrorOnLine('Cannot fix missing specification for API interface', $tokens[$stackPointer]['line'], 'SpecificationNotFixable');
-            return;
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param $stackPointer
+     */
+    public function addTypoInSpecificationTagFixableError(File $phpCsFile, $stackPointer): void
+    {
+        $tokenContent = $phpCsFile->getTokens()[$stackPointer]['content'];
+        $fix = $phpCsFile->addFixableError('Typo in Specification tag.', $stackPointer, 'SpecificationTypo');
+        if ($fix) {
+            $phpCsFile->fixer->beginChangeset();
+            $phpCsFile->fixer->replaceToken($stackPointer, sprintf('%s:', $tokenContent));
+            $phpCsFile->fixer->endChangeset();
         }
+    }
 
-        if (!$isInterface && $specificationPosition) {
-           $phpCsFile->addErrorOnLine(static::SPECIFICATION . ' can be used only for interfaces', $tokens[$specificationPosition]['line'], 'SpecificationNotFixable');
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $line
+     * @param int $stackPointer
+     */
+    public function addWrongSpecificationTagIndentationFixableError(File $phpCsFile, int $line,int $stackPointer): void
+    {
+        $fix = $phpCsFile->addFixableError('Wrong indentation in specification block',
+            $line,
+            'SpecificationItemIndentation'
+        );
+        if ($fix) {
+            $phpCsFile->fixer->beginChangeset();
+            $phpCsFile->fixer->replaceToken($stackPointer, ' ');
+            $phpCsFile->fixer->endChangeset();
         }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     */
+    public function assertSpecificationForbidden(File $phpCsFile, int $stackPointer): void
+    {
+        $tokens = $phpCsFile->getTokens();
+        $specificationPosition = $this->validateSpecification($phpCsFile, $stackPointer);
+        if (!is_null($specificationPosition)) {
+            $phpCsFile->addErrorOnLine(
+                'Specification is not allowed in this type of class',
+                $tokens[$specificationPosition]['line'],
+                'SpecificationNotFixable'
+            );
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    public function specificationRequiredClass(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->isInterface($phpCsFile, $stackPointer) && $this->sprykerApiClass($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    public function specificationAllowedClass(File $phpCsFile, int $stackPointer): bool
+    {
+        $namespace = $this->extractNamespace($phpCsFile, $stackPointer);
+        $name = $this->getClassOrInterfaceName($phpCsFile, $stackPointer);
+
+        return $this->isConfig($namespace, $name) ||
+            $this->isPlugin($namespace, $name);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    public function specificationForbiddenClass(File $phpCsFile, int $stackPointer): bool
+    {
+        $namespace = $this->extractNamespace($phpCsFile, $stackPointer);
+        $name = $this->getClassOrInterfaceName($phpCsFile, $stackPointer);
+
+        return !$this->isInterface($phpCsFile, $stackPointer) &&
+            !$this->isConfig($namespace, $name) &&
+            !$this->isPlugin($namespace, $name);
     }
 
     /**
