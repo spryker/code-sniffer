@@ -344,7 +344,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      *
      * @return void
      */
-    public function addTypoInSpecificationTagFixableError(File $phpCsFile, $stackPointer): void
+    public function addTypoInSpecificationTagFixableError(File $phpCsFile, int $stackPointer): void
     {
         $tokenContent = $phpCsFile->getTokens()[$stackPointer]['content'];
         $fix = $phpCsFile->addFixableError('Typo in Specification tag.', $stackPointer, 'SpecificationTypo');
@@ -443,7 +443,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      * @param int $beginRange
      * @param int $endRange
      *
-     * @return null|int
+     * @return int|null
      */
     protected function getContentPositionInRange(
         string $content,
@@ -479,7 +479,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return int
+     * @return int|null
      */
     protected function getDocClosingPosition(File $phpCsFile, int $stackPointer): ?int
     {
@@ -525,9 +525,10 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
 
         $fix = $phpCsFile->addFixableError(
-            sprintf('`%s` missing for API method.', static::INHERIT_DOC),
-            $docCommentOpenerPosition,
-            'InheritDocMissing');
+        sprintf('`%s` missing for API method.', static::INHERIT_DOC),
+        $docCommentOpenerPosition,
+        'InheritDocMissing'
+        );
         if (!$fix) {
             return;
         }
