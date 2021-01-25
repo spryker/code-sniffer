@@ -186,8 +186,14 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             if (strpos($tokens[$i]['content'], '@inheritDoc') === false) {
                 continue;
             }
-
-            $phpCsFile->addError(static::INHERIT_DOC . ' is only for concrete classes, the interfaces should contain the specification themselves.', $i, 'InvalidInheritDoc');
+            $phpCsFile->addError(
+                sprintf(
+                    '`%s` is only for concrete classes, the interfaces should contain the specification themselves.',
+                    static::INHERIT_DOC
+                ),
+                $i,
+                'InvalidInheritDoc'
+            );
 
             break;
         }
@@ -218,7 +224,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     protected function isConstructor(File $phpCsFile, int $stackPointer): bool
     {
         $methodNameIndex = $phpCsFile->findNext(T_STRING, $stackPointer);
-
         $tokens = $phpCsFile->getTokens();
 
         return $tokens[$methodNameIndex]['content'] === '__construct';
@@ -259,7 +264,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     }
 
     /**
-     * @param File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      */
     public function assertSpecificationAllowed(File $phpCsFile, int $stackPointer): void
@@ -268,21 +273,27 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     }
 
     /**
-     * @param File $phpCsFile
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      */
     public function assertSpecificationRequired(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
         $specificationPresent = $this->validateSpecification($phpCsFile, $stackPointer);
-        if (!$specificationPresent) {
-            $phpCsFile->addErrorOnLine(
-                'Cannot fix missing specification for API',
-                $tokens[$stackPointer]['line'],
-                'SpecificationNotFixable');
+        if ($specificationPresent) {
+            return;
         }
+        $phpCsFile->addErrorOnLine(
+            'Cannot fix missing specification for API',
+            $tokens[$stackPointer]['line'],
+            'SpecificationNotFixable');
     }
 
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @return int|null
+     */
     public function validateSpecification(File $phpCsFile, int $stackPointer): ?int
     {
         $tokens = $phpCsFile->getTokens();
@@ -303,14 +314,18 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         return $specificationPosition;
     }
 
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     */
     public function assertSpecificationFormat(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
         $tokenContent = $tokens[$stackPointer]['content'];
-        if ($tokenContent !== sprintf('%s:', static::SPECIFICATION_TAG)) {
-            $this->addTypoInSpecificationTagFixableError($phpCsFile, $stackPointer);
+        if ($tokenContent === sprintf('%s:', static::SPECIFICATION_TAG)) {
+            return;
         }
-
+        $this->addTypoInSpecificationTagFixableError($phpCsFile, $stackPointer);
     }
 
     /**
@@ -335,7 +350,8 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      */
     public function addWrongSpecificationTagIndentationFixableError(File $phpCsFile, int $line,int $stackPointer): void
     {
-        $fix = $phpCsFile->addFixableError('Wrong indentation in specification block',
+        $fix = $phpCsFile->addFixableError(
+            'Wrong indentation in specification block',
             $line,
             'SpecificationItemIndentation'
         );
@@ -413,7 +429,12 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      *
      * @return null/int
      */
-    protected function getContentPositionInRange(string $content, array $tokens, int $beginRange = 0, int $endRange = 0): ?int
+    protected function getContentPositionInRange(
+        string $content,
+        array $tokens,
+        int $beginRange = 0,
+        int $endRange = 0
+    ): ?int
     {
         for ($i = $beginRange + 1; $i < $endRange; $i++) {
             if (stripos($tokens[$i]['content'], $content) === false) {
@@ -488,7 +509,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return;
         }
 
-        $fix = $phpCsFile->addFixableError(static::INHERIT_DOC . ' missing for API method.', $docCommentOpenerPosition, 'InheritDocMissing');
+        $fix = $phpCsFile->addFixableError(sprintf( '`%s` missing for API method.', static::INHERIT_DOC), $docCommentOpenerPosition, 'InheritDocMissing');
         if (!$fix) {
             return;
         }
