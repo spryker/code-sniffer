@@ -21,6 +21,14 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     use CommentingTrait;
 
     /**
+     * @var string[]
+     */
+    protected $ignored = [
+        '__construct',
+        '__destruct',
+    ];
+
+    /**
      * @inheritDoc
      */
     public function register(): array
@@ -36,7 +44,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
-        if ($tokens[$nextIndex]['content'] === '__construct' || $tokens[$nextIndex]['content'] === '__destruct') {
+        if (in_array($tokens[$nextIndex]['content'], $this->ignored, true)) {
             $this->checkConstructorAndDestructor($phpcsFile, $nextIndex);
 
             return;
