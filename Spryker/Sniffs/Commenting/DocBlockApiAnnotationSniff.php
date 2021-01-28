@@ -17,6 +17,8 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 {
     protected const INHERIT_DOC = '{@inheritDoc}';
 
+    protected const SPECIFICATION_TAG = 'Specification';
+
     /**
      * @inheritDoc
      */
@@ -39,8 +41,8 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             //$this->assertNoApiTag($phpCsFile, $stackPointer);
             return;
         }
-
         $this->assertApiAnnotation($phpCsFile, $stackPointer, $apiClass);
+        $this->assertSpecification($phpCsFile, $stackPointer);
     }
 
     /**
@@ -51,13 +53,13 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      */
     protected function findApiAnnotationIndex(File $phpCsFile, int $stackPointer): ?int
     {
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         if (!$docCommentOpenerPosition) {
             return null;
         }
 
         $tokens = $phpCsFile->getTokens();
-        $docCommentClosingPosition = $tokens[$docCommentOpenerPosition]['comment_closer'];
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
         if (!$docCommentClosingPosition) {
             return null;
         }
@@ -95,7 +97,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return;
         }
 
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         $firstDocCommentTagPosition = $phpCsFile->findNext(T_DOC_COMMENT_TAG, $docCommentOpenerPosition);
 
         if (!$firstDocCommentTagPosition) {
@@ -169,7 +171,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return;
         }
 
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         if (!$docCommentOpenerPosition) {
             return;
         }
@@ -184,8 +186,14 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             if (strpos($tokens[$i]['content'], '@inheritDoc') === false) {
                 continue;
             }
-
-            $phpCsFile->addError(static::INHERIT_DOC . ' is only for concrete classes, the interfaces should contain the specification themselves.', $i, 'InvalidInheritDoc');
+            $phpCsFile->addError(
+                sprintf(
+                    '`%s` is only for concrete classes, the interfaces should contain the specification themselves.',
+                    static::INHERIT_DOC
+                ),
+                $i,
+                'InvalidInheritDoc'
+            );
 
             break;
         }
@@ -216,10 +224,274 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     protected function isConstructor(File $phpCsFile, int $stackPointer): bool
     {
         $methodNameIndex = $phpCsFile->findNext(T_STRING, $stackPointer);
-
         $tokens = $phpCsFile->getTokens();
 
         return $tokens[$methodNameIndex]['content'] === '__construct';
+    }
+
+    /**
+     * Asserts that "Specification:" is used for interface, Plugin or Config, and must not be used for concrete class.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    protected function assertSpecification(File $phpCsFile, int $stackPointer): void
+    {
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if (!$docCommentOpenerPosition) {
+            return;
+        }
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
+        if (!$docCommentClosingPosition) {
+            return;
+        }
+
+        if ($this->specificationAllowedClass($phpCsFile, $stackPointer)) {
+            $this->assertSpecificationAllowed($phpCsFile, $stackPointer);
+
+            return;
+        }
+
+        if ($this->specificationRequiredClass($phpCsFile, $stackPointer)) {
+            $this->assertSpecificationRequired($phpCsFile, $stackPointer);
+
+            return;
+        }
+
+        if ($this->specificationForbiddenClass($phpCsFile, $stackPointer)) {
+            $this->assertSpecificationForbidden($phpCsFile, $stackPointer);
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    public function assertSpecificationAllowed(File $phpCsFile, int $stackPointer): void
+    {
+        $this->validateSpecification($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    public function assertSpecificationRequired(File $phpCsFile, int $stackPointer): void
+    {
+        $tokens = $phpCsFile->getTokens();
+        $specificationPresent = $this->validateSpecification($phpCsFile, $stackPointer);
+        if ($specificationPresent) {
+            return;
+        }
+        $phpCsFile->addErrorOnLine(
+            'Cannot fix missing specification for API',
+            $tokens[$stackPointer]['line'],
+            'SpecificationNotFixable'
+        );
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return int|null
+     */
+    public function validateSpecification(File $phpCsFile, int $stackPointer): ?int
+    {
+        $tokens = $phpCsFile->getTokens();
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
+
+        $specificationPosition = $this->getContentPositionInRange(
+            static::SPECIFICATION_TAG,
+            $tokens,
+            $docCommentOpenerPosition,
+            $docCommentClosingPosition
+        );
+        if (!$specificationPosition) {
+            return null;
+        }
+        $this->assertSpecificationFormat($phpCsFile, $specificationPosition);
+
+        return $specificationPosition;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    public function assertSpecificationFormat(File $phpCsFile, int $stackPointer): void
+    {
+        $tokens = $phpCsFile->getTokens();
+        $tokenContent = $tokens[$stackPointer]['content'];
+        if ($tokenContent === sprintf('%s:', static::SPECIFICATION_TAG)) {
+            return;
+        }
+        $this->addTypoInSpecificationTagFixableError($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    public function addTypoInSpecificationTagFixableError(File $phpCsFile, int $stackPointer): void
+    {
+        $tokenContent = $phpCsFile->getTokens()[$stackPointer]['content'];
+        $fix = $phpCsFile->addFixableError('Typo in Specification tag.', $stackPointer, 'SpecificationTypo');
+        if ($fix) {
+            $phpCsFile->fixer->beginChangeset();
+            $phpCsFile->fixer->replaceToken($stackPointer, sprintf('%s:', $tokenContent));
+            $phpCsFile->fixer->endChangeset();
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $line
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    public function addWrongSpecificationTagIndentationFixableError(File $phpCsFile, int $line, int $stackPointer): void
+    {
+        $fix = $phpCsFile->addFixableError(
+            'Wrong indentation in specification block',
+            $line,
+            'SpecificationItemIndentation'
+        );
+        if ($fix) {
+            $phpCsFile->fixer->beginChangeset();
+            $phpCsFile->fixer->replaceToken($stackPointer, ' ');
+            $phpCsFile->fixer->endChangeset();
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return void
+     */
+    public function assertSpecificationForbidden(File $phpCsFile, int $stackPointer): void
+    {
+        $tokens = $phpCsFile->getTokens();
+        $specificationPosition = $this->validateSpecification($phpCsFile, $stackPointer);
+        if ($specificationPosition !== null) {
+            $phpCsFile->addErrorOnLine(
+                'Specification is not allowed in this type of class',
+                $tokens[$specificationPosition]['line'],
+                'SpecificationNotFixable'
+            );
+        }
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    public function specificationRequiredClass(File $phpCsFile, int $stackPointer): bool
+    {
+        return $this->isInterface($phpCsFile, $stackPointer) && $this->sprykerApiClass($phpCsFile, $stackPointer);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    public function specificationAllowedClass(File $phpCsFile, int $stackPointer): bool
+    {
+        $namespace = $this->extractNamespace($phpCsFile, $stackPointer);
+        $name = $this->getClassOrInterfaceName($phpCsFile, $stackPointer);
+
+        return $this->isConfig($namespace, $name) ||
+            $this->isPlugin($namespace, $name);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return bool
+     */
+    public function specificationForbiddenClass(File $phpCsFile, int $stackPointer): bool
+    {
+        $namespace = $this->extractNamespace($phpCsFile, $stackPointer);
+        $name = $this->getClassOrInterfaceName($phpCsFile, $stackPointer);
+
+        return !$this->isInterface($phpCsFile, $stackPointer) &&
+            !$this->isConfig($namespace, $name) &&
+            !$this->isPlugin($namespace, $name);
+    }
+
+    /**
+     * @param string $content
+     * @param array $tokens
+     * @param int $beginRange
+     * @param int $endRange
+     *
+     * @return int|null
+     */
+    protected function getContentPositionInRange(
+        string $content,
+        array $tokens,
+        int $beginRange = 0,
+        int $endRange = 0
+    ): ?int {
+        for ($i = $beginRange + 1; $i < $endRange; $i++) {
+            if (stripos($tokens[$i]['content'], $content) === false) {
+                continue;
+            }
+
+            return $i;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return int|null
+     */
+    protected function getDocOpenerPosition(File $phpCsFile, int $stackPointer): ?int
+    {
+        return $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) ?
+            $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) :
+            null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return int|null
+     */
+    protected function getDocClosingPosition(File $phpCsFile, int $stackPointer): ?int
+    {
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if (!$docCommentOpenerPosition) {
+            return null;
+        }
+        $tokens = $phpCsFile->getTokens();
+
+        return $tokens[$docCommentOpenerPosition]['comment_closer'] ?
+            $tokens[$docCommentOpenerPosition]['comment_closer'] :
+            null;
     }
 
     /**
@@ -230,33 +502,36 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      */
     protected function assertInheritDocTag(File $phpCsFile, int $stackPointer): void
     {
-        $docCommentOpenerPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
+        $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
         if (!$docCommentOpenerPosition) {
             return;
         }
 
-        $tokens = $phpCsFile->getTokens();
-        $docCommentClosingPosition = $tokens[$docCommentOpenerPosition]['comment_closer'];
+        $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
         if (!$docCommentClosingPosition) {
             return;
         }
 
-        $hasInheritDoc = false;
-        for ($i = $docCommentOpenerPosition + 1; $i < $docCommentClosingPosition; $i++) {
-            if (stripos($tokens[$i]['content'], '@inheritDoc') === false) {
-                continue;
-            }
-
-            $hasInheritDoc = true;
-
-            break;
-        }
+        $tokens = $phpCsFile->getTokens();
+        $hasInheritDoc = (bool)$this->getContentPositionInRange(
+            '@inheritDoc',
+            $tokens,
+            $docCommentOpenerPosition,
+            $docCommentClosingPosition
+        );
 
         if ($hasInheritDoc) {
             return;
         }
 
-        $fix = $phpCsFile->addFixableError(static::INHERIT_DOC . ' missing for API method.', $docCommentOpenerPosition, 'InheritDocMissing');
+        $fix = $phpCsFile->addFixableError(
+            sprintf(
+                '`%s` missing for API method.',
+                static::INHERIT_DOC
+            ),
+            $docCommentOpenerPosition,
+            'InheritDocMissing'
+        );
         if (!$fix) {
             return;
         }
