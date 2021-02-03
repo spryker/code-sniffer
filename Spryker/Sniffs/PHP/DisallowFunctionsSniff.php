@@ -18,9 +18,7 @@ class DisallowFunctionsSniff implements Sniff
     /**
      * @var string[]
      */
-    public static $disallowed = [
-        'is_resource' => 'Not compatible with PHP 8+',
-    ];
+    public static $disallowed = [];
 
     /**
      * @var int[]
