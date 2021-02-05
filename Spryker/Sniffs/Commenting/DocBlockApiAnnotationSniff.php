@@ -350,7 +350,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         $fix = $phpCsFile->addFixableError('Typo in Specification tag.', $stackPointer, 'SpecificationTypo');
         if ($fix) {
             $phpCsFile->fixer->beginChangeset();
-            $phpCsFile->fixer->replaceToken($stackPointer, sprintf('%s:', $tokenContent));
+            $phpCsFile->fixer->replaceToken($stackPointer, sprintf('%s:', static::SPECIFICATION_TAG));
             $phpCsFile->fixer->endChangeset();
         }
     }
