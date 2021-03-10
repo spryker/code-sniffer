@@ -24,6 +24,11 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     ];
 
     /**
+     * @var string[]
+     */
+    public static $whitelistedStartsWithTypes = ['array<', 'iterable<', 'array{'];
+
+    /**
      * @inheritDoc
      */
     public function register(): array
@@ -138,9 +143,11 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         $result = [];
 
         foreach ($classNames as $key => $className) {
-            if (strpos($className, 'array<') === 0 || strpos($className, 'iterable<') === 0) {
-                // We skip for now
-                continue;
+            foreach (static::$whitelistedStartsWithTypes as $whitelistedStartsWithType) {
+                if (strpos($className, $whitelistedStartsWithType) === 0) {
+                    // We skip for now
+                    continue 2;
+                }
             }
 
             $arrayOfObject = 0;
