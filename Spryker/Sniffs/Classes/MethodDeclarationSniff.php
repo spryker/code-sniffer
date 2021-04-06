@@ -121,8 +121,8 @@ class MethodDeclarationSniff extends AbstractScopeSniff
         }
 
         if ($visibility && $final) {
-            if ($tokens[$visibility]['content'] !== 'public') {
-                $error = 'The final declaration requires public visibility for PHP 8+';
+            if ($tokens[$visibility]['content'] === 'private') {
+                $error = 'Methods marked as final can\'t be private in PHP 8+';
                 $phpcsFile->addError($error, $static, 'FinalVisibility');
             }
         }
