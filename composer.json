@@ -14,7 +14,7 @@
   "require": {
     "php": ">=7.2",
     "squizlabs/php_codesniffer": "^3.5.5",
-    "slevomat/coding-standard": "^6.3.11"
+    "slevomat/coding-standard": "^6.3.11 || ^7.0.1"
   },
   "require-dev": {
     "dereuromark/composer-prefer-lowest": "^0.1.2",
