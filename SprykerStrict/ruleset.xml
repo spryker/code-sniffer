@@ -25,6 +25,7 @@
         <exclude name="SprykerStrict.TypeHints.ReturnTypeHint.UselessDocComment"/>
         <exclude name="SprykerStrict.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
         <properties>
+            <property name="enableStaticTypeHint" type="bool" value="false"/>
             <property name="enableMixedTypeHint" type="bool" value="false"/>
             <property name="enableUnionTypeHint" type="bool" value="false"/>
         </properties>
