@@ -111,7 +111,7 @@ class DocBlockTagIterableSniff implements Sniff
      */
     protected function assertDefinition(string $definition): string
     {
-        return preg_replace_callback('#,([^ ])#', function ($matches) {
+        return (string)preg_replace_callback('#,([^ ])#', function ($matches) {
             return ', ' . $matches[1];
         }, $definition);
     }

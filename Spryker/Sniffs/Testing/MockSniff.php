@@ -9,6 +9,7 @@ namespace Spryker\Sniffs\Testing;
 
 use PHP_CodeSniffer\Files\File;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
+use SlevomatCodingStandard\Helpers\TypeHint;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
@@ -48,7 +49,7 @@ class MockSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
-     * @param \SlevomatCodingStandard\Helpers\ReturnTypeHint|\SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
+     * @param \SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
      * @param string[] $docBlockReturnTypes
      *
      * @return void
@@ -56,7 +57,7 @@ class MockSniff extends AbstractSprykerSniff
     protected function assertNoReturnTypehint(
         File $phpcsFile,
         int $stackPtr,
-        $returnTypeHint,
+        ?TypeHint $returnTypeHint,
         array $docBlockReturnTypes
     ): void {
         if (!$returnTypeHint || $returnTypeHint->getTypeHint() !== 'MockObject') {
@@ -74,11 +75,11 @@ class MockSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
-     * @param \SlevomatCodingStandard\Helpers\ReturnTypeHint|\SlevomatCodingStandard\Helpers\TypeHint $returnTypeHint
+     * @param \SlevomatCodingStandard\Helpers\TypeHint $returnTypeHint
      *
      * @return void
      */
-    protected function removeReturnTypeHint(File $phpcsFile, int $stackPtr, $returnTypeHint): void
+    protected function removeReturnTypeHint(File $phpcsFile, int $stackPtr, TypeHint $returnTypeHint): void
     {
         $colonPointer = $phpcsFile->findPrevious(T_COLON, $returnTypeHint->getStartPointer(), $stackPtr);
         if (!$colonPointer) {
@@ -99,7 +100,7 @@ class MockSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      * @param string[] $docBlockReturnTypes
-     * @param \SlevomatCodingStandard\Helpers\ReturnTypeHint|\SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
+     * @param \SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
      *
      * @return void
      */
@@ -107,7 +108,7 @@ class MockSniff extends AbstractSprykerSniff
         File $phpcsFile,
         int $stackPtr,
         array $docBlockReturnTypes,
-        $returnTypeHint
+        ?TypeHint $returnTypeHint
     ): void {
         $hasMockAnnotation = $this->hasMockObjectAnnotation($docBlockReturnTypes);
 
