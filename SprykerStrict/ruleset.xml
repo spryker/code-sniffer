@@ -14,6 +14,9 @@
         <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.UselessAnnotation"/>
         <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.UselessDocComment"/>
         <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
+        <properties>
+            <property name="enableNativeTypeHint" type="bool" value="false"/>
+        </properties>
     </rule>
     <rule ref="SprykerStrict.TypeHints.PropertyTypeHint">
         <exclude name="SprykerStrict.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
