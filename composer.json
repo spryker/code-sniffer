@@ -1,62 +1,62 @@
 {
-  "name": "spryker/code-sniffer",
-  "description": "Spryker Code Sniffer Standards",
-  "type": "phpcodesniffer-standard",
-  "license": "MIT",
-  "keywords": ["framework", "codesniffer", "phpcs", "standards"],
-  "homepage": "https://spryker.com",
-  "authors": [
-    {
-      "name": "Spryker",
-      "homepage": "https://spryker.com"
-    }
-  ],
-  "require": {
-    "php": ">=7.2",
-    "squizlabs/php_codesniffer": "^3.6.0",
-    "slevomat/coding-standard": "^7.0.1"
-  },
-  "require-dev": {
-    "dereuromark/composer-prefer-lowest": "^0.1.2",
-    "phpstan/phpstan": "^0.12.0",
-    "phpunit/phpunit": "^8.0 || ^9.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Spryker\\": "Spryker/",
-      "SprykerStrict\\": "SprykerStrict/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "CodeSnifferTest\\": "tests/"
-    },
-    "files": [
-      "vendor/squizlabs/php_codesniffer/autoload.php"
-    ]
-  },
-  "scripts": {
-    "docs": "php docs/generate.php",
-    "docs-listing": "phpcs -e --standard=SprykerStrict/ruleset.xml",
-    "add-standard": "phpcs --config-set installed_paths $(pwd)",
-    "increase-severity": "sed -i.bak 's/<severity>0<\\/severity>/<!--<severity>0<\\/severity>-->/' Spryker/ruleset.xml",
-    "reset-ruleset": [
-      "sed -i.bak 's/<!--<severity>0<\\/severity>-->/<severity>0<\\/severity>/' Spryker/ruleset.xml",
-      "rm -f Spryker/ruleset.xml.bak"
+    "name": "spryker/code-sniffer",
+    "description": "Spryker Code Sniffer Standards",
+    "type": "phpcodesniffer-standard",
+    "license": "MIT",
+    "keywords": ["framework", "codesniffer", "phpcs", "standards"],
+    "homepage": "https://spryker.com",
+    "authors": [
+        {
+            "name": "Spryker",
+            "homepage": "https://spryker.com"
+        }
     ],
-    "cs-check": "vendor/bin/phpcs --extensions=php",
-    "cs-fix": "vendor/bin/phpcbf --extensions=php",
-    "test": "vendor/bin/phpunit",
-    "stan": "vendor/bin/phpstan.phar analyse"
-  },
-  "bin": [
-    "bin/tokenize"
-  ],
-  "support": {
-    "source": "https://github.com/spryker/code-sniffer"
-  },
-  "config": {
-    "sort-packages": true,
-    "process-timeout": 900
-  }
+    "require": {
+        "php": ">=7.2",
+        "squizlabs/php_codesniffer": "^3.6.0",
+        "slevomat/coding-standard": "^7.0.1"
+    },
+    "require-dev": {
+        "dereuromark/composer-prefer-lowest": "^0.1.2",
+        "phpstan/phpstan": "^0.12.0",
+        "phpunit/phpunit": "^8.0 || ^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spryker\\": "Spryker/",
+            "SprykerStrict\\": "SprykerStrict/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CodeSnifferTest\\": "tests/"
+        },
+        "files": [
+            "vendor/squizlabs/php_codesniffer/autoload.php"
+        ]
+    },
+    "scripts": {
+        "docs": "php docs/generate.php",
+        "docs-listing": "phpcs -e --standard=SprykerStrict/ruleset.xml",
+        "add-standard": "phpcs --config-set installed_paths $(pwd)",
+        "increase-severity": "sed -i.bak 's/<severity>0<\\/severity>/<!--<severity>0<\\/severity>-->/' Spryker/ruleset.xml",
+        "reset-ruleset": [
+            "sed -i.bak 's/<!--<severity>0<\\/severity>-->/<severity>0<\\/severity>/' Spryker/ruleset.xml",
+            "rm -f Spryker/ruleset.xml.bak"
+        ],
+        "cs-check": "vendor/bin/phpcs --extensions=php",
+        "cs-fix": "vendor/bin/phpcbf --extensions=php",
+        "test": "vendor/bin/phpunit",
+        "stan": "vendor/bin/phpstan.phar analyse"
+    },
+    "bin": [
+        "bin/tokenize"
+    ],
+    "support": {
+        "source": "https://github.com/spryker/code-sniffer"
+    },
+    "config": {
+        "sort-packages": true,
+        "process-timeout": 900
+    }
 }
