@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 197 sniffs
+The SprykerStrict standard contains 201 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -75,19 +75,22 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (25 sniffs)
+SlevomatCodingStandard (28 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
 - SlevomatCodingStandard.Classes.ClassConstantVisibility
 - SlevomatCodingStandard.Classes.ClassMemberSpacing
+- SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion
 - SlevomatCodingStandard.Classes.ModernClassNameReference
 - SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment
 - SlevomatCodingStandard.Commenting.EmptyComment
 - SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch
+- SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator
 - SlevomatCodingStandard.ControlStructures.DisallowYodaComparison
 - SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing
 - SlevomatCodingStandard.ControlStructures.NewWithParentheses
 - SlevomatCodingStandard.Exceptions.DeadCatch
+- SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration
 - SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
 - SlevomatCodingStandard.Namespaces.UnusedUses
 - SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash
@@ -191,10 +194,11 @@ Spryker (85 sniffs)
 - Spryker.WhiteSpace.ObjectAttributeSpacing
 - Spryker.WhiteSpace.OperatorSpacing
 
-SprykerStrict (2 sniffs)
+SprykerStrict (3 sniffs)
 ------------------------
 - SprykerStrict.TypeHints.ParameterTypeHint
 - SprykerStrict.TypeHints.PropertyTypeHint
+- SprykerStrict.TypeHints.ReturnTypeHint
 
 Squiz (27 sniffs)
 -----------------

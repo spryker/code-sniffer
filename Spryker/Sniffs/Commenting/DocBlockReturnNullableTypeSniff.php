@@ -159,7 +159,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        $docBlockStartIndex = DocCommentHelper::findDocCommentOpenToken($phpCsFile, $stackPointer);
+        $docBlockStartIndex = DocCommentHelper::findDocCommentOpenPointer($phpCsFile, $stackPointer);
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
 
         for ($i = $docBlockEndIndex; $i >= $docBlockStartIndex; $i--) {
