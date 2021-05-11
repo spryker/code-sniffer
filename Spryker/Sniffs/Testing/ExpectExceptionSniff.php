@@ -51,12 +51,15 @@ class ExpectExceptionSniff extends AbstractSprykerSniff
         int $stackPtr
     ): void {
         $tokens = $phpcsFile->getTokens();
+        if (empty($tokens[$stackPtr]['scope_opener'])) {
+            return;
+        }
 
         $curlyBraceStartIndex = $tokens[$stackPtr]['scope_opener'];
         $curlyBraceEndIndex = $tokens[$stackPtr]['scope_closer'];
 
         for ($i = $curlyBraceStartIndex + 1; $i < $curlyBraceEndIndex; $i++) {
-            if ($tokens[$i]['code'] !== T_VARIABLE) {
+            if ($tokens[$i]['code'] !== T_VARIABLE || $tokens[$i]['content'] !== '$this') {
                 continue;
             }
             if ($tokens[$i + 1]['code'] !== T_OBJECT_OPERATOR) {
@@ -95,7 +98,7 @@ class ExpectExceptionSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         for ($i = $expectationIndex + 1; $i < $endIndex; $i++) {
-            if ($tokens[$i]['code'] !== T_VARIABLE) {
+            if ($tokens[$i]['code'] !== T_VARIABLE || $tokens[$i]['content'] !== '$this') {
                 continue;
             }
             if ($tokens[$i + 1]['code'] !== T_OBJECT_OPERATOR) {
