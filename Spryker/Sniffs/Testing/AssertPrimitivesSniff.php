@@ -116,39 +116,6 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $expectationIndex
-     * @param int $endIndex
-     *
-     * @return void
-     */
-    protected function assertNoPrimitiveUsage(File $phpcsFile, int $expectationIndex, int $endIndex): void
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        for ($i = $expectationIndex + 1; $i < $endIndex; $i++) {
-            if ($tokens[$i]['code'] !== T_VARIABLE || $tokens[$i]['content'] !== '$this') {
-                continue;
-            }
-            if ($tokens[$i + 1]['code'] !== T_OBJECT_OPERATOR) {
-                continue;
-            }
-            if ($tokens[$i + 2]['code'] !== T_STRING) {
-                continue;
-            }
-
-            $tokenContent = $tokens[$i + 2]['content'];
-            if (!preg_match('/assert[A-Z].+/', $tokenContent)) {
-                continue;
-            }
-
-            $phpcsFile->addError('expect*() call must not be followed by assert*() calls.', $i, 'InvalidAssert');
-
-            break;
-        }
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      *
      * @return bool
