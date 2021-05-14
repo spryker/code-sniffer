@@ -82,9 +82,12 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
             }
 
             $openingBraceIndex = $phpcsFile->findNext(T_WHITESPACE, ($i + 3), null, true);
+            if (!$openingBraceIndex) {
+                continue;
+            }
 
             $nextIndex = $phpcsFile->findNext(T_WHITESPACE, ($openingBraceIndex + 1), null, true);
-            if (!in_array($tokens[$nextIndex]['content'], static::$primitives, true)) {
+            if (!$nextIndex || !in_array($tokens[$nextIndex]['content'], static::$primitives, true)) {
                 continue;
             }
 
