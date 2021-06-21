@@ -8,13 +8,13 @@
 namespace Spryker\Sniffs\WhiteSpace;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * There should always be newlines around functions/methods.
  */
-class FunctionSpacingSniff implements Sniff
+class FunctionSpacingSniff extends AbstractSprykerSniff
 {
     /**
      * @inheritDoc
@@ -115,13 +115,13 @@ class FunctionSpacingSniff implements Sniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        $line = $tokens[$stackPointer]['line'];
-        $firstTokenInLineIndex = $stackPointer;
-        while ($tokens[$firstTokenInLineIndex - 1]['line'] === $line) {
-            $firstTokenInLineIndex--;
-        }
+        $firstTokenInLineIndex = $this->getFirstTokenOfLine($tokens, $stackPointer);
 
         $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $firstTokenInLineIndex - 1, null, true);
+        if ($tokens[$prevContentIndex]['type'] === 'T_ATTRIBUTE_END') {
+            return;
+        }
+
         if ($tokens[$prevContentIndex]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
             $firstTokenInLineIndex = $tokens[$prevContentIndex]['comment_opener'];
             $line = $tokens[$firstTokenInLineIndex]['line'];

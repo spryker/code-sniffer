@@ -63,7 +63,7 @@ class DocBlockSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('Method does not have a return void statement in doc block: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnVoidMissing');
+        $fix = $phpcsFile->addFixableError('Method does not have a docblock with return void statement: ' . $tokens[$nextIndex]['content'], $nextIndex, 'ReturnVoidMissing');
         if (!$fix) {
             return;
         }
@@ -83,6 +83,11 @@ class DocBlockSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $firstTokenOfLine = $this->getFirstTokenOfLine($tokens, $index);
+
+        $prevContentIndex = $phpcsFile->findPrevious(T_WHITESPACE, $firstTokenOfLine - 1, null, true);
+        if ($tokens[$prevContentIndex]['type'] === 'T_ATTRIBUTE_END') {
+            $firstTokenOfLine = $this->getFirstTokenOfLine($tokens, $prevContentIndex);
+        }
 
         $indentation = $this->getIndentationWhitespace($phpcsFile, $index);
 
