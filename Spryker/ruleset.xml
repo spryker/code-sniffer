@@ -49,7 +49,11 @@
     <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
     <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
 
-    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference">
+        <properties>
+            <property name="enableOnObjects" value="false"/>
+        </properties>
+    </rule>
 
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 
