@@ -60,12 +60,12 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         $returnTokenType = $tokens[$startIndex]['type'];
         if ($returnTokenType !== 'T_SELF') {
             // Then we can only warn, but not auto-fix
-            $phpcsFile->addError('Chaining methods (@return $this) should not have any return-type-hint.', $startIndex, 'TypeHint.Invalid.Self');
+            $phpcsFile->addError('Chaining methods (@return $this) should not have any return-type-hint.', $startIndex, 'InvalidSelf');
 
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('Chaining methods (@return $this) should not have any return-type-hint (Remove "self").', $startIndex, 'TypeHint.Invalid.Self');
+        $fix = $phpcsFile->addFixableError('Chaining methods (@return $this) should not have any return-type-hint (Remove "self").', $startIndex, 'InvalidSelf');
         if (!$fix) {
             return;
         }
@@ -162,7 +162,7 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $phpCsFile->addError('Class name repeated, expected `self` or `$this`.', $classNameIndex, 'TypeHint.Invalid.Class');
+            $phpCsFile->addError('Class name repeated, expected `self` or `$this`.', $classNameIndex, 'InvalidClass');
         }
     }
 }

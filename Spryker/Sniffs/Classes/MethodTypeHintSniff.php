@@ -68,7 +68,7 @@ class MethodTypeHintSniff extends AbstractSprykerSniff
             return;
         }
 
-        $fix = $phpcsFile->addFixableError('Own class/interface should be referred to as "self".', $startIndex, 'TypeHint.Wrong.Self');
+        $fix = $phpcsFile->addFixableError('Own class/interface should be referred to as "self".', $startIndex, 'WrongSelf');
         if (!$fix) {
             return;
         }
