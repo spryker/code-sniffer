@@ -281,10 +281,11 @@ abstract class AbstractSprykerSniff implements Sniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        $line = $tokens[$stackPointer]['line'];
-        $beginningOfLine = $stackPointer;
-        while (!empty($tokens[$beginningOfLine - 1]) && $tokens[$beginningOfLine - 1]['line'] === $line) {
-            $beginningOfLine--;
+        $beginningOfLine = $this->getFirstTokenOfLine($tokens, $stackPointer);
+
+        $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $beginningOfLine - 1, null, true);
+        if ($tokens[$prevContentIndex]['type'] === 'T_ATTRIBUTE_END') {
+            $beginningOfLine = $this->getFirstTokenOfLine($tokens, $prevContentIndex);
         }
 
         if (!empty($tokens[$beginningOfLine - 2]) && $tokens[$beginningOfLine - 2]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
@@ -385,7 +386,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
         $firstIndex = $this->getFirstTokenOfLine($tokens, $prevIndex);
         $whitespace = '';
-        if ($tokens[$firstIndex]['type'] === 'T_WHITESPACE') {
+        if ($tokens[$firstIndex]['type'] === 'T_WHITESPACE' || $tokens[$firstIndex]['type'] === 'T_DOC_COMMENT_WHITESPACE') {
             $whitespace = $tokens[$firstIndex]['content'];
         }
 
