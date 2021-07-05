@@ -12,6 +12,7 @@ use PHP_CodeSniffer\Files\File;
 abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSniff
 {
     protected const API_FACADE = 'FACADE';
+    protected const API_SERVICE = 'SERVICE';
     protected const API_CLIENT = 'CLIENT';
     protected const API_QUERY_CONTAINER = 'QUERY_CONTAINER';
     protected const API_PLUGIN = 'PLUGIN';
@@ -34,6 +35,9 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
 
         if ($this->isFacade($namespace, $name)) {
             return static::API_FACADE;
+        }
+        if ($this->isService($namespace, $name)) {
+            return static::API_SERVICE;
         }
         if ($this->isClient($namespace, $name)) {
             return static::API_CLIENT;
@@ -156,9 +160,27 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
      *
      * @return bool
      */
+    protected function isService(string $namespace, string $name): bool
+    {
+        if ($name === 'AbstractService') {
+            return false;
+        }
+        if (preg_match('/^Spryker[a-zA-Z]*\\\\Service\\\\[a-zA-Z]+$/', $namespace) && preg_match('/^(.+?)(Service|ServiceInterface)$/', $name)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $namespace
+     * @param string $name
+     *
+     * @return bool
+     */
     protected function isClient(string $namespace, string $name): bool
     {
-        if (preg_match('/^Spryker[a-zA-Z]*\\\\Client\\\\[a-zA-Z]+$/', $namespace) && preg_match('/^(.*?)(Client|ClientInterface)$/', $name)) {
+        if (preg_match('/^Spryker[a-zA-Z]*\\\\Client\\\\[a-zA-Z]+$/', $namespace) && preg_match('/^(.+?)(Client|ClientInterface)$/', $name)) {
             return true;
         }
 
