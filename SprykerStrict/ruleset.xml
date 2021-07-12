@@ -9,6 +9,8 @@
     <!-- Including general Spryker standard -->
     <rule ref="../Spryker/ruleset.xml"/>
 
+    <rule ref="SlevomatCodingStandard.Functions.StrictCall"/>
+
     <rule ref="SprykerStrict.TypeHints.ParameterTypeHint">
         <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
         <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.UselessAnnotation"/>
