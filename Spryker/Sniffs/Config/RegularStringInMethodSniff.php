@@ -37,7 +37,7 @@ class RegularStringInMethodSniff extends AbstractSprykerSniff
         if ($this->isConfig($phpCsFile) && $this->isSprykerNamespace($phpCsFile) && $this->isInlineStringReturned($phpCsFile, $stackPointer)) {
             $classMethod = $this->getClassMethod($phpCsFile, $stackPointer);
             $phpCsFile->addError(
-                $classMethod . ' returns inline string. Fix this by extract a const.',
+                $classMethod . ' returns regular string. Fix this by extract a const.',
                 $stackPointer,
                 'OnlyOneNewAllowed'
             );
@@ -54,6 +54,7 @@ class RegularStringInMethodSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
         $methodNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
+
         return $tokens[$methodNamePosition]['content'];
     }
 
@@ -130,5 +131,4 @@ class RegularStringInMethodSniff extends AbstractSprykerSniff
 
         return $statement;
     }
-
 }
