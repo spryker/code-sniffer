@@ -17,7 +17,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class RegularStringInMethodSniff extends AbstractSprykerSniff
 {
-    protected const RETURN_INLINE_STRING_PATTERN = '/^return (\'[^\']*\')|("[^"]*");$/';
+    protected const RETURN_INLINE_STRING_PATTERN = '/^return (\'[^\']+\')|("[^"]+");$/';
 
     /**
      * @inheritDoc
