@@ -140,7 +140,6 @@ Spryker (89 sniffs)
 - Spryker.Commenting.DocBlockTestGroupAnnotation
 - Spryker.Commenting.DocBlockTestGroupAnnotation2
 - Spryker.Commenting.DocBlockThrows
-- Spryker.Commenting.DocBlockTypeOrder
 - Spryker.Commenting.DocBlockVar
 - Spryker.Commenting.DocBlockVarNotJustNull
 - Spryker.Commenting.DocBlockVariableNullHintLast
@@ -152,6 +151,7 @@ Spryker (89 sniffs)
 - Spryker.Commenting.SprykerBridge
 - Spryker.Commenting.SprykerConstants
 - Spryker.Commenting.SprykerFacade
+- Spryker.Commenting.TypeHint
 - Spryker.ControlStructures.ConditionalExpressionOrder
 - Spryker.ControlStructures.ControlStructureSpacing
 - Spryker.ControlStructures.NoInlineAssignment
