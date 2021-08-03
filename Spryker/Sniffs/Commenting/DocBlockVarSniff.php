@@ -10,6 +10,7 @@ namespace Spryker\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Tools\Traits\CommentingTrait;
 
 /**
  * Ensures Doc Blocks for variables exist and are correct.
@@ -19,6 +20,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DocBlockVarSniff extends AbstractSprykerSniff
 {
+    use CommentingTrait;
+
     /**
      * @inheritDoc
      */
@@ -110,7 +113,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         if (in_array($defaultValueType, $parts, true)) {
             return;
         }
-        if ($defaultValueType === 'array' && strpos($content, '[]') !== false) {
+        if ($defaultValueType === 'array' && $this->containsTypeArray($parts)) {
             return;
         }
         if ($defaultValueType === 'false' && in_array('bool', $parts, true)) {
