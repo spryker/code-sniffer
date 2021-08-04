@@ -107,7 +107,14 @@ class TestCase extends PHPUnitTestCase
 
         $file->cleanUp();
 
-        return $file->getErrors();
+        $errors = $file->getErrors();
+
+        if (!$fix && $this->isDebug()) {
+            $error = $this->getFormattedErrors($errors);
+            echo $error;
+        }
+
+        return $errors;
     }
 
     /**
@@ -190,5 +197,28 @@ class TestCase extends PHPUnitTestCase
         }
 
         return false;
+    }
+
+    /**
+     * @param array<array<array<string|int|bool>>> $errors
+     *
+     * @return string
+     */
+    protected function getFormattedErrors(array $errors): string
+    {
+        $lines = [];
+        foreach ($errors as $line => $lineErrors) {
+            $line = str_pad((string)$line, 4, ' ', STR_PAD_LEFT);
+
+            $lines[] = $line . ' | ' . implode(PHP_EOL, array_map(static function (array $errors): string {
+                return implode(PHP_EOL, array_map(static function (array $error): string {
+                    $fixable = $error['fixable'] ? '[x]' : '[ ]';
+
+                    return sprintf('%s %s: %s', $fixable, $error['source'], $error['message']);
+                }, $errors));
+            }, $lineErrors));
+        }
+
+        return implode(PHP_EOL, $lines) . PHP_EOL;
     }
 }
