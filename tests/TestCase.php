@@ -29,24 +29,37 @@ class TestCase extends PHPUnitTestCase
      *
      * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
      * @param int $errorCount
+     *
+     * @return array<array>
+     */
+    protected function assertSnifferFindsErrors(Sniff $sniffer, int $errorCount): array
+    {
+        return $this->runFixer($sniffer, $errorCount);
+    }
+
+    /**
+     * This will run code sniffer
+     *
+     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
+     * @param int|null $errorCount
      * @param int $fixableErrorCount
      *
-     * @return void
+     * @return array<array>
      */
-    protected function assertSnifferFindsFixableErrors(Sniff $sniffer, int $errorCount, int $fixableErrorCount): void
+    protected function assertSnifferFindsFixableErrors(Sniff $sniffer, ?int $errorCount, int $fixableErrorCount): array
     {
-        $this->runFixer($sniffer, $errorCount, $fixableErrorCount);
+        return $this->runFixer($sniffer, $errorCount, $fixableErrorCount);
     }
 
     /**
      * This will run code sniffer and code fixer.
      *
      * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int $fixableErrorCount
+     * @param int|null $fixableErrorCount
      *
      * @return void
      */
-    protected function assertSnifferCanFixErrors(Sniff $sniffer, int $fixableErrorCount): void
+    protected function assertSnifferCanFixErrors(Sniff $sniffer, ?int $fixableErrorCount = null): void
     {
         $this->runFixer($sniffer, null, $fixableErrorCount, true);
     }
@@ -57,14 +70,14 @@ class TestCase extends PHPUnitTestCase
      * @param int|null $fixableErrorCount
      * @param bool $fix
      *
-     * @return void
+     * @return array<array>
      */
     protected function runFixer(
         Sniff $sniffer,
         ?int $errorCount = null,
         ?int $fixableErrorCount = null,
         bool $fix = false
-    ): void {
+    ): array {
         $codeSniffer = new Runner();
         $codeSniffer->config = new Config([
             '-s',
@@ -93,6 +106,8 @@ class TestCase extends PHPUnitTestCase
         }
 
         $file->cleanUp();
+
+        return $file->getErrors();
     }
 
     /**

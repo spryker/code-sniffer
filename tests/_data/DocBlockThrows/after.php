@@ -16,7 +16,7 @@ class FixMe
      * @param bool $throw Whether to throw immediately.
      * @throws \LogicException
      * @throws \RangeException
-     * @return Closure
+     * @return \Closure
      */
     public function foo(bool $throw): Closure
     {
