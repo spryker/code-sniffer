@@ -16,7 +16,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class PreferCastOverFunctionSniff extends AbstractSprykerSniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected static $matching = [
         'strval' => 'string',

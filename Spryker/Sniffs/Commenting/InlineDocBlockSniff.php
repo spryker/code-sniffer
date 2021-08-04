@@ -196,7 +196,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $contentIndex
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function findErrors(File $phpCsFile, int $contentIndex): array
     {

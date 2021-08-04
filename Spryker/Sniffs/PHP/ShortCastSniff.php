@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class ShortCastSniff implements Sniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public static $matching = [
         '(boolean)' => '(bool)',

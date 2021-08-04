@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class NotEqualSniff implements Sniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public static $matching = [
         '<>' => '!=',

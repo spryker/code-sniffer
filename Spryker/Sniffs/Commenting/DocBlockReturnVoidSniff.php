@@ -21,7 +21,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     use CommentingTrait;
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected $ignored = [
         '__construct',

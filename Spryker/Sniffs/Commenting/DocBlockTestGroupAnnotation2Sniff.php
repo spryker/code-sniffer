@@ -71,7 +71,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param string[] $expectedGroupAnnotations
+     * @param array<string> $expectedGroupAnnotations
      *
      * @return void
      */
@@ -97,7 +97,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param string[] $expectedAnnotations
+     * @param array<string> $expectedAnnotations
      *
      * @return void
      */
@@ -134,7 +134,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docCommentEndPosition
-     * @param string[] $namespaceParts
+     * @param array<string> $namespaceParts
      *
      * @return void
      */
@@ -167,7 +167,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getNamespaceParts(File $phpCsFile, int $stackPointer): array
     {
@@ -240,9 +240,9 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param string[] $namespaceParts
+     * @param array<string> $namespaceParts
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getExpectedAnnotations(File $phpCsFile, array $namespaceParts): array
     {
@@ -348,8 +348,8 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param string[] $givenGroupAnnotationParts
-     * @param string[] $expectedGroupAnnotations
+     * @param array<string> $givenGroupAnnotationParts
+     * @param array<string> $expectedGroupAnnotations
      *
      * @return bool
      */

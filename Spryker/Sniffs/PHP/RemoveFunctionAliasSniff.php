@@ -18,7 +18,7 @@ class RemoveFunctionAliasSniff implements Sniff
     /**
      * @see http://php.net/manual/en/aliases.php
      *
-     * @var string[]
+     * @var array<string>
      */
     public static $matching = [
         'is_integer' => 'is_int',

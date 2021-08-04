@@ -16,12 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class DisallowFunctionsSniff implements Sniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public static $disallowed = [];
 
     /**
-     * @var int[]
+     * @var array<int>
      */
     protected static $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];
 

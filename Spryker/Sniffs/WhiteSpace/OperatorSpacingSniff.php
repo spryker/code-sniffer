@@ -20,7 +20,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class OperatorSpacingSniff extends AbstractSprykerSniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public $supportedTokenizers = [
         'PHP',
