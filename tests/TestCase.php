@@ -216,7 +216,7 @@ class TestCase extends PHPUnitTestCase
 
                     return sprintf('%s %s: %s', $fixable, $error['source'], $error['message']);
                 }, $errors));
-             }, $lineErrors));
+            }, $lineErrors));
         }
 
         return implode(PHP_EOL, $lines) . PHP_EOL;
