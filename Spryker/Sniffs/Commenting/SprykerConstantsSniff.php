@@ -20,7 +20,7 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
     /**
      * We must support class for now, as well - for BC.
      *
-     * @return array
+     * @inheritDoc
      */
     public function register(): array
     {

@@ -159,7 +159,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
     /**
      * @param string $type
-     * @param string[] $pieces
+     * @param array<string> $pieces
      *
      * @return bool
      */

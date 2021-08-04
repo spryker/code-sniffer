@@ -58,7 +58,7 @@ class DocBlockVariableNullHintLastSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $varCommentTagIndex
      * @param int $docBlockEndIndex
-     * @param array $tokens
+     * @param array<array> $tokens
      *
      * @return void
      */

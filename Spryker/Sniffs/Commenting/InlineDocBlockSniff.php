@@ -174,7 +174,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $from
      * @param int $to
      * @param string $tagType
@@ -196,7 +196,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $contentIndex
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function findErrors(File $phpCsFile, int $contentIndex): array
     {

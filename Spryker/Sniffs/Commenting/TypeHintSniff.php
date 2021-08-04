@@ -189,7 +189,7 @@ class TypeHintSniff implements Sniff
     }
 
     /**
-     * @param array $types node types
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types node types
      *
      * @return string
      */

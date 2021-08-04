@@ -25,7 +25,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     /**
      * All other tags will go above those
      *
-     * @var string[]
+     * @var array<string>
      */
     protected $order = [
         '@deprecated',
@@ -70,9 +70,9 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tags
+     * @param array<array> $tags
      *
-     * @return array
+     * @return array<array>
      */
     protected function checkAnnotationTagOrder(array $tags): array
     {
@@ -98,8 +98,6 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
             }
 
             $tags[$i]['error'] = 'Position of ' . $tag['tag'] . ' tag too low.';
-
-            continue;
         }
 
         return $tags;
@@ -110,7 +108,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
-     * @return array
+     * @return array<array>
      */
     protected function readTags(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): array
     {
@@ -143,7 +141,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $index
      *
      * @return int
@@ -167,7 +165,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $start
      * @param int $end
      *
@@ -187,7 +185,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $start
      * @param int $end
      *
@@ -207,7 +205,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
-     * @param array $tags
+     * @param array<array> $tags
      *
      * @return void
      */
@@ -264,7 +262,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @return array
+     * @return array<string, int>
      */
     protected function getTagOrderMap(): array
     {

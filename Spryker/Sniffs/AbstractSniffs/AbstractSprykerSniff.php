@@ -24,7 +24,7 @@ abstract class AbstractSprykerSniff implements Sniff
     protected const NAMESPACE_SPRYKER = 'Spryker';
 
     /**
-     * @var string[] These markers must remain as inline comments
+     * @var array<string> These markers must remain as inline comments
      */
     protected static $phpStormMarkers = [
         '@noinspection',
@@ -192,7 +192,7 @@ abstract class AbstractSprykerSniff implements Sniff
      * Checks if the given token scope contains a single or multiple token codes/types.
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param string|array $search
+     * @param array<string|int>|string|int $search
      * @param int $start
      * @param int $end
      * @param bool $skipNested
@@ -394,7 +394,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $index
      *
      * @return int
@@ -412,7 +412,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $index
      *
      * @return int
@@ -431,7 +431,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -458,7 +458,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -488,7 +488,7 @@ abstract class AbstractSprykerSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getDocBlockReturnTypes(File $phpCsFile, int $stackPointer): array
     {
@@ -574,7 +574,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $firstPosition
      * @param int $secondPosition
      *
@@ -586,7 +586,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $stackPtr
      *
      * @return int
@@ -599,7 +599,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $position
      *
      * @return int
@@ -614,10 +614,10 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $stackPtr
-     * @param array $methodProperties
-     * @param array $methodParameters
+     * @param array<string, mixed> $methodProperties
+     * @param array<array> $methodParameters
      *
      * @return int
      */
@@ -654,7 +654,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $methodParameter
+     * @param array<mixed> $methodParameter
      *
      * @return int
      */

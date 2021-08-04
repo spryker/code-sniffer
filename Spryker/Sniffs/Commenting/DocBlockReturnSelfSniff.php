@@ -87,8 +87,8 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
-     * @param string[] $parts
-     * @param string[] $returnTypes
+     * @param array<string> $parts
+     * @param array<string> $returnTypes
      * @param string $appendix
      *
      * @return void
@@ -174,9 +174,9 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
-     * @param string[] $parts
+     * @param array<string> $parts
      * @param string $appendix
-     * @param string[] $returnTypes
+     * @param array<string> $returnTypes
      *
      * @return void
      */
@@ -226,7 +226,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getReturnTypes(File $phpCsFile, int $stackPointer): array
     {
@@ -286,8 +286,8 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param string[] $parts
-     * @param string[] $returnTypes
+     * @param array<string> $parts
+     * @param array<string> $returnTypes
      *
      * @return void
      */

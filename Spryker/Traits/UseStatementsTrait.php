@@ -15,7 +15,7 @@ trait UseStatementsTrait
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
-     * @return array
+     * @return array<array>
      */
     protected function getUseStatements(File $phpcsFile): array
     {

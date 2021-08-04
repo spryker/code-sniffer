@@ -18,7 +18,7 @@ class ExitSniff implements Sniff
     /**
      * @see http://php.net/manual/en/aliases.php
      *
-     * @var string[]
+     * @var array<string>
      */
     public static $aliases = [
         'die' => 'exit',

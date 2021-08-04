@@ -21,7 +21,7 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
     protected const METHOD_ASSERT_SAME = 'assertSame';
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected static $primitives = [
         'null',

@@ -439,7 +439,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 
     /**
      * @param string $content
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $beginRange
      * @param int $endRange
      *
@@ -554,7 +554,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $currentIndex
      *
      * @return int
@@ -570,7 +570,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $currentIndex
      *
      * @return int

@@ -18,7 +18,7 @@ trait SignatureTrait
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPtr
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function getMethodSignature(File $phpCsFile, int $stackPtr): array
     {

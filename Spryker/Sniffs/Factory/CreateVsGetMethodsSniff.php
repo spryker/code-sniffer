@@ -139,7 +139,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -161,7 +161,7 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $stackPointer
      *
      * @return bool

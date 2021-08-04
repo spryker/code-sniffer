@@ -19,7 +19,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     /**
      * This property can be filled within the ruleset configuration file
      *
-     * @var string[]
+     * @var array<string>
      */
     public $ignorableModules = [];
 
@@ -28,7 +28,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
      *
      * Overwrite by adding a custom .license file to the repository root.
      *
-     * @var string[]
+     * @var array<string>
      */
     protected static $defaultLicense = [
         'Copyright © 2016-present Spryker Systems GmbH. All rights reserved.',
@@ -38,7 +38,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     /**
      * Cache of licenses to avoid file lookups.
      *
-     * @var string[]
+     * @var array<string>
      */
     protected $licenseMap = [];
 
@@ -341,7 +341,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int|null $fileDocBlockStartPosition
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getFileDocBlockLines(File $phpCsFile, ?int $fileDocBlockStartPosition): array
     {
@@ -374,7 +374,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param string[] $licenseLines
+     * @param array<string> $licenseLines
      *
      * @return string
      */

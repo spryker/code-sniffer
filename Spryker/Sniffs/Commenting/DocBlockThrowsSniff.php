@@ -87,7 +87,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return array
+     * @return array<array>
      */
     protected function extractExceptions(File $phpCsFile, int $stackPointer): array
     {
@@ -150,7 +150,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docBlockStartIndex
      *
-     * @return array
+     * @return array<array>
      */
     protected function extractExceptionAnnotations(File $phpCsFile, int $docBlockStartIndex): array
     {
@@ -198,7 +198,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $contentIndex
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function extractException(File $phpCsFile, int $contentIndex): array
     {
@@ -228,8 +228,8 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $exceptions
-     * @param array $annotations
+     * @param array<array> $exceptions
+     * @param array<array> $annotations
      * @param int $docBlockEndIndex
      *
      * @return void
@@ -288,10 +288,10 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $exception
-     * @param array $useStatements
+     * @param array<string, mixed> $exception
+     * @param array<array> $useStatements
      *
-     * @return array Exception
+     * @return array<string, mixed> Exception
      */
     protected function normalizeClassName(array $exception, array $useStatements): array
     {
@@ -306,9 +306,9 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $annotation
-     * @param array $exceptions
-     * @param array $useStatements
+     * @param array<string, mixed> $annotation
+     * @param array<array> $exceptions
+     * @param array<array> $useStatements
      *
      * @return bool
      */
@@ -326,8 +326,8 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $exception
-     * @param array $annotations
+     * @param array<string, mixed> $exception
+     * @param array<array> $annotations
      *
      * @return bool
      */
@@ -361,7 +361,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $exception
+     * @param array<string, mixed> $exception
      * @param int $docBlockEndIndex
      *
      * @throws \Exception
@@ -388,7 +388,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $docBlockStartIndex
      *
      * @return int
@@ -425,7 +425,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $scopeOpener
      * @param int $scopeCloser
      *
@@ -449,7 +449,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<array> $tokens
      * @param int $scopeOpener
      * @param int $scopeCloser
      *

@@ -85,7 +85,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
-     * @return array
+     * @return array<array>
      */
     protected function getFixableMethodAnnotations(
         File $phpCsFile,
