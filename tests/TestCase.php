@@ -1,5 +1,10 @@
 <?php declare(strict_types = 1);
 
+/**
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace CodeSnifferTest;
 
 use PHP_CodeSniffer\Config;
@@ -13,8 +18,6 @@ use ReflectionClass;
  * To run your sniffer's test, you need to place the `before.php` and `after.php` (optional) files in a folder
  * named exactly like your sniffer name without `Sniff` under _data.
  * (ie: MethodSignatureParametersLineBreakMethodSniff => MethodSignatureParametersLineBreakMethod)
- *
- * @package CodeSnifferTest
  */
 class TestCase extends PHPUnitTestCase
 {
@@ -25,13 +28,14 @@ class TestCase extends PHPUnitTestCase
      * This will run code sniffer
      *
      * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
+     * @param int $errorCount
      * @param int $fixableErrorCount
      *
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @return void
      */
-    protected function assertSnifferFindsFixableErrors(Sniff $sniffer, int $fixableErrorCount): void
+    protected function assertSnifferFindsFixableErrors(Sniff $sniffer, int $errorCount, int $fixableErrorCount): void
     {
-        $this->runFixer($sniffer, $fixableErrorCount);
+        $this->runFixer($sniffer, $errorCount, $fixableErrorCount);
     }
 
     /**
@@ -40,26 +44,27 @@ class TestCase extends PHPUnitTestCase
      * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
      * @param int $fixableErrorCount
      *
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @return void
      */
     protected function assertSnifferCanFixErrors(Sniff $sniffer, int $fixableErrorCount): void
     {
-        $this->runFixer($sniffer, $fixableErrorCount, true);
+        $this->runFixer($sniffer, null, $fixableErrorCount, true);
     }
 
     /**
      * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
+     * @param int|null $errorCount
      * @param int|null $fixableErrorCount
      * @param bool $fix
      *
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @return void
      */
     protected function runFixer(
         Sniff $sniffer,
+        ?int $errorCount = null,
         ?int $fixableErrorCount = null,
         bool $fix = false
-    ): void
-    {
+    ): void {
         $codeSniffer = new Runner();
         $codeSniffer->config = new Config([
             '-s',
@@ -74,6 +79,10 @@ class TestCase extends PHPUnitTestCase
         }
 
         $file->process();
+
+        if ($errorCount !== null) {
+            $this->assertEquals($errorCount, $file->getErrorCount());
+        }
         if ($fixableErrorCount !== null) {
             $this->assertEquals($fixableErrorCount, $file->getFixableCount());
         }
@@ -91,7 +100,8 @@ class TestCase extends PHPUnitTestCase
      *
      * @return string
      */
-    protected function getDummyFileBefore(Sniff $sniffer) {
+    protected function getDummyFileBefore(Sniff $sniffer): string
+    {
         return $this->getDummyFile($sniffer, static::FILE_BEFORE);
     }
 
@@ -100,7 +110,8 @@ class TestCase extends PHPUnitTestCase
      *
      * @return string
      */
-    protected function getDummyFileAfter(Sniff $sniffer) {
+    protected function getDummyFileAfter(Sniff $sniffer): string
+    {
         return $this->getDummyFile($sniffer, static::FILE_AFTER);
     }
 
@@ -109,7 +120,6 @@ class TestCase extends PHPUnitTestCase
      * @param string $fileName
      *
      * @return string
-     * @throws \ReflectionException
      */
     protected function getDummyFile(Sniff $sniffer, string $fileName): string
     {
@@ -120,11 +130,50 @@ class TestCase extends PHPUnitTestCase
             __DIR__,
             '_data',
             $className,
-            $fileName
+            $fileName,
         ]);
         if (!file_exists($file)) {
             $this->fail(sprintf('File not found: %s.', $file));
         }
+
         return $file;
+    }
+
+    /**
+     * Checks if debug flag is set.
+     *
+     * Flag is set via `--debug`.
+     * Allows additional stuff like non-mocking when enabling debug.
+     *
+     * @return bool Success
+     */
+    protected function isDebug(): bool
+    {
+        return !empty($_SERVER['argv']) && in_array('--debug', $_SERVER['argv'], true);
+    }
+
+    /**
+     * Checks if verbose flag is set.
+     *
+     * Flags are `-v` and `-vv`.
+     * Allows additional stuff like non-mocking when enabling debug.
+     *
+     * @param bool $onlyVeryVerbose If only -vv should be counted.
+     *
+     * @return bool Success
+     */
+    protected function isVerbose(bool $onlyVeryVerbose = false): bool
+    {
+        if (empty($_SERVER['argv'])) {
+            return false;
+        }
+        if (!$onlyVeryVerbose && in_array('-v', $_SERVER['argv'], true)) {
+            return true;
+        }
+        if (in_array('-vv', $_SERVER['argv'], true)) {
+            return true;
+        }
+
+        return false;
     }
 }

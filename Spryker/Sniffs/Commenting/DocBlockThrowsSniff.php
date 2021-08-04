@@ -101,7 +101,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         for ($i = $scopeOpener; $i < $scopeCloser; $i++) {
             // We don't want to detect throws from nested scopes, so we'll just
             // skip those.
-            if (in_array($tokens[$i]['code'], [T_FN, T_CLOSURE])) {
+            if (in_array($tokens[$i]['code'], [T_FN, T_CLOSURE], true)) {
                 $i = $tokens[$i]['scope_closer'];
 
                 continue;
@@ -138,8 +138,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                     'fullClass' => $tokens[$classIndex]['content'],
                     'class' => $tokens[$classIndex]['content'],
                 ];
-
-                continue;
             }
         }
 
@@ -382,7 +380,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->beginChangeset();
 
         $phpCsFile->fixer->addNewlineBefore($throwAnnotationIndex);
-        $phpCsFile->fixer->addContentBefore($throwAnnotationIndex, '     * @throws ' . $exception['fullClass']);
+        $phpCsFile->fixer->addContentBefore($throwAnnotationIndex, '     * @throws \\' . $exception['fullClass']);
 
         $phpCsFile->fixer->endChangeset();
     }

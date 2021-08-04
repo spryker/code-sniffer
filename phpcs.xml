@@ -9,6 +9,7 @@
     <file>SprykerStrict/</file>
     <file>GlueStreamSpecific/</file>
     <file>tests/Spryker/</file>
+    <file>tests/TestCase.php</file>
     <file>docs/</file>
     <file>bin/</file>
 
