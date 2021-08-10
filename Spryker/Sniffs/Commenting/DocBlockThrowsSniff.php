@@ -279,11 +279,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $phpCsFile->fixer->beginChangeset();
-
             $this->addAnnotationLine($phpCsFile, $exception, $docBlockEndIndex);
-
-            $phpCsFile->fixer->endChangeset();
         }
     }
 
