@@ -149,11 +149,7 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
             $operator = $tokens[$stackPtr]['content'];
 
             if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
-                $error = "Expected 1 space before \"$operator\"; 0 found";
-                $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBefore');
-                if ($fix) {
-                    $phpcsFile->fixer->addContent($stackPtr - 1, ' ');
-                }
+                // Taken care of other sniffer
             } elseif ($tokens[$stackPtr - 2]['line'] === $tokens[$stackPtr]['line']) {
                 $content = $tokens[($stackPtr - 1)]['content'];
                 if ($content !== ' ') {
@@ -166,11 +162,7 @@ class OperatorSpacingSniff extends AbstractSprykerSniff
             }
 
             if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
-                $error = "Expected 1 space after \"$operator\"; 0 found";
-                $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfter');
-                if ($fix) {
-                    $phpcsFile->fixer->addContent($stackPtr, ' ');
-                }
+                // Taken care of other sniffer
             } elseif ($tokens[$stackPtr + 2]['line'] === $tokens[$stackPtr]['line']) {
                 $content = $tokens[($stackPtr + 1)]['content'];
                 if ($content !== ' ') {

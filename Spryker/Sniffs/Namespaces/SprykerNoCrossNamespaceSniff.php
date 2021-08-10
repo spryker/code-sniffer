@@ -22,6 +22,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
      * @var string
      */
     protected const NAMESPACE_YVES = 'Yves';
+
     /**
      * @var string
      */

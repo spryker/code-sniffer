@@ -278,7 +278,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $exceptionsToAdd[] = $exception;
+            $exceptionsToAdd[$exception['fullClass']] = $exception;
         }
 
         $this->addAnnotationLines($phpCsFile, $exceptionsToAdd, $docBlockEndIndex);
@@ -358,7 +358,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array<array<string, mixed>> $exceptions
+     * @param array<string, array<string, mixed>> $exceptions
      * @param int $docBlockEndIndex
      *
      * @throws \Exception
@@ -377,6 +377,8 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         }
 
         $phpCsFile->fixer->beginChangeset();
+
+        krsort($exceptions);
 
         foreach ($exceptions as $exception) {
             $phpCsFile->fixer->addNewlineBefore($throwAnnotationIndex);

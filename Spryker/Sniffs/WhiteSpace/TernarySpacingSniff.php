@@ -19,7 +19,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class TernarySpacingSniff extends AbstractSprykerSniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public $supportedTokenizers = [
         'PHP',

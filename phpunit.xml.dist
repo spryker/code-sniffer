@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    bootstrap="tests/bootstrap.php"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+>
     <testsuites>
         <testsuite name="spryker-code-sniffer">
             <directory>tests/Spryker/</directory>
         </testsuite>
     </testsuites>
-
-    <!-- Prevent coverage reports from looking in tests, vendors, config folders -->
-    <filter>
-        <whitelist>
+    <coverage>
+        <include>
             <directory suffix=".php">Spryker/Sniffs/</directory>
             <directory suffix=".php">SprykerStrict/Sniffs/</directory>
             <directory suffix=".php">GlueStreamSpecific/Sniffs/</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
 </phpunit>

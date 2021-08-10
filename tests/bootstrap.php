@@ -12,3 +12,10 @@ if (!class_exists(\PHP_CodeSniffer\Config::class) && file_exists($manualAutoload
 if (defined('PHP_CODESNIFFER_CBF') === false) {
     define('PHP_CODESNIFFER_CBF', false);
 }
+
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+if (!defined('TMP')) {
+    define('TMP', __DIR__ . DS . 'tmp' . DS);
+}

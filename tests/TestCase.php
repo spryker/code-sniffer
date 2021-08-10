@@ -21,7 +21,13 @@ use ReflectionClass;
  */
 class TestCase extends PHPUnitTestCase
 {
+    /**
+     * @var string
+     */
     protected const FILE_BEFORE = 'before.php';
+    /**
+     * @var string
+     */
     protected const FILE_AFTER = 'after.php';
 
     /**
@@ -62,6 +68,71 @@ class TestCase extends PHPUnitTestCase
     protected function assertSnifferCanFixErrors(Sniff $sniffer, ?int $fixableErrorCount = null): void
     {
         $this->runFixer($sniffer, null, $fixableErrorCount, true);
+    }
+
+    /**
+     * @param string $pathBefore
+     * @param string $pathAfter
+     * @param int|null $errorCount
+     * @param int|null $fixableErrorCount
+     * @param bool $fix
+     *
+     * @return array<array>
+     */
+    protected function runFullFixer(
+        string $pathBefore,
+        string $pathAfter,
+        ?int $errorCount = null,
+        ?int $fixableErrorCount = null,
+        bool $fix = false
+    ): array {
+        $codeSniffer = new Runner();
+        $codeSniffer->config = new Config([
+            '--standard=Spryker',
+            '-s',
+        ]);
+        $codeSniffer->init();
+        $codeSniffer->ruleset->populateTokenListeners();
+        $file = new LocalFile($pathBefore, $codeSniffer->ruleset, $codeSniffer->config);
+
+        if ($fix) {
+            $file->fixer->enabled = true;
+        }
+
+        $file->process();
+
+        if ($fix && $this->isDebug()) {
+            if (!is_dir(TMP)) {
+                mkdir(TMP, 0770, true);
+            }
+            file_put_contents(TMP . 'after.php', $file->fixer->getContents());
+        }
+
+        $diff = null;
+        if ($fix) {
+            $diff = $file->fixer->generateDiff($pathAfter);
+        }
+
+        $errors = $file->getErrors();
+
+        if ($errorCount !== null) {
+            $this->assertEquals($errorCount, $file->getErrorCount());
+        }
+        if ($fixableErrorCount !== null) {
+            $this->assertEquals($fixableErrorCount, $file->getFixableCount());
+        }
+
+        $file->cleanUp();
+
+        if (!$fix && $this->isDebug()) {
+            $error = $this->getFormattedErrors($errors);
+            echo $error;
+        }
+        if ($fix) {
+            $this->assertSame('', $diff, $diff);
+        }
+
+        return $errors;
     }
 
     /**
@@ -148,17 +219,23 @@ class TestCase extends PHPUnitTestCase
         $className = (new ReflectionClass($sniffer))->getShortName();
         $className = str_replace('Sniff', '', $className);
 
-        $file = implode(DIRECTORY_SEPARATOR, [
-            __DIR__,
-            '_data',
-            $className,
-            $fileName,
-        ]);
+        $file = $this->testFilePath() . $className . DS . $fileName;
         if (!file_exists($file)) {
             $this->fail(sprintf('File not found: %s.', $file));
         }
 
         return $file;
+    }
+
+    /**
+     * @return string
+     */
+    protected function testFilePath(): string
+    {
+        return implode(DIRECTORY_SEPARATOR, [
+            __DIR__,
+            '_data',
+        ]) . DIRECTORY_SEPARATOR;
     }
 
     /**
