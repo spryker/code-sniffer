@@ -82,7 +82,7 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
             return;
         }
         $fix = $phpcsFile->addFixableError('The parameters on this method definition need to be on a single line.', $stackPtr, 'Inline');
-        if ($fix) {
+        if (!$fix) {
             return;
         }
 
