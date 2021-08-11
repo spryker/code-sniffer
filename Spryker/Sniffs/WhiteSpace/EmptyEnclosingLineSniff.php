@@ -8,12 +8,12 @@
 namespace Spryker\Sniffs\WhiteSpace;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * There should be no empty newline at the beginning of each body.
  */
-class EmptyEnclosingLineSniff implements Sniff
+class EmptyEnclosingLineSniff extends AbstractSprykerSniff
 {
     /**
      * @inheritDoc
@@ -36,9 +36,6 @@ class EmptyEnclosingLineSniff implements Sniff
         $errorData = [strtolower($tokens[$stackPtr]['content'])];
 
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
-            $error = 'Possible parse error: %s missing opening or closing brace';
-            $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
-
             return;
         }
 
@@ -72,6 +69,7 @@ class EmptyEnclosingLineSniff implements Sniff
         }
 
         $firstContentIndex = $phpcsFile->findNext(T_WHITESPACE, ($curlyBraceStartIndex + 1), $lastContentIndex, true);
+        $beginningOfLine = $this->getFirstTokenOfLine($tokens, $firstContentIndex);
 
         $contentLine = $tokens[$firstContentIndex]['line'];
         $braceLine = $tokens[$curlyBraceStartIndex]['line'];
@@ -87,7 +85,7 @@ class EmptyEnclosingLineSniff implements Sniff
                 if ($contentLine < $braceLine + 1) {
                     $phpcsFile->fixer->addNewline($curlyBraceStartIndex);
                 } else {
-                    for ($i = $curlyBraceStartIndex + 1; $i < $firstContentIndex - 1; $i++) {
+                    for ($i = $curlyBraceStartIndex + 1; $i < $beginningOfLine - 1; $i++) {
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
                 }
