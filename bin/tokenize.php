@@ -1,6 +1,8 @@
 #!/usr/bin/php -q
 <?php
 
+use Spryker\Tools\Tokenizer;
+
 $options = [
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/vendor/autoload.php',
@@ -18,7 +20,7 @@ foreach ($options as $file) {
 }
 require SNIFFER_COMPOSER_INSTALL;
 
-$tokenizer = new \Spryker\Tools\Tokenizer($argv);
+$tokenizer = new Tokenizer($argv);
 
 $tokenizer->tokenize();
 echo 0;

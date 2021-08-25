@@ -20,29 +20,33 @@
 
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
-    <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.NamespaceDeclaration"/>
+    <!-- Disabled for now as there are bugs to fix
+   <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
+   -->
+   <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+   <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
+   <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+   <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+   <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing"/>
 
-    <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
+   <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
 
-    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
+   <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
+   <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
+   <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+   <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
 
-    <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility">
-        <properties>
-            <property name="fixable" type="bool" value="true"/>
-        </properties>
-    </rule>
-    <rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
+   <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility">
+       <properties>
+           <property name="fixable" type="bool" value="true"/>
+       </properties>
+   </rule>
+   <rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
 
-    <!-- Disabled for now
-    <rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
-    -->
+   <!-- Disabled for now
+   <rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
+   -->
 
     <rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
 

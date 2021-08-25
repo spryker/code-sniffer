@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 203 sniffs
+The SprykerStrict standard contains 204 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -75,7 +75,7 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (28 sniffs)
+SlevomatCodingStandard (29 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
 - SlevomatCodingStandard.Classes.ClassConstantVisibility
@@ -92,6 +92,7 @@ SlevomatCodingStandard (28 sniffs)
 - SlevomatCodingStandard.Exceptions.DeadCatch
 - SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration
 - SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
+- SlevomatCodingStandard.Namespaces.NamespaceDeclaration
 - SlevomatCodingStandard.Namespaces.UnusedUses
 - SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash
 - SlevomatCodingStandard.Namespaces.UseFromSameNamespace
