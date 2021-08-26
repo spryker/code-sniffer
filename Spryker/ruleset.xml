@@ -20,8 +20,8 @@
 
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
-    <!-- Disabled for now as there are bugs to fix
     <rule ref="SlevomatCodingStandard.Namespaces.NamespaceDeclaration"/>
+    <!-- Disabled for now as there are bugs to fix
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
     -->
     <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
