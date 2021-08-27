@@ -38,11 +38,11 @@ class TestCase extends PHPUnitTestCase
      * This will run code sniffer and code fixer.
      *
      * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int $fixableErrorCount
+     * @param int|null $fixableErrorCount
      *
      * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
      */
-    protected function assertSnifferCanFixErrors(Sniff $sniffer, int $fixableErrorCount): void
+    protected function assertSnifferCanFixErrors(Sniff $sniffer, ?int $fixableErrorCount = null): void
     {
         $this->runFixer($sniffer, $fixableErrorCount, true);
     }
