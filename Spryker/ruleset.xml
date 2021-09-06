@@ -21,7 +21,12 @@
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
     <rule ref="SlevomatCodingStandard.Namespaces.NamespaceDeclaration"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="allowFallbackGlobalFunctions" type="boolean" value="true"/>
+            <property name="allowFallbackGlobalConstants" type="boolean" value="true"/>
+        </properties>
+    </rule>
     <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
