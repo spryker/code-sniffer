@@ -12,10 +12,19 @@ use SlevomatCodingStandard\Helpers\DocCommentHelper;
 
 abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSprykerSniff
 {
+    /**
+     * @var string
+     */
     protected const LAYER_PERSISTENCE = 'Persistence';
 
+    /**
+     * @var string
+     */
     protected const LAYER_COMMUNICATION = 'Communication';
 
+    /**
+     * @var string
+     */
     protected const LAYER_BUSINESS = 'Business';
 
     /**

@@ -21,6 +21,9 @@ abstract class AbstractSprykerSniff implements Sniff
 {
     use BasicsTrait;
 
+    /**
+     * @var string
+     */
     protected const NAMESPACE_SPRYKER = 'Spryker';
 
     /**

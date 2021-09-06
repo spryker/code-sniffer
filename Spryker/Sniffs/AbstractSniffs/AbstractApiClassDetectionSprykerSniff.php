@@ -11,11 +11,29 @@ use PHP_CodeSniffer\Files\File;
 
 abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSniff
 {
+    /**
+     * @var string
+     */
     protected const API_FACADE = 'FACADE';
+    /**
+     * @var string
+     */
     protected const API_SERVICE = 'SERVICE';
+    /**
+     * @var string
+     */
     protected const API_CLIENT = 'CLIENT';
+    /**
+     * @var string
+     */
     protected const API_QUERY_CONTAINER = 'QUERY_CONTAINER';
+    /**
+     * @var string
+     */
     protected const API_PLUGIN = 'PLUGIN';
+    /**
+     * @var string
+     */
     protected const API_CONFIG = 'CONFIG';
 
     /**

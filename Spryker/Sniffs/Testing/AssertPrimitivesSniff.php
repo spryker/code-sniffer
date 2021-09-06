@@ -18,6 +18,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class AssertPrimitivesSniff extends AbstractSprykerSniff
 {
+    /**
+     * @var string
+     */
     protected const METHOD_ASSERT_SAME = 'assertSame';
 
     /**

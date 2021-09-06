@@ -18,6 +18,9 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
 {
     use UseStatementsTrait;
 
+    /**
+     * @var string
+     */
     protected const NAMESPACE_PROJECT = 'Pyz';
 
     /**

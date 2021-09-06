@@ -15,6 +15,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class SprykerConstantsSniff extends AbstractSprykerSniff
 {
+    /**
+     * @var string
+     */
     protected const EXPLANATION_CONSTANTS_INTERFACE = 'Declares global environment configuration keys. Do not use it for other class constants.';
 
     /**

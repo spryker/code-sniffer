@@ -16,7 +16,13 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class DocBlockTagSniff implements Sniff
 {
+    /**
+     * @var string
+     */
     protected const INHERIT_DOC_FULL = '@inheritDoc';
+    /**
+     * @var string
+     */
     protected const INHERIT_DOC_FULL_INVALID = '@inheritdoc';
 
     /**

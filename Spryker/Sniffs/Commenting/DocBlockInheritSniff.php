@@ -21,7 +21,13 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
     use CommentingTrait;
     use SignatureTrait;
 
+    /**
+     * @var string
+     */
     protected const INHERIT_DOC = '{@inheritDoc}';
+    /**
+     * @var string
+     */
     protected const INHERIT_DOC_INVALID = '{inheritDoc}';
 
     /**
