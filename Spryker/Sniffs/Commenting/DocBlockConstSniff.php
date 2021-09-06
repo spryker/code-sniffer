@@ -44,7 +44,8 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         if (!$docBlockEndIndex) {
             $defaultValueType = $this->findDefaultValueType($phpCsFile, $stackPointer);
             if ($defaultValueType === null) {
-                $phpCsFile->addError('Doc Block for const missing', $stackPointer, 'VarDocBlockMissing');
+                // Let's ignore for now
+                //$phpCsFile->addError('Doc Block for const missing', $stackPointer, 'VarDocBlockMissing');
 
                 return;
             }
@@ -229,14 +230,10 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         int $docBlockStartIndex,
         ?string $defaultValueType
     ): void {
-        // Let's skip for now for non-trivial cases
-        if ($defaultValueType === null) {
-            return;
-        }
-
         $error = 'Doc Block annotation @var for const missing';
         if ($defaultValueType === null) {
-            $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
+            // Let's skip for now for non-trivial cases
+            //$phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
 
             return;
         }
