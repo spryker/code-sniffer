@@ -59,33 +59,44 @@ class DocBlockConstSniff extends AbstractSprykerSniff
 
         $defaultValueType = $this->findDefaultValueType($phpCsFile, $stackPointer);
 
-        $varIndex = null;
+        $tagIndex = null;
         for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
             }
-            if (!in_array($tokens[$i]['content'], ['@var'], true)) {
+            if (!in_array($tokens[$i]['content'], ['@var', '@const'], true)) {
                 continue;
             }
 
-            $varIndex = $i;
+            $tagIndex = $i;
         }
 
-        if (!$varIndex) {
+        if (!$tagIndex) {
             $this->handleMissingVar($phpCsFile, $docBlockEndIndex, $docBlockStartIndex, $defaultValueType);
 
             return;
         }
 
-        $classNameIndex = $varIndex + 2;
+        $typeIndex = $tagIndex + 2;
 
-        if ($tokens[$classNameIndex]['type'] !== 'T_DOC_COMMENT_STRING') {
-            $this->handleMissingVarType($phpCsFile, $varIndex, $defaultValueType);
+        if ($tokens[$typeIndex]['type'] !== 'T_DOC_COMMENT_STRING') {
+            $this->handleMissingVarType($phpCsFile, $tagIndex, $defaultValueType);
 
             return;
         }
 
-        $content = $tokens[$classNameIndex]['content'];
+        $tagIndexContent = $tokens[$tagIndex]['content'];
+        $requiresTagUpdate = $tagIndexContent !== '@var';
+        if ($requiresTagUpdate) {
+            $fix = $phpCsFile->addFixableError(sprintf('Wrong tag used, expected `%s`, got `%s`', '@var', $tagIndexContent), $tagIndex, 'WrongTag');
+            if ($fix) {
+                $phpCsFile->fixer->beginChangeset();
+                $phpCsFile->fixer->replaceToken($tagIndex, '@var');
+                $phpCsFile->fixer->endChangeset();
+            }
+        }
+
+        $content = $tokens[$typeIndex]['content'];
 
         $appendix = '';
         $spaceIndex = strpos($content, ' ');
@@ -126,7 +137,9 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         if (count($parts) > 1 || $defaultValueType === 'null') {
             $fix = $phpCsFile->addFixableError('Doc Block type for property annotation @var incorrect, type `' . $defaultValueType . '` missing', $stackPointer, 'VarTypeMissing');
             if ($fix) {
-                $phpCsFile->fixer->replaceToken($classNameIndex, implode('|', $parts) . '|' . $defaultValueType . $appendix);
+                $phpCsFile->fixer->beginChangeset();
+                $phpCsFile->fixer->replaceToken($typeIndex, implode('|', $parts) . '|' . $defaultValueType . $appendix);
+                $phpCsFile->fixer->endChangeset();
             }
 
             return;
@@ -134,7 +147,9 @@ class DocBlockConstSniff extends AbstractSprykerSniff
 
         $fix = $phpCsFile->addFixableError('Doc Block type `' . $content . '` for property annotation @var incorrect, type `' . $defaultValueType . '` expected', $stackPointer, 'VarTypeIncorrect');
         if ($fix) {
-            $phpCsFile->fixer->replaceToken($classNameIndex, $defaultValueType . $appendix);
+            $phpCsFile->fixer->beginChangeset();
+            $phpCsFile->fixer->replaceToken($typeIndex, $defaultValueType . $appendix);
+            $phpCsFile->fixer->endChangeset();
         }
     }
 
@@ -214,6 +229,11 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         int $docBlockStartIndex,
         ?string $defaultValueType
     ): void {
+        // Let's skip for now for non-trivial cases
+        if ($defaultValueType === null) {
+            return;
+        }
+
         $error = 'Doc Block annotation @var for const missing';
         if ($defaultValueType === null) {
             $phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
