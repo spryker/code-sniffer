@@ -227,7 +227,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             return;
         }
 
-        $index = $phpCsFile->findPrevious(Tokens::$emptyTokens, $docBlockEndIndex - 1, $docBlockStartIndex, true);
+        $index = $phpCsFile->findPrevious(T_DOC_COMMENT_WHITESPACE, $docBlockEndIndex - 1, $docBlockStartIndex, true);
         if (!$index) {
             $index = $docBlockStartIndex;
         }
