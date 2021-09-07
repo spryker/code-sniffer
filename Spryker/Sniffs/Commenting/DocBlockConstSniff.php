@@ -43,15 +43,15 @@ class DocBlockConstSniff extends AbstractSprykerSniff
 
         if (!$docBlockEndIndex) {
             $defaultValueType = $this->findDefaultValueType($phpCsFile, $stackPointer);
-            if ($defaultValueType === 'null') {
-                $phpCsFile->addError('Doc Block `@var` with type `...|' . $defaultValueType . '` for const missing', $stackPointer, 'VarDocBlockMissing');
+            if ($defaultValueType === null) {
+                // Let's ignore for now
+                //$phpCsFile->addError('Doc Block for const missing', $stackPointer, 'VarDocBlockMissing');
 
                 return;
             }
 
-            if ($defaultValueType === null) {
-                // Let's ignore for now
-                //$phpCsFile->addError('Doc Block for const missing', $stackPointer, 'VarDocBlockMissing');
+            if ($defaultValueType === 'null') {
+                $phpCsFile->addError('Doc Block `@var` with type `...|' . $defaultValueType . '` for const missing', $stackPointer, 'VarDocBlockMissing');
 
                 return;
             }
@@ -244,6 +244,7 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         ?string $defaultValueType
     ): void {
         $error = 'Doc Block annotation @var for const missing';
+
         if ($defaultValueType === null) {
             // Let's skip for now for non-trivial cases
             //$phpCsFile->addError($error, $docBlockEndIndex, 'DocBlockMissing');
@@ -256,6 +257,13 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         }
 
         $error .= ', type `' . $defaultValueType . '` detected';
+
+        if ($defaultValueType === 'null') {
+            $phpCsFile->addError($error, $docBlockEndIndex, 'TypeMissing');
+
+            return;
+        }
+
         $fix = $phpCsFile->addFixableError($error, $docBlockEndIndex, 'WrongType');
         if (!$fix) {
             return;
