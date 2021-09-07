@@ -43,6 +43,12 @@ class DocBlockConstSniff extends AbstractSprykerSniff
 
         if (!$docBlockEndIndex) {
             $defaultValueType = $this->findDefaultValueType($phpCsFile, $stackPointer);
+            if ($defaultValueType === 'null') {
+                $phpCsFile->addError('Doc Block `@var` with type `...|' . $defaultValueType . '` for const missing', $stackPointer, 'VarDocBlockMissing');
+
+                return;
+            }
+
             if ($defaultValueType === null) {
                 // Let's ignore for now
                 //$phpCsFile->addError('Doc Block for const missing', $stackPointer, 'VarDocBlockMissing');
@@ -135,8 +141,15 @@ class DocBlockConstSniff extends AbstractSprykerSniff
             $defaultValueType = 'bool';
         }
 
-        if (count($parts) > 1 || $defaultValueType === 'null') {
-            $fix = $phpCsFile->addFixableError('Doc Block type for property annotation @var incorrect, type `' . $defaultValueType . '` missing', $stackPointer, 'VarTypeMissing');
+        if (count($parts) > 1) {
+            $message = 'Doc Block type for property annotation @var incorrect, type `' . $defaultValueType . '` missing';
+            if ($defaultValueType === 'null') {
+                $phpCsFile->addError($message, $stackPointer, 'VarTypeMissing');
+
+                return;
+            }
+
+            $fix = $phpCsFile->addFixableError($message, $stackPointer, 'VarTypeMissing');
             if ($fix) {
                 $phpCsFile->fixer->beginChangeset();
                 $phpCsFile->fixer->replaceToken($typeIndex, implode('|', $parts) . '|' . $defaultValueType . $appendix);
@@ -253,9 +266,11 @@ class DocBlockConstSniff extends AbstractSprykerSniff
             $index = $docBlockStartIndex;
         }
 
+        $indentationLevel = $this->getIndentationLevel($phpCsFile, $docBlockEndIndex);
+
         $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->addNewline($index);
-        $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
+        $phpCsFile->fixer->addContent($index, str_repeat(' ', $indentationLevel * 4) . ' * @var ' . $defaultValueType);
         $phpCsFile->fixer->endChangeset();
     }
 

@@ -232,9 +232,11 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             $index = $docBlockStartIndex;
         }
 
+        $indentationLevel = $this->getIndentationLevel($phpCsFile, $docBlockEndIndex);
+
         $phpCsFile->fixer->beginChangeset();
         $phpCsFile->fixer->addNewline($index);
-        $phpCsFile->fixer->addContent($index, "\t" . ' * @var ' . $defaultValueType);
+        $phpCsFile->fixer->addContent($index, str_repeat(' ', $indentationLevel * 4) . ' * @var ' . $defaultValueType);
         $phpCsFile->fixer->endChangeset();
     }
 
