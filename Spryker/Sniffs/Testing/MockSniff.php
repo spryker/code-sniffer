@@ -20,6 +20,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class MockSniff extends AbstractSprykerSniff
 {
+    /**
+     * @var string
+     */
     protected const MOCK_OBJECT = '\PHPUnit\Framework\MockObject\MockObject';
 
     /**

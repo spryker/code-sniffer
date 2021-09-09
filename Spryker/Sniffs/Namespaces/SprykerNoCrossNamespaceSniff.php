@@ -18,9 +18,18 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
 {
     use UseStatementsTrait;
 
+    /**
+     * @var string
+     */
     protected const NAMESPACE_YVES = 'Yves';
+    /**
+     * @var string
+     */
     protected const NAMESPACE_ZED = 'Zed';
 
+    /**
+     * @var array
+     */
     protected const INVALID_PAIRS = [
         [
             'from' => self::NAMESPACE_YVES,

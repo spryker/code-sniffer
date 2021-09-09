@@ -18,6 +18,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class ExpectExceptionSniff extends AbstractSprykerSniff
 {
+    /**
+     * @var string
+     */
     protected const METHOD_EXPECT_EXCEPTION = 'expectException';
 
     /**

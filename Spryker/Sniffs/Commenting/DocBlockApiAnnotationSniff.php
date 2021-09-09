@@ -15,8 +15,14 @@ use Spryker\Sniffs\AbstractSniffs\AbstractApiClassDetectionSprykerSniff;
  */
 class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 {
+    /**
+     * @var string
+     */
     protected const INHERIT_DOC = '{@inheritDoc}';
 
+    /**
+     * @var string
+     */
     protected const SPECIFICATION_TAG = 'Specification';
 
     /**
