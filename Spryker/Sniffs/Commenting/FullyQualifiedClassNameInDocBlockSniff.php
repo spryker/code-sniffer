@@ -352,7 +352,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
      */
     protected function parseTypes(string $content): array
     {
-        if (strpos($content,'<') !== false)  {
+        if (strpos($content, '<') !== false) {
             return [$content];
         }
 
