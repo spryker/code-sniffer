@@ -39,7 +39,28 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
             return;
         }
 
-        $docBlockReturnTypes = $this->getDocBlockReturnTypes($phpCsFile, $stackPointer);
+        $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
+        if (!$docBlockEndIndex) {
+            return;
+        }
+
+        $tokens = $phpCsFile->getTokens();
+        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+
+        $docBlockReturnIndex = $this->findDocBlockReturn($phpCsFile, $docBlockStartIndex, $docBlockEndIndex);
+        if (!$docBlockReturnIndex) {
+            return;
+        }
+
+        $nextIndex = $phpCsFile->findNext(T_DOC_COMMENT_STRING, $docBlockReturnIndex + 1, $docBlockEndIndex);
+        if (!$nextIndex) {
+            return;
+        }
+
+        $docBlockReturnTypes = $this->parseDocBlockReturnTypes($phpCsFile, $nextIndex);
+        if ($docBlockReturnTypes === null) {
+            return;
+        }
 
         if (!$returnType->isNullable()) {
             $this->assertNotNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
@@ -48,6 +69,61 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         }
 
         $this->assertRequiredNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     *
+     * @return string[]|null
+     */
+    protected function parseDocBlockReturnTypes(File $phpCsFile, int $stackPointer): ?array
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $content = $tokens[$stackPointer]['content'];
+
+        // Skip for complex case right now
+        if (strpos($content, '<') !== false) {
+            return null;
+        }
+
+        preg_match('/(@return\s+)(\S+)/', $content, $matches);
+
+        if (!$matches) {
+            return [];
+        }
+
+        $returnTypes = array_pop($matches);
+        $returnTypes = trim($returnTypes);
+        $returnTypes = explode('|', $returnTypes);
+
+        return $returnTypes;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $docBlockStartIndex
+     * @param int $docBlockEndIndex
+     *
+     * @return int|null
+     */
+    protected function findDocBlockReturn(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex): ?int
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
+            if (!$this->isGivenKind(T_DOC_COMMENT_TAG, $tokens[$i])) {
+                continue;
+            }
+            if ($tokens[$i]['content'] !== '@return') {
+                continue;
+            }
+
+            return $i;
+        }
+
+        return null;
     }
 
     /**
