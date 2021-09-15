@@ -93,13 +93,18 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
+            // Skip for complex arrays until next major
+            if (strpos($content, '<') !== false) {
+                continue;
+            }
+
             $pieces = explode('|', $content);
             // We skip for mixed
             if (in_array('mixed', $pieces, true)) {
                 continue;
             }
 
-            if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'string', 'int', 'bool', 'float', 'self', 'parent'], true)) {
+            if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'iterable', 'string', 'int', 'bool', 'float', 'self', 'parent'], true)) {
                 $type = $methodSignatureValue['typehint'];
                 if (!$this->containsType($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
                     $pieces[] = $type;

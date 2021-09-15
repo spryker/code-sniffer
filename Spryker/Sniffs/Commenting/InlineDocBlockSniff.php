@@ -204,6 +204,11 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
         $comment = $tokens[$contentIndex]['content'];
 
+        // SKip for complex arrays until next major
+        if (strpos($comment, '<') !== false) {
+            return [];
+        }
+
         preg_match('#^(.+?)(\s+)(.+?)\s*$#', $comment, $contentMatches);
         if (!$contentMatches || !$contentMatches[1] || !$contentMatches[3]) {
             if ($this->hasReturnAsFollowingToken($phpCsFile, $contentIndex)) {
