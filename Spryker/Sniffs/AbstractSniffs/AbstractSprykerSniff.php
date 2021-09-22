@@ -159,9 +159,14 @@ abstract class AbstractSprykerSniff implements Sniff
             return null;
         }
 
+        $prevIndex = $phpCsFile->findPrevious(TokenHelper::$typeKeywordTokenCodes, $lastToken);
+        if (!$prevIndex) {
+            return null;
+        }
+
         return ClassHelper::getFullyQualifiedName(
             $phpCsFile,
-            $phpCsFile->findPrevious(TokenHelper::$typeKeywordTokenCodes, $lastToken)
+            $prevIndex
         );
     }
 
@@ -287,6 +292,9 @@ abstract class AbstractSprykerSniff implements Sniff
         $beginningOfLine = $this->getFirstTokenOfLine($tokens, $stackPointer);
 
         $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $beginningOfLine - 1, null, true);
+        if (!$prevContentIndex) {
+            return null;
+        }
         if ($tokens[$prevContentIndex]['type'] === 'T_ATTRIBUTE_END') {
             $beginningOfLine = $this->getFirstTokenOfLine($tokens, $prevContentIndex);
         }
@@ -525,8 +533,7 @@ abstract class AbstractSprykerSniff implements Sniff
         $tokens = $phpCsFile->getTokens();
 
         $prevIndex = $phpCsFile->findPrevious(T_WHITESPACE, $fileDocBlockStartPosition - 1, 0, true);
-
-        if ($tokens[$prevIndex]['line'] === $tokens[$fileDocBlockStartPosition]['line'] - 2) {
+        if (!$prevIndex || $tokens[$prevIndex]['line'] === $tokens[$fileDocBlockStartPosition]['line'] - 2) {
             return;
         }
 

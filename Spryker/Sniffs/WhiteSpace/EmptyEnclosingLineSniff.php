@@ -43,6 +43,9 @@ class EmptyEnclosingLineSniff extends AbstractSprykerSniff
         $curlyBraceEndIndex = $tokens[$stackPtr]['scope_closer'];
 
         $lastContentIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($curlyBraceEndIndex - 1), $stackPtr, true);
+        if (!$lastContentIndex) {
+            return;
+        }
 
         if ($lastContentIndex === $curlyBraceStartIndex) {
             // Single new line for empty body
@@ -69,6 +72,9 @@ class EmptyEnclosingLineSniff extends AbstractSprykerSniff
         }
 
         $firstContentIndex = $phpcsFile->findNext(T_WHITESPACE, ($curlyBraceStartIndex + 1), $lastContentIndex, true);
+        if (!$firstContentIndex) {
+            return;
+        }
         $beginningOfLine = $this->getFirstTokenOfLine($tokens, $firstContentIndex);
 
         $contentLine = $tokens[$firstContentIndex]['line'];

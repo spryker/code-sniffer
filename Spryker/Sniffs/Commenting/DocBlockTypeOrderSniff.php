@@ -127,7 +127,9 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     {
         global $sortOrder;
 
+        /** @var int|false $aIndex */
         $aIndex = array_search($a, $sortOrder, true);
+        /** @var int|false $bIndex */
         $bIndex = array_search($b, $sortOrder, true);
         if ($aIndex === false) {
             return -1;

@@ -476,9 +476,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      */
     protected function getDocOpenerPosition(File $phpCsFile, int $stackPointer): ?int
     {
-        return $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) ?
-            $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) :
-            null;
+        return $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) ?: null;
     }
 
     /**

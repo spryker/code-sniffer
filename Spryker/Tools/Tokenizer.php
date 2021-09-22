@@ -47,6 +47,9 @@ class Tokenizer
             throw new Exception('Please provide a valid file.');
         }
         $file = realpath($file);
+        if ($file === false) {
+            throw new Exception('Please provide a valid file.');
+        }
 
         $this->root = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
         $this->path = $file;
@@ -61,7 +64,7 @@ class Tokenizer
         $res = [];
         $tokens = $this->getTokens($this->path);
 
-        $array = file($this->path);
+        $array = file($this->path) ?: [];
         foreach ($array as $key => $row) {
             $res[] = rtrim($row);
             $tokenStrings = $this->getTokenStrings($key + 1, $tokens);
@@ -96,7 +99,11 @@ class Tokenizer
         $ruleset = new Ruleset($config);
 
         $file = new File($path, $ruleset, $config);
-        $file->setContent(file_get_contents($path));
+        $content = file_get_contents($path);
+        if ($content === false) {
+            throw new \RuntimeException('Content not found for path ' . $path);
+        }
+        $file->setContent($content);
         $file->parse();
 
         return $file->getTokens();

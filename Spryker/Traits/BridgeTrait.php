@@ -95,6 +95,9 @@ trait BridgeTrait
     protected function getNamespace(File $phpCsFile, int $pointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $pointer);
+        if (!$namespacePosition) {
+            return '';
+        }
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
 
         $tokens = $phpCsFile->getTokens();

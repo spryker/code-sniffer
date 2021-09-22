@@ -36,6 +36,9 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $startIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
+        if (!$startIndex) {
+            return;
+        }
 
         $endIndex = $tokens[$startIndex]['parenthesis_closer'];
         $lastArgumentIndex = $this->getLastNonDefaultArgumentIndex($phpcsFile, $startIndex, $endIndex);
@@ -61,10 +64,11 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
 
             if ($fix) {
                 $commaIndex = $phpcsFile->findPrevious(T_COMMA, $lastArgumentIndex - 1, $startIndex);
-
-                $phpcsFile->fixer->beginChangeset();
-                $this->removeDefaultArgument($phpcsFile, $i, $commaIndex - 1);
-                $phpcsFile->fixer->endChangeset();
+                if ($commaIndex) {
+                    $phpcsFile->fixer->beginChangeset();
+                    $this->removeDefaultArgument($phpcsFile, $i, $commaIndex - 1);
+                    $phpcsFile->fixer->endChangeset();
+                }
             }
         }
     }

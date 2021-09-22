@@ -170,6 +170,9 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
     protected function getInterfaceNamespace(File $phpCsFile, int $stackPointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
+        if (!$namespacePosition) {
+            return '';
+        }
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
 
         $tokens = $phpCsFile->getTokens();
@@ -200,19 +203,18 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
+     * @return int|null Stack pointer value of docblock end tag, or null if cannot be found
      */
     protected function findDocBlock(File $phpCsFile, int $stackPointer): ?int
     {
         $tokens = $phpCsFile->getTokens();
 
         $index = $phpCsFile->findPrevious(T_WHITESPACE, $stackPointer - 1, null, true);
-
-        if ($tokens[$index]['type'] === 'T_DOC_COMMENT_CLOSE_TAG') {
-            return $index;
+        if (!$index || $tokens[$index]['type'] !== 'T_DOC_COMMENT_CLOSE_TAG') {
+            return null;
         }
 
-        return null;
+        return $index;
     }
 
     /**

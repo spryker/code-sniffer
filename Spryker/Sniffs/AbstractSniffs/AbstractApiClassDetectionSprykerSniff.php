@@ -130,6 +130,9 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
     protected function extractNamespace(File $phpCsFile, int $stackPointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
+        if (!$namespacePosition) {
+            return '';
+        }
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
 
         $tokens = $phpCsFile->getTokens();
@@ -152,6 +155,9 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
     protected function getClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
+        if (!$classOrInterfacePosition) {
+            return '';
+        }
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
 
         return $phpCsFile->getTokens()[$classOrInterfaceNamePosition]['content'];

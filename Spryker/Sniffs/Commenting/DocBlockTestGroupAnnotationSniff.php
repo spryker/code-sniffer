@@ -179,6 +179,9 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
     protected function getClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
+        if (!$classOrInterfacePosition) {
+            return '';
+        }
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
 
         return $phpCsFile->getTokens()[$classOrInterfaceNamePosition]['content'];

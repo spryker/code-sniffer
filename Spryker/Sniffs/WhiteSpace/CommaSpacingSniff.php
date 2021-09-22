@@ -34,9 +34,15 @@ class CommaSpacingSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        if (!$next) {
+            return;
+        }
         $this->checkNext($phpcsFile, $stackPtr, $next);
 
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        if (!$previous) {
+            return;
+        }
 
         if ($tokens[$previous]['code'] !== T_WHITESPACE && ($previous !== $stackPtr - 1)) {
             if ($tokens[$previous]['code'] === T_COMMA) {
