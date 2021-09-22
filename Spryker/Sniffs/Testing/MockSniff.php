@@ -217,7 +217,7 @@ class MockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $docBlockReturnTypes
+     * @param array<string> $docBlockReturnTypes
      *
      * @return bool
      */

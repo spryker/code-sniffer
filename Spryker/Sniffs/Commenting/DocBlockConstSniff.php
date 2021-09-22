@@ -198,7 +198,7 @@ class DocBlockConstSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $token
+     * @param array<string, mixed> $token
      *
      * @return string|null
      */

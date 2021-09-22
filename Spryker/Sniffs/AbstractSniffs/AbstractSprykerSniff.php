@@ -195,7 +195,7 @@ abstract class AbstractSprykerSniff implements Sniff
      * Checks if the given token scope contains a single or multiple token codes/types.
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param string|array $search
+     * @param array<string|int>|string|int $search
      * @param int $start
      * @param int $end
      * @param bool $skipNested
@@ -397,7 +397,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $index
      *
      * @return int
@@ -415,7 +415,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $index
      *
      * @return int
@@ -434,7 +434,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -461,7 +461,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $stackPointer
      *
      * @return bool
@@ -577,7 +577,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $firstPosition
      * @param int $secondPosition
      *
@@ -589,7 +589,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $stackPtr
      *
      * @return int
@@ -602,7 +602,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $position
      *
      * @return int
@@ -617,10 +617,10 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $stackPtr
-     * @param array $methodProperties
-     * @param array $methodParameters
+     * @param array<string, mixed> $methodProperties
+     * @param array<array<string, mixed>> $methodParameters
      *
      * @return int
      */
@@ -657,7 +657,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param array $methodParameter
+     * @param array<string, mixed> $methodParameter
      *
      * @return int
      */

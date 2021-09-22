@@ -28,7 +28,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
     protected const NAMESPACE_ZED = 'Zed';
 
     /**
-     * @var array
+     * @var array<int, array<string, string>>
      */
     protected const INVALID_PAIRS = [
         [
@@ -77,7 +77,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param array $useStatement
+     * @param array<string, mixed> $useStatement
      * @param string $applicationLayer Zed, Yves, ...
      *
      * @return void

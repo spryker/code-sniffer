@@ -224,7 +224,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     protected function readTags(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): array
     {
@@ -257,7 +257,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $index
      *
      * @return int
@@ -281,7 +281,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $start
      * @param int $end
      *
@@ -301,7 +301,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $start
      * @param int $end
      *
@@ -319,8 +319,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $first
-     * @param array $second
+     * @param array<string, mixed> $first
+     * @param array<string, mixed> $second
      *
      * @return void
      */
@@ -358,8 +358,8 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $first
-     * @param array $second
+     * @param array<string, mixed> $first
+     * @param array<string, mixed> $second
      *
      * @return void
      */

@@ -22,7 +22,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class DocCommentSniff extends AbstractSprykerSniff
 {
     /**
-     * @var array
+     * @var array<string>
      */
     public $supportedTokenizers = [
         'PHP',

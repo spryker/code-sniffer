@@ -55,7 +55,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param array $namespaceParts
+     * @param array<string> $namespaceParts
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param array $namespaceParts
+     * @param array<string> $namespaceParts
      *
      * @return void
      */
@@ -115,7 +115,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $docCommentEndPosition
-     * @param array $namespaceParts
+     * @param array<string> $namespaceParts
      *
      * @return void
      */

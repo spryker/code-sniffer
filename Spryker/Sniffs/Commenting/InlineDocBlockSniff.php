@@ -174,7 +174,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $from
      * @param int $to
      * @param string $tagType

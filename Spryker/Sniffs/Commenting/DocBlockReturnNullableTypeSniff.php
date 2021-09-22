@@ -229,7 +229,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      *
      * @throws \RuntimeException
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getDocBlockReturnTypesToken(File $phpCsFile, int $stackPointer): array
     {

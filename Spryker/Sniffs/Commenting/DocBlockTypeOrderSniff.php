@@ -64,7 +64,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param array $docBlockParams
+     * @param array<int, array<string, mixed>> $docBlockParams
      *
      * @return void
      */
@@ -141,11 +141,11 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $docBlockStartIndex
      * @param int $docBlockEndIndex
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     protected function getDocBlockParams(array $tokens, int $docBlockStartIndex, int $docBlockEndIndex): array
     {
