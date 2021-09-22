@@ -38,6 +38,11 @@ class DocBlockSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if ($nextIndex === false) {
+            return;
+        }
+
         if ($tokens[$nextIndex]['content'] === '__construct' || $tokens[$nextIndex]['content'] === '__destruct') {
             $this->checkConstructorAndDestructor($phpcsFile, $stackPtr);
 
@@ -85,6 +90,11 @@ class DocBlockSniff extends AbstractSprykerSniff
         $firstTokenOfLine = $this->getFirstTokenOfLine($tokens, $index);
 
         $prevContentIndex = $phpcsFile->findPrevious(T_WHITESPACE, $firstTokenOfLine - 1, null, true);
+
+        if ($prevContentIndex === false) {
+            return;
+        }
+
         if ($tokens[$prevContentIndex]['type'] === 'T_ATTRIBUTE_END') {
             $firstTokenOfLine = $this->getFirstTokenOfLine($tokens, $prevContentIndex);
         }

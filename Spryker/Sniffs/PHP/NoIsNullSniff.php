@@ -74,7 +74,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
             return;
         }
 
-        $beginningIndex = $negated ? $possibleCastIndex : $stackPtr;
+        $beginningIndex = (int)($negated ? $possibleCastIndex : $stackPtr);
         $endIndex = $closingBraceIndex;
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NoIsNull');
@@ -149,7 +149,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($index - 1), null, true);
+        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($index - 1), null, true);
         if ($this->isCast($previous)) {
             return true;
         }
@@ -224,7 +224,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
      */
     protected function hasLeadingComparison(File $phpcsFile, int $stackPtr): bool
     {
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
 
         return $this->isComparison($phpcsFile, $previous);
     }
@@ -237,7 +237,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
      */
     protected function hasTrailingComparison(File $phpcsFile, int $stackPtr): bool
     {
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $next = (int)$phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
 
         return $this->isComparison($phpcsFile, $next);
     }

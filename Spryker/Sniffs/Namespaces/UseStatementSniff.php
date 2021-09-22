@@ -186,7 +186,7 @@ class UseStatementSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $nextIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         $lastIndex = null;
         $i = $nextIndex;
         $extractedUseStatement = '';
@@ -253,7 +253,7 @@ class UseStatementSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
+        $prevIndex = (int)$phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
 
         $lastIndex = null;
         $i = $prevIndex;
@@ -317,7 +317,7 @@ class UseStatementSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $classNameIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
 
         $lastIndex = null;
         $i = $classNameIndex;
@@ -385,7 +385,7 @@ class UseStatementSniff implements Sniff
 
         $openParenthesisIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
         $closeParenthesisIndex = $tokens[$openParenthesisIndex]['parenthesis_closer'];
-        $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $openParenthesisIndex + 1, null, true);
+        $classNameIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $openParenthesisIndex + 1, null, true);
 
         $lastIndex = null;
         $i = $classNameIndex;
@@ -425,7 +425,7 @@ class UseStatementSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
+        $firstSeparatorIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
 
         $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
@@ -533,13 +533,13 @@ class UseStatementSniff implements Sniff
             return;
         }
 
-        $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $colonIndex + 1, $colonIndex + 3, true);
+        $startIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $colonIndex + 1, $colonIndex + 3, true);
         if (!$startIndex) {
             return;
         }
 
         if ($tokens[$startIndex]['type'] === 'T_NULLABLE') {
-            $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, $startIndex + 3, true);
+            $startIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, $startIndex + 3, true);
         }
 
         $lastIndex = null;
@@ -577,7 +577,7 @@ class UseStatementSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex, null, true);
+        $firstSeparatorIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $startIndex, null, true);
 
         $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
@@ -869,7 +869,7 @@ class UseStatementSniff implements Sniff
      */
     protected function parseExtends(File $phpcsFile, int $extendsStartIndex): array
     {
-        $extendsEndIndex = $phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
+        $extendsEndIndex = (int)$phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
 
         return $this->parse($phpcsFile, $extendsStartIndex, $extendsEndIndex);
     }
@@ -882,7 +882,7 @@ class UseStatementSniff implements Sniff
      */
     protected function parseImplements(File $phpcsFile, int $implementsStartIndex): array
     {
-        $implementsEndIndex = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
+        $implementsEndIndex = (int)$phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
 
         return $this->parse($phpcsFile, $implementsStartIndex, $implementsEndIndex);
     }

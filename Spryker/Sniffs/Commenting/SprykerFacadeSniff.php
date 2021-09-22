@@ -74,11 +74,21 @@ class SprykerFacadeSniff implements Sniff
         $facadeFile = str_replace('FacadeInterface.php', 'Facade.php', $phpCsFile->getFilename());
 
         $content = file_get_contents($facadeFile);
+
+        if (!$content) {
+            return;
+        }
+
         preg_match_all('/public function (\w+)\b/', $content, $matches);
         $methods = $matches[1];
         asort($methods);
 
         $interfaceContent = file_get_contents($phpCsFile->getFilename());
+
+        if (!$interfaceContent) {
+            return;
+        }
+
         preg_match_all('/public function (\w+)\b/', $interfaceContent, $matches);
         $interfaceMethods = $matches[1];
         asort($interfaceMethods);
@@ -156,7 +166,7 @@ class SprykerFacadeSniff implements Sniff
      */
     protected function getNamespace(File $phpCsFile, int $stackPointer): string
     {
-        $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
+        $namespacePosition = (int)$phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
 
         $tokens = $phpCsFile->getTokens();

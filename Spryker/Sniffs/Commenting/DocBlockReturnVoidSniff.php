@@ -44,6 +44,11 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if ($nextIndex === false) {
+            return;
+        }
+
         if (in_array($tokens[$nextIndex]['content'], $this->ignored, true)) {
             $this->checkConstructorAndDestructor($phpcsFile, $nextIndex);
 
@@ -181,6 +186,10 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $indentation = $this->getIndentationWhitespace($phpcsFile, $docBlockEndIndex);
 
         $lastLineEndIndex = $phpcsFile->findPrevious([T_DOC_COMMENT_WHITESPACE], $docBlockEndIndex - 1, null, true);
+
+        if ($lastLineEndIndex === false) {
+            return;
+        }
 
         $phpcsFile->fixer->beginChangeset();
         $phpcsFile->fixer->addNewline($lastLineEndIndex);

@@ -12,6 +12,7 @@ use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Runner;
+use RuntimeException;
 
 $manualAutoload = getcwd() . '/vendor/squizlabs/php_codesniffer/autoload.php';
 if (!class_exists(Config::class) && file_exists($manualAutoload)) {
@@ -84,6 +85,8 @@ class Tokenizer
     /**
      * @param string $path Path
      *
+     * @throws \RuntimeException
+     *
      * @return array<int, array<string, mixed>> Tokens
      */
     protected function getTokens(string $path): array
@@ -101,7 +104,7 @@ class Tokenizer
         $file = new File($path, $ruleset, $config);
         $content = file_get_contents($path);
         if ($content === false) {
-            throw new \RuntimeException('Content not found for path ' . $path);
+            throw new RuntimeException('Content not found for path ' . $path);
         }
         $file->setContent($content);
         $file->parse();
