@@ -40,11 +40,6 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
-        $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
-        if ($this->hasInheritDoc($phpCsFile, $docBlockStartIndex, $docBlockEndIndex)) {
-            return;
-        }
-
         if (!$docBlockEndIndex) {
             $defaultValueType = $this->findDefaultValueType($phpCsFile, $stackPointer);
             if ($defaultValueType === null) {
@@ -67,6 +62,9 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         }
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
+        if ($this->hasInheritDoc($phpCsFile, $docBlockStartIndex, $docBlockEndIndex)) {
+            return;
+        }
 
         $defaultValueType = $this->findDefaultValueType($phpCsFile, $stackPointer);
 
