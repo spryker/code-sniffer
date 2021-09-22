@@ -97,7 +97,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      *
      * @return string
      */

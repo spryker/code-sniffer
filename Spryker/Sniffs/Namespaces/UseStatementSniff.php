@@ -21,17 +21,17 @@ class UseStatementSniff implements Sniff
     use BasicsTrait;
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>|null
      */
     protected $existingStatements;
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     protected $newStatements = [];
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>|null
      */
     protected $allStatements;
 
@@ -133,7 +133,7 @@ class UseStatementSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param array $statement
+     * @param array<string, mixed> $statement
      * @param int $stackPtr
      *
      * @return void
@@ -705,7 +705,7 @@ class UseStatementSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     protected function getUseStatements(File $phpcsFile): array
     {
@@ -773,7 +773,7 @@ class UseStatementSniff implements Sniff
      *
      * @throws \RuntimeException
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function addUseStatement(File $phpcsFile, string $shortName, string $fullName): array
     {
@@ -803,7 +803,7 @@ class UseStatementSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param array $useStatement
+     * @param array<string, mixed> $useStatement
      *
      * @return void
      */
@@ -825,7 +825,7 @@ class UseStatementSniff implements Sniff
     }
 
     /**
-     * @param array $useStatement
+     * @param array<string, mixed> $useStatement
      *
      * @return string
      */
@@ -865,7 +865,7 @@ class UseStatementSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $extendsStartIndex
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     protected function parseExtends(File $phpcsFile, int $extendsStartIndex): array
     {
@@ -878,7 +878,7 @@ class UseStatementSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $implementsStartIndex
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     protected function parseImplements(File $phpcsFile, int $implementsStartIndex): array
     {
@@ -894,7 +894,7 @@ class UseStatementSniff implements Sniff
      *
      * @throws \RuntimeException
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     protected function parse(File $phpcsFile, int $startIndex, int $endIndex): array
     {

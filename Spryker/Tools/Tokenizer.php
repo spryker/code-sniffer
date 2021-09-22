@@ -36,7 +36,7 @@ class Tokenizer
     protected $verbose;
 
     /**
-     * @param array $argv
+     * @param array<string> $argv
      *
      * @throws \Exception
      */
@@ -81,7 +81,7 @@ class Tokenizer
     /**
      * @param string $path Path
      *
-     * @return array Tokens
+     * @return array<int, array<string, mixed>> Tokens
      */
     protected function getTokens(string $path): array
     {
@@ -104,9 +104,9 @@ class Tokenizer
 
     /**
      * @param int $row Current row
-     * @param array $tokens Tokens array
+     * @param array<int, array<string, mixed>> $tokens Tokens array
      *
-     * @return array
+     * @return array<string>
      */
     protected function getTokenStrings(int $row, array $tokens): array
     {

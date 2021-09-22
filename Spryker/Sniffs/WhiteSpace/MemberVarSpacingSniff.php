@@ -26,7 +26,13 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
         $tokens = $phpcsFile->getTokens();
 
         $endIndex = $phpcsFile->findNext(T_SEMICOLON, $stackPtr + 1);
+        if (!$endIndex) {
+            return;
+        }
         $nextIndex = $phpcsFile->findNext(T_WHITESPACE, $endIndex + 1, null, true);
+        if (!$nextIndex) {
+            return;
+        }
 
         if ($tokens[$nextIndex]['line'] - $tokens[$endIndex]['line'] === 2) {
             return;

@@ -6,4 +6,3 @@ parameters:
         - GlueStreamSpecific/
     bootstrapFiles:
         - %rootDir%/../../../tests/bootstrap.php
-    checkMissingIterableValueType: false

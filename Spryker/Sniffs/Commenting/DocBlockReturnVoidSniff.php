@@ -354,7 +354,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $docBlockReturnIndex
      *
      * @return string

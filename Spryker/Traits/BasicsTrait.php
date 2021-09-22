@@ -13,8 +13,8 @@ use PHP_CodeSniffer\Util\Tokens;
 trait BasicsTrait
 {
     /**
-     * @param string|int|array $search
-     * @param array $token
+     * @param array<string|int>|string|int $search
+     * @param array<string, mixed> $token
      *
      * @return bool
      */
@@ -35,7 +35,7 @@ trait BasicsTrait
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
-     * @return array
+     * @return array<string, mixed>>
      */
     protected function getNamespaceStatement(File $phpcsFile): array
     {
