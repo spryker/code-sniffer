@@ -155,7 +155,11 @@ class NoIsNullSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($index - 1), null, true);
-        if ($previous && $this->isCast($previous)) {
+        if (!$previous) {
+            return false;
+        }
+
+        if ($this->isCast($previous)) {
             return true;
         }
         if (in_array($tokens[$previous]['code'], Tokens::$arithmeticTokens)) {
