@@ -166,7 +166,12 @@ class SprykerFacadeSniff implements Sniff
      */
     protected function getNamespace(File $phpCsFile, int $stackPointer): string
     {
-        $namespacePosition = (int)$phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
+        $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
+
+        if (!$namespacePosition) {
+            return '';
+        }
+
         $endOfNamespacePosition = $phpCsFile->findEndOfStatement($namespacePosition);
 
         $tokens = $phpCsFile->getTokens();

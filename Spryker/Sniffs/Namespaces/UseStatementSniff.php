@@ -186,7 +186,12 @@ class UseStatementSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $nextIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if (!$nextIndex) {
+            return;
+        }
+
         $lastIndex = null;
         $i = $nextIndex;
         $extractedUseStatement = '';
@@ -253,7 +258,11 @@ class UseStatementSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $prevIndex = (int)$phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
+        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
+
+        if (!$prevIndex) {
+            return;
+        }
 
         $lastIndex = null;
         $i = $prevIndex;
@@ -317,7 +326,11 @@ class UseStatementSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $classNameIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if (!$classNameIndex) {
+            return;
+        }
 
         $lastIndex = null;
         $i = $classNameIndex;
@@ -385,7 +398,11 @@ class UseStatementSniff implements Sniff
 
         $openParenthesisIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1);
         $closeParenthesisIndex = $tokens[$openParenthesisIndex]['parenthesis_closer'];
-        $classNameIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $openParenthesisIndex + 1, null, true);
+        $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $openParenthesisIndex + 1, null, true);
+
+        if (!$classNameIndex) {
+            return;
+        }
 
         $lastIndex = null;
         $i = $classNameIndex;
@@ -425,7 +442,11 @@ class UseStatementSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        $firstSeparatorIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
+        $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
+
+        if (!$firstSeparatorIndex) {
+            return;
+        }
 
         $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
@@ -533,13 +554,17 @@ class UseStatementSniff implements Sniff
             return;
         }
 
-        $startIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $colonIndex + 1, $colonIndex + 3, true);
+        $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $colonIndex + 1, $colonIndex + 3, true);
         if (!$startIndex) {
             return;
         }
 
         if ($tokens[$startIndex]['type'] === 'T_NULLABLE') {
-            $startIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, $startIndex + 3, true);
+            $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, $startIndex + 3, true);
+        }
+
+        if (!$startIndex) {
+            return;
         }
 
         $lastIndex = null;
@@ -577,7 +602,11 @@ class UseStatementSniff implements Sniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        $firstSeparatorIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $startIndex, null, true);
+        $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex, null, true);
+
+        if (!$firstSeparatorIndex) {
+            return;
+        }
 
         $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
@@ -869,7 +898,11 @@ class UseStatementSniff implements Sniff
      */
     protected function parseExtends(File $phpcsFile, int $extendsStartIndex): array
     {
-        $extendsEndIndex = (int)$phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
+        $extendsEndIndex = $phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
+
+        if (!$extendsEndIndex) {
+            return [];
+        }
 
         return $this->parse($phpcsFile, $extendsStartIndex, $extendsEndIndex);
     }
@@ -882,7 +915,11 @@ class UseStatementSniff implements Sniff
      */
     protected function parseImplements(File $phpcsFile, int $implementsStartIndex): array
     {
-        $implementsEndIndex = (int)$phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
+        $implementsEndIndex = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
+
+        if (!$implementsEndIndex) {
+            return [];
+        }
 
         return $this->parse($phpcsFile, $implementsStartIndex, $implementsEndIndex);
     }
