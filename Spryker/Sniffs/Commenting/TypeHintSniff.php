@@ -259,7 +259,7 @@ class TypeHintSniff implements Sniff
      */
     protected function renderUnionTypes(array $typeNodes): string
     {
-        return preg_replace(
+        return (string)preg_replace(
             ['/ ([\|&]) /', '/<\(/', '/\)>/'],
             ['${1}', '<', '>'],
             implode('|', $typeNodes)

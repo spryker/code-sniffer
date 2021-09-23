@@ -278,7 +278,9 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $exceptionsToAdd[$exception['fullClass']] = $exception;
+            /** @var string $fullClass */
+            $fullClass = $exception['fullClass'];
+            $exceptionsToAdd[$fullClass] = $exception;
         }
 
         $this->addAnnotationLines($phpCsFile, $exceptionsToAdd, $docBlockEndIndex);
