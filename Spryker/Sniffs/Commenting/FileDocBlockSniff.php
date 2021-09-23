@@ -170,7 +170,11 @@ class FileDocBlockSniff extends AbstractSprykerSniff
      */
     protected function findLicense(File $phpCsFile): ?string
     {
-        $path = str_replace(getcwd(), '', $phpCsFile->getFilename());
+        $currentPath = getcwd();
+        if ($currentPath === false) {
+            return null;
+        }
+        $path = str_replace($currentPath, '', $phpCsFile->getFilename());
 
         if (strpos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR) === 0) {
             $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));

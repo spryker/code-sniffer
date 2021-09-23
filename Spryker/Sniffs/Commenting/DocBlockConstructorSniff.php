@@ -51,7 +51,7 @@ class DocBlockConstructorSniff extends AbstractSprykerSniff
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
         $firstLineIndex = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $docBlockStartIndex, $docBlockEndIndex);
-        if ($tokens[$firstLineIndex]['line'] !== $tokens[$docBlockStartIndex]['line'] + 1) {
+        if (!$firstLineIndex || $tokens[$firstLineIndex]['line'] !== $tokens[$docBlockStartIndex]['line'] + 1) {
             return;
         }
 

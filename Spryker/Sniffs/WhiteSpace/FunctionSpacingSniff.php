@@ -43,8 +43,14 @@ class FunctionSpacingSniff extends AbstractSprykerSniff
             $closingParenthesisIndex = $tokens[$openingParenthesisIndex]['parenthesis_closer'];
 
             $semicolonIndex = $phpCsFile->findNext(T_SEMICOLON, $closingParenthesisIndex + 1);
+            if (!$semicolonIndex) {
+                return;
+            }
 
             $nextContentIndex = $phpCsFile->findNext(T_WHITESPACE, $semicolonIndex + 1, null, true);
+            if (!$nextContentIndex) {
+                return;
+            }
 
             // Do not mess with the end of the class
             if ($tokens[$nextContentIndex]['type'] === 'T_CLOSE_CURLY_BRACKET') {
@@ -74,6 +80,9 @@ class FunctionSpacingSniff extends AbstractSprykerSniff
         }
 
         $nextContentIndex = $phpCsFile->findNext(T_WHITESPACE, $closingBraceIndex + 1, null, true);
+        if (!$nextContentIndex) {
+            return;
+        }
 
         // Do not mess with the end of the class
         if ($tokens[$nextContentIndex]['type'] === 'T_CLOSE_CURLY_BRACKET') {
@@ -131,6 +140,9 @@ class FunctionSpacingSniff extends AbstractSprykerSniff
         }
 
         $prevContentIndex = $phpCsFile->findPrevious(T_WHITESPACE, $firstTokenInLineIndex - 1, null, true);
+        if (!$prevContentIndex) {
+            return;
+        }
 
         // Do not mess with the start of the class
         if ($tokens[$prevContentIndex]['type'] === 'T_OPEN_CURLY_BRACKET') {

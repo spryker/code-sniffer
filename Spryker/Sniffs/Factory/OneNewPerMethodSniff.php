@@ -95,7 +95,16 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
     protected function hasMoreThenOneNewInMethod(File $phpCsFile, int $stackPointer): bool
     {
         $openPointer = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer);
+
+        if ($openPointer === false) {
+            return false;
+        }
+
         $closePointer = $phpCsFile->findNext(T_CLOSE_CURLY_BRACKET, $openPointer);
+
+        if ($closePointer === false) {
+            return false;
+        }
 
         $firstNewPosition = $phpCsFile->findNext(T_NEW, $openPointer, $closePointer);
         if ($firstNewPosition === false) {

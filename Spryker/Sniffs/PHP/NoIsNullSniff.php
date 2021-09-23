@@ -53,8 +53,13 @@ class NoIsNullSniff extends AbstractSprykerSniff
         $error = $tokenContent . '() found, should be strict === null check.';
 
         $possibleCastIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+
+        if (!$possibleCastIndex) {
+            return;
+        }
+
         $negated = false;
-        if ($possibleCastIndex && $tokens[$possibleCastIndex]['code'] === T_BOOLEAN_NOT) {
+        if ($tokens[$possibleCastIndex]['code'] === T_BOOLEAN_NOT) {
             $negated = true;
         }
         // We dont want to fix double !!
@@ -150,6 +155,10 @@ class NoIsNullSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($index - 1), null, true);
+        if (!$previous) {
+            return false;
+        }
+
         if ($this->isCast($previous)) {
             return true;
         }
@@ -226,6 +235,10 @@ class NoIsNullSniff extends AbstractSprykerSniff
     {
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
 
+        if (!$previous) {
+            return false;
+        }
+
         return $this->isComparison($phpcsFile, $previous);
     }
 
@@ -238,6 +251,10 @@ class NoIsNullSniff extends AbstractSprykerSniff
     protected function hasTrailingComparison(File $phpcsFile, int $stackPtr): bool
     {
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+
+        if (!$next) {
+            return false;
+        }
 
         return $this->isComparison($phpcsFile, $next);
     }

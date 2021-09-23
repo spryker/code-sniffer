@@ -187,6 +187,11 @@ class UseStatementSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if (!$nextIndex) {
+            return;
+        }
+
         $lastIndex = null;
         $i = $nextIndex;
         $extractedUseStatement = '';
@@ -255,6 +260,10 @@ class UseStatementSniff implements Sniff
 
         $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
 
+        if (!$prevIndex) {
+            return;
+        }
+
         $lastIndex = null;
         $i = $prevIndex;
         $extractedUseStatement = '';
@@ -318,6 +327,10 @@ class UseStatementSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+
+        if (!$classNameIndex) {
+            return;
+        }
 
         $lastIndex = null;
         $i = $classNameIndex;
@@ -387,6 +400,10 @@ class UseStatementSniff implements Sniff
         $closeParenthesisIndex = $tokens[$openParenthesisIndex]['parenthesis_closer'];
         $classNameIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $openParenthesisIndex + 1, null, true);
 
+        if (!$classNameIndex) {
+            return;
+        }
+
         $lastIndex = null;
         $i = $classNameIndex;
         $extractedUseStatement = '';
@@ -426,6 +443,10 @@ class UseStatementSniff implements Sniff
         $phpcsFile->fixer->beginChangeset();
 
         $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, null, true);
+
+        if (!$firstSeparatorIndex) {
+            return;
+        }
 
         $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
@@ -542,6 +563,10 @@ class UseStatementSniff implements Sniff
             $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex + 1, $startIndex + 3, true);
         }
 
+        if (!$startIndex) {
+            return;
+        }
+
         $lastIndex = null;
         $j = $startIndex;
         $extractedUseStatement = '';
@@ -578,6 +603,10 @@ class UseStatementSniff implements Sniff
         $phpcsFile->fixer->beginChangeset();
 
         $firstSeparatorIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $startIndex, null, true);
+
+        if (!$firstSeparatorIndex) {
+            return;
+        }
 
         $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
 
@@ -736,7 +765,7 @@ class UseStatementSniff implements Sniff
                 continue;
             }
 
-            $statementParts = preg_split('/\s+as\s+/i', $statement);
+            $statementParts = preg_split('/\s+as\s+/i', $statement) ?: [];
 
             if (count($statementParts) === 1) {
                 $fullName = $statement;
@@ -777,7 +806,8 @@ class UseStatementSniff implements Sniff
      */
     protected function addUseStatement(File $phpcsFile, string $shortName, string $fullName): array
     {
-        foreach ($this->allStatements as $useStatement) {
+        $useStatements = (array)$this->allStatements;
+        foreach ($useStatements as $useStatement) {
             if ($useStatement['fullName'] === $fullName) {
                 return $useStatement;
             }
@@ -871,6 +901,10 @@ class UseStatementSniff implements Sniff
     {
         $extendsEndIndex = $phpcsFile->findNext([T_IMPLEMENTS, T_OPEN_CURLY_BRACKET], $extendsStartIndex + 1);
 
+        if (!$extendsEndIndex) {
+            return [];
+        }
+
         return $this->parse($phpcsFile, $extendsStartIndex, $extendsEndIndex);
     }
 
@@ -883,6 +917,10 @@ class UseStatementSniff implements Sniff
     protected function parseImplements(File $phpcsFile, int $implementsStartIndex): array
     {
         $implementsEndIndex = $phpcsFile->findNext(T_OPEN_CURLY_BRACKET, $implementsStartIndex + 1);
+
+        if (!$implementsEndIndex) {
+            return [];
+        }
 
         return $this->parse($phpcsFile, $implementsStartIndex, $implementsEndIndex);
     }

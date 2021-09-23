@@ -152,6 +152,10 @@ class DocCommentSniff extends AbstractSprykerSniff
         }
 
         $prev = $phpcsFile->findPrevious($empty, $firstTag - 1, $stackPtr, true);
+        if (!$prev) {
+            return;
+        }
+
         if ($tokens[$firstTag]['line'] !== ($tokens[$prev]['line'] + 2)) {
             $error = 'There must be exactly one blank line before the tags in a doc comment';
             $fix = $phpcsFile->addFixableError($error, $firstTag, 'SpacingBeforeTags');

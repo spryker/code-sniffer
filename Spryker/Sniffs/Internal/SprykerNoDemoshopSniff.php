@@ -39,12 +39,15 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
 
         $file = $phpcsFile->getFilename();
         $content = file_get_contents($file);
+        if (!$content) {
+            return;
+        }
 
         if (!preg_match('/\* @project\b/', $content)) {
             return;
         }
 
-        $phpcsFile->addError('No project only code should be merged into Spryker demoshop.', $stackPtr, 'InvalidContent');
+        $phpcsFile->addError('No internal "project only" code should be merged into Spryker suite/demoshop.', $stackPtr, 'InvalidContent');
     }
 
     /**
@@ -71,6 +74,10 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
         }
 
         $content = file_get_contents($file);
+        if (!$content) {
+            return false;
+        }
+
         static::$isDemoshop = (bool)preg_match('#"name":\s*"(spryker/demoshop|spryker-shop/suite|spryker-shop/suite-b2c|spryker-shop/suite-b2b)"#', $content, $matches);
 
         return static::$isDemoshop;

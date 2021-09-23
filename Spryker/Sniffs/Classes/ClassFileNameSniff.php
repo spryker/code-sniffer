@@ -44,7 +44,7 @@ class ClassFileNameSniff extends AbstractSprykerSniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $fullPath = basename($phpcsFile->getFilename());
-        $fileName = substr($fullPath, 0, strrpos($fullPath, '.'));
+        $fileName = substr($fullPath, 0, strrpos($fullPath, '.') ?: 0);
         if ($fileName === '') {
             // No filename probably means STDIN, so we can't do this check.
             return;

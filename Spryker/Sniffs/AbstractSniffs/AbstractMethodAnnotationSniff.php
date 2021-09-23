@@ -136,11 +136,13 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
         } else {
             $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
-            $phpCsFile->fixer->addNewlineBefore($position);
-            $phpCsFile->fixer->addContentBefore(
-                $position,
-                ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()'
-            );
+            if ($position) {
+                $phpCsFile->fixer->addNewlineBefore($position);
+                $phpCsFile->fixer->addContentBefore(
+                    $position,
+                    ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()'
+                );
+            }
         }
 
         $phpCsFile->fixer->endChangeset();

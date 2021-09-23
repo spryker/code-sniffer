@@ -104,6 +104,10 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
 
         $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if (!$docCommentOpenerPosition) {
+            return;
+        }
+
         $firstDocCommentTagPosition = $phpCsFile->findNext(T_DOC_COMMENT_TAG, $docCommentOpenerPosition);
 
         if (!$firstDocCommentTagPosition) {
@@ -312,7 +316,13 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
         $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if (!$docCommentOpenerPosition) {
+            return null;
+        }
         $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
+        if (!$docCommentClosingPosition) {
+            return null;
+        }
 
         $specificationPosition = $this->getContentPositionInRange(
             static::SPECIFICATION_TAG,
@@ -476,9 +486,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
      */
     protected function getDocOpenerPosition(File $phpCsFile, int $stackPointer): ?int
     {
-        return $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) ?
-            $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) :
-            null;
+        return $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) ?: null;
     }
 
     /**

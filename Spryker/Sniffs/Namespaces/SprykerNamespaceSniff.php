@@ -44,7 +44,7 @@ class SprykerNamespaceSniff implements Sniff
         }
 
         $extractedPath = $matches[1] . '/' . $matches[2];
-        $pathWithoutFilename = substr($extractedPath, 0, strrpos($extractedPath, DIRECTORY_SEPARATOR));
+        $pathWithoutFilename = substr($extractedPath, 0, strrpos($extractedPath, DIRECTORY_SEPARATOR) ?: 0);
 
         $namespace = $namespaceStatement['namespace'];
         $pathToNamespace = str_replace(DIRECTORY_SEPARATOR, '\\', $pathWithoutFilename);

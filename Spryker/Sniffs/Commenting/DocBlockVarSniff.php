@@ -56,6 +56,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             return;
         }
 
+        /** @var int $docBlockStartIndex */
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
         $defaultValueType = $this->findDefaultValueType($phpCsFile, $stackPointer);

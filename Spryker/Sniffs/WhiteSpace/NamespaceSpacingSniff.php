@@ -34,6 +34,9 @@ class NamespaceSpacingSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $beforeIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        if (!$beforeIndex) {
+            return;
+        }
         $beforeLine = $tokens[$beforeIndex]['line'];
 
         if ($beforeLine === $tokens[$stackPtr]['line'] - 2) {

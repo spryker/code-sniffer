@@ -47,7 +47,7 @@ trait UseStatementsTrait
                 continue;
             }
 
-            $statementParts = preg_split('/\s+as\s+/i', $statement);
+            $statementParts = preg_split('/\s+as\s+/i', $statement) ?: [];
 
             if (count($statementParts) === 1) {
                 $fullName = $statement;

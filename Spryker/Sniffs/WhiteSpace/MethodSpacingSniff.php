@@ -54,7 +54,7 @@ class MethodSpacingSniff extends AbstractSprykerSniff
         $parenthesisEndIndex = $tokens[$parenthesisIndex]['parenthesis_closer'];
 
         $braceStartIndex = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], ($parenthesisEndIndex + 1));
-        if ($tokens[$braceStartIndex]['code'] !== T_OPEN_CURLY_BRACKET) {
+        if (!$braceStartIndex || $tokens[$braceStartIndex]['code'] !== T_OPEN_CURLY_BRACKET) {
             return;
         }
 
@@ -64,6 +64,10 @@ class MethodSpacingSniff extends AbstractSprykerSniff
 
         $braceEndIndex = $tokens[$braceStartIndex]['bracket_closer'];
         $nextContentIndex = $phpcsFile->findNext(T_WHITESPACE, ($braceStartIndex + 1), null, true);
+        if (!$nextContentIndex) {
+            return;
+        }
+
         if ($nextContentIndex === $braceEndIndex) {
             $this->assertNoAdditionalNewlinesForEmptyBody($phpcsFile, $braceStartIndex, $braceEndIndex);
 

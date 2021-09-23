@@ -142,6 +142,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
 
+        /** @var int $docCommentStartPosition */
         $docCommentStartPosition = $tokens[$docCommentEndPosition]['comment_opener'];
 
         $startPosition = $docCommentStartPosition + 2;
@@ -192,6 +193,11 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     protected function getClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
+
+        if ($classOrInterfacePosition === false) {
+            return '';
+        }
+
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $classOrInterfacePosition);
 
         return $phpCsFile->getTokens()[$classOrInterfaceNamePosition]['content'];
@@ -201,7 +207,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]
+     * @return array<int, string>
      */
     protected function getAnnotations(File $phpCsFile, int $stackPointer): array
     {
@@ -243,7 +249,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
         $className = array_pop($namespaceParts);
         array_unshift($namespaceParts, static::ANNOTATION_START_TEXT);
         $expectedAnnotations = $namespaceParts;
-        if (preg_match('/Facade/', $className)) {
+        if ($className && preg_match('/Facade/', $className)) {
             array_push($expectedAnnotations, 'Facade');
         }
         array_push($expectedAnnotations, $className);

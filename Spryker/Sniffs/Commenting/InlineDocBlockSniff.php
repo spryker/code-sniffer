@@ -33,7 +33,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
         $startIndex = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer + 1);
-        if (empty($tokens[$startIndex]['bracket_closer'])) {
+        if (!$startIndex || empty($tokens[$startIndex]['bracket_closer'])) {
             return;
         }
 

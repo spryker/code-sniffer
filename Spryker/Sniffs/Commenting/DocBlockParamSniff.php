@@ -103,6 +103,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
         }
 
         foreach ($docBlockParams as $docBlockParam) {
+            /** @var array<string, mixed> $methodParam */
             $methodParam = array_shift($methodSignature);
             $variableName = $tokens[$methodParam['variableIndex']]['content'];
 
