@@ -88,8 +88,12 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
             $token = $tokens[$i];
 
             if ($this->isGivenKind(T_EQUAL, $token)) {
-                $i = (int)$phpcsFile->findPrevious(T_VARIABLE, $i - 1) ?: null;
-                $i = (int)$phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true) ?: null;
+                $i = $phpcsFile->findPrevious(T_VARIABLE, $i - 1) ?: null;
+                if (!$i) {
+                    continue;
+                }
+
+                $i = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i, $startIndex - 1, true) ?: null;
 
                 continue;
             }

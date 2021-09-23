@@ -806,7 +806,8 @@ class UseStatementSniff implements Sniff
      */
     protected function addUseStatement(File $phpcsFile, string $shortName, string $fullName): array
     {
-        foreach ($this->allStatements as $useStatement) {
+        $useStatements = (array)$this->allStatements;
+        foreach ($useStatements as $useStatement) {
             if ($useStatement['fullName'] === $fullName) {
                 return $useStatement;
             }

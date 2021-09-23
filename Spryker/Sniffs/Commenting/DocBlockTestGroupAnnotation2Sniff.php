@@ -249,7 +249,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
         $className = array_pop($namespaceParts);
         array_unshift($namespaceParts, static::ANNOTATION_START_TEXT);
         $expectedAnnotations = $namespaceParts;
-        if (preg_match('/Facade/', $className)) {
+        if ($className && preg_match('/Facade/', $className)) {
             array_push($expectedAnnotations, 'Facade');
         }
         array_push($expectedAnnotations, $className);

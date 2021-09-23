@@ -104,6 +104,10 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
 
         $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if (!$docCommentOpenerPosition) {
+            return;
+        }
+
         $firstDocCommentTagPosition = $phpCsFile->findNext(T_DOC_COMMENT_TAG, $docCommentOpenerPosition);
 
         if (!$firstDocCommentTagPosition) {
@@ -312,7 +316,13 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
         $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
+        if (!$docCommentOpenerPosition) {
+            return null;
+        }
         $docCommentClosingPosition = $this->getDocClosingPosition($phpCsFile, $stackPointer);
+        if (!$docCommentClosingPosition) {
+            return null;
+        }
 
         $specificationPosition = $this->getContentPositionInRange(
             static::SPECIFICATION_TAG,
