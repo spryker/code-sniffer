@@ -48,11 +48,11 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, intl, pdo_mysql
 
-      - name: CodeStyle checks
-        run: composer cs-check
-
       - name: PHPStan checks
         run: composer stan
+
+      - name: CodeStyle checks
+        run: composer cs-check
 
   prefer-lowest:
     runs-on: ubuntu-20.04
