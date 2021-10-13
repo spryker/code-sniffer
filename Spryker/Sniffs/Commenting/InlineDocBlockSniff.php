@@ -94,25 +94,29 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $commentEndTag = $tokens[$i]['comment_closer'];
+            $commentEndTagIndex = $tokens[$i]['comment_closer'];
+
+            if ($this->isNotInline($phpCsFile, $commentEndTagIndex)) {
+                continue;
+            }
 
             $isSingleLine = false;
-            if ($tokens[$i]['line'] === $tokens[$commentEndTag]['line']) {
+            if ($tokens[$i]['line'] === $tokens[$commentEndTagIndex]['line']) {
                 $isSingleLine = true;
             }
 
-            $typeTag = $this->findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_TAG);
-            $contentTag = $this->findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_STRING);
+            $typeTag = $this->findTagIndex($tokens, $i, $commentEndTagIndex, T_DOC_COMMENT_TAG);
+            $contentTag = $this->findTagIndex($tokens, $i, $commentEndTagIndex, T_DOC_COMMENT_STRING);
 
             if ($typeTag === null || $contentTag === null) {
-                $phpCsFile->addError('Invalid Inline Doc Block', $startIndex, 'DocBlockInvalid');
+                $phpCsFile->addError('Invalid Inline Doc Block', $i, 'DocBlockInvalid');
 
-                return;
+                continue;
             }
 
             if ($tokens[$typeTag]['content'] !== '@var') {
                 // We ignore those
-                return;
+                continue;
             }
 
             $errors = $this->findErrors($phpCsFile, $contentTag, $isSingleLine);
@@ -221,5 +225,27 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         return $tokens[$nextIndex]['code'] === T_RETURN;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $commentEndTagIndex
+     *
+     * @return bool
+     */
+    protected function isNotInline(File $phpCsFile, int $commentEndTagIndex): bool
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $commentEndTagIndex + 1, null, true);
+        if ($nextIndex && $tokens[$nextIndex]['code'] === T_STATIC) {
+            return true;
+        }
+
+        if ($nextIndex && $this->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE], $tokens[$nextIndex])) {
+            return true;
+        }
+
+        return false;
     }
 }
