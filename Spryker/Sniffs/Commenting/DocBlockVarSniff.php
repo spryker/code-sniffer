@@ -108,7 +108,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
 
         $comment = trim($appendix);
         if (mb_substr($comment, 0, 1) === '$') {
-            $phpCsFile->addError('Comment cannot start with $ character.', $stackPointer, 'CommentInvalid');
+            $phpCsFile->addError('$var declaration only valid/needed inside inline doc blocks.', $stackPointer, 'CommentInvalid');
         }
 
         if ($defaultValueType === null) {

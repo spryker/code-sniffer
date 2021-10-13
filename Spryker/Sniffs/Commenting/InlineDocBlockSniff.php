@@ -80,33 +80,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $index
-     *
-     * @return void
-     */
-    protected function fixDocCommentCloseTags(File $phpCsFile, int $index): void
-    {
-        $tokens = $phpCsFile->getTokens();
-
-        $content = $tokens[$index]['content'];
-        if ($content === '*/') {
-            return;
-        }
-
-        $fix = $phpCsFile->addFixableError('Inline Doc Block comment end tag should be `*/`, got `' . $content . '`', $index, 'EndTag');
-        if (!$fix) {
-            return;
-        }
-
-        $phpCsFile->fixer->beginChangeset();
-
-        $phpCsFile->fixer->replaceToken($index, '*/');
-
-        $phpCsFile->fixer->endChangeset();
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $startIndex
      * @param int $endIndex
      *
@@ -123,11 +96,9 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
             $commentEndTag = $tokens[$i]['comment_closer'];
 
-            $this->fixDocCommentCloseTags($phpCsFile, $commentEndTag);
-
-            // We skip for multiline for now
-            if ($tokens[$i]['line'] !== $tokens[$commentEndTag]['line']) {
-                continue;
+            $isSingleLine = false;
+            if ($tokens[$i]['line'] === $tokens[$commentEndTag]['line']) {
+                $isSingleLine = true;
             }
 
             $typeTag = $this->findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_TAG);
@@ -144,7 +115,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 return;
             }
 
-            $errors = $this->findErrors($phpCsFile, $contentTag);
+            $errors = $this->findErrors($phpCsFile, $contentTag, $isSingleLine);
 
             if (!$errors) {
                 continue;
@@ -195,10 +166,11 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $contentIndex
+     * @param bool $isSingleLine
      *
      * @return string[]
      */
-    protected function findErrors(File $phpCsFile, int $contentIndex): array
+    protected function findErrors(File $phpCsFile, int $contentIndex, bool $isSingleLine): array
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -222,7 +194,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
         $errors = [];
 
-        if (!preg_match('|([a-z0-9]) $|i', $comment)) {
+        if ($isSingleLine && !preg_match('|([a-z0-9]) $|i', $comment)) {
             $errors['space-before-end'] = 'Expected single space before ´*/´';
         }
 
