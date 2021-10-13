@@ -195,7 +195,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 'index' => $index,
                 'fullClass' => $fullClass,
                 'class' => $class,
-                'comment' => $appendix
+                'comment' => $appendix,
             ];
         }
 
