@@ -6,19 +6,17 @@ on:
     branches:
       - master
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
 
 jobs:
   validation:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         php-version: [
             '7.2',
-            '7.4',
             '8.0',
+            '8.1',
         ]
 
     steps:
@@ -57,7 +55,7 @@ jobs:
         run: composer stan
 
   prefer-lowest:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
