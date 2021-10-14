@@ -80,33 +80,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $index
-     *
-     * @return void
-     */
-    protected function fixDocCommentCloseTags(File $phpCsFile, int $index): void
-    {
-        $tokens = $phpCsFile->getTokens();
-
-        $content = $tokens[$index]['content'];
-        if ($content === '*/') {
-            return;
-        }
-
-        $fix = $phpCsFile->addFixableError('Inline Doc Block comment end tag should be `*/`, got `' . $content . '`', $index, 'EndTag');
-        if (!$fix) {
-            return;
-        }
-
-        $phpCsFile->fixer->beginChangeset();
-
-        $phpCsFile->fixer->replaceToken($index, '*/');
-
-        $phpCsFile->fixer->endChangeset();
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $startIndex
      * @param int $endIndex
      *
@@ -121,30 +94,32 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $commentEndTag = $tokens[$i]['comment_closer'];
+            $commentEndTagIndex = $tokens[$i]['comment_closer'];
 
-            $this->fixDocCommentCloseTags($phpCsFile, $commentEndTag);
-
-            // We skip for multiline for now
-            if ($tokens[$i]['line'] !== $tokens[$commentEndTag]['line']) {
+            if ($this->isNotInline($phpCsFile, $commentEndTagIndex)) {
                 continue;
             }
 
-            $typeTag = $this->findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_TAG);
-            $contentTag = $this->findTagIndex($tokens, $i, $commentEndTag, T_DOC_COMMENT_STRING);
+            $isSingleLine = false;
+            if ($tokens[$i]['line'] === $tokens[$commentEndTagIndex]['line']) {
+                $isSingleLine = true;
+            }
+
+            $typeTag = $this->findTagIndex($tokens, $i, $commentEndTagIndex, T_DOC_COMMENT_TAG);
+            $contentTag = $this->findTagIndex($tokens, $i, $commentEndTagIndex, T_DOC_COMMENT_STRING);
 
             if ($typeTag === null || $contentTag === null) {
-                $phpCsFile->addError('Invalid Inline Doc Block', $startIndex, 'DocBlockInvalid');
+                $phpCsFile->addError('Invalid Inline Doc Block', $i, 'DocBlockInvalid');
 
-                return;
+                continue;
             }
 
             if ($tokens[$typeTag]['content'] !== '@var') {
                 // We ignore those
-                return;
+                continue;
             }
 
-            $errors = $this->findErrors($phpCsFile, $contentTag);
+            $errors = $this->findErrors($phpCsFile, $contentTag, $isSingleLine);
 
             if (!$errors) {
                 continue;
@@ -195,10 +170,11 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $contentIndex
+     * @param bool $isSingleLine
      *
      * @return string[]
      */
-    protected function findErrors(File $phpCsFile, int $contentIndex): array
+    protected function findErrors(File $phpCsFile, int $contentIndex, bool $isSingleLine): array
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -222,7 +198,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
         $errors = [];
 
-        if (!preg_match('|([a-z0-9]) $|i', $comment)) {
+        if ($isSingleLine && !preg_match('|([a-z0-9]) $|i', $comment)) {
             $errors['space-before-end'] = 'Expected single space before ´*/´';
         }
 
@@ -249,5 +225,27 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         return $tokens[$nextIndex]['code'] === T_RETURN;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $commentEndTagIndex
+     *
+     * @return bool
+     */
+    protected function isNotInline(File $phpCsFile, int $commentEndTagIndex): bool
+    {
+        $tokens = $phpCsFile->getTokens();
+
+        $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $commentEndTagIndex + 1, null, true);
+        if ($nextIndex && $tokens[$nextIndex]['code'] === T_STATIC) {
+            return true;
+        }
+
+        if ($nextIndex && $this->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE], $tokens[$nextIndex])) {
+            return true;
+        }
+
+        return false;
     }
 }
