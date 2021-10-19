@@ -25,6 +25,7 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
      * @var string
      */
     protected const INHERIT_DOC = '{@inheritDoc}';
+
     /**
      * @var string
      */
@@ -43,7 +44,7 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

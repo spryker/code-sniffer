@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public static $whitelistedTypes = [
         'string', 'int', 'integer', 'float', 'bool', 'boolean', 'resource', 'null', 'void', 'callable',
@@ -24,7 +24,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     ];
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     public static $whitelistedStartsWithTypes = ['array<', 'iterable<', 'array{'];
 
@@ -106,7 +106,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
-     * @param string[] $classNames
+     * @param array<string> $classNames
      * @param string $appendix
      *
      * @return void
@@ -134,9 +134,9 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
-     * @param string[] $classNames
+     * @param array<string> $classNames
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function generateClassNameMap(File $phpCsFile, int $classNameIndex, array &$classNames): array
     {
@@ -301,7 +301,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function parseUseStatements(File $phpCsFile): array
     {
@@ -348,7 +348,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
      *
      * @param string $content
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function parseTypes(string $content): array
     {
@@ -379,7 +379,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
      * @param string $className
-     * @param string[] $subClassNames
+     * @param array<string> $subClassNames
      *
      * @return string
      */

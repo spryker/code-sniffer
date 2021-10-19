@@ -41,7 +41,7 @@ class ClassFileNameSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $fullPath = basename($phpcsFile->getFilename());
         $fileName = substr($fullPath, 0, strrpos($fullPath, '.') ?: 0);

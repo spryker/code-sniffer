@@ -18,7 +18,7 @@ class ExitSniff implements Sniff
     /**
      * @see http://php.net/manual/en/aliases.php
      *
-     * @var string[]
+     * @var array<string>
      */
     public static $aliases = [
         'die' => 'exit',
@@ -35,7 +35,7 @@ class ExitSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $this->checkExitUsage($phpcsFile, $stackPtr);
     }

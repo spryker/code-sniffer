@@ -26,7 +26,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     /**
      * Highest/First element will be last in list of param or return tag.
      *
-     * @var string[]
+     * @var array<string>
      */
     protected $sortMap = [
         'void',
@@ -103,9 +103,9 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     /**
      * @uses DocBlockTypeOrderSniff::compare()
      *
-     * @param string[] $elements
+     * @param array<string> $elements
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getExpectedOrder(array $elements): array
     {

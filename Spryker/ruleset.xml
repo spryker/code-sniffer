@@ -21,6 +21,8 @@
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
     <rule ref="SlevomatCodingStandard.Namespaces.NamespaceDeclaration"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.RequireOneNamespaceInFile"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UselessAlias"/>
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
         <properties>
             <property name="allowFallbackGlobalFunctions" type="boolean" value="true"/>
@@ -34,6 +36,9 @@
     <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing"/>
 
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
+    <rule ref="SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace"/>
+    <rule ref="SlevomatCodingStandard.Arrays.MultiLineArrayEndBracketPlacement"/>
+
     <rule ref="SlevomatCodingStandard.Functions.ArrowFunctionDeclaration"/>
 
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
@@ -41,6 +46,7 @@
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
     <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
 
+    <rule ref="SlevomatCodingStandard.Classes.ConstantSpacing"/>
     <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility">
         <properties>
             <property name="fixable" type="bool" value="true"/>
@@ -113,6 +119,7 @@
             <property name="ignoreBlankLines" value="false"/>
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Whitespaces.DuplicateSpaces"/>
 
     <rule ref="Zend.Files.ClosingTag"/>
     <rule ref="Generic.Files.LineEndings"/>
@@ -189,8 +196,10 @@
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
-    <!-- Disallow PHP8 specific behavior until code is PHP8+ only -->
+    <!-- Disallow PHP8 specific behavior until code is PHP8+ only, projects can remove/silence those -->
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
+    <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall"/>
+    <rule ref="SlevomatCodingStandard.Functions.DisallowNamedArguments"/>
     <rule ref="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator"/>
 

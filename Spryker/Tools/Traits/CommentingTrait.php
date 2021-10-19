@@ -52,7 +52,7 @@ trait CommentingTrait
     /**
      * Allow \Foo\Bar[] or array<\Foo\Bar> to pass as array.
      *
-     * @param string[] $docBlockTypes
+     * @param array<string> $docBlockTypes
      *
      * @return bool
      */
@@ -70,7 +70,7 @@ trait CommentingTrait
     /**
      * Checks for ...<...>.
      *
-     * @param string[] $docBlockTypes
+     * @param array<string> $docBlockTypes
      *
      * @return bool
      */

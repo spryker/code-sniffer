@@ -28,7 +28,7 @@ class PropertyDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $visibilityIndex = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if (!$visibilityIndex) {

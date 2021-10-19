@@ -75,7 +75,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]|null
+     * @return array<string>|null
      */
     protected function parseDocBlockReturnTypes(File $phpCsFile, int $stackPointer): ?array
     {
@@ -129,7 +129,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param string[] $docBlockReturnTypes
+     * @param array<string> $docBlockReturnTypes
      *
      * @return void
      */
@@ -155,7 +155,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
-     * @param string[] $docBlockReturnTypes
+     * @param array<string> $docBlockReturnTypes
      *
      * @return void
      */

@@ -34,7 +34,7 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         if (!$this->isSprykerNamespace($phpcsFile)) {
             return;

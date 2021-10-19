@@ -22,6 +22,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
      * @var string
      */
     protected const NAMESPACE_YVES = 'Yves';
+
     /**
      * @var string
      */
@@ -52,7 +53,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $className = $this->getClassName($phpcsFile);
         $namespaces = [];

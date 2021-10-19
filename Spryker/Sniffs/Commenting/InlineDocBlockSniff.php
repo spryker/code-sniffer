@@ -172,7 +172,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
      * @param int $contentIndex
      * @param bool $isSingleLine
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function findErrors(File $phpCsFile, int $contentIndex, bool $isSingleLine): array
     {

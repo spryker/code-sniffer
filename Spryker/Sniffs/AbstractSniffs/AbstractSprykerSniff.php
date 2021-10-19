@@ -27,7 +27,7 @@ abstract class AbstractSprykerSniff implements Sniff
     protected const NAMESPACE_SPRYKER = 'Spryker';
 
     /**
-     * @var string[] These markers must remain as inline comments
+     * @var array<string> These markers must remain as inline comments
      */
     protected static $phpStormMarkers = [
         '@noinspection',
@@ -499,7 +499,7 @@ abstract class AbstractSprykerSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getDocBlockReturnTypes(File $phpCsFile, int $stackPointer): array
     {

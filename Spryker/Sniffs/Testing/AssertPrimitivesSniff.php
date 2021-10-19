@@ -24,7 +24,7 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
     protected const METHOD_ASSERT_SAME = 'assertSame';
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected static $primitives = [
         'null',
@@ -43,7 +43,7 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         if (!$this->isTest($phpcsFile, $stackPtr)) {
             return;

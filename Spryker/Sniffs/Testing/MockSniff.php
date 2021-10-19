@@ -36,7 +36,7 @@ class MockSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         if (!$this->isTest($phpcsFile, $stackPtr)) {
             return;
@@ -53,7 +53,7 @@ class MockSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
      * @param \SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
-     * @param string[] $docBlockReturnTypes
+     * @param array<string> $docBlockReturnTypes
      *
      * @return void
      */
@@ -102,7 +102,7 @@ class MockSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $stackPtr
-     * @param string[] $docBlockReturnTypes
+     * @param array<string> $docBlockReturnTypes
      * @param \SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
      *
      * @return void

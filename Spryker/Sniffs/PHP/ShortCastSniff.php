@@ -16,7 +16,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 class ShortCastSniff implements Sniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public static $matching = [
         '(boolean)' => '(bool)',
@@ -34,7 +34,7 @@ class ShortCastSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
