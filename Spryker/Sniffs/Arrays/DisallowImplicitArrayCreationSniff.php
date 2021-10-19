@@ -21,10 +21,28 @@ class DisallowImplicitArrayCreationSniff extends SlevomatDisallowImplicitArrayCr
     public function process(File $phpcsFile, $stackPtr): void
     {
         // We skip on config files.
-        if (strpos($phpcsFile->getFilename(), DIRECTORY_SEPARATOR . 'config_') !== false) {
+        $fileName = $phpcsFile->getFilename();
+        if ($this->hasLegacyImplicitCreation($fileName)) {
             return;
         }
 
         parent::process($phpcsFile, $stackPtr);
+    }
+
+    /**
+     * @param string $fileName
+     *
+     * @return bool
+     */
+    protected function hasLegacyImplicitCreation(string $fileName): bool
+    {
+        if (strpos($fileName, DIRECTORY_SEPARATOR . 'config_') !== false) {
+            return true;
+        }
+        if (strpos($fileName, DIRECTORY_SEPARATOR . 'cronjobs' . DIRECTORY_SEPARATOR) !== false) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -32,7 +32,7 @@ class SingleQuoteSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_CONSTANT_ENCAPSED_STRING];
     }
