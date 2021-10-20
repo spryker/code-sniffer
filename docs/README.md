@@ -75,7 +75,7 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (39 sniffs)
+SlevomatCodingStandard (38 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.MultiLineArrayEndBracketPlacement
 - SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace
@@ -95,7 +95,6 @@ SlevomatCodingStandard (39 sniffs)
 - SlevomatCodingStandard.Exceptions.DeadCatch
 - SlevomatCodingStandard.Functions.ArrowFunctionDeclaration
 - SlevomatCodingStandard.Functions.DisallowNamedArguments
-- SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall
 - SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration
 - SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
 - SlevomatCodingStandard.Namespaces.NamespaceDeclaration
@@ -117,7 +116,7 @@ SlevomatCodingStandard (39 sniffs)
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 - SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (90 sniffs)
+Spryker (91 sniffs)
 -------------------
 - Spryker.Arrays.DisallowImplicitArrayCreation
 - Spryker.Classes.ClassFileName
@@ -126,6 +125,7 @@ Spryker (90 sniffs)
 - Spryker.Classes.MethodTypeHint
 - Spryker.Classes.PropertyDefaultValue
 - Spryker.Classes.ReturnTypeHint
+- Spryker.Classes.SelfAccessor
 - Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
 - Spryker.Commenting.DocBlockConst

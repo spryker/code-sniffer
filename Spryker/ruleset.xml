@@ -198,7 +198,6 @@
 
     <!-- Disallow PHP8 specific behavior until code is PHP8+ only, projects can remove/silence those -->
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
-    <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall"/>
     <rule ref="SlevomatCodingStandard.Functions.DisallowNamedArguments"/>
     <rule ref="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator"/>
