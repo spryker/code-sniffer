@@ -36,7 +36,7 @@ class DisallowImplicitArrayCreationSniff extends SlevomatDisallowImplicitArrayCr
      */
     protected function hasLegacyImplicitCreation(string $fileName): bool
     {
-        if (strpos($fileName, DIRECTORY_SEPARATOR . 'config_') !== false) {
+        if (strpos($fileName, DIRECTORY_SEPARATOR . 'config_') !== false || strpos($fileName, DIRECTORY_SEPARATOR . 'config.') !== false) {
             return true;
         }
         if (strpos($fileName, DIRECTORY_SEPARATOR . 'cronjobs' . DIRECTORY_SEPARATOR) !== false) {
