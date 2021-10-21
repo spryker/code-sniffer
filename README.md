@@ -185,7 +185,7 @@ See CS sniffer docs for details, but in general using `severity` of `0` can sile
     <severity>0</severity>
 </rule>
 ```
-This deactives the whole ControlStructureSpacing sniff.
+This deactivates the whole ControlStructureSpacing sniff.
 
 ## Excluding test related comparison files
 If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.
