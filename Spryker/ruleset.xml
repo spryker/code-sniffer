@@ -30,7 +30,7 @@
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName">
         <severity>0</severity>
     </rule>
-    
+
     <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
@@ -117,6 +117,7 @@
             <property name="ignoreBlankLines" value="false"/>
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Whitespaces.DuplicateSpaces"/>
 
     <rule ref="Zend.Files.ClosingTag"/>
     <rule ref="Generic.Files.LineEndings"/>
@@ -191,7 +192,6 @@
     <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace"/>
 
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
-    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
     <!-- Disallow PHP8 specific behavior until code is PHP8+ only -->
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
