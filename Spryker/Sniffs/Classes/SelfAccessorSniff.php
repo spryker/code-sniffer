@@ -103,11 +103,11 @@ class SelfAccessorSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $nextIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $i + 1, null, true);
-        if ($tokens[$nextIndex]['code'] !== T_STRING) {
+        if (!$nextIndex || $tokens[$nextIndex]['code'] !== T_STRING) {
             return;
         }
         $openingBraceIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $nextIndex + 1, null, true);
-        if ($tokens[$openingBraceIndex]['code'] !== T_OPEN_PARENTHESIS) {
+        if (!$openingBraceIndex || $tokens[$openingBraceIndex]['code'] !== T_OPEN_PARENTHESIS) {
             return;
         }
 
@@ -152,11 +152,11 @@ class SelfAccessorSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $i - 1, null, true);
-        if ($tokens[$prevIndex]['code'] !== T_STRING) {
+        if (!$prevIndex || $tokens[$prevIndex]['code'] !== T_STRING) {
             return;
         }
         $possibleSeparatorIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $prevIndex - 1, null, true);
-        if ($tokens[$possibleSeparatorIndex]['code'] === T_NS_SEPARATOR) {
+        if (!$possibleSeparatorIndex || $tokens[$possibleSeparatorIndex]['code'] === T_NS_SEPARATOR) {
             return;
         }
 
