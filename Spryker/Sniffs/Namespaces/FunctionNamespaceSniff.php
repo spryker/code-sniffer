@@ -44,7 +44,7 @@ class FunctionNamespaceSniff implements Sniff
 
         // We check that this is a function but not new operator
         $newIndex = $phpcsFile->findPrevious([T_WHITESPACE, T_NS_SEPARATOR], ($stackPtr - 1), null, true);
-        if (!$newIndex || $tokens[$newIndex]['type'] === 'T_NEW') {
+        if (!$newIndex || in_array($tokens[$newIndex]['code'], [T_NEW, T_ATTRIBUTE], true)) {
             return;
         }
 

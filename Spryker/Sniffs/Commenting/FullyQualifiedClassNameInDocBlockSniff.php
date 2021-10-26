@@ -178,14 +178,9 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             }
             $useStatement = $this->findUseStatementForClassName($phpCsFile, $className);
             if (!$useStatement) {
-                $message = 'Invalid typehint `%s`';
-                if (substr($className, 0, 1) === '$') {
-                    $message = 'The typehint seems to be missing for `%s`';
-                }
-                $phpCsFile->addError(sprintf($message, $className), $classNameIndex, 'ClassNameInvalid');
-
                 continue;
             }
+
             $classNames[$key] = $useStatement . ($arrayOfObject ? str_repeat('[]', $arrayOfObject) : '');
             $result[$className . ($arrayOfObject ? str_repeat('[]', $arrayOfObject) : '')] = $classNames[$key];
         }

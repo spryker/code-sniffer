@@ -29,6 +29,10 @@
             <property name="allowFallbackGlobalConstants" type="boolean" value="true"/>
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName">
+        <severity>0</severity>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
@@ -195,7 +199,6 @@
     <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace"/>
 
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
-    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
     <!-- Disallow PHP8 specific behavior until code is PHP8+ only, projects can remove/silence those -->
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
