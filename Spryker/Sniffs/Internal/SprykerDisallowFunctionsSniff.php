@@ -145,6 +145,10 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
             $version = static::PHP_MIN;
         }
 
+        if (!$version) {
+            return false;
+        }
+
         foreach (static::$methods as $php => $phpMethods) {
             if (version_compare($php, $version) > 0) {
                 static::$disallowed = array_merge(static::$disallowed, $phpMethods);
