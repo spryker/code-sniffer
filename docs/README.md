@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 209 sniffs
+The SprykerStrict standard contains 210 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -110,7 +110,7 @@ SlevomatCodingStandard (32 sniffs)
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 - SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (89 sniffs)
+Spryker (90 sniffs)
 -------------------
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
@@ -163,6 +163,7 @@ Spryker (89 sniffs)
 - Spryker.Factory.OneNewPerMethod
 - Spryker.Formatting.ArrayDeclaration
 - Spryker.Formatting.MethodSignatureParametersLineBreakMethod
+- Spryker.Internal.SprykerDisallowFunctions
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.MethodAnnotation.ConfigMethodAnnotation
 - Spryker.MethodAnnotation.EntityManagerMethodAnnotation

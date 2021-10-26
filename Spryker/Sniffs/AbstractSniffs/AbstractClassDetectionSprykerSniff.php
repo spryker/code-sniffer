@@ -61,19 +61,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      */
     protected function isProvider(File $phpCsFile): bool
     {
-        return $this->hasCorrectName($phpCsFile, 'DependencyProvider') && $this->isCoreProvider($phpCsFile);
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
-    protected function isCoreProvider(File $phpCsFile): bool
-    {
-        $namespace = $this->getNamespace($phpCsFile);
-
-        return ($namespace === static::NAMESPACE_SPRYKER);
+        return $this->hasCorrectName($phpCsFile, 'DependencyProvider') && $this->isCore($phpCsFile);
     }
 
     /**
