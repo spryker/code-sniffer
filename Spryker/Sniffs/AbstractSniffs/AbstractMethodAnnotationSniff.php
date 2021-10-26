@@ -130,7 +130,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore(
                 $stackPointer,
-                ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()'
+                ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()',
             );
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
@@ -140,7 +140,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
                 $phpCsFile->fixer->addNewlineBefore($position);
                 $phpCsFile->fixer->addContentBefore(
                     $position,
-                    ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()'
+                    ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()',
                 );
             }
         }

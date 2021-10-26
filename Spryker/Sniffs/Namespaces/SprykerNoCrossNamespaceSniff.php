@@ -101,10 +101,10 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
                 sprintf(
                     'No %s namespace allowed in %s files.',
                     $pair['to'],
-                    $pair['from']
+                    $pair['from'],
                 ),
                 $useStatement['start'],
-                'InvalidCrossNamespace'
+                'InvalidCrossNamespace',
             );
         }
     }

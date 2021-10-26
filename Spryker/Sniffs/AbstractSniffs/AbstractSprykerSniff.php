@@ -178,7 +178,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
         return ClassHelper::getFullyQualifiedName(
             $phpCsFile,
-            $prevIndex
+            $prevIndex,
         );
     }
 

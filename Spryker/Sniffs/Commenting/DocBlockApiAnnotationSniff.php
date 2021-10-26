@@ -199,10 +199,10 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             $phpCsFile->addError(
                 sprintf(
                     '`%s` is only for concrete classes, the interfaces should contain the specification themselves.',
-                    static::INHERIT_DOC
+                    static::INHERIT_DOC,
                 ),
                 $i,
-                'InvalidInheritDoc'
+                'InvalidInheritDoc',
             );
 
             break;
@@ -302,7 +302,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         $phpCsFile->addErrorOnLine(
             'Cannot fix missing specification for API',
             $tokens[$stackPointer]['line'],
-            'SpecificationNotFixable'
+            'SpecificationNotFixable',
         );
     }
 
@@ -328,7 +328,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             static::SPECIFICATION_TAG,
             $tokens,
             $docCommentOpenerPosition,
-            $docCommentClosingPosition
+            $docCommentClosingPosition,
         );
         if (!$specificationPosition) {
             return null;
@@ -383,7 +383,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         $fix = $phpCsFile->addFixableError(
             'Wrong indentation in specification block',
             $line,
-            'SpecificationItemIndentation'
+            'SpecificationItemIndentation',
         );
         if ($fix) {
             $phpCsFile->fixer->beginChangeset();
@@ -406,7 +406,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             $phpCsFile->addErrorOnLine(
                 'Specification is not allowed in this type of class',
                 $tokens[$specificationPosition]['line'],
-                'SpecificationNotFixable'
+                'SpecificationNotFixable',
             );
         }
     }
@@ -531,7 +531,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             '@inheritDoc',
             $tokens,
             $docCommentOpenerPosition,
-            $docCommentClosingPosition
+            $docCommentClosingPosition,
         );
 
         if ($hasInheritDoc) {
@@ -541,10 +541,10 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         $fix = $phpCsFile->addFixableError(
             sprintf(
                 '`%s` missing for API method.',
-                static::INHERIT_DOC
+                static::INHERIT_DOC,
             ),
             $docCommentOpenerPosition,
-            'InheritDocMissing'
+            'InheritDocMissing',
         );
         if (!$fix) {
             return;

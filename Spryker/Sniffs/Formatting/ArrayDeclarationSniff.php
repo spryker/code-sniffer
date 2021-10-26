@@ -247,7 +247,7 @@ class ArrayDeclarationSniff implements Sniff
                         Tokens::$emptyTokens,
                         ($lastToken + 1),
                         $nextToken,
-                        true
+                        true,
                     );
 
                     $indices[] = ['value' => $valueContent];
@@ -284,7 +284,7 @@ class ArrayDeclarationSniff implements Sniff
                     Tokens::$emptyTokens,
                     ($nextToken + 1),
                     $arrayEnd,
-                    true
+                    true,
                 );
 
                 $currentEntry['value'] = $nextContent;

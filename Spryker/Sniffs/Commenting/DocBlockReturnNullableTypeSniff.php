@@ -247,7 +247,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
                 [T_DOC_COMMENT_WHITESPACE],
                 $i + 1,
                 null,
-                true
+                true,
             );
 
             return [

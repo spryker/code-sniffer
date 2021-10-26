@@ -61,7 +61,7 @@ class SingleQuoteSniff extends AbstractSprykerSniff
             $fix = $phpcsFile->addFixableError(
                 'Use single instead of double quotes for simple strings.',
                 $stackPtr,
-                'UseSingleQuote'
+                'UseSingleQuote',
             );
             if ($fix) {
                 $content = substr($content, 1, -1);

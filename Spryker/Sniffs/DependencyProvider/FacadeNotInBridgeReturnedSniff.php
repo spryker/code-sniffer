@@ -40,7 +40,7 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
             $phpCsFile->addError(
                 $this->getClassName($phpCsFile) . ' returns a facade directly. Fix this by adding a bridge and injecting the given facade.',
                 $stackPointer,
-                'BridgeMissing'
+                'BridgeMissing',
             );
         }
     }

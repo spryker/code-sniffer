@@ -262,7 +262,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             ],
             $namespaceStart,
             null,
-            true
+            true,
         );
 
         $namespace = trim($phpCsFile->getTokensAsString(($namespaceStart), ($namespaceEnd - $namespaceStart)));
