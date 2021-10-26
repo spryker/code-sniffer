@@ -12,26 +12,62 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Do not use functions that are not available for lowest version supported.
+ * By default, only applies to core if no PHP version is passed in.
  *
- * Can be removed/disabled with use of symfony polyfills.
+ * Can be removed/disabled with use of symfony polyfills. Thus the $phpVersion config.
+ * If you use PHP 8+ on project level and do not need this additional check:
+ *
+ * <rule ref="Spryker.Internal.SprykerDisallowFunctions">
+ *     <properties>
+ *         <property name="phpVersion" value="off"/> // Instead of 7.4/8.0/...
+ *     </properties>
+ * </rule>
  */
 class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
 {
     /**
+     * @var string
+     */
+    protected const PHP_MIN = '7.4';
+
+    /**
+     * This property can be filled with the current PHP version in use.
+     * E.g. 7.4 activates 8.0+ checks. Set to string `off` to deactivate whole sniff.
+     * If not filled, it will default to core use only.
+     *
+     * @var string|null
+     */
+    public $phpVersion;
+
+    /**
+     * @var array<string, array<string>>
+     */
+    protected static $methods = [
+        // https://github.com/symfony/polyfill-php80
+        '8.0' => [
+            'str_contains',
+            'str_starts_with',
+            'str_ends_with',
+            'get_debug_type',
+            'get_resource_id',
+            'fdiv',
+            'preg_last_error_msg',
+        ],
+        // https://github.com/symfony/polyfill-php81
+        '8.1' => [
+            'array_is_list',
+        ],
+    ];
+
+    /**
+     * @var bool|null
+     */
+    protected static $enabled;
+
+    /**
      * @var array<string>
      */
-    protected static $disallowed = [
-        // PHP 8.0 (https://github.com/symfony/polyfill-php80)
-        'str_contains',
-        'str_starts_with',
-        'str_ends_with',
-        'get_debug_type',
-        'get_resource_id',
-        'fdiv',
-        'preg_last_error_msg',
-        // PHP 8.1 (https://github.com/symfony/polyfill-php81)
-        'array_is_list',
-    ];
+    protected static $disallowed = [];
 
     /**
      * @var array<int>
@@ -51,6 +87,10 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
+        if (!$this->isEnabled($phpcsFile)) {
+            return;
+        }
+
         $this->checkForbiddenFunctions($phpcsFile, $stackPtr);
     }
 
@@ -82,5 +122,37 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
 
         $error = $tokenContent . '() usage found. This function cannot be used in core yet.';
         $phpcsFile->addError($error, $stackPtr, 'Invalid');
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     *
+     * @return bool
+     */
+    protected function isEnabled(File $phpcsFile): bool
+    {
+        $version = $this->phpVersion;
+        if ($version === 'off') {
+            return false;
+        }
+
+        // Use static cache for method list to optimize time
+        if (static::$enabled !== null) {
+            return static::$enabled;
+        }
+
+        if ($version === null && $this->isCore($phpcsFile)) {
+            $version = static::PHP_MIN;
+        }
+
+        foreach (static::$methods as $php => $phpMethods) {
+            if (version_compare($php, $version) > 0) {
+                static::$disallowed = array_merge(static::$disallowed, $phpMethods);
+            }
+        }
+
+        static::$enabled = true;
+
+        return true;
     }
 }
