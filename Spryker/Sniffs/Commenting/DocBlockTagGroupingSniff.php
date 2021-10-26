@@ -28,7 +28,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
      */
     public function register(): array
     {
-        return [T_FUNCTION];
+        return [T_FUNCTION, T_CONST];
     }
 
     /**
@@ -38,10 +38,12 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        // Don't mess with closures
-        $prevIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
-        if (!$this->isGivenKind(Tokens::$methodPrefixes, $tokens[$prevIndex])) {
-            return;
+        if ($tokens[$stackPtr]['code'] === T_FUNCTION) {
+            // Don't mess with closures
+            $prevIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
+            if (!$this->isGivenKind(Tokens::$methodPrefixes, $tokens[$prevIndex])) {
+                return;
+            }
         }
 
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPtr);
