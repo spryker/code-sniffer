@@ -25,6 +25,7 @@ class TestCase extends PHPUnitTestCase
      * @var string
      */
     protected const FILE_BEFORE = 'before.php';
+
     /**
      * @var string
      */
