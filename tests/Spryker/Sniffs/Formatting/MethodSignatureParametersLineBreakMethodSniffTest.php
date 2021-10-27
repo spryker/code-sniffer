@@ -17,7 +17,7 @@ class MethodSignatureParametersLineBreakMethodSniffTest extends TestCase
      */
     public function testMethodSignatureParametersLineBreakMethodSniffer(): void
     {
-        $this->assertSnifferFindsFixableErrors(new MethodSignatureParametersLineBreakMethodSniff(), 7);
+        $this->assertSnifferFindsFixableErrors(new MethodSignatureParametersLineBreakMethodSniff(), 7, 7);
     }
 
     /**
@@ -25,6 +25,6 @@ class MethodSignatureParametersLineBreakMethodSniffTest extends TestCase
      */
     public function testMethodSignatureParametersLineBreakMethodFixer(): void
     {
-        $this->assertSnifferCanFixErrors(new MethodSignatureParametersLineBreakMethodSniff(), 7);
+        $this->assertSnifferCanFixErrors(new MethodSignatureParametersLineBreakMethodSniff());
     }
 }

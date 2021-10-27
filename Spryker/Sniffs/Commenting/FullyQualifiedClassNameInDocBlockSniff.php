@@ -176,6 +176,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             if (in_array($className, static::$whitelistedTypes, true)) {
                 continue;
             }
+
             $useStatement = $this->findUseStatementForClassName($phpCsFile, $className);
             if (!$useStatement) {
                 continue;

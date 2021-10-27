@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 220 sniffs
+The SprykerStrict standard contains 222 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -75,7 +75,7 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (39 sniffs)
+SlevomatCodingStandard (40 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.MultiLineArrayEndBracketPlacement
 - SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace
@@ -85,6 +85,7 @@ SlevomatCodingStandard (39 sniffs)
 - SlevomatCodingStandard.Classes.ConstantSpacing
 - SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion
 - SlevomatCodingStandard.Classes.ModernClassNameReference
+- SlevomatCodingStandard.Commenting.DeprecatedAnnotationDeclaration
 - SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment
 - SlevomatCodingStandard.Commenting.EmptyComment
 - SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch
@@ -117,7 +118,7 @@ SlevomatCodingStandard (39 sniffs)
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 - SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (93 sniffs)
+Spryker (94 sniffs)
 -------------------
 - Spryker.Arrays.DisallowImplicitArrayCreation
 - Spryker.Classes.ClassFileName
@@ -164,6 +165,7 @@ Spryker (93 sniffs)
 - Spryker.Commenting.SprykerBridge
 - Spryker.Commenting.SprykerConstants
 - Spryker.Commenting.SprykerFacade
+- Spryker.Commenting.TypeHint
 - Spryker.ControlStructures.ConditionalExpressionOrder
 - Spryker.ControlStructures.ControlStructureSpacing
 - Spryker.ControlStructures.NoInlineAssignment

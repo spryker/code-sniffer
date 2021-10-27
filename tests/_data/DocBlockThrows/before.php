@@ -8,13 +8,13 @@ use LogicException;
 use RangeException;
 use RuntimeException;
 
-class InvalidThrowSniff
+class FixMe
 {
     /**
      * Return a closure that throws a runtime exception.
      *
      * @param bool $throw Whether to throw immediately.
-     * @return Closure
+     * @return \Closure
      */
     public function foo(bool $throw): Closure
     {
