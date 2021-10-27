@@ -15,22 +15,27 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
      * @var string
      */
     protected const API_FACADE = 'FACADE';
+
     /**
      * @var string
      */
     protected const API_SERVICE = 'SERVICE';
+
     /**
      * @var string
      */
     protected const API_CLIENT = 'CLIENT';
+
     /**
      * @var string
      */
     protected const API_QUERY_CONTAINER = 'QUERY_CONTAINER';
+
     /**
      * @var string
      */
     protected const API_PLUGIN = 'PLUGIN';
+
     /**
      * @var string
      */

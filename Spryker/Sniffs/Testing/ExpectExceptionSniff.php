@@ -34,7 +34,7 @@ class ExpectExceptionSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         if (!$this->isTest($phpcsFile, $stackPtr)) {
             return;

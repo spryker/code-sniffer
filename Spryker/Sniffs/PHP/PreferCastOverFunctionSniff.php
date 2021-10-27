@@ -16,7 +16,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class PreferCastOverFunctionSniff extends AbstractSprykerSniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected static $matching = [
         'strval' => 'string',
@@ -36,7 +36,7 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];
 

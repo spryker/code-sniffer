@@ -21,7 +21,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     use CommentingTrait;
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected $ignored = [
         '__construct',
@@ -39,7 +39,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

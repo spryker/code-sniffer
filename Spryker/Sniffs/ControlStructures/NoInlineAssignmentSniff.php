@@ -28,7 +28,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
         if ($tokens[$stackPtr]['code'] === T_OBJECT_OPERATOR || $tokens[$stackPtr]['code'] === T_DOUBLE_COLON) {

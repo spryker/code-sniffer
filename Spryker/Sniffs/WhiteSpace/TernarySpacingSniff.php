@@ -19,7 +19,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class TernarySpacingSniff extends AbstractSprykerSniff
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     public $supportedTokenizers = [
         'PHP',
@@ -38,7 +38,7 @@ class TernarySpacingSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

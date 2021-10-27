@@ -29,7 +29,7 @@ class SprykerNamespaceSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $namespaceStatement = $this->getNamespaceStatement($phpcsFile);
         if (!$namespaceStatement) {

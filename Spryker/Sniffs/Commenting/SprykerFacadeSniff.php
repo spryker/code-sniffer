@@ -104,7 +104,7 @@ class SprykerFacadeSniff implements Sniff
             $phpCsFile->addError(
                 sprintf('Interface methods do not match facade methods: "%s" missing', implode(', ', $missingInterfaceMethods)),
                 $stackPointer,
-                'InterfaceMethodMissing'
+                'InterfaceMethodMissing',
             );
         }
 
@@ -112,7 +112,7 @@ class SprykerFacadeSniff implements Sniff
             $phpCsFile->addError(
                 sprintf('Interface method has no implementation: "%s" missing', implode(', ', $missingInterfaceImplementations)),
                 $stackPointer,
-                'InterfaceImplementationMissing'
+                'InterfaceImplementationMissing',
             );
         }
     }

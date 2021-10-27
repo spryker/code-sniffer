@@ -32,7 +32,7 @@ class SingleQuoteSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_CONSTANT_ENCAPSED_STRING];
     }
@@ -40,7 +40,7 @@ class SingleQuoteSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -61,7 +61,7 @@ class SingleQuoteSniff extends AbstractSprykerSniff
             $fix = $phpcsFile->addFixableError(
                 'Use single instead of double quotes for simple strings.',
                 $stackPtr,
-                'UseSingleQuote'
+                'UseSingleQuote',
             );
             if ($fix) {
                 $content = substr($content, 1, -1);

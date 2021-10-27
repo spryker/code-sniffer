@@ -66,7 +66,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
             $fixable = $phpCsFile->addFixableError(
                 sprintf('Interface must be used for %s annotation of %s', $methodAnnotation['method'], $methodAnnotation['class']),
                 $methodAnnotation['index'],
-                'Annotation.Interface.Invalid'
+                'Annotation.Interface.Invalid',
             );
             if (!$fixable) {
                 continue;
@@ -141,7 +141,7 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
                 $phpCsFile->addError(
                     sprintf('Interface missing for %s annotation of %s', $method, $class),
                     $i,
-                    'Annotation.Interface.Missing'
+                    'Annotation.Interface.Missing',
                 );
 
                 continue;

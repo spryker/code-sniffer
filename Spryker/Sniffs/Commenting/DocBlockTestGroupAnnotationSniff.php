@@ -153,7 +153,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getNamespaceParts(File $phpCsFile, int $stackPointer): array
     {
@@ -191,7 +191,7 @@ class DocBlockTestGroupAnnotationSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getGroupAnnotationParts(File $phpCsFile, int $stackPointer): array
     {
