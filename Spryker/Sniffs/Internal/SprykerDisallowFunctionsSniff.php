@@ -120,7 +120,7 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
             return;
         }
 
-        $error = $tokenContent . '() usage found. This function cannot be used in core yet.';
+        $error = $tokenContent . '() usage found. This function cannot be used in code yet.';
         $phpcsFile->addError($error, $stackPtr, 'Invalid');
     }
 

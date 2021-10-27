@@ -71,6 +71,7 @@ class TypeHintSniff implements Sniff
         '\\Closure',
         '\\Traversable',
         '\\ArrayAccess',
+        '\\ArrayObject',
         '\\Stringable',
         '\\Generator',
         'mixed',
@@ -78,6 +79,7 @@ class TypeHintSniff implements Sniff
         'resource',
         'object',
         'iterable',
+        'list',
         'array',
         'callable-string',
         'class-string',
@@ -212,8 +214,6 @@ class TypeHintSniff implements Sniff
                     $sortName = 'array';
                 } elseif ($type->type instanceof IdentifierTypeNode) {
                     $sortName = $type->type->name;
-                } else {
-                    $sortName = 'array';
                 }
             } elseif ($type instanceof ArrayShapeNode) {
                 $sortName = 'array';
