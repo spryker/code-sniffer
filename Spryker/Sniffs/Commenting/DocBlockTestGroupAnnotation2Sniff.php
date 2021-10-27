@@ -20,6 +20,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
      * @var string
      */
     protected const ANNOTATION_START_TEXT = 'Auto-generated group annotations';
+
     /**
      * @var string
      */

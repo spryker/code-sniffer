@@ -36,7 +36,7 @@ class DisallowFunctionsSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $this->checkForbiddenFunctions($phpcsFile, $stackPtr);
         $this->checkImplodeUsage($phpcsFile, $stackPtr);

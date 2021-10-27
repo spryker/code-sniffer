@@ -53,7 +53,7 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $className = $this->getClassName($phpcsFile);
         $namespaces = [];
@@ -101,10 +101,10 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
                 sprintf(
                     'No %s namespace allowed in %s files.',
                     $pair['to'],
-                    $pair['from']
+                    $pair['from'],
                 ),
                 $useStatement['start'],
-                'InvalidCrossNamespace'
+                'InvalidCrossNamespace',
             );
         }
     }

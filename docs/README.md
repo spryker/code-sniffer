@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 207 sniffs
+The SprykerStrict standard contains 221 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -75,11 +75,14 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (30 sniffs)
+SlevomatCodingStandard (39 sniffs)
 ----------------------------------
+- SlevomatCodingStandard.Arrays.MultiLineArrayEndBracketPlacement
+- SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace
 - SlevomatCodingStandard.Arrays.TrailingArrayComma
 - SlevomatCodingStandard.Classes.ClassConstantVisibility
 - SlevomatCodingStandard.Classes.ClassMemberSpacing
+- SlevomatCodingStandard.Classes.ConstantSpacing
 - SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion
 - SlevomatCodingStandard.Classes.ModernClassNameReference
 - SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment
@@ -90,14 +93,19 @@ SlevomatCodingStandard (30 sniffs)
 - SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing
 - SlevomatCodingStandard.ControlStructures.NewWithParentheses
 - SlevomatCodingStandard.Exceptions.DeadCatch
+- SlevomatCodingStandard.Functions.ArrowFunctionDeclaration
+- SlevomatCodingStandard.Functions.DisallowNamedArguments
 - SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration
+- SlevomatCodingStandard.Functions.RequireTrailingCommaInCall
 - SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses
 - SlevomatCodingStandard.Namespaces.NamespaceDeclaration
 - SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly
+- SlevomatCodingStandard.Namespaces.RequireOneNamespaceInFile
 - SlevomatCodingStandard.Namespaces.UnusedUses
 - SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash
 - SlevomatCodingStandard.Namespaces.UseFromSameNamespace
 - SlevomatCodingStandard.Namespaces.UseSpacing
+- SlevomatCodingStandard.Namespaces.UselessAlias
 - SlevomatCodingStandard.PHP.ForbiddenClasses
 - SlevomatCodingStandard.PHP.ShortList
 - SlevomatCodingStandard.PHP.TypeCast
@@ -107,15 +115,19 @@ SlevomatCodingStandard (30 sniffs)
 - SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing
 - SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
+- SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (89 sniffs)
+Spryker (94 sniffs)
 -------------------
+- Spryker.Arrays.DisallowImplicitArrayCreation
 - Spryker.Classes.ClassFileName
 - Spryker.Classes.MethodArgumentDefaultValue
 - Spryker.Classes.MethodDeclaration
 - Spryker.Classes.MethodTypeHint
 - Spryker.Classes.PropertyDefaultValue
 - Spryker.Classes.ReturnTypeHint
+- Spryker.Classes.SelfAccessor
+- Spryker.Commenting.Attributes
 - Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
 - Spryker.Commenting.DocBlockConst
@@ -140,6 +152,7 @@ Spryker (89 sniffs)
 - Spryker.Commenting.DocBlockTestGroupAnnotation
 - Spryker.Commenting.DocBlockTestGroupAnnotation2
 - Spryker.Commenting.DocBlockThrows
+- Spryker.Commenting.DocBlockTypeOrder
 - Spryker.Commenting.DocBlockVar
 - Spryker.Commenting.DocBlockVarNotJustNull
 - Spryker.Commenting.DocBlockVariableNullHintLast
@@ -161,6 +174,7 @@ Spryker (89 sniffs)
 - Spryker.Factory.OneNewPerMethod
 - Spryker.Formatting.ArrayDeclaration
 - Spryker.Formatting.MethodSignatureParametersLineBreakMethod
+- Spryker.Internal.SprykerDisallowFunctions
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.MethodAnnotation.ConfigMethodAnnotation
 - Spryker.MethodAnnotation.EntityManagerMethodAnnotation

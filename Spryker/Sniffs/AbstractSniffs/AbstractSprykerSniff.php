@@ -111,6 +111,18 @@ abstract class AbstractSprykerSniff implements Sniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      *
+     * @return bool
+     */
+    protected function isCore(File $phpCsFile): bool
+    {
+        $namespace = $this->getNamespace($phpCsFile);
+
+        return strpos($namespace, static::NAMESPACE_SPRYKER) === 0;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
      * @return string
      */
     protected function getModule(File $phpCsFile): string
@@ -166,7 +178,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
         return ClassHelper::getFullyQualifiedName(
             $phpCsFile,
-            $prevIndex
+            $prevIndex,
         );
     }
 

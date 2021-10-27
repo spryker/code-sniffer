@@ -6,19 +6,17 @@ on:
     branches:
       - master
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
 
 jobs:
   validation:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         php-version: [
-            '7.2',
-            '7.4',
+            '7.3',
             '8.0',
+            '8.1',
         ]
 
     steps:
@@ -50,19 +48,19 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, intl, pdo_mysql
 
-      - name: CodeStyle checks
-        run: composer cs-check
-
       - name: PHPStan checks
         run: composer stan
 
+      - name: CodeStyle checks
+        run: composer cs-check
+
   prefer-lowest:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         php-version: [
-            '7.2'
+            '7.3'
         ]
 
     steps:

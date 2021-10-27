@@ -33,11 +33,31 @@ class DocBlockStructureSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
+        if ($tokens[$stackPtr]['content'] !== '/**') {
+            $error = sprintf('Expected `/**`, got `%s`', $tokens[$stackPtr]['content']);
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'InvalidOpening');
+            if ($fix) {
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->replaceToken($stackPtr, '/**');
+                $phpcsFile->fixer->endChangeset();
+            }
+        }
+
         $closingTagIndex = $tokens[$stackPtr]['comment_closer'];
+
+        if ($tokens[$closingTagIndex]['content'] !== '*/') {
+            $error = sprintf('Expected `*/`, got `%s`', $tokens[$closingTagIndex]['content']);
+            $fix = $phpcsFile->addFixableError($error, $closingTagIndex, 'InvalidClosing');
+            if ($fix) {
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->replaceToken($closingTagIndex, '*/');
+                $phpcsFile->fixer->endChangeset();
+            }
+        }
 
         if ($tokens[$closingTagIndex]['line'] === $tokens[$stackPtr]['line']) {
             return;

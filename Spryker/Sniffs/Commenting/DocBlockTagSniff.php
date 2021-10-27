@@ -20,6 +20,7 @@ class DocBlockTagSniff implements Sniff
      * @var string
      */
     protected const INHERIT_DOC_FULL = '@inheritDoc';
+
     /**
      * @var string
      */
@@ -38,7 +39,7 @@ class DocBlockTagSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 

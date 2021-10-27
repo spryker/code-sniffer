@@ -22,7 +22,7 @@ Make sure you include the sniffer as `require-dev` dependency:
 composer require --dev spryker/code-sniffer
 ```
 
-The Development bundle provides a convenience command:
+The Development module provides a convenience command:
 ```
 console code:sniff:style
 ```
@@ -88,7 +88,7 @@ You might need to specify full directory path. Now the tools can be used without
 
 ## Using own project standard
 You can exchange or extend the Spryker coding standard by providing your own ruleset.xml.
-This can be configured in the Development bundle config:
+This can be configured in the Development module config:
 
 ```php
 // DevelopmentConfig.php
@@ -113,7 +113,7 @@ Make sure that you include the Spryker core standard ruleset in your custom one,
     <description>
         Spryker Coding Standard for Project.
         Extends main Spryker Coding Standard.
-        All sniffs in ./Sniffs will be auto loaded
+        All sniffs in ./Sniffs/ will be auto loaded
     </description>
 
     <rule ref="vendor/spryker/code-sniffer/Spryker/ruleset.xml"/>
@@ -185,7 +185,7 @@ See CS sniffer docs for details, but in general using `severity` of `0` can sile
     <severity>0</severity>
 </rule>
 ```
-This deactives the whole ControlStructureSpacing sniff.
+This deactivates the whole ControlStructureSpacing sniff.
 
 ## Excluding test related comparison files
 If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.

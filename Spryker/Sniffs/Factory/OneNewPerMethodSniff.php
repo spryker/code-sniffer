@@ -37,7 +37,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
             $phpCsFile->addError(
                 $classMethod . ' contains more then one new. Fix this by extract a method.',
                 $stackPointer,
-                'OnlyOneNewAllowed'
+                'OnlyOneNewAllowed',
             );
         }
     }

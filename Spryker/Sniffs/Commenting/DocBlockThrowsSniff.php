@@ -17,6 +17,9 @@ use Spryker\Traits\UseStatementsTrait;
  * Ensures Doc Blocks for throws annotations are correct.
  * We only ever declare them for the exceptions inside the own method.
  *
+ * Superfluous exceptions declared will by default get removed.
+ * To prevent this mark them as "exceptional" using `!` as comment or beginning of comment.
+ *
  * @author Mark Scherer
  * @license MIT
  */
@@ -170,10 +173,14 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $fullClass = $tokens[($index + 2)]['content'];
-            $space = strpos($fullClass, ' ');
-            if ($space !== false) {
-                $fullClass = substr($fullClass, 0, $space);
+            $classAndAppendix = $tokens[($index + 2)]['content'];
+
+            $fullClass = $classAndAppendix;
+            $appendix = '';
+            $spacePosition = strpos($classAndAppendix, ' ');
+            if ($spacePosition !== false) {
+                $fullClass = substr($classAndAppendix, 0, $spacePosition);
+                $appendix = substr($classAndAppendix, $spacePosition + 1);
             }
 
             $class = $fullClass;
@@ -186,6 +193,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 'index' => $index,
                 'fullClass' => $fullClass,
                 'class' => $class,
+                'comment' => $appendix,
             ];
         }
 
@@ -242,6 +250,9 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
         foreach ($annotations as $annotation) {
             if ($this->isInCode($annotation, $exceptions, $useStatements)) {
+                continue;
+            }
+            if (substr($annotation['comment'], 0, 1) === '!') {
                 continue;
             }
 
