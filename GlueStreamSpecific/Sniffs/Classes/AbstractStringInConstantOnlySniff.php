@@ -15,7 +15,7 @@ abstract class AbstractStringInConstantOnlySniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [
             T_CONSTANT_ENCAPSED_STRING,
@@ -25,7 +25,7 @@ abstract class AbstractStringInConstantOnlySniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokenIndex = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, $stackPtr);
         $tokens = $phpcsFile->getTokens();
