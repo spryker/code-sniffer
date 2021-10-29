@@ -132,9 +132,11 @@ class TypeHintSniff implements Sniff
                 continue;
             }
 
+            $hasUnion = false;
             /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
             if ($valueNode->type instanceof UnionTypeNode) {
                 $types = $valueNode->type->types;
+                $hasUnion = true;
             } elseif ($valueNode->type instanceof ArrayTypeNode) {
                 $types = [$valueNode->type];
             } else {
@@ -142,7 +144,7 @@ class TypeHintSniff implements Sniff
             }
 
             $originalTypeHint = $this->renderUnionTypes($types);
-            $sortedTypeHint = $this->getSortedTypeHint($types);
+            $sortedTypeHint = $this->getSortedTypeHint($types, $hasUnion);
             if ($sortedTypeHint === $originalTypeHint) {
                 continue;
             }
@@ -193,10 +195,11 @@ class TypeHintSniff implements Sniff
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types node types
+     * @param bool $hasUnion
      *
      * @return string
      */
-    protected function getSortedTypeHint(array $types): string
+    protected function getSortedTypeHint(array $types, bool $hasUnion): string
     {
         $sortable = array_fill_keys(static::$sortMap, []);
         $unsortable = [];
@@ -209,11 +212,15 @@ class TypeHintSniff implements Sniff
                     $sortName = $type->type->name;
                 }
             } elseif ($type instanceof ArrayTypeNode) {
-                if ($this->convertArraysToGenerics) {
+                if (!$this->convertArraysToGenerics) {
+                    $sortName = $type->type->name;
+                } elseif (!$this->isComplexObjectCollection($types, $hasUnion)) {
                     $type = new GenericTypeNode(new IdentifierTypeNode('array'), [$type->type]);
                     $sortName = 'array';
                 } elseif ($type->type instanceof IdentifierTypeNode) {
-                    $sortName = $type->type->name;
+                    $sortName = 'array'; // $type->type->name;
+                } else {
+                    $sortName = 'array';
                 }
             } elseif ($type instanceof ArrayShapeNode) {
                 $sortName = 'array';
@@ -309,5 +316,30 @@ class TypeHintSniff implements Sniff
         }
 
         return $types;
+    }
+
+    /**
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
+     * @param bool $isUnion
+     *
+     * @return bool
+     */
+    protected function isComplexObjectCollection(array $types, bool $isUnion): bool
+    {
+        if (!$isUnion) {
+            return false;
+        }
+
+        foreach ($types as $type) {
+            if (!$type instanceof IdentifierTypeNode) {
+                continue;
+            }
+
+            if (strpos((string)$type, '\\') === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
