@@ -100,7 +100,7 @@ class TypeHintSniff implements Sniff
      *
      * @inheritDoc
      */
-    public function register()
+    public function register(): array
     {
         return [T_DOC_COMMENT_OPEN_TAG];
     }
@@ -110,7 +110,7 @@ class TypeHintSniff implements Sniff
      *
      * @inheritDoc
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -217,8 +217,6 @@ class TypeHintSniff implements Sniff
                 } elseif (!$this->isComplexObjectCollection($types, $hasUnion)) {
                     $type = new GenericTypeNode(new IdentifierTypeNode('array'), [$type->type]);
                     $sortName = 'array';
-                } elseif ($type->type instanceof IdentifierTypeNode) {
-                    $sortName = 'array'; // $type->type->name;
                 } else {
                     $sortName = 'array';
                 }

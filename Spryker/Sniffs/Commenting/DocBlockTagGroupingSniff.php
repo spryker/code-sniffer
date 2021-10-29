@@ -34,7 +34,7 @@ class DocBlockTagGroupingSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPtr)
+    public function process(File $phpCsFile, $stackPtr): void
     {
         $tokens = $phpCsFile->getTokens();
 
