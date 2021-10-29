@@ -213,8 +213,10 @@ class TypeHintSniff implements Sniff
                 }
             } elseif ($type instanceof ArrayTypeNode) {
                 if (!$this->convertArraysToGenerics) {
-                    $sortName = $type->type->name;
-                } elseif (!$this->isComplexObjectCollection($types, $hasUnion)) {
+                    /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
+                    $identifierType = $type->type;
+                    $sortName = $identifierType->name;
+                } elseif (!$this->isObjectCollection($types, $hasUnion)) {
                     $type = new GenericTypeNode(new IdentifierTypeNode('array'), [$type->type]);
                     $sortName = 'array';
                 } else {
@@ -322,7 +324,7 @@ class TypeHintSniff implements Sniff
      *
      * @return bool
      */
-    protected function isComplexObjectCollection(array $types, bool $isUnion): bool
+    protected function isObjectCollection(array $types, bool $isUnion): bool
     {
         if (!$isUnion) {
             return false;
