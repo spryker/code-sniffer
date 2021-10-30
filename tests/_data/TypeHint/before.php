@@ -5,7 +5,13 @@ namespace Spryker;
 class FixMe
 {
     /**
-     * @return string[]|null
+     * @var string[][]
+     * @phpstan-var string[][]
+     */
+    protected $securityRoutes = [];
+
+    /**
+     * @return null|string[]
      */
     public function one(): ?array
     {
@@ -15,7 +21,7 @@ class FixMe
     /**
      * @param (string|int)[] $test
      *
-     * @return string[]|int[]
+     * @return int[]|string[]
      */
     public function second(array $test): array
     {
@@ -56,5 +62,15 @@ class FixMe
         $shipmentGroupCollection = $options[static::OPTION_SHIPMENT_GROUPS];
 
         return $salesReturnEntityCollection->getXyz();
+    }
+
+    /**
+     * @phpstan-return \Generator<array<\Generated\Shared\Transfer\ProductAbstractTransfer>>
+     *
+     * @return \Generator<array<\Generated\Shared\Transfer\ProductAbstractTransfer>>
+     */
+    public function getRelatedProducts(): Generator
+    {
+        yield $this->x();
     }
 }

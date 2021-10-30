@@ -17,7 +17,7 @@ class EmptyEnclosingLineSniffTest extends TestCase
      */
     public function testEmptyEnclosingLineSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new EmptyEnclosingLineSniff(), 1);
+        $this->assertSnifferFindsErrors(new EmptyEnclosingLineSniff(), 2);
     }
 
     /**

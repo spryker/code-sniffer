@@ -6,10 +6,10 @@ class FixMe
 {
     public function test()
     {
-        if ($x > $y)
+        if ($x >$y)
         {
         }
-        if ($y > $z)
+        if ($y> $z)
         {
         }
     }

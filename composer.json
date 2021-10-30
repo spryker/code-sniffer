@@ -46,7 +46,7 @@
         "cs-check": "vendor/bin/phpcs --extensions=php",
         "cs-fix": "vendor/bin/phpcbf --extensions=php",
         "test": "vendor/bin/phpunit",
-        "stan": "vendor/bin/phpstan.phar analyse"
+        "stan": "phpstan analyse"
     },
     "bin": [
         "bin/tokenize"
