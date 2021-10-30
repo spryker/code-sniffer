@@ -96,6 +96,17 @@ class TypeHintSniff implements Sniff
     ];
 
     /**
+     * The following classes are supported for object generics by IDEs like PHPStorm already.
+     * E.g. `\ArrayObject<type>` instead of legacy syntax `\ArrayObject|type[]`.
+     *
+     * @var array<string>
+     */
+    protected static $genericCollectionClasses = [
+        '\\ArrayAccess',
+        '\\ArrayObject',
+    ];
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @inheritDoc
@@ -225,7 +236,12 @@ class TypeHintSniff implements Sniff
             } elseif ($type instanceof ArrayShapeNode) {
                 $sortName = 'array';
             } elseif ($type instanceof GenericTypeNode) {
-                if (in_array($type->type->name, static::$sortMap)) {
+                if ($this->isObjectCollection($types, $hasUnion) && !$this->isGenericObjectCollection($types) && count($type->genericTypes) === 1) {
+                    /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
+                    $identifierType = $type->genericTypes[0];
+                    $type = new ArrayTypeNode(new IdentifierTypeNode($identifierType->name));
+                    $sortName = 'array';
+                } elseif (in_array($type->type->name, static::$sortMap)) {
                     $sortName = $type->type->name;
                 } else {
                     $sortName = 'array';
@@ -336,6 +352,27 @@ class TypeHintSniff implements Sniff
             }
 
             if (strpos((string)$type, '\\') === 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
+     *
+     * @return bool
+     */
+    protected function isGenericObjectCollection(array $types): bool
+    {
+        foreach ($types as $type) {
+            if (!$type instanceof IdentifierTypeNode) {
+                continue;
+            }
+
+            $className = (string)$type;
+            if (strpos((string)$type, '\\') === 0 && in_array($className, static::$genericCollectionClasses, true)) {
                 return true;
             }
         }
