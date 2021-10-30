@@ -49,6 +49,12 @@ class FixMe
      */
     protected function complex($col)
     {
-        return $col->getXyz();
+        /** @var \Propel\Runtime\Collection\ObjectCollection<\Orm\Zed\SalesReturn\Persistence\SpySalesReturn> $salesReturnEntityCollection */
+        $salesReturnEntityCollection = $this->runQuery();
+
+        /** @var \ArrayObject<\Generated\Shared\Transfer\ShipmentGroupTransfer> $shipmentGroupCollection */
+        $shipmentGroupCollection = $options[static::OPTION_SHIPMENT_GROUPS];
+
+        return $salesReturnEntityCollection->getXyz();
     }
 }

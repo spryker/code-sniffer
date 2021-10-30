@@ -150,6 +150,8 @@ class TypeHintSniff implements Sniff
                 $hasUnion = true;
             } elseif ($valueNode->type instanceof ArrayTypeNode) {
                 $types = [$valueNode->type];
+            } elseif ($valueNode->type instanceof GenericTypeNode) {
+                $types = [$valueNode->type];
             } else {
                 continue;
             }
@@ -237,7 +239,7 @@ class TypeHintSniff implements Sniff
                 $sortName = 'array';
             } elseif ($type instanceof GenericTypeNode) {
                 if (
-                    $this->isObjectCollection($types, $hasUnion)
+                    $this->isObjectCollection($types)
                     && !$this->isGenericObjectCollection($types)
                     && count($type->genericTypes) === 1
                     && in_array($type->type->name, ['array', 'iterable'], true)
@@ -245,6 +247,19 @@ class TypeHintSniff implements Sniff
                     /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
                     $identifierType = $type->genericTypes[0];
                     $type = new ArrayTypeNode(new IdentifierTypeNode($identifierType->name));
+                    $sortName = 'array';
+                } elseif (
+                    substr($type->type->name, 0, 1) === '\\'
+                    && !in_array($type->type->name, static::$genericCollectionClasses, true)
+                    && count($type->genericTypes) === 1
+                ) {
+                    /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
+                    $identifierType = $type->genericTypes[0];
+                    $type = (string)new UnionTypeNode([
+                        new IdentifierTypeNode($type->type->name),
+                        new ArrayTypeNode(new IdentifierTypeNode($identifierType->name)),
+                    ]);
+                    $type = substr($type, 1, -1);
                     $sortName = 'array';
                 } elseif (in_array($type->type->name, static::$sortMap)) {
                     $sortName = $type->type->name;
@@ -341,16 +356,11 @@ class TypeHintSniff implements Sniff
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
-     * @param bool $isUnion
      *
      * @return bool
      */
-    protected function isObjectCollection(array $types, bool $isUnion): bool
+    protected function isObjectCollection(array $types): bool
     {
-        if (!$isUnion) {
-            return false;
-        }
-
         foreach ($types as $type) {
             if (!$type instanceof IdentifierTypeNode) {
                 continue;

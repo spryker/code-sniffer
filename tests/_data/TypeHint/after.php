@@ -45,10 +45,16 @@ class FixMe
     /**
      * @param \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\Sales\Persistence\SpySalesShipment[] $col
      *
-     * @return \Propel\Runtime\Collection\Collection|\Propel\Runtime\Collection\ObjectCollection<\Propel\Runtime\ActiveRecord\ActiveRecordInterface>
+     * @return \Propel\Runtime\Collection\Collection|\Propel\Runtime\Collection\ObjectCollection|\Propel\Runtime\ActiveRecord\ActiveRecordInterface[]
      */
     protected function complex($col)
     {
-        return $col->getXyz();
+        /** @var \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\SalesReturn\Persistence\SpySalesReturn[] $salesReturnEntityCollection */
+        $salesReturnEntityCollection = $this->runQuery();
+
+        /** @var \ArrayObject<\Generated\Shared\Transfer\ShipmentGroupTransfer> $shipmentGroupCollection */
+        $shipmentGroupCollection = $options[static::OPTION_SHIPMENT_GROUPS];
+
+        return $salesReturnEntityCollection->getXyz();
     }
 }
