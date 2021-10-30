@@ -43,12 +43,12 @@ class FixMe
     }
 
     /**
-     * @param \Propel\Runtime\ActiveQuery\ModelCriteria $query
+     * @param \Propel\Runtime\Collection\ObjectCollection|iterable<\Orm\Zed\Sales\Persistence\SpySalesShipment> $col
      *
      * @return \Propel\Runtime\Collection\Collection|\Propel\Runtime\Collection\ObjectCollection<\Propel\Runtime\ActiveRecord\ActiveRecordInterface>
      */
-    protected function complex(ModelCriteria $query)
+    protected function complex($col)
     {
-        return $query->getXyz();
+        return $col->getXyz();
     }
 }

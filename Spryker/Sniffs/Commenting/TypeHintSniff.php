@@ -236,7 +236,12 @@ class TypeHintSniff implements Sniff
             } elseif ($type instanceof ArrayShapeNode) {
                 $sortName = 'array';
             } elseif ($type instanceof GenericTypeNode) {
-                if ($this->isObjectCollection($types, $hasUnion) && !$this->isGenericObjectCollection($types) && count($type->genericTypes) === 1) {
+                if (
+                    $this->isObjectCollection($types, $hasUnion)
+                    && !$this->isGenericObjectCollection($types)
+                    && count($type->genericTypes) === 1
+                    && in_array($type->type->name, ['array', 'iterable'], true)
+                ) {
                     /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
                     $identifierType = $type->genericTypes[0];
                     $type = new ArrayTypeNode(new IdentifierTypeNode($identifierType->name));
