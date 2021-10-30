@@ -28,6 +28,8 @@ use SlevomatCodingStandard\Helpers\TypeHintHelper;
 
 /**
  * Fixed version of Slevomatic, not touching collection objects.
+ *
+ * @see https://github.com/slevomat/coding-standard/issues/1296
  */
 class DisallowArrayTypeHintSyntaxSniff implements Sniff
 {

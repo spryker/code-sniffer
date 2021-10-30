@@ -151,11 +151,9 @@ class TypeHintSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $hasUnion = false;
             /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
             if ($valueNode->type instanceof UnionTypeNode) {
                 $types = $valueNode->type->types;
-                $hasUnion = true;
             } elseif ($valueNode->type instanceof ArrayTypeNode) {
                 $types = [$valueNode->type];
             } elseif ($valueNode->type instanceof GenericTypeNode) {
