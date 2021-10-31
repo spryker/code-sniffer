@@ -238,6 +238,33 @@ class TypeHintSniff extends AbstractSprykerSniff
                     }
                     $phpcsFile->fixer->endChangeset();
                 }
+            } elseif ($this->isStanTag($tokens[$tag]['content'])) {
+                $merchableIndex = $this->findMerchableTag($phpcsFile, $tokens[$tag]['content'], $tagComment, $tokens[$stackPtr]['comment_tags']);
+                if ($merchableIndex) {
+                    $content = $tokens[$merchableIndex]['content'];
+                    $fix = $phpcsFile->addFixableError('Stan annotation can be merged with `' . $content . '`', $tag, 'Mergable');
+                    if ($fix) {
+                        $phpcsFile->fixer->beginChangeset();
+
+                        // Replace
+                        $phpcsFile->fixer->replaceToken($merchableIndex + 2, $tokens[$tag + 2]['content']);
+
+                        // Remove
+                        if (isset($tokens[$stackPtr]['comment_tags'][$key + 1])) {
+                            for ($i = $tag; $i < $tokens[$stackPtr]['comment_tags'][$key + 1]; $i++) {
+                                $phpcsFile->fixer->replaceToken($i, '');
+                            }
+                        } else {
+                            $prevContentIndex = $phpcsFile->findPrevious([T_WHITESPACE, T_DOC_COMMENT_WHITESPACE], $tokens[$stackPtr]['comment_closer'] - 1, null, true);
+                            $firstLineIndex = $this->getFirstTokenOfLine($tokens, $tag);
+                            for ($i = $firstLineIndex - 1; $i <= $prevContentIndex; $i++) {
+                                $phpcsFile->fixer->replaceToken($i, '');
+                            }
+                        }
+
+                        $phpcsFile->fixer->endChangeset();
+                    }
+                }
             }
         }
     }
@@ -472,13 +499,58 @@ class TypeHintSniff extends AbstractSprykerSniff
 
             $tagComment = $phpcsFile->fixer->getTokenContent($commentTag + 2);
 
-            if ($tagComment !== $content) {
-                break;
+            if ($tagComment === $content) {
+                return true;
             }
-
-            return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param string $tag
+     * @param string|null $content
+     * @param array<int> $commentTags
+     *
+     * @return bool
+     */
+    protected function findMerchableTag(File $phpcsFile, string $tag, ?string $content, array $commentTags): ?int
+    {
+        if (!$content) {
+            return false;
+        }
+
+        $types = static::$genericCollectionClasses;
+        $types[] = 'array';
+        $types[] = 'iterable';
+        $callback = function (string &$value): void {
+            $value = str_replace('\\', '\\\\', $value);
+        };
+        array_walk($types, $callback);
+
+        preg_match('/^(' . implode('|', $types) . ')<.+>/', $content, $matches);
+        if (!$matches) {
+            return false;
+        }
+
+        $matchingTag = str_replace(['phpstan-', 'psalm-'], '', $tag);
+
+        $tokens = $phpcsFile->getTokens();
+        foreach ($commentTags as $commentTag) {
+            if ($tokens[$commentTag]['content'] !== $matchingTag) {
+                continue;
+            }
+
+            $tagComment = $phpcsFile->fixer->getTokenContent($commentTag + 2);
+
+            preg_match('/^(' . implode('|', $types) . ')( .+)?$/', $tagComment, $matches);
+
+            if ($matches) {
+                return $commentTag;
+            }
+        }
+
+        return null;
     }
 }
