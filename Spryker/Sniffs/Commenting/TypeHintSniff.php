@@ -19,7 +19,6 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
@@ -36,16 +35,22 @@ use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
+use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Verifies order of types in type hints. Also removes duplicates.
+ * Fixes invalid/problematic generic declarations back to legacy ones.
  */
-class TypeHintSniff implements Sniff
+class TypeHintSniff extends AbstractSprykerSniff
 {
     /**
+     * Use this to keep legacy collection objects as `\FQCN|type[]` instead of
+     * `\FQCN<type>` for all non-trivial object types. This helps IDEs to understand this,
+     * as long as they do not yet understand new generics here.
+     *
      * @var bool
      */
-    public $convertArraysToGenerics = true;
+    public $legacyCollectionObjects = true;
 
     /**
      * @var array<string>
@@ -96,6 +101,20 @@ class TypeHintSniff implements Sniff
     ];
 
     /**
+     * The following classes are supported for object generics by IDEs like PHPStorm already.
+     * E.g. `\ArrayObject<type>` instead of legacy syntax `\ArrayObject|type[]`.
+     *
+     * @var array<string>
+     */
+    protected static $genericCollectionClasses = [
+        '\\Traversable',
+        '\\ArrayAccess',
+        '\\ArrayObject',
+        '\\Generator',
+        '\\Iterator',
+    ];
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @inheritDoc
@@ -132,19 +151,19 @@ class TypeHintSniff implements Sniff
                 continue;
             }
 
-            $hasUnion = false;
             /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
             if ($valueNode->type instanceof UnionTypeNode) {
                 $types = $valueNode->type->types;
-                $hasUnion = true;
             } elseif ($valueNode->type instanceof ArrayTypeNode) {
+                $types = [$valueNode->type];
+            } elseif ($valueNode->type instanceof GenericTypeNode) {
                 $types = [$valueNode->type];
             } else {
                 continue;
             }
 
             $originalTypeHint = $this->renderUnionTypes($types);
-            $sortedTypeHint = $this->getSortedTypeHint($types, $hasUnion);
+            $sortedTypeHint = $this->getSortedTypeHint($types, $tokens[$tag]['content']);
             if ($sortedTypeHint === $originalTypeHint) {
                 continue;
             }
@@ -191,15 +210,45 @@ class TypeHintSniff implements Sniff
             $phpcsFile->fixer->replaceToken($tag + 2, $newComment);
             $phpcsFile->fixer->endChangeset();
         }
+
+        foreach ($tokens[$stackPtr]['comment_tags'] as $key => $tag) {
+            if (
+                $tokens[$tag + 2]['code'] !== T_DOC_COMMENT_STRING ||
+                !in_array($tokens[$tag]['content'], static::$typeHintTags, true)
+            ) {
+                continue;
+            }
+
+            $tagComment = $phpcsFile->fixer->getTokenContent($tag + 2);
+
+            if ($this->isStanTag($tokens[$tag]['content']) && $this->isDuplicate($phpcsFile, $tokens[$tag]['content'], $tagComment, $tokens[$stackPtr]['comment_tags'])) {
+                $fix = $phpcsFile->addFixableError('Stan annotation is superfluous and can be removed', $tag, 'Superfluous');
+                if ($fix) {
+                    $phpcsFile->fixer->beginChangeset();
+                    if (isset($tokens[$stackPtr]['comment_tags'][$key + 1])) {
+                        for ($i = $tag; $i < $tokens[$stackPtr]['comment_tags'][$key + 1]; $i++) {
+                            $phpcsFile->fixer->replaceToken($i, '');
+                        }
+                    } else {
+                        $prevContentIndex = $phpcsFile->findPrevious([T_WHITESPACE, T_DOC_COMMENT_WHITESPACE], $tokens[$stackPtr]['comment_closer'] - 1, null, true);
+                        $firstLineIndex = $this->getFirstTokenOfLine($tokens, $tag);
+                        for ($i = $firstLineIndex - 1; $i <= $prevContentIndex; $i++) {
+                            $phpcsFile->fixer->replaceToken($i, '');
+                        }
+                    }
+                    $phpcsFile->fixer->endChangeset();
+                }
+            }
+        }
     }
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types node types
-     * @param bool $hasUnion
+     * @param string $tag
      *
      * @return string
      */
-    protected function getSortedTypeHint(array $types, bool $hasUnion): string
+    protected function getSortedTypeHint(array $types, string $tag): string
     {
         $sortable = array_fill_keys(static::$sortMap, []);
         $unsortable = [];
@@ -212,20 +261,43 @@ class TypeHintSniff implements Sniff
                     $sortName = $type->type->name;
                 }
             } elseif ($type instanceof ArrayTypeNode) {
-                if (!$this->convertArraysToGenerics) {
+                if ($type->type instanceof IdentifierTypeNode) {
                     /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
                     $identifierType = $type->type;
                     $sortName = $identifierType->name;
-                } elseif (!$this->isObjectCollection($types, $hasUnion)) {
-                    $type = new GenericTypeNode(new IdentifierTypeNode('array'), [$type->type]);
-                    $sortName = 'array';
                 } else {
                     $sortName = 'array';
                 }
             } elseif ($type instanceof ArrayShapeNode) {
                 $sortName = 'array';
             } elseif ($type instanceof GenericTypeNode) {
-                if (in_array($type->type->name, static::$sortMap)) {
+                if (
+                    $this->legacyCollectionObjects
+                    && !$this->isStanTag($tag)
+                    && $this->isObjectCollection($types)
+                    && !$this->isGenericObjectCollection($types)
+                    && count($type->genericTypes) === 1
+                    && in_array($type->type->name, ['array', 'iterable'], true)
+                ) {
+                    /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
+                    $identifierType = $type->genericTypes[0];
+                    $type = new ArrayTypeNode(new IdentifierTypeNode($identifierType->name));
+                    $sortName = 'array';
+                } elseif (
+                    !$this->isStanTag($tag)
+                    && substr($type->type->name, 0, 1) === '\\'
+                    && !in_array($type->type->name, static::$genericCollectionClasses, true)
+                    && count($type->genericTypes) === 1 && $type->genericTypes[0] instanceof IdentifierTypeNode
+                ) {
+                    /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
+                    $identifierType = $type->genericTypes[0];
+                    $type = (string)new UnionTypeNode([
+                        new IdentifierTypeNode($type->type->name),
+                        new ArrayTypeNode(new IdentifierTypeNode($identifierType->name)),
+                    ]);
+                    $type = substr($type, 1, -1);
+                    $sortName = 'array';
+                } elseif (in_array($type->type->name, static::$sortMap)) {
                     $sortName = $type->type->name;
                 } else {
                     $sortName = 'array';
@@ -319,17 +391,14 @@ class TypeHintSniff implements Sniff
     }
 
     /**
+     * Checks if it is an object collection of any type (\FQCN<type>).
+     *
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
-     * @param bool $isUnion
      *
      * @return bool
      */
-    protected function isObjectCollection(array $types, bool $isUnion): bool
+    protected function isObjectCollection(array $types): bool
     {
-        if (!$isUnion) {
-            return false;
-        }
-
         foreach ($types as $type) {
             if (!$type instanceof IdentifierTypeNode) {
                 continue;
@@ -338,6 +407,76 @@ class TypeHintSniff implements Sniff
             if (strpos((string)$type, '\\') === 0) {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * These simple generic object collections are already understood by IDEs like PHPStorm.
+     *
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
+     *
+     * @return bool
+     */
+    protected function isGenericObjectCollection(array $types): bool
+    {
+        foreach ($types as $type) {
+            if (!$type instanceof IdentifierTypeNode) {
+                continue;
+            }
+
+            $className = (string)$type;
+            if (strpos((string)$type, '\\') === 0 && in_array($className, static::$genericCollectionClasses, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * We do not want to touch stan tags, as they are usually more accurate than normal tags.
+     * Normal tags often need legacy syntax for IDEs to understand them.
+     *
+     * @param string $tag
+     *
+     * @return bool
+     */
+    protected function isStanTag(string $tag): bool
+    {
+        return strpos($tag, '@phpstan-') === 0 || strpos($tag, '@psalm-') === 0;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param string $tag
+     * @param string|null $content
+     * @param array<int> $commentTags
+     *
+     * @return bool
+     */
+    protected function isDuplicate(File $phpcsFile, string $tag, ?string $content, array $commentTags): bool
+    {
+        if (!$content) {
+            return false;
+        }
+
+        $matchingTag = str_replace(['phpstan-', 'psalm-'], '', $tag);
+
+        $tokens = $phpcsFile->getTokens();
+        foreach ($commentTags as $commentTag) {
+            if ($tokens[$commentTag]['content'] !== $matchingTag) {
+                continue;
+            }
+
+            $tagComment = $phpcsFile->fixer->getTokenContent($commentTag + 2);
+
+            if ($tagComment !== $content) {
+                break;
+            }
+
+            return true;
         }
 
         return false;

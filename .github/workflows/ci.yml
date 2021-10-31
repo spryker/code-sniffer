@@ -48,6 +48,9 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, intl, pdo_mysql
 
+      - name: Run tests
+        run: composer test
+
       - name: PHPStan checks
         run: composer stan
 

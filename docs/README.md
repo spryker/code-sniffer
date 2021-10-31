@@ -129,6 +129,7 @@ Spryker (94 sniffs)
 - Spryker.Classes.ReturnTypeHint
 - Spryker.Classes.SelfAccessor
 - Spryker.Commenting.Attributes
+- Spryker.Commenting.DisallowArrayTypeHintSyntax
 - Spryker.Commenting.DocBlock
 - Spryker.Commenting.DocBlockApiAnnotation
 - Spryker.Commenting.DocBlockConst
@@ -212,7 +213,6 @@ Spryker (94 sniffs)
 - Spryker.WhiteSpace.MethodSpacing
 - Spryker.WhiteSpace.NamespaceSpacing
 - Spryker.WhiteSpace.ObjectAttributeSpacing
-- Spryker.WhiteSpace.OperatorSpacing
 - Spryker.WhiteSpace.TernarySpacing
 
 SprykerStrict (3 sniffs)

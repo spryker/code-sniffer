@@ -8,16 +8,16 @@
 namespace CodeSnifferTest\Spryker\Sniffs\WhiteSpace;
 
 use CodeSnifferTest\TestCase;
-use Spryker\Sniffs\WhiteSpace\OperatorSpacingSniff;
+use Spryker\Sniffs\WhiteSpace\EmptyLinesSniff;
 
-class OperatorSpacingSniffTest extends TestCase
+class EmptyLinesSniffTest extends TestCase
 {
     /**
      * @return void
      */
-    public function testOperatorSpacingSniffer(): void
+    public function testEmptyLinesSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new OperatorSpacingSniff(), 2);
+        $this->assertSnifferFindsErrors(new EmptyLinesSniff(), 6);
     }
 
     /**
@@ -25,6 +25,6 @@ class OperatorSpacingSniffTest extends TestCase
      */
     public function testEmptyEnclosingLineFixer(): void
     {
-        $this->assertSnifferCanFixErrors(new OperatorSpacingSniff(), 2);
+        $this->assertSnifferCanFixErrors(new EmptyLinesSniff());
     }
 }
