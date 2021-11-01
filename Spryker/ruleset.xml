@@ -57,7 +57,9 @@
             <property name="fixable" type="bool" value="true"/>
         </properties>
     </rule>
+
     <rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
+    <rule ref="SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
 
     <rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
