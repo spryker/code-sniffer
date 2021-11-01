@@ -190,6 +190,8 @@
         <severity>0</severity>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.Operators.SpreadOperatorSpacing"/>
+
     <rule ref="Squiz.Scope.MemberVarScope"/>
     <rule ref="Squiz.Scope.MethodScope"/>
     <rule ref="Squiz.Scope.StaticThisUsage"/>
@@ -199,6 +201,13 @@
     <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace"/>
 
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
+
+    <!-- PHP 8 specific, only relevant for those PHP 8.0+ -->
+    <rule ref="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat">
+        <properties>
+            <property name="withSpaces" value="no"/>
+        </properties>
+    </rule>
 
     <!-- Disallow PHP8 specific behavior until code is PHP8+ only, projects can remove/silence those -->
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
