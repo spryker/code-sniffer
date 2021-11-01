@@ -360,7 +360,7 @@ class TypeHintSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $typeNodes type nodes
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode|string> $typeNodes type nodes
      *
      * @return string
      */
@@ -396,9 +396,9 @@ class TypeHintSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode|string> $types
      *
-     * @return array<\PHPStan\PhpDocParser\Ast\Type\TypeNode>
+     * @return array<\PHPStan\PhpDocParser\Ast\Type\TypeNode|string>
      */
     protected function makeUnique(array $types): array
     {
