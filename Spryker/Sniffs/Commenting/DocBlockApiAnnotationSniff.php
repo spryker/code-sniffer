@@ -503,9 +503,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
         $tokens = $phpCsFile->getTokens();
 
-        return $tokens[$docCommentOpenerPosition]['comment_closer'] ?
-            $tokens[$docCommentOpenerPosition]['comment_closer'] :
-            null;
+        return $tokens[$docCommentOpenerPosition]['comment_closer'] ?? null;
     }
 
     /**
