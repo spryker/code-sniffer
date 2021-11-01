@@ -235,7 +235,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
 
         $newOrder = [];
         foreach ($tags as $tag) {
-            $tagOrder = isset($order[$tag['tag']]) ? $order[$tag['tag']] : -1;
+            $tagOrder = $order[$tag['tag']] ?? -1;
             $newOrder[$tagOrder][] = $this->getContent($tokens, $tag['start'], $tag['end']);
         }
 
