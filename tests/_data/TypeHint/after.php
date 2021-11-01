@@ -70,4 +70,13 @@ class FixMe
     {
         yield $this->x();
     }
+
+    /**
+     * @param \ArrayObject<string, mixed> $options
+     * @return array<string>
+     */
+    public function merge($options): array
+    {
+        return [];
+    }
 }

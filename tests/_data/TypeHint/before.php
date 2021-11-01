@@ -73,4 +73,16 @@ class FixMe
     {
         yield $this->x();
     }
+
+    /**
+     * @phpstan-param \ArrayObject<string, mixed> $options
+     * @phpstan-return array<string>
+     *
+     * @param \ArrayObject $options
+     * @return array
+     */
+    public function merge($options): array
+    {
+        return [];
+    }
 }

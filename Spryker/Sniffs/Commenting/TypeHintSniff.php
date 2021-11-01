@@ -513,12 +513,12 @@ class TypeHintSniff extends AbstractSprykerSniff
      * @param string|null $content
      * @param array<int> $commentTags
      *
-     * @return bool
+     * @return int|null
      */
     protected function findMerchableTag(File $phpcsFile, string $tag, ?string $content, array $commentTags): ?int
     {
         if (!$content) {
-            return false;
+            return null;
         }
 
         $types = static::$genericCollectionClasses;
@@ -531,7 +531,7 @@ class TypeHintSniff extends AbstractSprykerSniff
 
         preg_match('/^(' . implode('|', $types) . ')<.+>/', $content, $matches);
         if (!$matches) {
-            return false;
+            return null;
         }
 
         $matchingTag = str_replace(['phpstan-', 'psalm-'], '', $tag);
