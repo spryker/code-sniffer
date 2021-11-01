@@ -137,6 +137,7 @@ with this one:
 <rule ref="vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml"/>
 ```
 
+
 ## Custom licensing
 You can provide a custom license via `.license` file in your repository root.
 It must be a PHP doc block (valid PHP) including a trailing new line.
@@ -174,18 +175,37 @@ When migrating code sniffer for larger repositories with many developers working
 - Once this one is merged, then apply those into the feature and bugfix branches using `git merge origin/master` and apply then the new coding standard on the newly written code on top.
 - This way all project branches only fail on CS after this delibare update, and never by accident.
 
-### Excluding core sniffs
+### Silencing core rules or parts
 Note that you are never forced to adapt the whole standard changes at once (even though recommended).
 You can, for migration purposes, also exclude/silence certain sniffs on project level, if that helps.
 At the same time, you can also further stricten them or add additional ones and let us know about them (and their usefuleness) via issue.
 
 See CS sniffer docs for details, but in general using `severity` of `0` can silence a rule or a subset of it:
 ```xml
+<!-- full silence: x.y.z -->
 <rule ref="SlevomatCodingStandard.ControlStructures.ControlStructureSpacing">
     <severity>0</severity>
 </rule>
+
+<!-- partial silence: x.y.z.code -->
+<rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName">
+    <severity>0</severity>
+</rule>
 ```
-This deactivates the whole ControlStructureSpacing sniff.
+
+### Excluding certain sniffs
+You can also completely exclude certain sniffs, e.g. if you are on a PHP 8+ project and
+want to use all the new language features:
+```xml
+<rule ref="vendor/spryker/code-sniffer/Spryker/ruleset.xml">
+    <exclude name="SlevomatCodingStandard.Functions.DisallowNamedArguments"/>
+    <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
+    <exclude name="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion"/>
+    <exclude name="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator"/>
+    ...
+</rule>
+```
+They ship with the core by default to avoid PHP8-creep into PHP7.4+ code.
 
 ## Excluding test related comparison files
 If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.
