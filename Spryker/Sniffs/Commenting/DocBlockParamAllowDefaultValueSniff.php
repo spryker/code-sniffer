@@ -8,6 +8,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Traits\CommentingTrait;
 use Spryker\Traits\SignatureTrait;
@@ -78,13 +79,6 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             }
 
             $content = $tokens[$classNameIndex]['content'];
-
-            $appendix = '';
-            $spaceIndex = strpos($content, ' ');
-            if ($spaceIndex) {
-                $appendix = substr($content, $spaceIndex);
-                $content = substr($content, 0, $spaceIndex);
-            }
             if (empty($content)) {
                 continue;
             }
@@ -93,39 +87,52 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            // Skip for complex arrays until next major
-            if (strpos($content, '<') !== false) {
-                continue;
+            /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode $valueNode */
+            $valueNode = static::getValueNode($tokens[$i]['content'], $content);
+            if ($valueNode instanceof InvalidTagValueNode) {
+                return;
             }
+            $parts = static::valueNodeParts($valueNode);
 
-            $pieces = explode('|', $content);
             // We skip for mixed
-            if (in_array('mixed', $pieces, true)) {
+            if (in_array('mixed', $parts, true)) {
                 continue;
             }
 
             if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'string', 'int', 'bool', 'float', 'self', 'parent'], true)) {
                 $type = $methodSignatureValue['typehint'];
-                if (!$this->containsType($type, $pieces) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
-                    $pieces[] = $type;
+                if (!$this->containsType($type, $parts) && ($type !== 'array' || !$this->containsTypeArray($parts))) {
+                    $parts[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Typehint');
                     if ($fix) {
-                        $content = implode('|', $pieces);
-                        $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
+                        $newComment = trim(sprintf(
+                            '%s %s%s %s',
+                            implode('|', $parts),
+                            $valueNode->isVariadic ? '...' : '',
+                            $valueNode->parameterName,
+                            $valueNode->description,
+                        ));
+                        $phpCsFile->fixer->replaceToken($classNameIndex, $newComment);
                     }
                 }
             }
             if ($methodSignatureValue['default']) {
                 $type = $methodSignatureValue['default'];
 
-                if (!in_array($type, $pieces, true) && ($type !== 'array' || !$this->containsTypeArray($pieces))) {
-                    $pieces[] = $type;
+                if (!in_array($type, $parts, true) && ($type !== 'array' || !$this->containsTypeArray($parts))) {
+                    $parts[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
                     if ($fix) {
-                        $content = implode('|', $pieces);
-                        $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
+                        $newComment = trim(sprintf(
+                            '%s %s%s %s',
+                            implode('|', $parts),
+                            $valueNode->isVariadic ? '...' : '',
+                            $valueNode->parameterName,
+                            $valueNode->description,
+                        ));
+                        $phpCsFile->fixer->replaceToken($classNameIndex, $newComment);
                     }
                 }
             }
@@ -133,29 +140,41 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($methodSignatureValue['nullable']) {
                 $type = 'null';
 
-                if (!in_array($type, $pieces, true)) {
-                    $pieces[] = $type;
+                if (!in_array($type, $parts, true)) {
+                    $parts[] = $type;
                     $error = 'Doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
                     if ($fix) {
-                        $content = implode('|', $pieces);
-                        $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
+                        $newComment = trim(sprintf(
+                            '%s %s%s %s',
+                            implode('|', $parts),
+                            $valueNode->isVariadic ? '...' : '',
+                            $valueNode->parameterName,
+                            $valueNode->description,
+                        ));
+                        $phpCsFile->fixer->replaceToken($classNameIndex, $newComment);
                     }
                 }
             }
 
             if (!$methodSignatureValue['default'] && !$methodSignatureValue['nullable']) {
                 $error = 'Doc block error: `' . $content . '` seems to be having a wrong `null` type hinted, argument is not nullable though.';
-                if (in_array('null', $pieces, true)) {
+                if (in_array('null', $parts, true)) {
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'WrongNullable');
                     if ($fix) {
-                        foreach ($pieces as $k => $v) {
+                        foreach ($parts as $k => $v) {
                             if ($v === 'null') {
-                                unset($pieces[$k]);
+                                unset($parts[$k]);
                             }
                         }
-                        $content = implode('|', $pieces);
-                        $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
+                        $newComment = trim(sprintf(
+                            '%s %s%s %s',
+                            implode('|', $parts),
+                            $valueNode->isVariadic ? '...' : '',
+                            $valueNode->parameterName,
+                            $valueNode->description,
+                        ));
+                        $phpCsFile->fixer->replaceToken($classNameIndex, $newComment);
                     }
                 }
             }
@@ -164,13 +183,13 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
     /**
      * @param string $type
-     * @param array<string> $pieces
+     * @param array<string> $parts
      *
      * @return bool
      */
-    protected function containsType(string $type, array $pieces): bool
+    protected function containsType(string $type, array $parts): bool
     {
-        if (in_array($type, $pieces, true)) {
+        if (in_array($type, $parts, true)) {
             return true;
         }
         $longTypes = [
@@ -183,6 +202,6 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
         $longType = $longTypes[$type];
 
-        return in_array($longType, $pieces, true);
+        return in_array($longType, $parts, true);
     }
 }

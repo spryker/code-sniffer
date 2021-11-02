@@ -21,4 +21,12 @@ class FixMe
     public function touchMe(array $array = null, $string = null): void
     {
     }
+
+    /**
+     * @param array<string, array<string, mixed>>|null $array
+     * @return void
+     */
+    public function generics(array $array = null): void
+    {
+    }
 }
