@@ -4,7 +4,7 @@ namespace Spryker;
 
 class FixMe
 {
-    protected const CONST_EMPTY = '';
+    protected const CONST_NODOCBLOCK = '';
 
     /**
      * @var string

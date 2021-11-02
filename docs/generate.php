@@ -5,7 +5,7 @@ $command = 'vendor/bin/phpcs -e --standard=SprykerStrict/ruleset.xml';
 
 exec($command, $output, $ret);
 if ($ret !== 0) {
-    exit('Invalid execution. Run from ROOT after composer install etc as `composer docs`.');
+    exit('Invalid execution. Run from ROOT after composer install etc as `composer docs`.' . PHP_EOL);
 }
 
 /** @noinspection ForeachSourceInspection */

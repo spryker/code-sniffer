@@ -122,6 +122,7 @@ class DocBlockConstSniff extends AbstractSprykerSniff
             return;
         }
 
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode $valueNode */
         $valueNode = static::getValueNode($tokens[$tagIndex]['content'], $content);
         if ($valueNode instanceof InvalidTagValueNode) {
             return;
