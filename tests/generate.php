@@ -1,15 +1,32 @@
 #!/usr/bin/env php
 <?php
+require dirname(__DIR__) . '/vendor/autoload.php';
+
 /*
  * Generate test case and before/after files for a sniff
  */
 if (empty($_SERVER['argv'][1])) {
-    exit('No sniff passed. Make sure to run as `php tests/generate.php MyNamespace.MyType.MySniffName` or use `FQCN`. It must be a sniff from this package.' . PHP_EOL);
+    echo 'No sniff passed. Make sure to run as `php tests/generate.php MyNamespace.MyType.MySniffName` or use `"FQCN"`. It must be a sniff from this package.'
+        . PHP_EOL . PHP_EOL;
+
+    $sniffs = (new \Spryker\Tools\SniffsAndTests())->untested(dirname(__DIR__));
+
+    if ($sniffs) {
+        echo 'The following sniffs are untested:' . PHP_EOL;
+    } else {
+        echo 'All sniffs are currently tested :-)' . PHP_EOL;
+    }
+    foreach ($sniffs as $sniff => $info) {
+        echo '- ' . $sniff . PHP_EOL;
+    }
+
+    exit(count($sniffs) === 0 ? 0 : 1);
 }
+
 $sniff = trim($_SERVER['argv'][1], '\\');
 
 if (!preg_match('/^[\w\\\\]+Sniff$/', $sniff) && !preg_match('/\w+\.\w+\.\w+/', $sniff)) {
-    exit('Invalid sniff passed. Make sure to run as `php tests/generate.php MyNamespace.MyType.MySniffName` or use `FQCN`. It must be a sniff from this package.' . PHP_EOL);
+    exit('Invalid sniff passed. Make sure to run as `php tests/generate.php MyNamespace.MyType.MySniffName` or use `"FQCN"`. It must be a sniff from this package.' . PHP_EOL);
 }
 
 $org = $type = $name = null;
@@ -25,6 +42,15 @@ if (strpos($sniff, '.') !== false) {
         exit('Invalid sniff passed. `Full\ClassName\To\MySniff` is the valid string for FQCN syntax.' . PHP_EOL);
     }
     [, $org, $type, $name] = $matches;
+}
+
+$sniffPath = dirname(__DIR__) . DIRECTORY_SEPARATOR
+    . $org . DIRECTORY_SEPARATOR
+    . 'Sniffs' . DIRECTORY_SEPARATOR
+    . $type . DIRECTORY_SEPARATOR
+    . $name . 'Sniff.php';
+if (!file_exists($sniffPath)) {
+    exit('No such sniff found: `' . $sniffPath . '`.' . PHP_EOL);
 }
 
 $testClassContent = <<<TEXT

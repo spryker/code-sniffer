@@ -233,7 +233,9 @@ To add tests you can quickly generate the necessary files using
 ```
 php tests/generate.php MyNamespace.MyType.MySniffName
 ```
-You can also use `FQCN` of the sniff instead.
+You can also use `"FQCN"` of the sniff instead (".." quotes are important as the namespace backslashes would get lost otherwise).
+
+Tip: When running it without argument, it shows you the sniffs that are yet untested.
 
 ### Tokenizing Tool
 When coding new sniffs it really helps to see what the code looks like in regards of the token arrays.
