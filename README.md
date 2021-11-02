@@ -228,7 +228,14 @@ Also run `composer docs` to generate new sniff list.
 
 Note: To get those scripts above working from this repository root you need to run `composer update` first.
 
-#### Tokenizing Tool
+### Testing your sniff
+To add tests you can quickly generate the necessary files using
+```
+php tests/generate.php MyNamespace.MyType.MySniffName
+```
+You can also use `FQCN` of the sniff instead.
+
+### Tokenizing Tool
 When coding new sniffs it really helps to see what the code looks like in regards of the token arrays.
 So we can parse a PHP file into its tokens using the following tool:
 

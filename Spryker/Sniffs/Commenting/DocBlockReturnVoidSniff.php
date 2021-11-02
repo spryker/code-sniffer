@@ -10,7 +10,7 @@ namespace Spryker\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
-use Spryker\Tools\Traits\CommentingTrait;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Methods that may not return anything need to be declared as `@return void`.

@@ -9,7 +9,7 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use Spryker\Tools\Traits\CommentingTrait;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * No invalid array/iterable tags used, and proper whitespace rules.
