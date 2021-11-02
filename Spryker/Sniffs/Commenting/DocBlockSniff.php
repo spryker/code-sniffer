@@ -10,8 +10,8 @@ namespace Spryker\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
-use Spryker\Tools\Traits\CommentingTrait;
-use Spryker\Tools\Traits\SignatureTrait;
+use Spryker\Traits\CommentingTrait;
+use Spryker\Traits\SignatureTrait;
 
 /**
  * Methods always need doc blocks.

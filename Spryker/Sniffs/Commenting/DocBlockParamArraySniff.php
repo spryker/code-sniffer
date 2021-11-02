@@ -9,7 +9,7 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
-use Spryker\Tools\Traits\CommentingTrait;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Makes sure doc block param type array is only used once.

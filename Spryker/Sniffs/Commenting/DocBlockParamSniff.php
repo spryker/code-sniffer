@@ -9,8 +9,8 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
-use Spryker\Tools\Traits\CommentingTrait;
-use Spryker\Tools\Traits\SignatureTrait;
+use Spryker\Traits\CommentingTrait;
+use Spryker\Traits\SignatureTrait;
 
 /**
  * Makes sure doc block param types match the variable name of the method signature.

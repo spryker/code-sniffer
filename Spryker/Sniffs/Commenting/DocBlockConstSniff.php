@@ -9,8 +9,9 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
-use Spryker\Tools\Traits\CommentingTrait;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Ensures Doc Blocks for constants exist and are correct.
@@ -107,14 +108,6 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         }
 
         $content = $tokens[$typeIndex]['content'];
-
-        $appendix = '';
-        $spaceIndex = strpos($content, ' ');
-        if ($spaceIndex) {
-            $appendix = substr($content, $spaceIndex);
-            $content = substr($content, 0, $spaceIndex);
-        }
-
         if (empty($content)) {
             $error = 'Doc Block type for property annotation @var missing';
             if ($defaultValueType) {
@@ -129,7 +122,12 @@ class DocBlockConstSniff extends AbstractSprykerSniff
             return;
         }
 
-        $parts = explode('|', $content);
+        $valueNode = static::getValueNode($tokens[$tagIndex]['content'], $content);
+        if ($valueNode instanceof InvalidTagValueNode) {
+            return;
+        }
+        $parts = static::valueNodeParts($valueNode);
+
         if (in_array($defaultValueType, $parts, true)) {
             return;
         }
@@ -144,28 +142,16 @@ class DocBlockConstSniff extends AbstractSprykerSniff
             $defaultValueType = 'bool';
         }
 
-        if (count($parts) > 1) {
-            $message = 'Doc Block type for property annotation @var incorrect, type `' . $defaultValueType . '` missing';
-            if ($defaultValueType === 'null') {
-                $phpCsFile->addError($message, $stackPointer, 'VarTypeMissing');
-
-                return;
-            }
-
-            $fix = $phpCsFile->addFixableError($message, $stackPointer, 'VarTypeMissing');
-            if ($fix) {
-                $phpCsFile->fixer->beginChangeset();
-                $phpCsFile->fixer->replaceToken($typeIndex, implode('|', $parts) . '|' . $defaultValueType . $appendix);
-                $phpCsFile->fixer->endChangeset();
-            }
-
-            return;
-        }
-
         $fix = $phpCsFile->addFixableError('Doc Block type `' . $content . '` for property annotation @var incorrect, type `' . $defaultValueType . '` expected', $stackPointer, 'VarTypeIncorrect');
         if ($fix) {
+            $newComment = trim(sprintf(
+                '%s %s %s',
+                implode('|', $parts),
+                $valueNode->variableName,
+                $valueNode->description,
+            ));
             $phpCsFile->fixer->beginChangeset();
-            $phpCsFile->fixer->replaceToken($typeIndex, $defaultValueType . $appendix);
+            $phpCsFile->fixer->replaceToken($typeIndex, $newComment);
             $phpCsFile->fixer->endChangeset();
         }
     }

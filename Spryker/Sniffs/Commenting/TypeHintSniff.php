@@ -21,7 +21,6 @@ namespace Spryker\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
@@ -30,12 +29,8 @@ use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
-use PHPStan\PhpDocParser\Lexer\Lexer;
-use PHPStan\PhpDocParser\Parser\ConstExprParser;
-use PHPStan\PhpDocParser\Parser\PhpDocParser;
-use PHPStan\PhpDocParser\Parser\TokenIterator;
-use PHPStan\PhpDocParser\Parser\TypeParser;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Verifies order of types in type hints. Also removes duplicates.
@@ -43,6 +38,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class TypeHintSniff extends AbstractSprykerSniff
 {
+    use CommentingTrait;
+
     /**
      * Use this to keep legacy collection objects as `\FQCN|type[]` instead of
      * `\FQCN<type>` for all non-trivial object types. This helps IDEs to understand this,
@@ -371,28 +368,6 @@ class TypeHintSniff extends AbstractSprykerSniff
             ['${1}', '<', '>'],
             implode('|', $typeNodes),
         );
-    }
-
-    /**
-     * @param string $tagName tag name
-     * @param string $tagComment tag comment
-     *
-     * @return \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode
-     */
-    protected static function getValueNode(string $tagName, string $tagComment): PhpDocTagValueNode
-    {
-        static $phpDocParser;
-        if (!$phpDocParser) {
-            $constExprParser = new ConstExprParser();
-            $phpDocParser = new PhpDocParser(new TypeParser($constExprParser), $constExprParser);
-        }
-
-        static $phpDocLexer;
-        if (!$phpDocLexer) {
-            $phpDocLexer = new Lexer();
-        }
-
-        return $phpDocParser->parseTagValue(new TokenIterator($phpDocLexer->tokenize($tagComment)), $tagName);
     }
 
     /**

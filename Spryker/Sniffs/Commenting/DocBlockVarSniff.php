@@ -10,7 +10,7 @@ namespace Spryker\Sniffs\Commenting;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
-use Spryker\Tools\Traits\CommentingTrait;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Ensures Doc Blocks for variables exist and are correct.
