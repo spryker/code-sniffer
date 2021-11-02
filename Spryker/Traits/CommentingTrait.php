@@ -103,13 +103,14 @@ trait CommentingTrait
      * Allow \Foo\Bar[] or array<\Foo\Bar> to pass as array.
      *
      * @param array<string> $docBlockTypes
+     * @param string $iterableType
      *
      * @return bool
      */
-    protected function containsTypeArray(array $docBlockTypes): bool
+    protected function containsTypeArray(array $docBlockTypes, string $iterableType = 'array'): bool
     {
         foreach ($docBlockTypes as $docBlockType) {
-            if (strpos($docBlockType, '[]') !== false || strpos($docBlockType, 'array<') === 0) {
+            if (strpos($docBlockType, '[]') !== false || strpos($docBlockType, $iterableType . '<') === 0) {
                 return true;
             }
         }

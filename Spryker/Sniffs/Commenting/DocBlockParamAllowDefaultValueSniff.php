@@ -99,9 +99,9 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'string', 'int', 'bool', 'float', 'self', 'parent'], true)) {
+            if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'iterable', 'string', 'int', 'bool', 'float', 'self', 'parent'], true)) {
                 $type = $methodSignatureValue['typehint'];
-                if (!$this->containsType($type, $parts) && ($type !== 'array' || !$this->containsTypeArray($parts))) {
+                if (!$this->containsType($type, $parts) && !$this->isPrimitiveGenerics($type, $parts)) {
                     $parts[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Typehint');
@@ -120,7 +120,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($methodSignatureValue['default']) {
                 $type = $methodSignatureValue['default'];
 
-                if (!in_array($type, $parts, true) && ($type !== 'array' || !$this->containsTypeArray($parts))) {
+                if (!in_array($type, $parts, true) && !$this->isPrimitiveGenerics($type, $parts)) {
                     $parts[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
@@ -203,5 +203,27 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
         $longType = $longTypes[$type];
 
         return in_array($longType, $parts, true);
+    }
+
+    /**
+     * @param string $type
+     * @param array<string> $parts
+     *
+     * @return bool
+     */
+    protected function isPrimitiveGenerics(string $type, array $parts): bool
+    {
+        $iterableTypes = ['array', 'iterable'];
+        if (!in_array($type, $iterableTypes, true)) {
+            return false;
+        }
+
+        foreach ($iterableTypes as $iterableType) {
+            if ($this->containsTypeArray($parts, $iterableType)) {;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

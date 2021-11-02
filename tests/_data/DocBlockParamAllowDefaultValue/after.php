@@ -29,4 +29,14 @@ class FixMe
     public function generics(array $array = null): void
     {
     }
+
+    /**
+     * @param iterable<\Generated\Shared\Transfer\SalesPaymentTransfer> $x
+     *
+     * @return array<\Orm\Zed\Payment\Persistence\SpySalesPayment>
+     */
+    public function iterableTest(iterable $x = []): array
+    {
+        return $x;
+    }
 }
