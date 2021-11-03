@@ -28,7 +28,7 @@ class SprykerFacadeSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         if (!$this->isSprykerFacadeApiClass($phpCsFile, $stackPointer)) {
             return;

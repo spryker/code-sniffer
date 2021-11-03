@@ -8,16 +8,16 @@
 namespace CodeSnifferTest\Spryker\Sniffs\Commenting;
 
 use CodeSnifferTest\TestCase;
-use Spryker\Sniffs\Commenting\DocBlockParamAllowDefaultValueSniff;
+use Spryker\Sniffs\Commenting\DocBlockParamArraySniff;
 
-class DocBlockParamAllowDefaultValueSniffTest extends TestCase
+class DocBlockParamArraySniffTest extends TestCase
 {
     /**
      * @return void
      */
     public function testDocBlockConstSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new DocBlockParamAllowDefaultValueSniff(), 4);
+        $this->assertSnifferFindsErrors(new DocBlockParamArraySniff(), 2);
     }
 
     /**
@@ -25,6 +25,6 @@ class DocBlockParamAllowDefaultValueSniffTest extends TestCase
      */
     public function testDocBlockConstFixer(): void
     {
-        $this->assertSnifferCanFixErrors(new DocBlockParamAllowDefaultValueSniff());
+        $this->assertSnifferCanFixErrors(new DocBlockParamArraySniff());
     }
 }

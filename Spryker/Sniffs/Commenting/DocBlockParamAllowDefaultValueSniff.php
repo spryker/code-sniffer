@@ -38,7 +38,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -92,7 +92,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($valueNode instanceof InvalidTagValueNode) {
                 return;
             }
-            $parts = static::valueNodeParts($valueNode);
+            $parts = $this->valueNodeParts($valueNode);
 
             // We skip for mixed
             if (in_array('mixed', $parts, true)) {
@@ -219,7 +219,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
         }
 
         foreach ($iterableTypes as $iterableType) {
-            if ($this->containsTypeArray($parts, $iterableType)) {;
+            if ($this->containsTypeArray($parts, $iterableType)) {
                 return true;
             }
         }

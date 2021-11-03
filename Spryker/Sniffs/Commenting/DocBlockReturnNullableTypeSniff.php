@@ -8,16 +8,20 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use RuntimeException;
 use SlevomatCodingStandard\Helpers\DocCommentHelper;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Checks for missing/superfluous `|null` in docblock return annotations.
  */
 class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
 {
+    use CommentingTrait;
+
     /**
      * @inheritDoc
      */
@@ -31,10 +35,9 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $returnType = FunctionHelper::findReturnTypeHint($phpCsFile, $stackPointer);
-
         if ($returnType === null) {
             return;
         }
@@ -82,23 +85,13 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         $tokens = $phpCsFile->getTokens();
 
         $content = $tokens[$stackPointer]['content'];
-
-        // Skip for complex case right now
-        if (strpos($content, '<') !== false) {
-            return null;
-        }
-
-        preg_match('/(@return\s+)(\S+)/', $content, $matches);
-
-        if (!$matches) {
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
+        $valueNode = static::getValueNode($tokens[$stackPointer - 2]['content'], $content);
+        if ($valueNode instanceof InvalidTagValueNode) {
             return [];
         }
 
-        $returnTypes = array_pop($matches);
-        $returnTypes = trim($returnTypes);
-        $returnTypes = explode('|', $returnTypes);
-
-        return $returnTypes;
+        return $this->valueNodeParts($valueNode);
     }
 
     /**
@@ -189,10 +182,10 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      */
     protected function addNullToDocBlockReturnType(File $phpCsFile, int $stackPointer): void
     {
-        $returnTypesToken = $this->getDocBlockReturnTypesToken($phpCsFile, $stackPointer);
+        $returnTypeToken = $this->getDocBlockReturnTypeToken($phpCsFile, $stackPointer);
 
-        $tokenIndex = $returnTypesToken['index'];
-        $returnTypes = $returnTypesToken['token']['content'];
+        $tokenIndex = $returnTypeToken['index'];
+        $returnTypes = $returnTypeToken['token']['content'];
         $returnTypes = trim($returnTypes, '|') . '|null';
 
         $phpCsFile->fixer->beginChangeset();
@@ -208,7 +201,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      */
     protected function removeNullFromDocBlockReturnType(File $phpCsFile, int $stackPointer): void
     {
-        $returnTypesToken = $this->getDocBlockReturnTypesToken($phpCsFile, $stackPointer);
+        $returnTypesToken = $this->getDocBlockReturnTypeToken($phpCsFile, $stackPointer);
 
         $tokenIndex = $returnTypesToken['index'];
         $returnTypes = explode('|', $returnTypesToken['token']['content']);
@@ -231,7 +224,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
      *
      * @return array<string, mixed>
      */
-    protected function getDocBlockReturnTypesToken(File $phpCsFile, int $stackPointer): array
+    protected function getDocBlockReturnTypeToken(File $phpCsFile, int $stackPointer): array
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -251,6 +244,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
             );
 
             return [
+                'tagIndex' => $i,
                 'index' => $returnTypesTokenIndex,
                 'token' => $tokens[$returnTypesTokenIndex],
             ];

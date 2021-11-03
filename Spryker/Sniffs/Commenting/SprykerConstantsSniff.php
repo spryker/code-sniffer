@@ -35,7 +35,7 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         if (!$this->isSprykerConstantsInterface($phpCsFile, $stackPointer)) {
             return;

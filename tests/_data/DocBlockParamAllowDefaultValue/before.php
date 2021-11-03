@@ -39,4 +39,14 @@ class FixMe
     {
         return $x;
     }
+
+    /**
+     * @param \ArrayObject<int, \Generated\Shared\Transfer\ItemTransfer> $itemTransfers
+     *
+     * @return array<string>
+     */
+    protected function getCountryIso2Codes(iterable $itemTransfers): array
+    {
+        return array_unique($itemTransfers);
+    }
 }

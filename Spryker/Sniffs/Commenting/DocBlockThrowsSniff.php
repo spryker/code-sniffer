@@ -40,7 +40,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
 

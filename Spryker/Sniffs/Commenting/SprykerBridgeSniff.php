@@ -31,7 +31,7 @@ class SprykerBridgeSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         if (!$this->isSprykerBridge($phpCsFile, $stackPointer)) {
             return;
