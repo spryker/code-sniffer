@@ -160,7 +160,7 @@ class DocBlockReturnNullSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $index
      *
-     * @return array
+     * @return array<string>
      */
     protected function extractReturnTypes(File $phpCsFile, int $index): array
     {
@@ -192,6 +192,9 @@ class DocBlockReturnNullSniff implements Sniff
             }
 
             $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $i + 1, null, true);
+            if (!$nextIndex) {
+                continue;
+            }
             $lastIndex = $phpCsFile->findNext(T_SEMICOLON, $nextIndex);
 
             $type = '';
