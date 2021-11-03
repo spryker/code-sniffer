@@ -43,7 +43,7 @@ class PhpSapiConstantSniff implements Sniff
         }
 
         $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-        if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens)) {
+        if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens, true)) {
             return;
         }
 

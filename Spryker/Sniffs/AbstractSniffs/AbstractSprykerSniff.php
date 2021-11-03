@@ -281,7 +281,7 @@ abstract class AbstractSprykerSniff implements Sniff
 
                 continue;
             }
-            if (in_array($tokens[$i]['code'], $whitelistedCodes)) {
+            if (in_array($tokens[$i]['code'], $whitelistedCodes, true)) {
                 continue;
             }
 

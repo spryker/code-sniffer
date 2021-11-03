@@ -39,7 +39,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
         }
 
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-        if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens)) {
+        if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens, true)) {
             return;
         }
 
@@ -162,7 +162,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
         if ($this->isCast($previous)) {
             return true;
         }
-        if (in_array($tokens[$previous]['code'], Tokens::$arithmeticTokens)) {
+        if (in_array($tokens[$previous]['code'], Tokens::$arithmeticTokens, true)) {
             return true;
         }
 
@@ -176,7 +176,7 @@ class NoIsNullSniff extends AbstractSprykerSniff
      */
     protected function isCast(int $index): bool
     {
-        return in_array($index, Tokens::$castTokens);
+        return in_array($index, Tokens::$castTokens, true);
     }
 
     /**
@@ -190,12 +190,12 @@ class NoIsNullSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($index - 1), null, true);
-        if (!$previous || !in_array($tokens[$previous]['code'], [T_IS_IDENTICAL, T_IS_NOT_IDENTICAL])) {
+        if (!$previous || !in_array($tokens[$previous]['code'], [T_IS_IDENTICAL, T_IS_NOT_IDENTICAL], true)) {
             return null;
         }
 
         $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($previous - 1), null, true);
-        if (!$previous || !in_array($tokens[$previous]['code'], [T_TRUE, T_FALSE])) {
+        if (!$previous || !in_array($tokens[$previous]['code'], [T_TRUE, T_FALSE], true)) {
             return null;
         }
 
@@ -213,12 +213,12 @@ class NoIsNullSniff extends AbstractSprykerSniff
         $tokens = $phpcsFile->getTokens();
 
         $next = (int)$phpcsFile->findNext(T_WHITESPACE, ($index + 1), null, true);
-        if (!$next || !in_array($tokens[$next]['code'], [T_IS_IDENTICAL, T_IS_NOT_IDENTICAL])) {
+        if (!$next || !in_array($tokens[$next]['code'], [T_IS_IDENTICAL, T_IS_NOT_IDENTICAL], true)) {
             return null;
         }
 
         $next = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($next - 1), null, true);
-        if (!$next || !in_array($tokens[$next]['code'], [T_TRUE, T_FALSE])) {
+        if (!$next || !in_array($tokens[$next]['code'], [T_TRUE, T_FALSE], true)) {
             return null;
         }
 

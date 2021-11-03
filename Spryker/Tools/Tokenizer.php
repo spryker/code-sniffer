@@ -54,7 +54,7 @@ class Tokenizer
 
         $this->root = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
         $this->path = $file;
-        $this->verbose = !empty($argv[2]) && in_array($argv[2], ['--verbose', '-v']);
+        $this->verbose = !empty($argv[2]) && in_array($argv[2], ['--verbose', '-v'], true);
     }
 
     /**

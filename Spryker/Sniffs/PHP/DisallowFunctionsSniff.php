@@ -59,7 +59,7 @@ class DisallowFunctionsSniff implements Sniff
         }
 
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-        if (!$previous || in_array($tokens[$previous]['code'], static::$wrongTokens)) {
+        if (!$previous || in_array($tokens[$previous]['code'], static::$wrongTokens, true)) {
             return;
         }
 
@@ -89,7 +89,7 @@ class DisallowFunctionsSniff implements Sniff
         }
 
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-        if (!$previous || in_array($tokens[$previous]['code'], static::$wrongTokens)) {
+        if (!$previous || in_array($tokens[$previous]['code'], static::$wrongTokens, true)) {
             return;
         }
 

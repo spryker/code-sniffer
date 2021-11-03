@@ -88,7 +88,7 @@ class DocBlockParamArraySniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $keys = array_keys($parts, $detectedType);
+            $keys = array_keys($parts, $detectedType, true);
             foreach ($keys as $key) {
                 unset($parts[$key]);
             }
