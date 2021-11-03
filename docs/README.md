@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 225 sniffs
+The SprykerStrict standard contains 226 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -181,6 +181,7 @@ Spryker (94 sniffs)
 - Spryker.Internal.SprykerDisallowFunctions
 - Spryker.Internal.SprykerFacade
 - Spryker.Internal.SprykerNoDemoshop
+- Spryker.Internal.SprykerPreferStaticOverSelf
 - Spryker.MethodAnnotation.ConfigMethodAnnotation
 - Spryker.MethodAnnotation.EntityManagerMethodAnnotation
 - Spryker.MethodAnnotation.FacadeMethodAnnotation
