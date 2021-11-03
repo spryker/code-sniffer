@@ -122,7 +122,7 @@ SlevomatCodingStandard (44 sniffs)
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 - SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (93 sniffs)
+Spryker (94 sniffs)
 -------------------
 - Spryker.Arrays.DisallowImplicitArrayCreation
 - Spryker.Classes.ClassFileName
@@ -166,9 +166,7 @@ Spryker (93 sniffs)
 - Spryker.Commenting.FullyQualifiedClassNameInDocBlock
 - Spryker.Commenting.InlineDocBlock
 - Spryker.Commenting.SprykerAnnotation
-- Spryker.Commenting.SprykerBridge
 - Spryker.Commenting.SprykerConstants
-- Spryker.Commenting.SprykerFacade
 - Spryker.Commenting.TypeHint
 - Spryker.ControlStructures.ConditionalExpressionOrder
 - Spryker.ControlStructures.ControlStructureSpacing
@@ -179,7 +177,9 @@ Spryker (93 sniffs)
 - Spryker.Factory.OneNewPerMethod
 - Spryker.Formatting.ArrayDeclaration
 - Spryker.Formatting.MethodSignatureParametersLineBreakMethod
+- Spryker.Internal.SprykerBridge
 - Spryker.Internal.SprykerDisallowFunctions
+- Spryker.Internal.SprykerFacade
 - Spryker.Internal.SprykerNoDemoshop
 - Spryker.MethodAnnotation.ConfigMethodAnnotation
 - Spryker.MethodAnnotation.EntityManagerMethodAnnotation
