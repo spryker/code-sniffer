@@ -8,7 +8,13 @@
 namespace Spryker\Traits;
 
 use PHP_CodeSniffer\Files\File;
+use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ThrowsTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
@@ -48,20 +54,76 @@ trait CommentingTrait
      *
      * @return array<string>
      */
-    protected static function valueNodeParts(PhpDocTagValueNode $valueNode): array
+    protected function valueNodeParts(PhpDocTagValueNode $valueNode): array
     {
-        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
-        if ($valueNode->type instanceof UnionTypeNode) {
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode $valueNode */
+        if ($valueNode instanceof MethodTagValueNode) {
+            $types = [$valueNode->returnType];
+        } elseif ($valueNode instanceof GenericTagValueNode) {
+            $types = [$valueNode];
+        } elseif ($valueNode->type instanceof UnionTypeNode) {
             $types = $valueNode->type->types;
         } else {
             $types = [$valueNode->type];
         }
 
-        foreach ($types as $key => $type) {
-            $types[$key] = (string)$type;
+        $result = [];
+        foreach ($types as $type) {
+            $result[] = (string)$type;
         }
 
-        return $types;
+        return $result;
+    }
+
+    /**
+     * @param array<string> $parts
+     * @param \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode $valueNode
+     *
+     * @return string
+     */
+    protected function stringifyValueNode(array $parts, PhpDocTagValueNode $valueNode): string
+    {
+        if ($valueNode instanceof ParamTagValueNode) {
+            return trim(sprintf(
+                '%s %s%s %s',
+                implode('|', $parts),
+                $valueNode->isVariadic ? '...' : '',
+                $valueNode->parameterName,
+                $valueNode->description,
+            ));
+        }
+        if ($valueNode instanceof ReturnTagValueNode) {
+            return trim(sprintf(
+                '%s%s',
+                implode('|', $parts),
+                $valueNode->description,
+            ));
+        }
+        if ($valueNode instanceof MethodTagValueNode) {
+            return trim(sprintf(
+                '%s %s() %s',
+                implode('|', $parts),
+                $valueNode->methodName,
+                $valueNode->description,
+            ));
+        }
+        if ($valueNode instanceof VarTagValueNode) {
+            return trim(sprintf(
+                '%s %s%s',
+                implode('|', $parts),
+                $valueNode->variableName,
+                $valueNode->description,
+            ));
+        }
+        if ($valueNode instanceof ThrowsTagValueNode) {
+            return trim(sprintf(
+                '%s %s',
+                implode('|', $parts),
+                $valueNode->description,
+            ));
+        }
+
+        return trim(implode('|', $parts));
     }
 
     /**

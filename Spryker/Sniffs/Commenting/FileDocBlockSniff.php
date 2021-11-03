@@ -55,7 +55,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         if ($this->isIgnorableModule($phpCsFile)) {
             return;

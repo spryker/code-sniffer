@@ -39,7 +39,7 @@ class DocBlockTestGroupAnnotation2Sniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $filename = $phpCsFile->getFilename();
 

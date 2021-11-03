@@ -9,12 +9,17 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * All doc blocks must use FQCN for class names.
  */
 class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 {
+    use CommentingTrait;
+
     /**
      * @var array<string>
      */
@@ -46,7 +51,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
 
@@ -73,33 +78,19 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             }
 
             $content = $tokens[$classNameIndex]['content'];
-            $appendix = '';
-
-            $variablePos = strpos($content, ' $');
-            if ($variablePos !== false) {
-                $appendix = substr($content, $variablePos);
-                $content = substr($content, 0, $variablePos);
-            }
-
-            preg_match('#(.+<[^>]+>)#', $content, $matches);
-            if ($matches) {
-                $appendix = substr($content, strlen($matches[1])) . $appendix;
-                $content = $matches[1];
-            } else {
-                $spaceIndex = strpos($content, ' ');
-                if ($spaceIndex) {
-                    $appendix = substr($content, $spaceIndex) . $appendix;
-                    $content = substr($content, 0, $spaceIndex);
-                }
-            }
-
             if (!$content) {
                 continue;
             }
 
-            $types = $this->parseTypes($content);
+            /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode $valueNode */
+            $valueNode = static::getValueNode($tokens[$i]['content'], $content);
+            if ($valueNode instanceof InvalidTagValueNode) {
+                return;
+            }
 
-            $this->fixClassNames($phpCsFile, $classNameIndex, $types, $appendix);
+            $parts = $this->valueNodeParts($valueNode);
+
+            $this->fixClassNames($phpCsFile, $classNameIndex, $parts, $valueNode);
         }
     }
 
@@ -107,11 +98,11 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $classNameIndex
      * @param array<string> $classNames
-     * @param string $appendix
+     * @param \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode $valueNode
      *
      * @return void
      */
-    protected function fixClassNames(File $phpCsFile, int $classNameIndex, array $classNames, string $appendix): void
+    protected function fixClassNames(File $phpCsFile, int $classNameIndex, array $classNames, PhpDocTagValueNode $valueNode): void
     {
         $classNameMap = $this->generateClassNameMap($phpCsFile, $classNameIndex, $classNames);
         if (!$classNameMap) {
@@ -125,9 +116,9 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 
         $fix = $phpCsFile->addFixableError(implode(', ', $message), $classNameIndex, 'FQCN');
         if ($fix) {
-            $newContent = implode('|', $classNames);
+            $newComment = $this->stringifyValueNode($classNames, $valueNode);
 
-            $phpCsFile->fixer->replaceToken($classNameIndex, $newContent . $appendix);
+            $phpCsFile->fixer->replaceToken($classNameIndex, $newComment);
         }
     }
 
@@ -333,42 +324,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         }
 
         return $useStatements;
-    }
-
-    /**
-     * Parses types respecting | union and () grouping.
-     *
-     * E.g.: `(string|int)[]|\ArrayObject` is parsed as `(string|int)[]` and `\ArrayObject`.
-     *
-     * The replace map trick is easier than a regex when keeping the () grouping per type.
-     *
-     * @param string $content
-     *
-     * @return array<string>
-     */
-    protected function parseTypes(string $content): array
-    {
-        if (strpos($content, '<') !== false) {
-            return [$content];
-        }
-
-        preg_match_all('#\(.+\)#', $content, $matches);
-        if (!$matches[0]) {
-            return explode('|', $content);
-        }
-        $unionTypes = $matches[0];
-        $map = [];
-        foreach ($unionTypes as $i => $unionType) {
-            $content = str_replace($unionType, '{{t' . $i . '}}', $content);
-            $map['{{t' . $i . '}}'] = $unionType;
-        }
-
-        $types = explode('|', $content);
-        foreach ($types as $k => $type) {
-            $types[$k] = str_replace(array_keys($map), array_values($map), $type);
-        }
-
-        return $types;
     }
 
     /**

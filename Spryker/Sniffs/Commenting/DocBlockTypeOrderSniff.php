@@ -47,7 +47,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
         if (!$docBlockEndIndex) {

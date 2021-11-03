@@ -8,6 +8,7 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 use Spryker\Traits\CommentingTrait;
 
@@ -35,7 +36,7 @@ class DocBlockParamArraySniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -62,37 +63,39 @@ class DocBlockParamArraySniff extends AbstractSprykerSniff
             }
 
             $content = $tokens[$classNameIndex]['content'];
-
-            $appendix = '';
-            $spacePos = strpos($content, ' ');
-            if ($spacePos) {
-                $appendix = substr($content, $spacePos);
-                $content = substr($content, 0, $spacePos);
+            /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
+            $valueNode = static::getValueNode($tokens[$i]['content'], $content);
+            if ($valueNode instanceof InvalidTagValueNode) {
+                return;
             }
+            $parts = $this->valueNodeParts($valueNode);
 
-            $pieces = explode('|', $content);
-
-            if (!in_array('array', $pieces, true)) {
+            $detectedType = null;
+            $types = ['array', 'iterable'];
+            foreach ($types as $type) {
+                if (!in_array($type, $parts, true) || !$this->containsTypeArray($parts, $type)) {
+                    continue;
+                }
+                $detectedType = $type;
+            }
+            if (!$detectedType) {
                 continue;
             }
-            if (!$this->containsTypeArray($pieces)) {
-                continue;
-            }
 
-            $error = 'Doc Block param type `array` not needed on top of  `...[]`';
+            $error = 'Doc Block param type `' . $detectedType . '` not needed on top of  `...[]`';
             $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'TypeDuplicated');
             if (!$fix) {
                 continue;
             }
 
-            $keys = array_keys($pieces, 'array');
+            $keys = array_keys($parts, $detectedType);
             foreach ($keys as $key) {
-                unset($pieces[$key]);
+                unset($parts[$key]);
             }
-            $content = implode('|', $pieces);
+            $content = $this->stringifyValueNode($parts, $valueNode);
 
             $phpCsFile->fixer->beginChangeset();
-            $phpCsFile->fixer->replaceToken($classNameIndex, $content . $appendix);
+            $phpCsFile->fixer->replaceToken($classNameIndex, $content);
             $phpCsFile->fixer->endChangeset();
         }
     }

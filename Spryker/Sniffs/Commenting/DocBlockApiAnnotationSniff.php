@@ -38,7 +38,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $apiClass = $this->sprykerApiClass($phpCsFile, $stackPointer);
 

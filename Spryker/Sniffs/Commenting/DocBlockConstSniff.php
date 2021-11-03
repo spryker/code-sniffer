@@ -36,7 +36,7 @@ class DocBlockConstSniff extends AbstractSprykerSniff
     /**
      * @inheritDoc
      */
-    public function process(File $phpCsFile, $stackPointer)
+    public function process(File $phpCsFile, $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
 
@@ -127,7 +127,7 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         if ($valueNode instanceof InvalidTagValueNode) {
             return;
         }
-        $parts = static::valueNodeParts($valueNode);
+        $parts = $this->valueNodeParts($valueNode);
 
         if (in_array($defaultValueType, $parts, true)) {
             return;
