@@ -102,7 +102,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                                 AnnotationTypeHelper::export($arrayTypeNode),
                             ),
                             $annotation->getStartPointer(),
-                            self::CODE_DISALLOWED_ARRAY_TYPE_HINT_SYNTAX,
+                            static::CODE_DISALLOWED_ARRAY_TYPE_HINT_SYNTAX,
                         );
 
                         if (!$fix) {
