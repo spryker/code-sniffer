@@ -17,7 +17,7 @@ class DocBlockParamAllowDefaultValueSniffTest extends TestCase
      */
     public function testDocBlockConstSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new DocBlockParamAllowDefaultValueSniff(), 3);
+        $this->assertSnifferFindsErrors(new DocBlockParamAllowDefaultValueSniff(), 4);
     }
 
     /**
