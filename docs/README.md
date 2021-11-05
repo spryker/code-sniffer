@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 226 sniffs
+The SprykerStrict standard contains 229 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -75,7 +75,7 @@ PSR2 (12 sniffs)
 - PSR2.Namespaces.NamespaceDeclaration
 - PSR2.Namespaces.UseDeclaration
 
-SlevomatCodingStandard (44 sniffs)
+SlevomatCodingStandard (46 sniffs)
 ----------------------------------
 - SlevomatCodingStandard.Arrays.MultiLineArrayEndBracketPlacement
 - SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace
@@ -88,6 +88,8 @@ SlevomatCodingStandard (44 sniffs)
 - SlevomatCodingStandard.Commenting.DeprecatedAnnotationDeclaration
 - SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment
 - SlevomatCodingStandard.Commenting.EmptyComment
+- SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration
+- SlevomatCodingStandard.ControlStructures.AssignmentInCondition
 - SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch
 - SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator
 - SlevomatCodingStandard.ControlStructures.DisallowYodaComparison
@@ -122,7 +124,7 @@ SlevomatCodingStandard (44 sniffs)
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 - SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (94 sniffs)
+Spryker (95 sniffs)
 -------------------
 - Spryker.Arrays.DisallowImplicitArrayCreation
 - Spryker.Classes.ClassFileName
@@ -146,6 +148,7 @@ Spryker (94 sniffs)
 - Spryker.Commenting.DocBlockParamArray
 - Spryker.Commenting.DocBlockParamNotJustNull
 - Spryker.Commenting.DocBlockPipeSpacing
+- Spryker.Commenting.DocBlockReturnNull
 - Spryker.Commenting.DocBlockReturnNullableType
 - Spryker.Commenting.DocBlockReturnSelf
 - Spryker.Commenting.DocBlockReturnTag
