@@ -17,7 +17,7 @@ class FullyQualifiedClassNameInDocBlockSniffTest extends TestCase
      */
     public function testDocBlockConstSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new FullyQualifiedClassNameInDocBlockSniff(), 13);
+        $this->assertSnifferFindsErrors(new FullyQualifiedClassNameInDocBlockSniff(), 11);
     }
 
     /**

@@ -148,15 +148,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
             }
 
             if (preg_match('#^\((.+)\)#', $className, $matches)) {
-                $subClassNames = explode('|', $matches[1]);
-                $newClassName = '(' . $this->generateClassNameMapForUnionType($phpCsFile, $classNameIndex, $className, $subClassNames) . ')';
-                if ($newClassName === $className) {
-                    continue;
-                }
-
-                $classNames[$key] = $newClassName . ($arrayOfObject ? str_repeat('[]', $arrayOfObject) : '');
-                $result[$className . ($arrayOfObject ? str_repeat('[]', $arrayOfObject) : '')] = $classNames[$key];
-
                 continue;
             }
 
@@ -324,43 +315,5 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         }
 
         return $useStatements;
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $classNameIndex
-     * @param string $className
-     * @param array<string> $subClassNames
-     *
-     * @return string
-     */
-    protected function generateClassNameMapForUnionType(
-        File $phpCsFile,
-        int $classNameIndex,
-        string $className,
-        array $subClassNames
-    ): string {
-        foreach ($subClassNames as $i => $subClassName) {
-            if (strpos($subClassName, '\\') !== false) {
-                continue;
-            }
-
-            if (in_array($subClassName, static::$whitelistedTypes, true)) {
-                continue;
-            }
-            $useStatement = $this->findUseStatementForClassName($phpCsFile, $subClassName);
-            if (!$useStatement) {
-                $message = 'Invalid typehint `%s`';
-                if (substr($subClassName, 0, 1) === '$') {
-                    $message = 'The typehint seems to be missing for `%s`';
-                }
-                $phpCsFile->addError(sprintf($message, $subClassName), $classNameIndex, 'ClassNameInvalidUnion');
-
-                continue;
-            }
-            $subClassNames[$i] = $useStatement;
-        }
-
-        return implode('|', $subClassNames);
     }
 }
