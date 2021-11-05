@@ -8,6 +8,7 @@ use Some\MyClass;
 
 /**
  * @method MyClass getFoo() Some desc
+ * @method \App\Model\Entity\ReleaseGroup[]|\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class FixMe
 {
