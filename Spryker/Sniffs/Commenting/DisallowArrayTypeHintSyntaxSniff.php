@@ -89,7 +89,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                     continue;
                 }
 
-                if ($this->isGenericObject($annotation)) {
+                if ($this->isGenericObjectCollection($annotation)) {
                     continue;
                 }
 
@@ -317,13 +317,13 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
      *
      * @return bool
      */
-    protected function isGenericObject(Annotation $annotation): bool
+    protected function isGenericObjectCollection(Annotation $annotation): bool
     {
         //@phpstan-ignore-next-line
         foreach (AnnotationHelper::getAnnotationTypes($annotation) as $annotationType) {
             if ($annotationType instanceof UnionTypeNode) {
                 if (
-                    $this->isComplexGenericObjectCollection($annotationType->types)
+                    $this->hasGenericObject($annotationType->types)
                     && $this->containsArrayTypeNode($annotationType->types)
                 ) {
                     return true;
@@ -341,15 +341,14 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
      *
      * @return bool
      */
-    protected function isComplexGenericObjectCollection(array $types): bool
+    protected function hasGenericObject(array $types): bool
     {
         foreach ($types as $type) {
             if (!$type instanceof IdentifierTypeNode) {
                 continue;
             }
 
-            $className = (string)$type;
-            if (strpos((string)$type, '\\') === 0 && !in_array($className, static::$genericCollectionClasses, true)) {
+            if (strpos((string)$type, '\\') === 0) {
                 return true;
             }
         }
@@ -369,7 +368,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 continue;
             }
 
-            if ($type->type instanceof IdentifierTypeNode) {
+            if ($type->type instanceof IdentifierTypeNode || $type->type instanceof ArrayTypeNode) {
                 return true;
             }
         }
