@@ -256,7 +256,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $error = '@throw annotation `' . $annotation['fullClass'] . '` superfluous and needs to be removed';
+            $error = '@throw annotation `' . $annotation['fullClass'] . '` superfluous and should be removed. Use `!` comment to keep.';
             $fix = $phpCsFile->addFixableError($error, $annotation['index'], 'ThrowSuperfluous');
             if (!$fix) {
                 continue;
