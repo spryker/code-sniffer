@@ -166,7 +166,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
     /**
      * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
      *
-     * @return array<ArrayTypeNode>
+     * @return array<\PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode>
      */
     public function getArrayTypeNodes(TypeNode $typeNode): array
     {
@@ -208,7 +208,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
     /**
      * @param \PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode $arrayTypeNode
-     * @param array<UnionTypeNode> $unionTypeNodes
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\UnionTypeNode> $unionTypeNodes
      *
      * @return \PHPStan\PhpDocParser\Ast\Type\UnionTypeNode|null
      */

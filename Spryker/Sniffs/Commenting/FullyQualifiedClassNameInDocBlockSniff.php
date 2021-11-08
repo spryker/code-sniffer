@@ -14,7 +14,9 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use Spryker\Traits\CommentingTrait;
 
 /**
- * All doc blocks must use FQCN for class names.
+ * All doc blocks must use FQCN for class names. Extends the dependency
+ * `SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation` with
+ * a few more edge cases to fix up.
  */
 class FullyQualifiedClassNameInDocBlockSniff implements Sniff
 {
