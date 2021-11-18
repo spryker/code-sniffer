@@ -146,9 +146,6 @@
             <property name="equalsSpacing" value="1"/>
         </properties>
     </rule>
-    <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterHint">
-        <severity>0</severity>
-    </rule>
 
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
 
