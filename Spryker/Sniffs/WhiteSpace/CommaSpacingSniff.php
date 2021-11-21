@@ -86,7 +86,7 @@ class CommaSpacingSniff implements Sniff
             }
 
             // Closing inline array is also ignored
-            if ($tokens[$next]['code'] === T_CLOSE_SHORT_ARRAY) {
+            if (in_array($tokens[$next]['code'], [T_CLOSE_SHORT_ARRAY, T_CLOSE_PARENTHESIS], true)) {
                 return;
             }
 
