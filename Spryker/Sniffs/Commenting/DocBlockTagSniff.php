@@ -81,7 +81,10 @@ class DocBlockTagSniff implements Sniff
         }
 
         $message = sprintf('Casing of tag `%s` is not expected casing `%s`.', $tag, static::INHERIT_DOC_FULL);
-        $phpcsFile->addFixableWarning($message, $stackPtr, 'Casing');
+        $fix = $phpcsFile->addFixableWarning($message, $stackPtr, 'Casing');
+        if (!$fix) {
+            return;
+        }
 
         $phpcsFile->fixer->beginChangeset();
 

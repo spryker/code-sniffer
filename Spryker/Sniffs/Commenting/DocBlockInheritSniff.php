@@ -206,7 +206,10 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
         }
 
         $message = sprintf('Casing of `%s` is not expected casing `%s`.', $tokens[$index]['content'], static::INHERIT_DOC);
-        $phpcsFile->addFixableWarning($message, $index, 'Casing');
+        $fix = $phpcsFile->addFixableWarning($message, $index, 'Casing');
+        if (!$fix) {
+            return;
+        }
 
         $phpcsFile->fixer->beginChangeset();
 

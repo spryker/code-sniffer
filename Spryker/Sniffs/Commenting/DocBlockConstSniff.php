@@ -56,7 +56,11 @@ class DocBlockConstSniff extends AbstractSprykerSniff
                 return;
             }
 
-            $phpCsFile->addFixableError('Doc Block for const missing', $stackPointer, 'VarDocBlockMissing');
+            $fix = $phpCsFile->addFixableError('Doc Block for const missing', $stackPointer, 'VarDocBlockMissing');
+            if (!$fix) {
+                return;
+            }
+
             $this->addDocBlock($phpCsFile, $stackPointer, $defaultValueType);
 
             return;

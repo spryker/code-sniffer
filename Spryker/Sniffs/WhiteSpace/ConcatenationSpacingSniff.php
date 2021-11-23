@@ -45,8 +45,10 @@ class ConcatenationSpacingSniff implements Sniff
 
         if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
             $message = 'Expected 1 space before ., but 0 found';
-            $phpcsFile->addFixableError($message, $stackPtr, 'MissingBefore');
-            $this->addSpace($phpcsFile, $stackPtr - 1);
+            $fix = $phpcsFile->addFixableError($message, $stackPtr, 'MissingBefore');
+            if ($fix) {
+                $this->addSpace($phpcsFile, $stackPtr - 1);
+            }
         } else {
             $content = $tokens[$stackPtr - 1]['content'];
             if ($tokens[$prevIndex]['line'] === $tokens[$stackPtr]['line'] && $content !== ' ') {
@@ -63,8 +65,10 @@ class ConcatenationSpacingSniff implements Sniff
 
         if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
             $message = 'Expected 1 space after ., but 0 found';
-            $phpcsFile->addFixableError($message, $stackPtr, 'MissingAfter');
-            $this->addSpace($phpcsFile, $stackPtr);
+            $fix = $phpcsFile->addFixableError($message, $stackPtr, 'MissingAfter');
+            if ($fix) {
+                $this->addSpace($phpcsFile, $stackPtr);
+            }
         } else {
             $content = $tokens[($stackPtr + 1)]['content'];
             if ($tokens[$nextIndex]['line'] === $tokens[$stackPtr]['line'] && $content !== ' ') {
@@ -72,7 +76,7 @@ class ConcatenationSpacingSniff implements Sniff
                 $data = [strlen($content)];
                 $fix = $phpcsFile->addFixableError($message, $stackPtr, 'TooManyAfter', $data);
                 if ($fix) {
-                    $phpcsFile->fixer->replaceToken($stackPtr + 1, ' ');
+                    $this->replaceWithSpace($phpcsFile, $stackPtr + 1);
                 }
             }
         }
@@ -88,9 +92,19 @@ class ConcatenationSpacingSniff implements Sniff
      */
     protected function addSpace(File $phpcsFile, int $index): void
     {
-        if ($phpcsFile->fixer->enabled !== true) {
-            return;
-        }
         $phpcsFile->fixer->addContent($index, ' ');
+    }
+
+    /**
+     * Replaces whitespace with a single space.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $index
+     *
+     * @return void
+     */
+    protected function replaceWithSpace(File $phpcsFile, int $index): void
+    {
+        $phpcsFile->fixer->replaceToken($index, ' ');
     }
 }
