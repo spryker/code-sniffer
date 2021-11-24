@@ -306,7 +306,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     protected function normalizeClassName(array $exception, array $useStatements): array
     {
         foreach ($useStatements as $useStatement) {
-            if ($useStatement['alias'] === $exception['class'] || $useStatement['shortName']  === $exception['class']) {
+            if ($useStatement['alias'] === $exception['class'] || $useStatement['shortName'] === $exception['class']) {
                 $exception['class'] = $useStatement['shortName'];
                 $exception['fullClass'] = $useStatement['fullName'];
             }

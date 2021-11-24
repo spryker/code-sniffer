@@ -17,7 +17,7 @@ class DocBlockThrowsSniffTest extends TestCase
      */
     public function testDocBlockThrowsSniffer(): void
     {
-        $this->assertSnifferFindsFixableErrors(new DocBlockThrowsSniff(), 2, 2);
+        $this->assertSnifferFindsErrors(new DocBlockThrowsSniff(), 4);
     }
 
     /**
@@ -25,6 +25,6 @@ class DocBlockThrowsSniffTest extends TestCase
      */
     public function testDocBlockThrowsFixer(): void
     {
-        $this->assertSnifferCanFixErrors(new DocBlockThrowsSniff(), 2);
+        $this->assertSnifferCanFixErrors(new DocBlockThrowsSniff(), 4);
     }
 }
