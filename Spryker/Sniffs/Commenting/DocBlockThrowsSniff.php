@@ -183,7 +183,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 $appendix = substr($classAndAppendix, $spacePosition + 1);
             }
 
-            $class = $fullClass;
+            $class = $fullClass = ltrim($fullClass, '\\');
             $lastSeparator = strrpos($class, '\\');
             if ($lastSeparator !== false) {
                 $class = substr($class, $lastSeparator + 1);
@@ -218,7 +218,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
             ++$position;
         }
 
-        $class = $fullClass;
+        $class = $fullClass = ltrim($fullClass, '\\');
         $lastSeparator = strrpos($class, '\\');
         if ($lastSeparator !== false) {
             $class = substr($class, $lastSeparator + 1);
