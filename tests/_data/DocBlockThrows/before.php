@@ -44,4 +44,14 @@ class FixMe
             throw new SomeAliasedException();
         }
     }
+
+    /**
+     * @return void
+     */
+    public function someException()
+    {
+        if ($this->something()) {
+            throw new \BadMethodCallException();
+        }
+    }
 }

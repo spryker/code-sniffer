@@ -48,4 +48,15 @@ class FixMe
             throw new SomeAliasedException();
         }
     }
+
+    /**
+     * @throws \BadMethodCallException
+     * @return void
+     */
+    public function someException()
+    {
+        if ($this->something()) {
+            throw new \BadMethodCallException();
+        }
+    }
 }
