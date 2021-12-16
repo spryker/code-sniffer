@@ -196,4 +196,18 @@ trait CommentingTrait
 
         return false;
     }
+
+    /**
+     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode|string> $typeNodes type nodes
+     *
+     * @return string
+     */
+    protected function renderUnionTypes(array $typeNodes): string
+    {
+        return (string)preg_replace(
+            ['/ ([\|&]) /', '/<\(/', '/, \(/', '/\)>/'],
+            ['${1}', '<', ', ', '>'],
+            implode('|', $typeNodes),
+        );
+    }
 }

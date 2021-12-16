@@ -14,9 +14,18 @@ class FixMe
     }
 
     /**
-     * @return array<string, string>|string|null
+     * @return array<string, array<string, string|null>|string|null> Some comment with $someVar.
      */
-    public function fixDup(): array
+    public function allGoodComment(): array
+    {
+        return [
+        ];
+    }
+
+    /**
+     * @return array<string, string>|string $x
+     */
+    public function fixMe(): array
     {
         return [
         ];
