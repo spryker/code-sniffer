@@ -52,6 +52,7 @@ class DocBlockReturnTagSniff extends AbstractSprykerSniff
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $nextIndex
+     * @param int $stackPtr
      *
      * @return void
      */
