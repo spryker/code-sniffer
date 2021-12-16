@@ -8,7 +8,9 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Verifies that a `@return` tag description does not start with $ sign to avoid accidental variable copy-and-paste.
@@ -19,6 +21,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DocBlockReturnTagSniff extends AbstractSprykerSniff
 {
+    use CommentingTrait;
+
     /**
      * @inheritDoc
      */
@@ -43,22 +47,29 @@ class DocBlockReturnTagSniff extends AbstractSprykerSniff
             return;
         }
 
-        $this->assertTypes($phpcsFile, $nextIndex);
+        $this->assertTypes($phpcsFile, $nextIndex, $stackPtr);
         $this->assertDescription($phpcsFile, $nextIndex);
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $nextIndex
+     * @param int $stackPtr
      *
      * @return void
      */
-    protected function assertTypes(File $phpcsFile, int $nextIndex): void
+    protected function assertTypes(File $phpcsFile, int $nextIndex, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
         $content = $tokens[$nextIndex]['content'];
-        $returnTypes = explode('|', $content);
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
+        $valueNode = static::getValueNode($tokens[$stackPtr]['content'], $content);
+        if ($valueNode instanceof InvalidTagValueNode) {
+            return;
+        }
+
+        $returnTypes = $this->valueNodeParts($valueNode);
 
         $unique = array_unique($returnTypes);
         if (count($unique) !== count($returnTypes)) {
