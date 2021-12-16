@@ -79,4 +79,12 @@ class FixMe
     {
         return [];
     }
+
+    /**
+     * @return array<string, array<string, string|null>|string|null>|string
+     */
+    public function complexUnion(): array
+    {
+        return [];
+    }
 }

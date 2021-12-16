@@ -17,7 +17,7 @@ class TypeHintSniffTest extends TestCase
      */
     public function testTypeHintSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new TypeHintSniff(), 10);
+        $this->assertSnifferFindsErrors(new TypeHintSniff(), 11);
     }
 
     /**

@@ -8,17 +8,20 @@
 namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
+use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
+use Spryker\Traits\CommentingTrait;
 
 /**
  * Verifies that a `@return` tag description does not start with $ sign to avoid accidental variable copy-and-paste.
- * Also checks duplicates.
  *
  * @author Mark Scherer
  * @license MIT
  */
 class DocBlockReturnTagSniff extends AbstractSprykerSniff
 {
+    use CommentingTrait;
+
     /**
      * @inheritDoc
      */
@@ -43,50 +46,36 @@ class DocBlockReturnTagSniff extends AbstractSprykerSniff
             return;
         }
 
-        $this->assertTypes($phpcsFile, $nextIndex);
-        $this->assertDescription($phpcsFile, $nextIndex);
+        $this->assertDescription($phpcsFile, $nextIndex, $stackPtr);
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $nextIndex
+     * @param int $stackPtr
      *
      * @return void
      */
-    protected function assertTypes(File $phpcsFile, int $nextIndex): void
+    protected function assertDescription(File $phpcsFile, int $nextIndex, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
 
         $content = $tokens[$nextIndex]['content'];
-        $returnTypes = explode('|', $content);
-
-        $unique = array_unique($returnTypes);
-        if (count($unique) !== count($returnTypes)) {
-            $after = implode('|', $unique);
-            $fix = $phpcsFile->addFixableError(sprintf('Types are duplicate: `%s`, expected `%s`.', $content, $after), $nextIndex, 'DuplicateTypes');
-            if ($fix) {
-                $phpcsFile->fixer->replaceToken($nextIndex, $after);
-            }
-        }
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $nextIndex
-     *
-     * @return void
-     */
-    protected function assertDescription(File $phpcsFile, int $nextIndex): void
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $content = $tokens[$nextIndex]['content'];
-        if (strpos($content, ' ') === false) {
+        /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode $valueNode */
+        $valueNode = static::getValueNode($tokens[$stackPtr]['content'], $content);
+        if ($valueNode instanceof InvalidTagValueNode) {
             return;
         }
 
-        [$hint, $description] = explode(' ', $content, 2);
-        if (!$description || substr($description, 0, 1) !== '$') {
+        $returnTypes = $this->valueNodeParts($valueNode);
+        $typeString = $this->renderUnionTypes($returnTypes);
+
+        if (strpos($content, $typeString) !== 0) {
+            return;
+        }
+
+        $description = mb_substr($content, mb_strlen($typeString) + 1);
+        if (!$description || strpos($description, '$') !== 0) {
             return;
         }
 
