@@ -17,7 +17,7 @@ class DisallowCloakingCheckSniffTest extends TestCase
      */
     public function testDisallowArrayTypeHintSyntaxSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new DisallowCloakingCheckSniff(), 4);
+        $this->assertSnifferFindsErrors(new DisallowCloakingCheckSniff(), 8);
     }
 
     /**
