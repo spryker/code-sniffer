@@ -10,6 +10,11 @@ class FixMe
     protected $securityRoutes = [];
 
     /**
+     * @var array<string|int, array<mixed, array<string>|string|null>|string|null>|string|null
+     */
+    protected $arrays;
+
+    /**
      * @return string[]|null
      */
     public function one(): ?array
