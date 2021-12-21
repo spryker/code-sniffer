@@ -207,7 +207,7 @@ trait CommentingTrait
         return (string)preg_replace(
             ['/ ([|&]) /', '/<\(/', '/\)>/', '/\), /', '/, \(/'],
             ['${1}', '<', '>', ', ', ', '],
-            implode('|', $typeNodes)
+            implode('|', $typeNodes),
         );
     }
 }
