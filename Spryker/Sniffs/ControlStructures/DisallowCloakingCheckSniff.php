@@ -99,7 +99,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        if ($inverted) {
+        if ($inverted && $previousTokenIndex) {
             $phpcsFile->fixer->replaceToken($previousTokenIndex, '');
             $phpcsFile->fixer->replaceToken($stackPtr, '');
         } else {
@@ -112,31 +112,4 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
-    protected function checkMethodCalls(File $phpcsFile, int $stackPtr): void
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $openingBraceIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($stackPtr + 1), $stackPtr + 4);
-        if (!$openingBraceIndex) {
-            return;
-        }
-        if (empty($tokens[$openingBraceIndex]['parenthesis_closer'])) {
-            return;
-        }
-
-        $closingBraceIndex = $tokens[$openingBraceIndex]['parenthesis_closer'];
-
-        $hasInlineAssignment = $this->contains($phpcsFile, T_EQUAL, $openingBraceIndex + 1, $closingBraceIndex - 1);
-        if (!$hasInlineAssignment) {
-            return;
-        }
-
-        $phpcsFile->addError('Inline assignment not allowed', $stackPtr, 'NoInlineAssignment');
-    }
 }
