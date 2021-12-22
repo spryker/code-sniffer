@@ -43,4 +43,12 @@ class FixMe
         if (!empty($x['y'])) {
         }
     }
+
+    public function ignoreForNow()
+    {
+        $y = 'y';
+        $x = [];
+        if (!isset($x->{$y})) {
+        }
+    }
 }

@@ -26,6 +26,14 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
     }
 
     /**
+     * @var array<string>
+     */
+    protected $validTokens = [
+        T_CLOSE_SQUARE_BRACKET,
+        T_CLOSE_CURLY_BRACKET,
+    ];
+
+    /**
      * @inheritDoc
      */
     public function process(File $phpcsFile, $stackPtr): void
@@ -46,12 +54,9 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
 
         $lastValueIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($closingBraceIndex - 1), $valueIndex, true) ?: $valueIndex;
 
-        $validTokens = [
-            T_CLOSE_SQUARE_BRACKET,
-        ];
         $validSilencing = false;
         for ($i = $valueIndex; $i <= $lastValueIndex; $i++) {
-            if (in_array($tokens[$i]['code'], $validTokens, true)) {
+            if (in_array($tokens[$i]['code'], $this->validTokens, true)) {
                 $validSilencing = true;
 
                 break;
