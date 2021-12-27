@@ -79,7 +79,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             }
 
             $content = $tokens[$classNameIndex]['content'];
-            if (empty($content)) {
+            if (!$content) {
                 continue;
             }
 

@@ -59,7 +59,7 @@ class DocBlockPipeSpacingSniff implements Sniff
 
         $desc = ltrim($description);
 
-        while (!empty($desc) && mb_substr($desc, 0, 1) === '|') {
+        while ($desc && mb_substr($desc, 0, 1) === '|') {
             $desc = ltrim(mb_substr($desc, 1));
 
             $pos = mb_strpos($desc, ' ');

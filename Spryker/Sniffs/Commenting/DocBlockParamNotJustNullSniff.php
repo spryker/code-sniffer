@@ -82,7 +82,7 @@ class DocBlockParamNotJustNullSniff extends AbstractSprykerSniff
                 $appendix = substr($content, $spaceIndex);
                 $content = substr($content, 0, $spaceIndex);
             }
-            if (empty($content) || $content !== 'null') {
+            if (!$content || $content !== 'null') {
                 continue;
             }
 

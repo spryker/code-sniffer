@@ -140,7 +140,7 @@ class Tokenizer
                 $tokenList = [];
                 foreach ($token as $k => $v) {
                     if (is_array($v)) {
-                        if (empty($v)) {
+                        if (!$v) {
                             continue;
                         }
                         $v = json_encode($v);

@@ -66,7 +66,7 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
                 $content = substr($content, 0, $spaceIndex);
             }
 
-            if (empty($content)) {
+            if (!$content) {
                 continue;
             }
 
