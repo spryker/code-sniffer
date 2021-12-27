@@ -73,7 +73,11 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
 
         $inverted = false;
         $previousTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
-        if ($previousTokenIndex && $tokens[$previousTokenIndex]['code'] === T_BOOLEAN_NOT) {
+        if (!$previousTokenIndex) {
+            return;
+        }
+
+        if ($tokens[$previousTokenIndex]['code'] === T_BOOLEAN_NOT) {
             $inverted = true;
         }
 
@@ -92,7 +96,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
             return;
         }
 
-        if ($inverted && $previousTokenIndex) {
+        if ($inverted) {
             $fix = $phpcsFile->addFixableError($message, $stackPtr, 'InvalidEmpty');
             if (!$fix) {
                 return;
@@ -120,12 +124,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
 
         $phpcsFile->fixer->beginChangeset();
 
-        if ($inverted && $previousTokenIndex) {
-            $phpcsFile->fixer->replaceToken($previousTokenIndex, '');
-            $phpcsFile->fixer->replaceToken($stackPtr, '');
-        } else {
-            $phpcsFile->fixer->replaceToken($stackPtr, '!');
-        }
+        $phpcsFile->fixer->replaceToken($stackPtr, '!');
 
         $phpcsFile->fixer->replaceToken($openingBraceIndex, '');
         $phpcsFile->fixer->replaceToken($closingBraceIndex, '');
@@ -156,6 +155,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         }
 
         $keys = array_keys($nestedParenthesis);
+        /** @var int $index */
         $index = array_shift($keys);
 
         $conditionalTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($index - 1), null, true);
