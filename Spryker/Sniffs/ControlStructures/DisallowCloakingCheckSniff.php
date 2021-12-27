@@ -18,6 +18,13 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 class DisallowCloakingCheckSniff extends AbstractSprykerSniff
 {
     /**
+     * Use this to make this sniff more strict regarding object var references.
+     *
+     * @var bool
+     */
+    public $strict = false;
+
+    /**
      * @inheritDoc
      */
     public function register(): array
@@ -182,6 +189,10 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         }
 
         if (!$objectOperatorIndex) {
+            return false;
+        }
+
+        if ($this->strict) {
             return false;
         }
 
