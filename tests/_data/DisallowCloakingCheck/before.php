@@ -22,12 +22,20 @@ class FixMe
         ) {
         }
 
+        $foo->_if(!empty($filterByCompanyBusinessUnitIds));
+
         if (!isset($this->prop)) {
         }
 
         $x = !empty($this->prop);
 
         return !empty($x);
+    }
+
+    public function simplify()
+    {
+        if (empty($iso2Code) === false) {}
+        if (isset($iso2Code) === true) {}
     }
 
     public function complex($successTable)
@@ -48,7 +56,10 @@ class FixMe
     {
         $y = 'y';
         $x = [];
-        if (!isset($x->{$y})) {
-        }
+        if (!isset($x->{$y})) {}
+
+        if (!isset($xmlProcess->events)) {}
+
+        if (empty($_SESSION)) {}
     }
 }

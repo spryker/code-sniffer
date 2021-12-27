@@ -52,6 +52,10 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
             return;
         }
 
+        if ($tokens[$valueIndex]['code'] === T_VARIABLE && strpos($tokens[$valueIndex]['content'], '$_') === 0) {
+            return;
+        }
+
         $lastValueIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($closingBraceIndex - 1), $valueIndex, true) ?: $valueIndex;
 
         $validSilencing = false;
@@ -89,26 +93,24 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         }
 
         if ($inverted && $previousTokenIndex) {
-            $assignmentTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($previousTokenIndex - 1), null, true);
-            if ($assignmentTokenIndex && in_array($tokens[$assignmentTokenIndex]['code'], [T_EQUAL, T_RETURN], true)) {
-
-                $fix = $phpcsFile->addFixableError($message, $stackPtr, 'InvalidEmpty');
-                if (!$fix) {
-                    return;
-                }
-
-                $phpcsFile->fixer->beginChangeset();
-
-                $phpcsFile->fixer->replaceToken($previousTokenIndex, '');
-                $phpcsFile->fixer->replaceToken($stackPtr, '(bool)');
-
-                $phpcsFile->fixer->replaceToken($openingBraceIndex, '');
-                $phpcsFile->fixer->replaceToken($closingBraceIndex, '');
-
-                $phpcsFile->fixer->endChangeset();
-
+            $fix = $phpcsFile->addFixableError($message, $stackPtr, 'InvalidEmpty');
+            if (!$fix) {
                 return;
             }
+
+            $isSafeToSkipCast = $this->isSafeToSkipCast($phpcsFile, $stackPtr, $previousTokenIndex);
+
+            $phpcsFile->fixer->beginChangeset();
+
+            $phpcsFile->fixer->replaceToken($previousTokenIndex, '');
+            $phpcsFile->fixer->replaceToken($stackPtr, $isSafeToSkipCast ? '' : '(bool)');
+
+            $phpcsFile->fixer->replaceToken($openingBraceIndex, '');
+            $phpcsFile->fixer->replaceToken($closingBraceIndex, '');
+
+            $phpcsFile->fixer->endChangeset();
+
+            return;
         }
 
         $fix = $phpcsFile->addFixableError($message, $stackPtr, 'FixableEmpty');
@@ -131,4 +133,36 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     * @param int $previousTokenIndex
+     *
+     * @return bool
+     */
+    protected function isSafeToSkipCast(File $phpcsFile, int $stackPtr, int $previousTokenIndex): bool
+    {
+        $assignmentTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($previousTokenIndex - 1), null, true);
+
+        $tokens = $phpcsFile->getTokens();
+        if ($assignmentTokenIndex && in_array($tokens[$assignmentTokenIndex]['code'], [T_EQUAL, T_RETURN], true)) {
+            return false;
+        }
+
+        $x = $tokens[$stackPtr];
+        $nestedParenthesis = $x['nested_parenthesis'] ?? [];
+        if (!$nestedParenthesis) {
+            return false;
+        }
+
+        $keys = array_keys($nestedParenthesis);
+        $index = array_shift($keys);
+
+        $conditionalTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($index - 1), null, true);
+        if (!$conditionalTokenIndex || !in_array($tokens[$conditionalTokenIndex]['code'], [T_IF, T_ELSEIF], true)) {
+            return false;
+        }
+
+        return true;
+    }
 }
