@@ -58,14 +58,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
 
         $lastValueIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($closingBraceIndex - 1), $valueIndex, true) ?: $valueIndex;
 
-        $validSilencing = false;
-        for ($i = $valueIndex; $i <= $lastValueIndex; $i++) {
-            if (in_array($tokens[$i]['code'], $this->validTokens, true)) {
-                $validSilencing = true;
-
-                break;
-            }
-        }
+        $validSilencing = $this->isValidSilencing($phpcsFile, $valueIndex, $lastValueIndex);
 
         if ($validSilencing) {
             return;
@@ -164,5 +157,39 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         }
 
         return true;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $valueIndex
+     * @param int $lastValueIndex
+     *
+     * @return bool
+     */
+    protected function isValidSilencing(File $phpcsFile, int $valueIndex, int $lastValueIndex): bool
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $objectOperatorIndex = null;
+        for ($i = $valueIndex; $i <= $lastValueIndex; $i++) {
+            if (in_array($tokens[$i]['code'], $this->validTokens, true)) {
+                return true;
+            }
+
+            if ($tokens[$i]['code'] === T_OBJECT_OPERATOR) {
+                $objectOperatorIndex = $i;
+            }
+        }
+
+        if (!$objectOperatorIndex) {
+            return false;
+        }
+
+        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($objectOperatorIndex - 1), $valueIndex, true);
+        if ($prevIndex && $tokens[$prevIndex]['code'] === T_VARIABLE && $tokens[$prevIndex]['content'] !== '$this') {
+            return true;
+        }
+
+        return false;
     }
 }
