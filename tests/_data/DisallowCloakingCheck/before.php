@@ -60,6 +60,8 @@ class FixMe
 
         if (!isset($xmlProcess->events)) {}
 
+        if (!isset($this->_joinData->relation)) {}
+
         if (empty($_SESSION)) {}
     }
 }

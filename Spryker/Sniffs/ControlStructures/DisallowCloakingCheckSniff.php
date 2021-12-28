@@ -200,6 +200,9 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         if ($prevIndex && $tokens[$prevIndex]['code'] === T_VARIABLE && $tokens[$prevIndex]['content'] !== '$this') {
             return true;
         }
+        if ($prevIndex && $tokens[$prevIndex]['code'] === T_STRING) {
+            return true;
+        }
 
         return false;
     }
