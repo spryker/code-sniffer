@@ -83,7 +83,7 @@ class DocBlockReturnNullSniff implements Sniff
             }
 
             $content = $tokens[$classNameIndex]['content'];
-            if (empty($content)) {
+            if (!$content) {
                 continue;
             }
 

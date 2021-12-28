@@ -112,7 +112,7 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         }
 
         $content = $tokens[$typeIndex]['content'];
-        if (empty($content)) {
+        if (!$content) {
             $error = 'Doc Block type for property annotation @var missing';
             if ($defaultValueType) {
                 $error .= ', type `' . $defaultValueType . '` detected';

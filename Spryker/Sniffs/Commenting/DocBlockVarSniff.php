@@ -96,7 +96,7 @@ class DocBlockVarSniff extends AbstractSprykerSniff
             $content = substr($content, 0, $spaceIndex);
         }
 
-        if (empty($content)) {
+        if (!$content) {
             $error = 'Doc Block type for property annotation @var missing';
             if ($defaultValueType) {
                 $error .= ', type `' . $defaultValueType . '` detected';
