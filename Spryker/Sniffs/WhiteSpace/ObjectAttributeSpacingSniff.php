@@ -34,7 +34,7 @@ class ObjectAttributeSpacingSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         // Make sure there is no space before.
-        $previousToken = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $previousToken = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
 
         if ($stackPtr - $previousToken !== 1 && $tokens[$previousToken]['line'] === $tokens[$stackPtr]['line']) {
             $error = 'Expected no space before object operator `' . $tokens[$stackPtr]['content'] . '`';
@@ -45,7 +45,7 @@ class ObjectAttributeSpacingSniff implements Sniff
         }
 
         // Make sure there is no space after.
-        $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $nextToken = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
 
         if ($nextToken - $stackPtr !== 1 && $tokens[$nextToken]['line'] === $tokens[$stackPtr]['line']) {
             $error = 'Expected no space after object operator `' . $tokens[$stackPtr]['content'] . '`';

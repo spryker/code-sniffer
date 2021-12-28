@@ -33,13 +33,13 @@ class CommaSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $next = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if (!$next) {
             return;
         }
         $this->checkNext($phpcsFile, $stackPtr, $next);
 
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $previous = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if (!$previous) {
             return;
         }

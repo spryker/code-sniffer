@@ -88,12 +88,12 @@ class DocCommentSniff extends AbstractSprykerSniff
         }
 
         // Check for additional blank lines at the end of the comment.
-        if ($tokens[$prev]['line'] < ($tokens[$commentEnd]['line'] - 1)) {
+        if ($tokens[$prev]['line'] < $tokens[$commentEnd]['line'] - 1) {
             $error = 'Additional blank lines found at end of doc comment';
             $fix = $phpcsFile->addFixableError($error, $commentEnd, 'SpacingAfter');
             if ($fix === true) {
                 $phpcsFile->fixer->beginChangeset();
-                for ($i = ($prev + 1); $i < $commentEnd; $i++) {
+                for ($i = $prev + 1; $i < $commentEnd; $i++) {
                     if ($tokens[$i + 1]['line'] === $tokens[$commentEnd]['line']) {
                         break;
                     }
@@ -106,7 +106,7 @@ class DocCommentSniff extends AbstractSprykerSniff
         }
 
         // No extra newline before short description.
-        if ($tokens[$short]['line'] !== ($tokens[$stackPtr]['line'] + 1)) {
+        if ($tokens[$short]['line'] !== $tokens[$stackPtr]['line'] + 1) {
             $error = 'Doc comment short description must be on the first line';
             $fix = $phpcsFile->addFixableError($error, $short, 'SpacingBeforeShort');
             if ($fix === true) {
@@ -130,9 +130,9 @@ class DocCommentSniff extends AbstractSprykerSniff
         // multiple lines.
         $shortContent = $tokens[$short]['content'];
         $shortEnd = $short;
-        for ($i = ($short + 1); $i < $commentEnd; $i++) {
+        for ($i = $short + 1; $i < $commentEnd; $i++) {
             if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
-                if ($tokens[$i]['line'] === ($tokens[$shortEnd]['line'] + 1)) {
+                if ($tokens[$i]['line'] === $tokens[$shortEnd]['line'] + 1) {
                     $shortContent .= $tokens[$i]['content'];
                     $shortEnd = $i;
                 } else {
@@ -156,12 +156,12 @@ class DocCommentSniff extends AbstractSprykerSniff
             return;
         }
 
-        if ($tokens[$firstTag]['line'] !== ($tokens[$prev]['line'] + 2)) {
+        if ($tokens[$firstTag]['line'] !== $tokens[$prev]['line'] + 2) {
             $error = 'There must be exactly one blank line before the tags in a doc comment';
             $fix = $phpcsFile->addFixableError($error, $firstTag, 'SpacingBeforeTags');
             if ($fix === true) {
                 $phpcsFile->fixer->beginChangeset();
-                for ($i = ($prev + 1); $i < $firstTag; $i++) {
+                for ($i = $prev + 1; $i < $firstTag; $i++) {
                     if ($tokens[$i]['line'] === $tokens[$firstTag]['line']) {
                         break;
                     }

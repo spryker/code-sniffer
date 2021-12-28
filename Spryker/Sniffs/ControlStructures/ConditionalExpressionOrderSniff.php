@@ -34,12 +34,12 @@ class ConditionalExpressionOrderSniff implements Sniff
     {
         $tokens = $phpCsFile->getTokens();
 
-        $prevIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, ($stackPointer - 1), null, true);
+        $prevIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $stackPointer - 1, null, true);
         if (!in_array($tokens[$prevIndex]['code'], [T_TRUE, T_FALSE, T_NULL, T_LNUMBER, T_CONSTANT_ENCAPSED_STRING])) {
             return;
         }
 
-        $prevIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, ($prevIndex - 1), null, true);
+        $prevIndex = $phpCsFile->findPrevious(Tokens::$emptyTokens, $prevIndex - 1, null, true);
         if (!$prevIndex) {
             return;
         }

@@ -45,7 +45,7 @@ class ArrayDeclarationSniff implements Sniff
         $arrayEnd = $tokens[$stackPtr]['bracket_closer'];
 
         // Check for empty arrays.
-        $content = $phpcsFile->findNext(T_WHITESPACE, ($arrayStart + 1), ($arrayEnd + 1), true);
+        $content = $phpcsFile->findNext(T_WHITESPACE, $arrayStart + 1, $arrayEnd + 1, true);
         if ($content === $arrayEnd) {
             return;
         }
@@ -73,7 +73,7 @@ class ArrayDeclarationSniff implements Sniff
         // Check if there are multiple values. If so, then it has to be multiple lines
         // unless it is contained inside a function call or condition.
         $commas = [];
-        for ($i = ($arrayStart + 1); $i < $arrayEnd; $i++) {
+        for ($i = $arrayStart + 1; $i < $arrayEnd; $i++) {
             // Skip bracketed statements, like function calls.
             if ($tokens[$i]['code'] === T_OPEN_PARENTHESIS) {
                 $i = $tokens[$i]['parenthesis_closer'];
@@ -84,7 +84,7 @@ class ArrayDeclarationSniff implements Sniff
             if ($tokens[$i]['code'] === T_COMMA) {
                 // Before counting this comma, make sure we are not
                 // at the end of the array.
-                $next = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), $arrayEnd, true);
+                $next = $phpcsFile->findNext(T_WHITESPACE, $i + 1, $arrayEnd, true);
                 if ($next !== false) {
                     $commas[] = $i;
                 } else {
@@ -130,7 +130,7 @@ class ArrayDeclarationSniff implements Sniff
         }
 
         // Find all the double arrows that reside in this scope.
-        for ($nextToken = ($stackPtr + 1); $nextToken < $arrayEnd; $nextToken++) {
+        for ($nextToken = $stackPtr + 1; $nextToken < $arrayEnd; $nextToken++) {
             // Skip bracketed statements, like function calls.
             if (
                 $tokens[$nextToken]['code'] === T_OPEN_PARENTHESIS
@@ -150,7 +150,7 @@ class ArrayDeclarationSniff implements Sniff
                 }
 
                 $parenthesisCloseIndex = $tokens[$tokens[$nextToken]['parenthesis_opener']]['parenthesis_closer'];
-                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, ($parenthesisCloseIndex + 1), null, true);
+                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, $parenthesisCloseIndex + 1, null, true);
                 if (!$nextTokenIndex) {
                     break;
                 }
@@ -172,7 +172,7 @@ class ArrayDeclarationSniff implements Sniff
                 }
 
                 $bracketCloseIndex = $tokens[$nextToken]['bracket_closer'];
-                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, ($bracketCloseIndex + 1), null, true);
+                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, $bracketCloseIndex + 1, null, true);
                 if (!$nextTokenIndex) {
                     break;
                 }
@@ -193,7 +193,7 @@ class ArrayDeclarationSniff implements Sniff
                 }
 
                 $nextToken = $tokens[$nextToken]['scope_closer'];
-                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, ($nextToken + 1), null, true);
+                $nextTokenIndex = $phpcsFile->findNext(T_WHITESPACE, $nextToken + 1, null, true);
                 if (!$nextTokenIndex) {
                     break;
                 }
@@ -245,7 +245,7 @@ class ArrayDeclarationSniff implements Sniff
                 if ($keyUsed === false) {
                     $valueContent = $phpcsFile->findNext(
                         Tokens::$emptyTokens,
-                        ($lastToken + 1),
+                        $lastToken + 1,
                         $nextToken,
                         true,
                     );
@@ -263,7 +263,7 @@ class ArrayDeclarationSniff implements Sniff
                 $keyUsed = true;
 
                 // Find the start of index that uses this double arrow.
-                $indexEnd = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($nextToken - 1), $arrayStart, true);
+                $indexEnd = (int)$phpcsFile->findPrevious(T_WHITESPACE, $nextToken - 1, $arrayStart, true);
                 $indexStart = $phpcsFile->findStartOfStatement($indexEnd);
 
                 if ($indexStart === $indexEnd) {
@@ -282,7 +282,7 @@ class ArrayDeclarationSniff implements Sniff
                 // Find the value of this index.
                 $nextContent = $phpcsFile->findNext(
                     Tokens::$emptyTokens,
-                    ($nextToken + 1),
+                    $nextToken + 1,
                     $arrayEnd,
                     true,
                 );

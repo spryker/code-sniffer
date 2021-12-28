@@ -71,12 +71,12 @@ class RemoveFunctionAliasSniff implements Sniff
             return;
         }
 
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $previous = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens)) {
             return;
         }
 
-        $openingBrace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $openingBrace = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if (!$openingBrace || $tokens[$openingBrace]['type'] !== 'T_OPEN_PARENTHESIS') {
             return;
         }

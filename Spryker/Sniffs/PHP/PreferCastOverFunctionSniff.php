@@ -48,12 +48,12 @@ class PreferCastOverFunctionSniff extends AbstractSprykerSniff
             return;
         }
 
-        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $previous = (int)$phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if (!$previous || in_array($tokens[$previous]['code'], $wrongTokens)) {
             return;
         }
 
-        $openingBraceIndex = (int)$phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $openingBraceIndex = (int)$phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if (!$openingBraceIndex || $tokens[$openingBraceIndex]['type'] !== 'T_OPEN_PARENTHESIS') {
             return;
         }

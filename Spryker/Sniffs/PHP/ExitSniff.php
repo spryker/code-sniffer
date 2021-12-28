@@ -58,7 +58,7 @@ class ExitSniff implements Sniff
             $this->fixAlias($phpcsFile, $stackPtr, $key);
         }
 
-        $openingBrace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $openingBrace = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if (!$openingBrace || $tokens[$openingBrace]['type'] !== 'T_OPEN_PARENTHESIS') {
             return;
         }

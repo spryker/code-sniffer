@@ -37,7 +37,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
             return;
         }
 
-        $openingBraceIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $openingBraceIndex = (int)$phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         if (!$openingBraceIndex) {
             return;
         }
@@ -113,7 +113,7 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $openingBraceIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($stackPtr + 1), $stackPtr + 4);
+        $openingBraceIndex = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr + 1, $stackPtr + 4);
         if (!$openingBraceIndex) {
             return;
         }

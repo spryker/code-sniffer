@@ -41,9 +41,9 @@ class ConcatenationSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $prevIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $prevIndex = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
 
-        if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
+        if ($tokens[$stackPtr - 1]['code'] !== T_WHITESPACE) {
             $message = 'Expected 1 space before ., but 0 found';
             $fix = $phpcsFile->addFixableError($message, $stackPtr, 'MissingBefore');
             if ($fix) {
@@ -61,16 +61,16 @@ class ConcatenationSpacingSniff implements Sniff
             }
         }
 
-        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
 
-        if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+        if ($tokens[$stackPtr + 1]['code'] !== T_WHITESPACE) {
             $message = 'Expected 1 space after ., but 0 found';
             $fix = $phpcsFile->addFixableError($message, $stackPtr, 'MissingAfter');
             if ($fix) {
                 $this->addSpace($phpcsFile, $stackPtr);
             }
         } else {
-            $content = $tokens[($stackPtr + 1)]['content'];
+            $content = $tokens[$stackPtr + 1]['content'];
             if ($tokens[$nextIndex]['line'] === $tokens[$stackPtr]['line'] && $content !== ' ') {
                 $message = 'Expected 1 space after `.`, but %d found';
                 $data = [strlen($content)];

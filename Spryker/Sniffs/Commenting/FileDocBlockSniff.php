@@ -123,7 +123,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
      */
     protected function isIgnorableModule(File $phpCsFile): bool
     {
-        return (in_array($this->getModule($phpCsFile), $this->ignorableModules, true));
+        return in_array($this->getModule($phpCsFile), $this->ignorableModules, true);
     }
 
     /**

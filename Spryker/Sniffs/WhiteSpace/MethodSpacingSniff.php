@@ -33,12 +33,12 @@ class MethodSpacingSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $stringIndex = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $stringIndex = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if ($tokens[$stringIndex]['code'] !== T_STRING) {
             return;
         }
 
-        $parenthesisIndex = $phpcsFile->findNext(T_WHITESPACE, ($stringIndex + 1), null, true);
+        $parenthesisIndex = $phpcsFile->findNext(T_WHITESPACE, $stringIndex + 1, null, true);
         if ($tokens[$parenthesisIndex]['type'] !== 'T_OPEN_PARENTHESIS') {
             return;
         }
@@ -53,7 +53,7 @@ class MethodSpacingSniff extends AbstractSprykerSniff
 
         $parenthesisEndIndex = $tokens[$parenthesisIndex]['parenthesis_closer'];
 
-        $braceStartIndex = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], ($parenthesisEndIndex + 1));
+        $braceStartIndex = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], $parenthesisEndIndex + 1);
         if (!$braceStartIndex || $tokens[$braceStartIndex]['code'] !== T_OPEN_CURLY_BRACKET) {
             return;
         }
@@ -63,7 +63,7 @@ class MethodSpacingSniff extends AbstractSprykerSniff
         }
 
         $braceEndIndex = $tokens[$braceStartIndex]['bracket_closer'];
-        $nextContentIndex = $phpcsFile->findNext(T_WHITESPACE, ($braceStartIndex + 1), null, true);
+        $nextContentIndex = $phpcsFile->findNext(T_WHITESPACE, $braceStartIndex + 1, null, true);
         if (!$nextContentIndex) {
             return;
         }

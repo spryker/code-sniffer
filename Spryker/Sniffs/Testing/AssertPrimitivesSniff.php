@@ -84,12 +84,12 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $openingBraceIndex = $phpcsFile->findNext(T_WHITESPACE, ($i + 3), null, true);
+            $openingBraceIndex = $phpcsFile->findNext(T_WHITESPACE, $i + 3, null, true);
             if (!$openingBraceIndex) {
                 continue;
             }
 
-            $nextIndex = $phpcsFile->findNext(T_WHITESPACE, ($openingBraceIndex + 1), null, true);
+            $nextIndex = $phpcsFile->findNext(T_WHITESPACE, $openingBraceIndex + 1, null, true);
             if (!$nextIndex || !in_array($tokens[$nextIndex]['content'], static::$primitives, true)) {
                 continue;
             }
@@ -101,10 +101,10 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $commaIndex = $phpcsFile->findNext(T_WHITESPACE, ($nextIndex + 1), null, true);
+            $commaIndex = $phpcsFile->findNext(T_WHITESPACE, $nextIndex + 1, null, true);
             $nextParamIndex = null;
             if ($commaIndex && $tokens[$commaIndex]['code'] === T_COMMA) {
-                $nextParamIndex = $phpcsFile->findNext(T_WHITESPACE, ($commaIndex + 1), null, true);
+                $nextParamIndex = $phpcsFile->findNext(T_WHITESPACE, $commaIndex + 1, null, true);
             }
 
             $phpcsFile->fixer->beginChangeset();

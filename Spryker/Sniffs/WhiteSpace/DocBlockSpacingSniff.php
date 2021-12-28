@@ -38,7 +38,7 @@ class DocBlockSpacingSniff implements Sniff
         while (!empty($tokens[$beginningOfLine - 1]) && $tokens[$beginningOfLine - 1]['line'] === $line) {
             $beginningOfLine--;
         }
-        $previousIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($beginningOfLine - 1), null, true);
+        $previousIndex = $phpcsFile->findPrevious(T_WHITESPACE, $beginningOfLine - 1, null, true);
 
         if (!$previousIndex || $tokens[$previousIndex]['code'] !== T_DOC_COMMENT_CLOSE_TAG) {
             return;

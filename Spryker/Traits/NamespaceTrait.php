@@ -27,7 +27,7 @@ trait NamespaceTrait
         $tokens = $phpcsFile->getTokens();
 
         // Ignore USE keywords inside closures.
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $next = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if ($tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
             return true;
         }

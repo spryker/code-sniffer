@@ -37,7 +37,7 @@ class ImplicitCastSpacingSniff implements Sniff
             return;
         }
 
-        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
 
         if ($nextIndex - $stackPtr === 1) {
             return;
@@ -61,7 +61,7 @@ class ImplicitCastSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $nextIndex = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if ($tokens[$nextIndex]['code'] === T_VARIABLE) {
             if ($nextIndex - $stackPtr === 1) {
                 return;
@@ -77,7 +77,7 @@ class ImplicitCastSpacingSniff implements Sniff
             return;
         }
 
-        $prevIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $prevIndex = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if ($tokens[$prevIndex]['code'] === T_VARIABLE) {
             if ($stackPtr - $prevIndex === 1) {
                 return;

@@ -163,7 +163,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if ($tokens[($index + 2)]['code'] !== T_DOC_COMMENT_STRING) {
+            if ($tokens[$index + 2]['code'] !== T_DOC_COMMENT_STRING) {
                 $throwTags[] = [
                     'index' => $index,
                     'fullClass' => null,
@@ -173,7 +173,7 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            $classAndAppendix = $tokens[($index + 2)]['content'];
+            $classAndAppendix = $tokens[$index + 2]['content'];
 
             $fullClass = $classAndAppendix;
             $appendix = '';

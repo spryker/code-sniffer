@@ -32,24 +32,24 @@ class FunctionNamespaceSniff implements Sniff
 
         $tokenContent = $tokens[$stackPtr]['content'];
 
-        $openingBrace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $openingBrace = $phpcsFile->findNext(T_WHITESPACE, $stackPtr + 1, null, true);
         if (!$openingBrace || $tokens[$openingBrace]['type'] !== 'T_OPEN_PARENTHESIS') {
             return;
         }
 
-        $separatorIndex = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $separatorIndex = $phpcsFile->findPrevious(T_WHITESPACE, $stackPtr - 1, null, true);
         if (!$separatorIndex || $tokens[$separatorIndex]['type'] !== 'T_NS_SEPARATOR') {
             return;
         }
 
         // We check that this is a function but not new operator
-        $newIndex = $phpcsFile->findPrevious([T_WHITESPACE, T_NS_SEPARATOR], ($stackPtr - 1), null, true);
+        $newIndex = $phpcsFile->findPrevious([T_WHITESPACE, T_NS_SEPARATOR], $stackPtr - 1, null, true);
         if (!$newIndex || in_array($tokens[$newIndex]['code'], [T_NEW, T_ATTRIBUTE], true)) {
             return;
         }
 
         // We skip for non trivial cases
-        $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($separatorIndex - 1), null, true);
+        $previous = $phpcsFile->findPrevious(T_WHITESPACE, $separatorIndex - 1, null, true);
         if (!$previous || $tokens[$previous]['type'] === 'T_STRING') {
             return;
         }

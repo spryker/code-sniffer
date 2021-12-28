@@ -47,14 +47,14 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $openingBraceIndex = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $openingBraceIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
         if (!$openingBraceIndex) {
             return;
         }
 
         $closingBraceIndex = $tokens[$openingBraceIndex]['parenthesis_closer'];
 
-        $valueIndex = $phpcsFile->findNext(Tokens::$emptyTokens, ($openingBraceIndex + 1), $closingBraceIndex, true);
+        $valueIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $openingBraceIndex + 1, $closingBraceIndex, true);
         if (!$valueIndex) {
             return;
         }
@@ -63,7 +63,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
             return;
         }
 
-        $lastValueIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($closingBraceIndex - 1), $valueIndex, true) ?: $valueIndex;
+        $lastValueIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $closingBraceIndex - 1, $valueIndex, true) ?: $valueIndex;
 
         $validSilencing = $this->isValidSilencing($phpcsFile, $valueIndex, $lastValueIndex);
 
@@ -72,7 +72,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         }
 
         $inverted = false;
-        $previousTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
+        $previousTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $stackPtr - 1, null, true);
         if (!$previousTokenIndex) {
             return;
         }
@@ -89,7 +89,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
             return;
         }
 
-        $nextTokenIndex = $phpcsFile->findNext(Tokens::$emptyTokens, ($closingBraceIndex + 1), null, true);
+        $nextTokenIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $closingBraceIndex + 1, null, true);
         if ($nextTokenIndex && in_array($tokens[$nextTokenIndex]['code'], Tokens::$equalityTokens, true)) {
             $phpcsFile->addError($message, $stackPtr, 'InvalidEmpty');
 
@@ -141,7 +141,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
      */
     protected function isSafeToSkipCast(File $phpcsFile, int $stackPtr, int $previousTokenIndex): bool
     {
-        $assignmentTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($previousTokenIndex - 1), null, true);
+        $assignmentTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $previousTokenIndex - 1, null, true);
 
         $tokens = $phpcsFile->getTokens();
         if ($assignmentTokenIndex && in_array($tokens[$assignmentTokenIndex]['code'], [T_EQUAL, T_RETURN], true)) {
@@ -158,7 +158,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         /** @var int $index */
         $index = array_shift($keys);
 
-        $conditionalTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($index - 1), null, true);
+        $conditionalTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $index - 1, null, true);
         if (!$conditionalTokenIndex || !in_array($tokens[$conditionalTokenIndex]['code'], [T_IF, T_ELSEIF], true)) {
             return false;
         }
@@ -196,7 +196,7 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
             return false;
         }
 
-        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($objectOperatorIndex - 1), $valueIndex, true);
+        $prevIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $objectOperatorIndex - 1, $valueIndex, true);
         if ($prevIndex && $tokens[$prevIndex]['code'] === T_VARIABLE && $tokens[$prevIndex]['content'] !== '$this') {
             return true;
         }

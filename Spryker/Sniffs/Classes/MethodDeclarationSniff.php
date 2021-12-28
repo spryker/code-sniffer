@@ -52,13 +52,13 @@ class MethodDeclarationSniff extends AbstractScopeSniff
 
         $find = Tokens::$methodPrefixes;
         $find[] = T_WHITESPACE;
-        $prev = $phpcsFile->findPrevious($find, ($stackPtr - 1), null, true);
+        $prev = $phpcsFile->findPrevious($find, $stackPtr - 1, null, true);
         if (!$prev) {
             return;
         }
 
         $prefix = $stackPtr;
-        while (($prefix = $phpcsFile->findPrevious(Tokens::$methodPrefixes, ($prefix - 1), $prev)) !== false) {
+        while (($prefix = $phpcsFile->findPrevious(Tokens::$methodPrefixes, $prefix - 1, $prev)) !== false) {
             switch ($tokens[$prefix]['code']) {
                 case T_STATIC:
                     $static = $prefix;
@@ -86,7 +86,7 @@ class MethodDeclarationSniff extends AbstractScopeSniff
             $fix = $phpcsFile->addFixableError($error, $final, 'FinalAfterVisibility');
             if ($fix === true) {
                 $fixes[$final] = '';
-                $fixes[($final + 1)] = '';
+                $fixes[$final + 1] = '';
                 if (isset($fixes[$visibility]) === true) {
                     $fixes[$visibility] = 'final ' . $fixes[$visibility];
                 } else {
@@ -100,7 +100,7 @@ class MethodDeclarationSniff extends AbstractScopeSniff
             $fix = $phpcsFile->addFixableError($error, $abstract, 'AbstractAfterVisibility');
             if ($fix === true) {
                 $fixes[$abstract] = '';
-                $fixes[($abstract + 1)] = '';
+                $fixes[$abstract + 1] = '';
                 if (isset($fixes[$visibility]) === true) {
                     $fixes[$visibility] = 'abstract ' . $fixes[$visibility];
                 } else {
@@ -114,7 +114,7 @@ class MethodDeclarationSniff extends AbstractScopeSniff
             $fix = $phpcsFile->addFixableError($error, $static, 'StaticBeforeVisibility');
             if ($fix === true) {
                 $fixes[$static] = '';
-                $fixes[($static + 1)] = '';
+                $fixes[$static + 1] = '';
                 if (isset($fixes[$visibility]) === true) {
                     $fixes[$visibility] = $fixes[$visibility] . ' static';
                 } else {
