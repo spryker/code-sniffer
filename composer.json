@@ -3,7 +3,12 @@
     "description": "Spryker Code Sniffer Standards",
     "type": "phpcodesniffer-standard",
     "license": "MIT",
-    "keywords": ["framework", "codesniffer", "phpcs", "standards"],
+    "keywords": [
+        "framework",
+        "codesniffer",
+        "phpcs",
+        "standards"
+    ],
     "homepage": "https://spryker.com",
     "authors": [
         {
