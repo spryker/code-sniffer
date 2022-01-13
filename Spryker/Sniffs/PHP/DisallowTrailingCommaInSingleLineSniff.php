@@ -16,7 +16,7 @@ use const T_COMMA;
 class DisallowTrailingCommaInSingleLineSniff implements Sniff
 {
     /**
-     * @var array<int>
+     * @var array<string|int>
      */
     protected $closingTokens = [
         T_CLOSE_PARENTHESIS,
