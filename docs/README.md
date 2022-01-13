@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 231 sniffs
+The SprykerStrict standard contains 233 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -44,11 +44,12 @@ PSR1 (3 sniffs)
 - PSR1.Files.SideEffects
 - PSR1.Methods.CamelCapsMethodName
 
-PSR12 (13 sniffs)
+PSR12 (14 sniffs)
 -----------------
 - PSR12.Classes.AnonClassDeclaration
 - PSR12.Classes.ClassInstantiation
 - PSR12.Classes.ClosingBrace
+- PSR12.Classes.OpeningBraceSpace
 - PSR12.ControlStructures.BooleanOperatorPlacement
 - PSR12.ControlStructures.ControlStructureSpacing
 - PSR12.Files.ImportStatement
@@ -125,7 +126,7 @@ SlevomatCodingStandard (47 sniffs)
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 - SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (96 sniffs)
+Spryker (97 sniffs)
 -------------------
 - Spryker.Arrays.DisallowImplicitArrayCreation
 - Spryker.Classes.ClassFileName
@@ -200,6 +201,7 @@ Spryker (96 sniffs)
 - Spryker.Namespaces.UseStatement
 - Spryker.Namespaces.UseWithAliasing
 - Spryker.PHP.DisallowFunctions
+- Spryker.PHP.DisallowTrailingCommaInSingleLine
 - Spryker.PHP.Exit
 - Spryker.PHP.NoIsNull
 - Spryker.PHP.NotEqual
