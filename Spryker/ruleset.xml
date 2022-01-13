@@ -126,10 +126,6 @@
         <severity>0</severity>
     </rule>
 
-    <rule ref="Generic.Functions.FunctionCallArgumentSpacing.NoSpaceAfterComma">
-        <severity>0</severity>
-    </rule>
-
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
         <properties>
             <property name="ignoreBlankLines" value="false"/>
