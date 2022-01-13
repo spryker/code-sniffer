@@ -9,10 +9,10 @@ namespace Spryker\Sniffs\PHP;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use function in_array;
-use const T_CLOSE_PARENTHESIS;
-use const T_COMMA;
 
+/**
+ * Makes sure we do not have any trailing commas in single line declarations/calls.
+ */
 class DisallowTrailingCommaInSingleLineSniff implements Sniff
 {
     /**
