@@ -9,15 +9,23 @@ class FixMe
      */
     protected function getSimpleInts(): array
     {
-        return $this>foo();
+        return $this->foo();
     }
 
     /**
-     * @return \Iterator|int[]
+     * @return \ArrayObject<string>
+     */
+    protected function getSimpleStringCollection()
+    {
+        return $this->foo();
+    }
+
+    /**
+     * @return \Iterator<int>
      */
     protected function getSimpleIntCollection(): Iterator
     {
-        return $this>foo();
+        return $this->foo();
     }
 
     /**

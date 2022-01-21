@@ -80,6 +80,16 @@ class FixMe
     }
 
     /**
+     * @param \Propel\Runtime\Collection\ObjectCollection<\Orm\Zed\ProductImage\Persistence\SpyProductImageSet> $productImageSetEntities
+     *
+     * @return array<\Generated\Shared\Transfer\ProductImageSetTransfer>
+     */
+    protected function complexGeneric(ObjectCollection $productImageSetEntities): array
+    {
+        return [];
+    }
+
+    /**
      * @phpstan-param \ArrayObject<string, mixed> $options
      * @phpstan-return array<string>
      *

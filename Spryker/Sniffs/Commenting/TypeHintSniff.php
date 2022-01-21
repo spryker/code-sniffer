@@ -41,15 +41,6 @@ class TypeHintSniff extends AbstractSprykerSniff
     use CommentingTrait;
 
     /**
-     * Use this to keep legacy collection objects as `\FQCN|type[]` instead of
-     * `\FQCN<type>` for all non-trivial object types. This helps IDEs to understand this,
-     * as long as they do not yet understand new generics here.
-     *
-     * @var bool
-     */
-    public $legacyCollectionObjects = true;
-
-    /**
      * @var array<string>
      */
     protected static $typeHintTags = [
@@ -67,15 +58,11 @@ class TypeHintSniff extends AbstractSprykerSniff
     /**
      * Highest/First element will be first in list of param or return tag.
      *
+     * All \FQCN class names will be merged on top automatically.
+     *
      * @var array<string>
      */
     protected static $sortMap = [
-        '\\Closure',
-        '\\Traversable',
-        '\\ArrayAccess',
-        '\\ArrayObject',
-        '\\Stringable',
-        '\\Generator',
         'mixed',
         'callable',
         'resource',
@@ -95,20 +82,6 @@ class TypeHintSniff extends AbstractSprykerSniff
         'false',
         'null',
         'void',
-    ];
-
-    /**
-     * The following classes are supported for object generics by IDEs like PHPStorm already.
-     * E.g. `\ArrayObject<type>` instead of legacy syntax `\ArrayObject|type[]`.
-     *
-     * @var array<string>
-     */
-    protected static $genericCollectionClasses = [
-        '\\Traversable',
-        '\\ArrayAccess',
-        '\\ArrayObject',
-        '\\Generator',
-        '\\Iterator',
     ];
 
     /**
@@ -280,6 +253,10 @@ class TypeHintSniff extends AbstractSprykerSniff
             $sortName = null;
             if ($type instanceof IdentifierTypeNode) {
                 $sortName = $type->name;
+                if (mb_substr($sortName, 0, 1) === '\\') {
+                    $sortName = '_obj_' . $sortName;
+                }
+
             } elseif ($type instanceof NullableTypeNode) {
                 if ($type->type instanceof IdentifierTypeNode) {
                     $sortName = $type->type->name;
@@ -294,47 +271,9 @@ class TypeHintSniff extends AbstractSprykerSniff
                 }
             } elseif ($type instanceof ArrayShapeNode) {
                 $sortName = 'array';
-            } elseif ($type instanceof GenericTypeNode) {
-                if (
-                    $this->legacyCollectionObjects
-                    && !$this->isStanTag($tag)
-                    && $this->isObjectCollection($types)
-                    && !$this->isGenericObjectCollection($types)
-                    && count($type->genericTypes) === 1
-                    && in_array($type->type->name, ['array', 'iterable'], true)
-                ) {
-                    /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
-                    $identifierType = $type->genericTypes[0];
-                    $type = new ArrayTypeNode(new IdentifierTypeNode($identifierType->name));
-                    $sortName = 'array';
-                } elseif (
-                    !$this->isStanTag($tag)
-                    && substr($type->type->name, 0, 1) === '\\'
-                    && !in_array($type->type->name, static::$genericCollectionClasses, true)
-                    && count($type->genericTypes) === 1 && $type->genericTypes[0] instanceof IdentifierTypeNode
-                ) {
-                    /** @var \PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode $identifierType */
-                    $identifierType = $type->genericTypes[0];
-                    $type = (string)new UnionTypeNode([
-                        new IdentifierTypeNode($type->type->name),
-                        new ArrayTypeNode(new IdentifierTypeNode($identifierType->name)),
-                    ]);
-                    $type = substr($type, 1, -1);
-                    $sortName = 'array';
-                } elseif (in_array($type->type->name, static::$sortMap)) {
-                    $sortName = $type->type->name;
-                } else {
-                    $sortName = 'array';
-                }
             }
 
-            if (!$sortName) {
-                $unsortable[] = $type;
-
-                continue;
-            }
-
-            if (in_array($sortName, static::$sortMap, true)) {
+            if ($sortName && in_array($sortName, static::$sortMap, true)) {
                 if ($type instanceof ArrayTypeNode) {
                     array_unshift($sortable[$sortName], $type);
                 } else {
@@ -401,29 +340,6 @@ class TypeHintSniff extends AbstractSprykerSniff
     }
 
     /**
-     * These simple generic object collections are already understood by IDEs like PHPStorm.
-     *
-     * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
-     *
-     * @return bool
-     */
-    protected function isGenericObjectCollection(array $types): bool
-    {
-        foreach ($types as $type) {
-            if (!$type instanceof IdentifierTypeNode) {
-                continue;
-            }
-
-            $className = (string)$type;
-            if (strpos((string)$type, '\\') === 0 && in_array($className, static::$genericCollectionClasses, true)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * We do not want to touch stan tags, as they are usually more accurate than normal tags.
      * Normal tags often need legacy syntax for IDEs to understand them.
      *
@@ -482,20 +398,13 @@ class TypeHintSniff extends AbstractSprykerSniff
             return null;
         }
 
-        $types = static::$genericCollectionClasses;
-        $types[] = 'array';
-        $types[] = 'iterable';
-        $callback = function (string &$value): void {
-            $value = str_replace('\\', '\\\\', $value);
-        };
-        array_walk($types, $callback);
-
-        preg_match('/^(' . implode('|', $types) . ')<.+>/', $content, $matches);
+        preg_match('/^([A-Za-z0-9\\\\]+)<.+>/', $content, $matches);
         if (!$matches) {
             return null;
         }
 
         $matchingTag = str_replace(['phpstan-', 'psalm-'], '', $tag);
+        $type = $matches[1];
 
         $tokens = $phpcsFile->getTokens();
         foreach ($commentTags as $commentTag) {
@@ -505,7 +414,7 @@ class TypeHintSniff extends AbstractSprykerSniff
 
             $tagComment = $phpcsFile->fixer->getTokenContent($commentTag + 2);
 
-            preg_match('/^(' . implode('|', $types) . ')( .+)?$/', $tagComment, $matches);
+            preg_match('/^' . preg_quote($type, '/') . '( .+)?$/', $tagComment, $matches);
 
             if ($matches) {
                 return $commentTag;

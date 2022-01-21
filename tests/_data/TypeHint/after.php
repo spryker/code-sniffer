@@ -33,7 +33,7 @@ class FixMe
     }
 
     /**
-     * @param \ArrayObject|int[] $array
+     * @param \ArrayObject<int> $array
      *
      * @return \ArrayAccess|array<int> $array
      */
@@ -59,7 +59,7 @@ class FixMe
      */
     protected function complex($col)
     {
-        /** @var \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\SalesReturn\Persistence\SpySalesReturn[] $salesReturnEntityCollection */
+        /** @var \Propel\Runtime\Collection\ObjectCollection<\Orm\Zed\SalesReturn\Persistence\SpySalesReturn> $salesReturnEntityCollection */
         $salesReturnEntityCollection = $this->runQuery();
 
         /** @var \ArrayObject<\Generated\Shared\Transfer\ShipmentGroupTransfer> $shipmentGroupCollection */
@@ -74,6 +74,16 @@ class FixMe
     public function getRelatedProducts(): Generator
     {
         yield $this->x();
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection<\Orm\Zed\ProductImage\Persistence\SpyProductImageSet> $productImageSetEntities
+     *
+     * @return array<\Generated\Shared\Transfer\ProductImageSetTransfer>
+     */
+    protected function complexGeneric(ObjectCollection $productImageSetEntities): array
+    {
+        return [];
     }
 
     /**

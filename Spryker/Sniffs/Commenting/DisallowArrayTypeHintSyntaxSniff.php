@@ -27,7 +27,7 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 use SlevomatCodingStandard\Helpers\TypeHintHelper;
 
 /**
- * Fixed version of Slevomatic, not touching collection objects.
+ * Fixed version of Slevomatic, touching collection objects the right way.
  *
  * @see https://github.com/slevomat/coding-standard/issues/1296
  */
@@ -42,20 +42,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
      * @var array<string>
      */
     public $traversableTypeHints = [];
-
-    /**
-     * The following classes are supported for object generics by IDEs like PHPStorm already.
-     * E.g. `\ArrayObject<type>` instead of legacy syntax `\ArrayObject|type[]`.
-     *
-     * @var array<string>
-     */
-    protected static $genericCollectionClasses = [
-        '\\Traversable',
-        '\\ArrayAccess',
-        '\\ArrayObject',
-        '\\Generator',
-        '\\Iterator',
-    ];
 
     /**
      * @var array<string, int>|null
@@ -90,6 +76,8 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 }
 
                 if ($this->isGenericObjectCollection($annotation)) {
+                    $this->fixGenericObjectCollection($phpcsFile, $docCommentOpenPointer, $annotation);
+
                     continue;
                 }
 
@@ -374,5 +362,33 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         }
 
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $docCommentOpenPointer
+     * @param \SlevomatCodingStandard\Helpers\Annotation\GenericAnnotation $annotation
+     *
+     * @return void
+     */
+    protected function fixGenericObjectCollection(File $phpcsFile, int $docCommentOpenPointer, Annotation $annotation): void
+    {
+        foreach (AnnotationHelper::getAnnotationTypes($annotation) as $annotationType) {
+            /*
+            if ($annotationType instanceof UnionTypeNode) {
+                if (
+                    !$this->hasGenericObject($annotationType->types)
+                    || !$this->containsArrayTypeNode($annotationType->types)
+                ) {
+                    return;
+                }
+                */
+
+            //TODO
+            $genericIdentifier = $this->findGenericIdentifier($phpcsFile, $annotationType, $annotation);
+            if ($genericIdentifier) {
+                var_dump($genericIdentifier);die();
+            }
+        }
     }
 }
