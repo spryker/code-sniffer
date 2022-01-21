@@ -69,9 +69,19 @@ class FixMe
     }
 
     /**
+     * @param \Propel\Runtime\Collection|array<int|string>|string|int $x
+     *
+     * @return \Propel\Runtime\Collection|\ArrayObject<\Foo>|array<int|string>|string|int
+     */
+    protected function sortMultiple($x)
+    {
+        return $x;
+    }
+
+    /**
      * @return \Generator<array<\Generated\Shared\Transfer\ProductAbstractTransfer>>
      */
-    public function getRelatedProducts(): Generator
+    public function mergeGenerics(): Generator
     {
         yield $this->x();
     }
