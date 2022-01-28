@@ -5,4 +5,4 @@ parameters:
         - SprykerStrict/
         - GlueStreamSpecific/
     bootstrapFiles:
-        - %rootDir%/../../../tests/bootstrap.php
+        - '%rootDir%/../../../tests/bootstrap.php'
