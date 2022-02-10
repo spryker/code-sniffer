@@ -9,6 +9,7 @@ use DomainException;
 use LogicException;
 use RangeException;
 use RuntimeException;
+use League\OAuth2\Server\Exception\OAuthServerException;
 
 class FixMe
 {
@@ -53,5 +54,15 @@ class FixMe
         if ($this->something()) {
             throw new \BadMethodCallException();
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function staticCall(): void
+    {
+        throw OAuthServerException::accessDenied('baz');
+
+        new Parser();
     }
 }
