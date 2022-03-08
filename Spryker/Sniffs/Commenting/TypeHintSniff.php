@@ -76,6 +76,7 @@ class TypeHintSniff extends AbstractSprykerSniff
         '\\ArrayObject',
         '\\Stringable',
         '\\Countable',
+        '\\Generator',
         'mixed',
         'callable',
         'resource',
