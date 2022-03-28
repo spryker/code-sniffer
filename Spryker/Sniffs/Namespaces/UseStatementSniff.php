@@ -954,13 +954,11 @@ class UseStatementSniff implements Sniff
                 break;
             }
 
-            while ($tokens[$i]['code'] !== T_NS_SEPARATOR && $tokens[$i]['code'] !== T_STRING) {
+            while ($tokens[$i]['code'] !== T_NS_SEPARATOR && $tokens[$i]['code'] !== T_STRING && $i < $endIndex) {
                 $i++;
                 if (empty($tokens[$i])) {
                     break;
                 }
-
-                continue;
             }
 
             if (empty($tokens[$i])) {
