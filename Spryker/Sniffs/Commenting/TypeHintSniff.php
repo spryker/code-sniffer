@@ -34,7 +34,6 @@ use Spryker\Traits\CommentingTrait;
 
 /**
  * Verifies order of types in type hints. Also removes duplicates.
- * Fixes invalid/problematic generic declarations back to legacy ones.
  */
 class TypeHintSniff extends AbstractSprykerSniff
 {
@@ -241,11 +240,10 @@ class TypeHintSniff extends AbstractSprykerSniff
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types node types
-     * @param string $tag
      *
      * @return string
      */
-    protected function getSortedTypeHint(array $types, string $tag): string
+    protected function getSortedTypeHint(array $types): string
     {
         $sortable = array_fill_keys(static::$sortMap, []);
         $unsortable = [];
@@ -253,10 +251,9 @@ class TypeHintSniff extends AbstractSprykerSniff
             $sortName = null;
             if ($type instanceof IdentifierTypeNode) {
                 $sortName = $type->name;
-                if (mb_substr($sortName, 0, 1) === '\\') {
+                if ($sortName[0] === '\\') {
                     $sortName = '_obj_' . $sortName;
                 }
-
             } elseif ($type instanceof NullableTypeNode) {
                 if ($type->type instanceof IdentifierTypeNode) {
                     $sortName = $type->type->name;
@@ -269,7 +266,10 @@ class TypeHintSniff extends AbstractSprykerSniff
                 } else {
                     $sortName = 'array';
                 }
-            } elseif ($type instanceof ArrayShapeNode) {
+            } elseif (
+                $type instanceof ArrayShapeNode ||
+                ($type instanceof GenericTypeNode && $type->type->name === 'array')
+            ) {
                 $sortName = 'array';
             }
 

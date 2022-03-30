@@ -33,7 +33,7 @@ class FixMe
     }
 
     /**
-     * @param \ArrayObject<int> $array
+     * @param \ArrayObject|int[] $array
      *
      * @return \ArrayAccess|array<int> $array
      */
@@ -45,7 +45,7 @@ class FixMe
     /**
      * @param \Collection|int[] $array
      *
-     * @return \Collection|int[] $array
+     * @return \Collection|array<int> $array
      */
     public function collection(array $array): array
     {
@@ -53,9 +53,9 @@ class FixMe
     }
 
     /**
-     * @param \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\Sales\Persistence\SpySalesShipment[] $col
+     * @param \Propel\Runtime\Collection\ObjectCollection|iterable<\Orm\Zed\Sales\Persistence\SpySalesShipment> $col
      *
-     * @return \Propel\Runtime\Collection\Collection|\Propel\Runtime\Collection\ObjectCollection|\Propel\Runtime\ActiveRecord\ActiveRecordInterface[]
+     * @return \Propel\Runtime\Collection\Collection|\Propel\Runtime\Collection\ObjectCollection<\Propel\Runtime\ActiveRecord\ActiveRecordInterface>
      */
     protected function complex($col)
     {

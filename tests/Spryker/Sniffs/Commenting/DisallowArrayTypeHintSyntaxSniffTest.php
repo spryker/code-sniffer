@@ -17,7 +17,7 @@ class DisallowArrayTypeHintSyntaxSniffTest extends TestCase
      */
     public function testDisallowArrayTypeHintSyntaxSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new DisallowArrayTypeHintSyntaxSniff(), 1);
+        $this->assertSnifferFindsErrors(new DisallowArrayTypeHintSyntaxSniff(), 12);
     }
 
     /**

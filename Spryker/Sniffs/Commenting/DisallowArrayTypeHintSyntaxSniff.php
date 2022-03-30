@@ -9,6 +9,7 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
@@ -18,6 +19,7 @@ use SlevomatCodingStandard\Helpers\Annotation\Annotation;
 use SlevomatCodingStandard\Helpers\Annotation\GenericAnnotation;
 use SlevomatCodingStandard\Helpers\Annotation\ParameterAnnotation;
 use SlevomatCodingStandard\Helpers\Annotation\ReturnAnnotation;
+use SlevomatCodingStandard\Helpers\Annotation\VariableAnnotation;
 use SlevomatCodingStandard\Helpers\AnnotationHelper;
 use SlevomatCodingStandard\Helpers\AnnotationTypeHelper;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
@@ -76,7 +78,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 }
 
                 if ($this->isGenericObjectCollection($annotation)) {
-                    $this->fixGenericObjectCollection($phpcsFile, $docCommentOpenPointer, $annotation);
+                    $this->fixGenericObjectCollection($phpcsFile, $annotation);
 
                     continue;
                 }
@@ -310,13 +312,27 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         //@phpstan-ignore-next-line
         foreach (AnnotationHelper::getAnnotationTypes($annotation) as $annotationType) {
             if ($annotationType instanceof UnionTypeNode) {
-                if (
-                    $this->hasGenericObject($annotationType->types)
-                    && $this->containsArrayTypeNode($annotationType->types)
-                ) {
+                if ($this->isUnionTypeGenericObjectCollection($annotationType)) {
                     return true;
                 }
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \PHPStan\PhpDocParser\Ast\Type\UnionTypeNode $unionTypeNode
+     *
+     * @return bool
+     */
+    protected function isUnionTypeGenericObjectCollection(UnionTypeNode $unionTypeNode): bool
+    {
+        if (
+            $this->hasGenericObject($unionTypeNode->types)
+            && $this->containsArrayTypeNode($unionTypeNode->types)
+        ) {
+            return true;
         }
 
         return false;
@@ -345,6 +361,16 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
     }
 
     /**
+     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
+     *
+     * @return bool
+     */
+    protected function isGenericObject(TypeNode $typeNode): bool
+    {
+        return $typeNode instanceof IdentifierTypeNode && strpos((string)$typeNode, '\\') === 0;
+    }
+
+    /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
      *
      * @return bool
@@ -365,30 +391,110 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
     }
 
     /**
+     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
+     *
+     * @return bool
+     */
+    protected function isArrayTypeNode(TypeNode $typeNode): bool
+    {
+        return $typeNode instanceof ArrayTypeNode &&
+            ($typeNode->type instanceof IdentifierTypeNode || $typeNode->type instanceof ArrayTypeNode);
+    }
+
+    /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docCommentOpenPointer
-     * @param \SlevomatCodingStandard\Helpers\Annotation\GenericAnnotation $annotation
+     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation $annotation
      *
      * @return void
      */
-    protected function fixGenericObjectCollection(File $phpcsFile, int $docCommentOpenPointer, Annotation $annotation): void
+    protected function fixGenericObjectCollection(File $phpcsFile, Annotation $annotation): void
     {
-        foreach (AnnotationHelper::getAnnotationTypes($annotation) as $annotationType) {
-            /*
-            if ($annotationType instanceof UnionTypeNode) {
-                if (
-                    !$this->hasGenericObject($annotationType->types)
-                    || !$this->containsArrayTypeNode($annotationType->types)
-                ) {
+        $typeNode = AnnotationHelper::getAnnotationTypes($annotation)[0];
+
+        $genericType = null;
+        $arrayType = null;
+        $unionTypes = [];
+
+        if (!$typeNode instanceof UnionTypeNode) {
+            return;
+        }
+
+        foreach ($typeNode->types as $type) {
+            if ($this->isGenericObject($type)) {
+                if ($genericType !== null) {
                     return;
                 }
-                */
 
-            //TODO
-            $genericIdentifier = $this->findGenericIdentifier($phpcsFile, $annotationType, $annotation);
-            if ($genericIdentifier) {
-                var_dump($genericIdentifier);die();
+                $genericType = (string)$type;
+
+                continue;
             }
+
+            if ($this->isArrayTypeNode($type)) {
+                if ($arrayType !== null) {
+                    return;
+                }
+
+                $arrayType = $this->convertTypeToString($type->type);
+
+                continue;
+            }
+
+            $unionTypes[] = (string)$type;
         }
+
+        if (!$genericType || !$arrayType) {
+            return;
+        }
+
+        $fix = $phpcsFile->addFixableError(
+            sprintf(
+                'Usage of old type hint syntax for generic in "%s" is disallowed, use generic type hint syntax instead.',
+                AnnotationTypeHelper::export($typeNode),
+            ),
+            $annotation->getStartPointer(),
+            static::CODE_DISALLOWED_ARRAY_TYPE_HINT_SYNTAX,
+        );
+
+        if (!$fix) {
+            return;
+        }
+
+        $fixedType = sprintf(
+            '%s<%s>',
+            $genericType,
+            $arrayType,
+        );
+
+        array_unshift($unionTypes, $fixedType);
+
+        $fixedType = implode('|', $unionTypes);
+
+        $spacePosition = strpos($annotation->getContent(), ' ');
+        if ($spacePosition !== false) {
+            $fixedType .= substr($annotation->getContent(), $spacePosition);
+        }
+
+        $nextToken = $phpcsFile->fixer->getTokenContent($annotation->getEndPointer() + 1);
+
+        if ($nextToken === '*/') {
+            $fixedType .= ' ';
+        }
+
+        $phpcsFile->fixer->replaceToken($annotation->getStartPointer() + 2, $fixedType);
+    }
+
+    /**
+     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
+     *
+     * @return string
+     */
+    protected function convertTypeToString(TypeNode $typeNode): string
+    {
+        if ($this->isArrayTypeNode($typeNode)) {
+            return sprintf('array<%s>', $this->convertTypeToString($typeNode->type));
+        }
+
+        return (string)$typeNode;
     }
 }
