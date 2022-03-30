@@ -9,7 +9,6 @@ namespace Spryker\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
@@ -19,7 +18,6 @@ use SlevomatCodingStandard\Helpers\Annotation\Annotation;
 use SlevomatCodingStandard\Helpers\Annotation\GenericAnnotation;
 use SlevomatCodingStandard\Helpers\Annotation\ParameterAnnotation;
 use SlevomatCodingStandard\Helpers\Annotation\ReturnAnnotation;
-use SlevomatCodingStandard\Helpers\Annotation\VariableAnnotation;
 use SlevomatCodingStandard\Helpers\AnnotationHelper;
 use SlevomatCodingStandard\Helpers\AnnotationTypeHelper;
 use SlevomatCodingStandard\Helpers\FunctionHelper;
@@ -403,7 +401,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation $annotation
+     * @param \SlevomatCodingStandard\Helpers\Annotation\VariableAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ParameterAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ReturnAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ThrowsAnnotation|\SlevomatCodingStandard\Helpers\Annotation\PropertyAnnotation|\SlevomatCodingStandard\Helpers\Annotation\MethodAnnotation|\SlevomatCodingStandard\Helpers\Annotation\TemplateAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ExtendsAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ImplementsAnnotation|\SlevomatCodingStandard\Helpers\Annotation\UseAnnotation|\SlevomatCodingStandard\Helpers\Annotation\MixinAnnotation|\SlevomatCodingStandard\Helpers\Annotation\TypeAliasAnnotation|\SlevomatCodingStandard\Helpers\Annotation\TypeImportAnnotation $annotation
      *
      * @return void
      */
@@ -430,11 +428,10 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 continue;
             }
 
-            if ($this->isArrayTypeNode($type)) {
+            if ($this->isArrayTypeNode($type) && $type instanceof ArrayTypeNode) {
                 if ($arrayType !== null) {
                     return;
                 }
-
                 $arrayType = $this->convertTypeToString($type->type);
 
                 continue;
@@ -470,9 +467,10 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
         $fixedType = implode('|', $unionTypes);
 
-        $spacePosition = strpos($annotation->getContent(), ' ');
+        $content = $annotation->getContent() ?? '';
+        $spacePosition = strpos($content, ' ');
         if ($spacePosition !== false) {
-            $fixedType .= substr($annotation->getContent(), $spacePosition);
+            $fixedType .= substr($content, $spacePosition);
         }
 
         $nextToken = $phpcsFile->fixer->getTokenContent($annotation->getEndPointer() + 1);
@@ -491,7 +489,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
      */
     protected function convertTypeToString(TypeNode $typeNode): string
     {
-        if ($this->isArrayTypeNode($typeNode)) {
+        if ($typeNode instanceof ArrayTypeNode) {
             return sprintf('array<%s>', $this->convertTypeToString($typeNode->type));
         }
 

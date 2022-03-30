@@ -132,7 +132,7 @@ class TypeHintSniff extends AbstractSprykerSniff
             }
 
             $originalTypeHint = $this->renderUnionTypes($types);
-            $sortedTypeHint = $this->getSortedTypeHint($types, $tokens[$tag]['content']);
+            $sortedTypeHint = $this->getSortedTypeHint($types);
             if ($sortedTypeHint === $originalTypeHint) {
                 continue;
             }
