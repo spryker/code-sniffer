@@ -326,14 +326,8 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
      */
     protected function isUnionTypeGenericObjectCollection(UnionTypeNode $unionTypeNode): bool
     {
-        if (
-            $this->hasGenericObject($unionTypeNode->types)
-            && $this->containsArrayTypeNode($unionTypeNode->types)
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->hasGenericObject($unionTypeNode->types)
+            && $this->containsArrayTypeNode($unionTypeNode->types);
     }
 
     /**
@@ -428,7 +422,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 continue;
             }
 
-            if ($this->isArrayTypeNode($type) && $type instanceof ArrayTypeNode) {
+            if ($this->isArrayTypeNode($type)) {
                 if ($arrayType !== null) {
                     return;
                 }
@@ -446,7 +440,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
         $fix = $phpcsFile->addFixableError(
             sprintf(
-                'Usage of old type hint syntax for generic in "%s" is disallowed, use generic type hint syntax instead.',
+                'Usage of old type hint syntax for generic in `%s` is disallowed, use generic type hint syntax instead.',
                 AnnotationTypeHelper::export($typeNode),
             ),
             $annotation->getStartPointer(),
