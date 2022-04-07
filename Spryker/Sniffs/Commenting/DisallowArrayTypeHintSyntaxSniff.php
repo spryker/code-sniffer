@@ -426,7 +426,9 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 if ($arrayType !== null) {
                     return;
                 }
-                $arrayType = $this->convertTypeToString($type->type);
+                /** @var \PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode $arrayTypeNode */
+                $arrayTypeNode = $type;
+                $arrayType = $this->convertTypeToString($arrayTypeNode->type);
 
                 continue;
             }
