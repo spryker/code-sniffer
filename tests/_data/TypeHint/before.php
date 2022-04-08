@@ -70,13 +70,33 @@ class FixMe
     }
 
     /**
+     * @param string|int|\Propel\Runtime\Collection|array<int|string> $x
+     *
+     * @return string|int|\Propel\Runtime\Collection|array<int|string>|\ArrayObject<\Foo>
+     */
+    protected function sortMultiple($x)
+    {
+        return $x;
+    }
+
+    /**
      * @phpstan-return \Generator<array<\Generated\Shared\Transfer\ProductAbstractTransfer>>
      *
      * @return \Generator<array<\Generated\Shared\Transfer\ProductAbstractTransfer>>
      */
-    public function getRelatedProducts(): Generator
+    public function mergeGenerics(): Generator
     {
         yield $this->x();
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection<\Orm\Zed\ProductImage\Persistence\SpyProductImageSet> $productImageSetEntities
+     *
+     * @return array<\Generated\Shared\Transfer\ProductImageSetTransfer>
+     */
+    protected function complexGeneric(ObjectCollection $productImageSetEntities): array
+    {
+        return [];
     }
 
     /**

@@ -45,7 +45,7 @@ class FixMe
     /**
      * @param \Collection|int[] $array
      *
-     * @return \Collection|int[] $array
+     * @return \Collection|array<int> $array
      */
     public function collection(array $array): array
     {
@@ -53,13 +53,13 @@ class FixMe
     }
 
     /**
-     * @param \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\Sales\Persistence\SpySalesShipment[] $col
+     * @param \Propel\Runtime\Collection\ObjectCollection|iterable<\Orm\Zed\Sales\Persistence\SpySalesShipment> $col
      *
-     * @return \Propel\Runtime\Collection\Collection|\Propel\Runtime\Collection\ObjectCollection|\Propel\Runtime\ActiveRecord\ActiveRecordInterface[]
+     * @return \Propel\Runtime\Collection\Collection|\Propel\Runtime\Collection\ObjectCollection<\Propel\Runtime\ActiveRecord\ActiveRecordInterface>
      */
     protected function complex($col)
     {
-        /** @var \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\SalesReturn\Persistence\SpySalesReturn[] $salesReturnEntityCollection */
+        /** @var \Propel\Runtime\Collection\ObjectCollection<\Orm\Zed\SalesReturn\Persistence\SpySalesReturn> $salesReturnEntityCollection */
         $salesReturnEntityCollection = $this->runQuery();
 
         /** @var \ArrayObject<\Generated\Shared\Transfer\ShipmentGroupTransfer> $shipmentGroupCollection */
@@ -69,11 +69,31 @@ class FixMe
     }
 
     /**
+     * @param \Propel\Runtime\Collection|array<int|string>|string|int $x
+     *
+     * @return \Propel\Runtime\Collection|\ArrayObject<\Foo>|array<int|string>|string|int
+     */
+    protected function sortMultiple($x)
+    {
+        return $x;
+    }
+
+    /**
      * @return \Generator<array<\Generated\Shared\Transfer\ProductAbstractTransfer>>
      */
-    public function getRelatedProducts(): Generator
+    public function mergeGenerics(): Generator
     {
         yield $this->x();
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection<\Orm\Zed\ProductImage\Persistence\SpyProductImageSet> $productImageSetEntities
+     *
+     * @return array<\Generated\Shared\Transfer\ProductImageSetTransfer>
+     */
+    protected function complexGeneric(ObjectCollection $productImageSetEntities): array
+    {
+        return [];
     }
 
     /**
