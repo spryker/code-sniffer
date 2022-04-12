@@ -207,6 +207,10 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         if ($abstractPosition) {
             return $abstractPosition;
         }
+        $finalPosition = (int)$phpCsFile->findPrevious(T_FINAL, $stackPointer);
+        if ($finalPosition) {
+            return $finalPosition;
+        }
 
         return $stackPointer;
     }
