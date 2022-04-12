@@ -28,6 +28,11 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     protected const LAYER_BUSINESS = 'Business';
 
     /**
+     * @var string
+     */
+    public $namespaces = 'Pyz,SprykerEco,SprykerMiddleware,SprykerSdk,Spryker';
+
+    /**
      * @var bool
      */
     protected $fileExists = false;
@@ -74,25 +79,68 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
      */
     protected function runSniffer(File $phpCsFile, int $stackPointer): void
     {
-        if (
-            !$this->hasMethodAnnotation($phpCsFile, $stackPointer)
-            && $this->fileExists($phpCsFile, $this->getMethodAnnotationFileName($phpCsFile))
-        ) {
-            $fix = $phpCsFile->addFixableError($this->getMethodName() . '() annotation missing', $stackPointer, 'Missing');
+        $foundInNamespace = $this->getNamespaceForFilename($phpCsFile);
+        $changeMethodAnnotation = false;
+        if (!$foundInNamespace) {
+            return;
+        }
+        if ($this->hasCorrectMethodAnnotation($phpCsFile, $stackPointer, $foundInNamespace)) {
+            return;
+        }
+        if ($this->hasMethodAnnotation($phpCsFile, $stackPointer, $foundInNamespace)) {
+            $changeMethodAnnotation = true;
+        }
+        $errorType = $changeMethodAnnotation ? 'wrong' : 'missing';
+        $error = sprintf(
+            '%s() annotation is %s (found in "%s" namespace)',
+            $this->getMethodName(),
+            $errorType,
+            $foundInNamespace,
+        );
+        $fix = $phpCsFile->addFixableError($error, $stackPointer, ucfirst($errorType));
 
-            if ($fix) {
-                $this->addMethodAnnotation($phpCsFile, $stackPointer);
-            }
+        if (!$fix) {
+            return;
+        }
+        if ($errorType === 'missing') {
+            $this->addMethodAnnotation($phpCsFile, $stackPointer, $foundInNamespace);
+        } else {
+            $this->changeMethodAnnotation($phpCsFile, $stackPointer, $foundInNamespace);
         }
     }
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     *
+     * @return string|null
+     */
+    protected function getNamespaceForFilename(File $phpCsFile): ?string
+    {
+        $namespaces = explode(',', $this->namespaces);
+        foreach ($namespaces as $namespace) {
+            if (
+                $this->fileExists(
+                    $phpCsFile,
+                    $this->getMethodAnnotationFileName($phpCsFile, $namespace),
+                    $namespace,
+                )
+            ) {
+                return $namespace;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
+     * @param string $namespace
+     * @param bool $strictCheck
      *
      * @return bool
      */
-    protected function hasMethodAnnotation(File $phpCsFile, int $stackPointer): bool
+    protected function hasMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespace, bool $strictCheck = false): bool
     {
         $position = $phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
         $tokens = $phpCsFile->getTokens();
@@ -101,7 +149,20 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
             $position = $phpCsFile->findPrevious(T_DOC_COMMENT_TAG, $position);
 
             if ($position !== false) {
-                if (strpos($tokens[$position + 2]['content'], $this->getMethodName() . '()') !== false) {
+                $methodAnnotation = $tokens[$position + 2]['content'];
+                if (strpos($methodAnnotation, $this->getMethodName() . '()') !== false) {
+                    if ($strictCheck) {
+                        $expectedCommentPattern = sprintf(
+                            '\\\%s\\\%s\\\%s %s()',
+                            $namespace,
+                            '.*',
+                            $this->getMethodFileAddedName($phpCsFile),
+                            $this->getMethodName(),
+                        );
+
+                        return (bool)preg_match("/$expectedCommentPattern/", $methodAnnotation);
+                    }
+
                     return true;
                 }
 
@@ -115,10 +176,23 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
+     * @param string $namespace
+     *
+     * @return bool
+     */
+    protected function hasCorrectMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespace): bool
+    {
+        return $this->hasMethodAnnotation($phpCsFile, $stackPointer, $namespace, true);
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @param string $namespacePart
      *
      * @return void
      */
-    protected function addMethodAnnotation(File $phpCsFile, int $stackPointer): void
+    protected function addMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespacePart): void
     {
         $phpCsFile->fixer->beginChangeset();
 
@@ -130,7 +204,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore(
                 $stackPointer,
-                ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()',
+                ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile, $namespacePart) . ' ' . $this->getMethodName() . '()',
             );
             $phpCsFile->fixer->addNewlineBefore($stackPointer);
             $phpCsFile->fixer->addContentBefore($stackPointer, '/**');
@@ -140,11 +214,40 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
                 $phpCsFile->fixer->addNewlineBefore($position);
                 $phpCsFile->fixer->addContentBefore(
                     $position,
-                    ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile) . ' ' . $this->getMethodName() . '()',
+                    ' * @method ' . $this->getMethodAnnotationFileName($phpCsFile, $namespacePart) . ' ' . $this->getMethodName() . '()',
                 );
             }
         }
 
+        $phpCsFile->fixer->endChangeset();
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param int $stackPointer
+     * @param string $namespacePart
+     *
+     * @return void
+     */
+    protected function changeMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespacePart): void
+    {
+        $phpCsFile->fixer->beginChangeset();
+
+        $stackPointer = (int)$this->getStackPointerOfClassBegin($phpCsFile, $stackPointer);
+        $docBlockEndIndex = (int)$phpCsFile->findPrevious(T_DOC_COMMENT_CLOSE_TAG, $stackPointer);
+        $docBlockStartIndex = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $docBlockEndIndex);
+        $tokens = $phpCsFile->getTokens();
+        for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
+            if (strpos($tokens[$i]['content'], $this->getMethodName()) === false) {
+                continue;
+            }
+            $newContent = sprintf(
+                '%s %s()',
+                $this->getMethodAnnotationFileName($phpCsFile, $namespacePart),
+                $this->getMethodName(),
+            );
+            $phpCsFile->fixer->replaceToken($i, $newContent);
+        }
         $phpCsFile->fixer->endChangeset();
     }
 
@@ -158,10 +261,11 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param string $namespacePart
      *
      * @return string
      */
-    abstract protected function getMethodAnnotationFileName(File $phpCsFile): string;
+    abstract protected function getMethodAnnotationFileName(File $phpCsFile, string $namespacePart): string;
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
@@ -177,10 +281,11 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param string $className
+     * @param string $namespacePart
      *
      * @return bool
      */
-    protected function fileExists(File $phpCsFile, string $className): bool
+    protected function fileExists(File $phpCsFile, string $className, string $namespacePart): bool
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
@@ -191,8 +296,31 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         $classFileName = str_replace('\\', DIRECTORY_SEPARATOR, $className);
 
         $fileName = $basePath . $classFileName . '.php';
+        $fileName = str_replace(
+            DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            $fileName,
+        );
 
-        return file_exists($fileName);
+        $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
+        $vendorPath = 'vendor' . DIRECTORY_SEPARATOR
+            . $this->toDashedCase($namespacePart) . DIRECTORY_SEPARATOR
+            . $this->toDashedCase($this->getModule($phpCsFile)) . DIRECTORY_SEPARATOR
+            . 'src';
+        $fileNameParts[$sourceDirectoryPosition] = $vendorPath;
+        $vendorFileName = implode(DIRECTORY_SEPARATOR, $fileNameParts);
+
+        return file_exists($fileName) || file_exists($vendorFileName);
+    }
+
+    /**
+     * @param string $input
+     *
+     * @return string
+     */
+    protected function toDashedCase(string $input): string
+    {
+        return strtolower((string)preg_replace('/[A-Z]/', '-\\0', lcfirst($input)));
     }
 
     /**
