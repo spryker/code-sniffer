@@ -8,6 +8,8 @@
 namespace Spryker\Sniffs\AbstractSniffs;
 
 use PHP_CodeSniffer\Files\File;
+use ReflectionClass;
+use SlevomatCodingStandard\Helpers\NamespaceHelper;
 
 abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
 {
@@ -33,7 +35,50 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
             return true;
         }
 
+        if (in_array($abstractName, $this->getParentClassesFor($phpCsFile, $stackPointer), true)) {
+            return true;
+        }
+
         return false;
+    }
+
+    /**
+     * @param \PHP_CodeSniffer\Files\File $file
+     * @param int $stackPointer
+     *
+     * @return array<class-string>
+     */
+    protected function getParentClassesFor(File $file, int $stackPointer): array
+    {
+        $parents = [];
+        $parentClass = false;
+
+        $className = $file->getDeclarationName($stackPointer);
+        $namespace = NamespaceHelper::findCurrentNamespaceName($file, $stackPointer);
+        $fullName = sprintf(
+            '%s%s%s',
+            $namespace,
+            NamespaceHelper::NAMESPACE_SEPARATOR,
+            $className,
+        );
+
+        do {
+            if (class_exists($fullName)) {
+                $reflection = new ReflectionClass($fullName);
+                $parentClass = $reflection->getParentClass();
+            }
+            if (!$parentClass instanceof ReflectionClass) {
+                break;
+            }
+            $parentClassName = $parentClass->getShortName();
+            if (!class_exists($parentClassName)) {
+                break;
+            }
+            $parents[] = $parentClassName;
+            $fullName = $parentClass->getName();
+        } while ($parentClass);
+
+        return array_filter($parents);
     }
 
     /**
