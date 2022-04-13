@@ -46,7 +46,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
      * @param \PHP_CodeSniffer\Files\File $file
      * @param int $stackPointer
      *
-     * @return array<class-string>
+     * @return array<string>
      */
     protected function getParentClassesFor(File $file, int $stackPointer): array
     {
@@ -70,11 +70,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
             if (!$parentClass instanceof ReflectionClass) {
                 break;
             }
-            $parentClassName = $parentClass->getShortName();
-            if (!class_exists($parentClassName)) {
-                break;
-            }
-            $parents[] = $parentClassName;
+            $parents[] = $parentClass->getShortName();
             $fullName = $parentClass->getName();
         } while ($parentClass);
 
