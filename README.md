@@ -207,6 +207,41 @@ want to use all the new language features:
 ```
 They ship with the core by default to avoid PHP8-creep into PHP7.4+ code.
 
+## Configure custom namespaces
+Certain sniffs rely on a list of namespaces, which defaults to `Pyz,SprykerEco,SprykerMiddleware,SprykerSdk,Spryker`, but can be customized like so:
+```xml
+    <rule ref="Spryker.MethodAnnotation.ConfigMethodAnnotation">
+        <properties>
+            <property name="namespaces" value="MyCustomPyz,SprykerEco,Spryker" />
+        </properties>
+    </rule>
+    <rule ref="Spryker.MethodAnnotation.EntityManagerMethodAnnotation">
+        <properties>
+            <property name="namespaces" value="MyCustomPyz,SprykerEco,Spryker" />
+        </properties>
+    </rule>
+    <rule ref="Spryker.MethodAnnotation.FacadeMethodAnnotation">
+        <properties>
+            <property name="namespaces" value="MyCustomPyz,SprykerEco,Spryker" />
+        </properties>
+    </rule>
+    <rule ref="Spryker.MethodAnnotation.FactoryMethodAnnotation">
+        <properties>
+            <property name="namespaces" value="MyCustomPyz,SprykerEco,Spryker" />
+        </properties>
+    </rule>
+    <rule ref="Spryker.MethodAnnotation.QueryContainerMethodAnnotation">
+        <properties>
+            <property name="namespaces" value="MyCustomPyz,SprykerEco,Spryker" />
+        </properties>
+    </rule>
+    <rule ref="Spryker.MethodAnnotation.RepositoryMethodAnnotation">
+        <properties>
+            <property name="namespaces" value="MyCustomPyz,SprykerEco,Spryker" />
+        </properties>
+    </rule>
+```
+
 ## Excluding test related comparison files
 If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.
 You can otherwise always create a custom and rather unique folder name and manually exclude it in your PHPCS settings.

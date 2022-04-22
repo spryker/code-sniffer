@@ -54,14 +54,16 @@ class EntityManagerMethodAnnotationSniff extends AbstractMethodAnnotationSniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
+     * @param string $namespacePart
      *
      * @return string
      */
-    protected function getMethodAnnotationFileName(File $phpCsFile): string
+    protected function getMethodAnnotationFileName(File $phpCsFile, string $namespacePart): string
     {
         $className = $this->getClassName($phpCsFile);
         $classNameParts = explode('\\', $className);
         $classNameParts = array_slice($classNameParts, 0, 3);
+        $classNameParts[0] = $namespacePart;
         array_push($classNameParts, static::LAYER_PERSISTENCE);
         array_push($classNameParts, $this->getMethodFileAddedName($phpCsFile));
 
