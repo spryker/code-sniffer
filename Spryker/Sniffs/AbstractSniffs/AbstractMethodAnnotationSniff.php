@@ -133,6 +133,10 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
     }
 
     /**
+     * Checks if the '@method' annotation for the specific method already exists
+     * in the class. When $strictCheck is set to true, the method also checks
+     * whether the referenced namespace and the class name are as expected.
+     *
      * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param int $stackPointer
      * @param string $namespace
