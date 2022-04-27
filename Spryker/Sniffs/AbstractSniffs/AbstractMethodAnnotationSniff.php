@@ -307,10 +307,8 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         );
 
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
-        $vendorPath = 'vendor' . DIRECTORY_SEPARATOR
-            . $this->toDashedCase($namespacePart) . DIRECTORY_SEPARATOR
-            . $this->toDashedCase($this->getModule($phpCsFile)) . DIRECTORY_SEPARATOR
-            . 'src';
+        $vendorPath = $this->getVendorPath($basePath, $namespacePart, $this->getModule($phpCsFile));
+
         $fileNameParts[$sourceDirectoryPosition] = $vendorPath;
         $vendorFileName = implode(DIRECTORY_SEPARATOR, $fileNameParts);
 
@@ -345,5 +343,35 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         }
 
         return $stackPointer;
+    }
+
+    /**
+     * @param string $basePath
+     * @param string $namespace
+     * @param string $module
+     *
+     * @return string
+     */
+    protected function getVendorPath(string $basePath, string $namespace, string $module): string
+    {
+        $namespaceElement = $this->toDashedCase($namespace);
+        $moduleElement = $this->toDashedCase($module);
+
+        $rootPath = dirname($basePath);
+        $path = $rootPath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR . $namespaceElement . DIRECTORY_SEPARATOR;
+
+        if (in_array($namespaceElement, ['spryker', 'spryker-shop'], true) && is_dir($path)) {
+            return 'vendor' . DIRECTORY_SEPARATOR
+                . 'spryker' . DIRECTORY_SEPARATOR
+                . $namespaceElement . DIRECTORY_SEPARATOR
+                . 'Bundles' . DIRECTORY_SEPARATOR
+                . $module . DIRECTORY_SEPARATOR
+                . 'src';
+        }
+
+        return 'vendor' . DIRECTORY_SEPARATOR
+            . $namespaceElement . DIRECTORY_SEPARATOR
+            . $moduleElement . DIRECTORY_SEPARATOR
+            . 'src';
     }
 }
