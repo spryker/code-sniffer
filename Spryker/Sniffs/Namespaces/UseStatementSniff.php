@@ -45,7 +45,7 @@ class UseStatementSniff implements Sniff
      */
     public function register(): array
     {
-        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT, T_INSTANCEOF, T_CATCH, T_CLOSURE];
+        return [T_NEW, T_FUNCTION, T_DOUBLE_COLON, T_CLASS, T_INTERFACE, T_TRAIT, T_INSTANCEOF, T_CATCH, T_CLOSURE, T_PROTECTED, T_PUBLIC, T_PRIVATE];
     }
 
     /**
@@ -70,6 +70,8 @@ class UseStatementSniff implements Sniff
             $this->checkUseForStatic($phpcsFile, $stackPtr);
         } elseif ($tokens[$stackPtr]['code'] === T_INSTANCEOF) {
             $this->checkUseForInstanceOf($phpcsFile, $stackPtr);
+        } elseif (in_array($tokens[$stackPtr]['code'], [T_PRIVATE, T_PROTECTED, T_PUBLIC], true)) {
+            $this->checkPropertyForInstanceOf($phpcsFile, $stackPtr);
         } elseif ($tokens[$stackPtr]['code'] === T_CATCH || $tokens[$stackPtr]['code'] === T_CALLABLE) {
             $this->checkUseForCatchOrCallable($phpcsFile, $stackPtr);
         } else {
@@ -623,6 +625,71 @@ class UseStatementSniff implements Sniff
     }
 
     /**
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile
+     * @param int $stackPtr
+     *
+     * @return void
+     */
+    protected function checkPropertyForInstanceOf(File $phpcsFile, int $stackPtr): void
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $startIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $stackPtr + 1, null, true);
+        if (!$startIndex) {
+            return;
+        }
+
+        $lastIndex = null;
+        $j = $startIndex;
+        $extractedUseStatement = '';
+        $lastSeparatorIndex = null;
+        while (true) {
+            if (!$this->isGivenKind([T_NS_SEPARATOR, T_STRING, T_RETURN_TYPE], $tokens[$j])) {
+                break;
+            }
+
+            $lastIndex = $j;
+            $extractedUseStatement .= $tokens[$j]['content'];
+            if ($this->isGivenKind([T_NS_SEPARATOR], $tokens[$j])) {
+                $lastSeparatorIndex = $j;
+            }
+            ++$j;
+        }
+
+        if ($lastIndex === null || $lastSeparatorIndex === null) {
+            return;
+        }
+
+        $extractedUseStatement = ltrim($extractedUseStatement, '\\');
+
+        $className = '';
+        for ($k = $lastSeparatorIndex + 1; $k <= $lastIndex; ++$k) {
+            $className .= $tokens[$k]['content'];
+        }
+
+        $error = 'Use statement ' . $extractedUseStatement . ' for class ' . $className . ' should be in use block.';
+        $fix = $phpcsFile->addFixableError($error, $startIndex, 'Property');
+        if (!$fix) {
+            return;
+        }
+
+        $phpcsFile->fixer->beginChangeset();
+
+        $addedUseStatement = $this->addUseStatement($phpcsFile, $className, $extractedUseStatement);
+
+        for ($k = $lastSeparatorIndex; $k > $startIndex; --$k) {
+            $phpcsFile->fixer->replaceToken($k, '');
+        }
+        $phpcsFile->fixer->replaceToken($startIndex, '');
+
+        if ($addedUseStatement['alias'] !== null) {
+            $phpcsFile->fixer->replaceToken($lastIndex, $addedUseStatement['alias']);
+        }
+
+        $phpcsFile->fixer->endChangeset();
+    }
+
+    /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
      *
      * @return void
@@ -639,21 +706,6 @@ class UseStatementSniff implements Sniff
         $this->existingStatements = $existingStatements;
         $this->allStatements = $existingStatements;
         $this->newStatements = [];
-    }
-
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
-    protected function isBlacklistedFile(File $phpcsFile): bool
-    {
-        $file = $phpcsFile->getFilename();
-        if (strpos($file, DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR) !== false) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
