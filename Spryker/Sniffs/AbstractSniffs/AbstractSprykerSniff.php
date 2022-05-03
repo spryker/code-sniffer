@@ -545,7 +545,7 @@ abstract class AbstractSprykerSniff implements Sniff
         $tokens = $phpCsFile->getTokens();
 
         $prevIndex = $phpCsFile->findPrevious(T_WHITESPACE, $fileDocBlockStartPosition - 1, 0, true);
-        if (!$prevIndex || $tokens[$prevIndex]['line'] === $tokens[$fileDocBlockStartPosition]['line'] - 2) {
+        if ($prevIndex === false || $tokens[$prevIndex]['line'] === $tokens[$fileDocBlockStartPosition]['line'] - 2) {
             return;
         }
 

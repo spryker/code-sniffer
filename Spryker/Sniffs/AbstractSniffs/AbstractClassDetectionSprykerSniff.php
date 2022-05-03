@@ -10,6 +10,7 @@ namespace Spryker\Sniffs\AbstractSniffs;
 use PHP_CodeSniffer\Files\File;
 use ReflectionClass;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
+use Throwable;
 
 abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
 {
@@ -51,7 +52,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
     protected function getParentClassesFor(File $file, int $stackPointer): array
     {
         $parents = [];
-        $parentClass = false;
+        $parentClass = null;
 
         $className = $file->getDeclarationName($stackPointer);
         $namespace = NamespaceHelper::findCurrentNamespaceName($file, $stackPointer);
@@ -63,9 +64,13 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
         );
 
         do {
-            if (class_exists($fullName)) {
-                $reflection = new ReflectionClass($fullName);
-                $parentClass = $reflection->getParentClass();
+            try {
+                if (class_exists($fullName)) {
+                    $reflection = new ReflectionClass($fullName);
+                    $parentClass = $reflection->getParentClass();
+                }
+            } catch (Throwable $e) {
+                break;
             }
             if (!$parentClass instanceof ReflectionClass) {
                 break;
