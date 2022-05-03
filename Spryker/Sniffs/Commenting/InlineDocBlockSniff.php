@@ -107,7 +107,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
             $typeTag = $this->findTagIndex($tokens, $i, $commentEndTagIndex, T_DOC_COMMENT_TAG);
             $contentTag = $typeTag ? $this->findTagIndex($tokens, $typeTag, $commentEndTagIndex, T_DOC_COMMENT_STRING) : null;
-            if ($typeTag === null || $contentTag === null) {
+            if ($typeTag === null || $contentTag === null && !$this->isAllowedTag($tokens[$typeTag]['content'])) {
                 $phpCsFile->addError('Invalid Inline Doc Block', $i, 'DocBlockInvalid');
 
                 continue;
@@ -145,6 +145,20 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
             $phpCsFile->fixer->endChangeset();
         }
+    }
+
+    /**
+     * @param string|null $tag
+     *
+     * @return bool
+     */
+    protected function isAllowedTag(?string $tag): bool
+    {
+        if (strpos($tag, '@phpstan-') === 0 || strpos($tag, '@psalm-') === 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
