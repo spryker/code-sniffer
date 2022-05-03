@@ -113,7 +113,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if ($tokens[$typeTag]['content'] !== '@var') {
+            if ($contentTag === null || $tokens[$typeTag]['content'] !== '@var') {
                 // We ignore those
                 continue;
             }
@@ -148,11 +148,11 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param string|null $tag
+     * @param string $tag
      *
      * @return bool
      */
-    protected function isAllowedTag(?string $tag): bool
+    protected function isAllowedTag(string $tag): bool
     {
         if (strpos($tag, '@phpstan-') === 0 || strpos($tag, '@psalm-') === 0) {
             return true;
