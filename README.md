@@ -242,6 +242,20 @@ Certain sniffs rely on a list of namespaces, which defaults to `Pyz,SprykerEco,S
     </rule>
 ```
 
+## Customize PHP version safety
+
+If you want to enable `Spryker.Internal.SprykerDisallowFunctions` for your project level, set this into your `phpcs.xml` file:
+```xml
+    <rule ref="Spryker.Internal.SprykerDisallowFunctions">
+        <properties>
+            <property name="phpVersion" value="7.4"/>
+        </properties>
+    </rule>
+```
+Set the current PHP version you are using which will disallow methods of the next minors and majors.
+If you already require certain polyfills, you can raise this version or completely disable it (even the core check) by using `'off'` value.
+
+
 ## Excluding test related comparison files
 If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.
 You can otherwise always create a custom and rather unique folder name and manually exclude it in your PHPCS settings.
