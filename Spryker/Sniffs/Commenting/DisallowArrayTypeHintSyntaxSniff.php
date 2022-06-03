@@ -15,6 +15,7 @@ use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use SlevomatCodingStandard\Helpers\Annotation\Annotation;
+use SlevomatCodingStandard\Helpers\Annotation\AssertAnnotation;
 use SlevomatCodingStandard\Helpers\Annotation\GenericAnnotation;
 use SlevomatCodingStandard\Helpers\Annotation\ParameterAnnotation;
 use SlevomatCodingStandard\Helpers\Annotation\ReturnAnnotation;
@@ -67,7 +68,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
         foreach ($annotations as $annotationByName) {
             foreach ($annotationByName as $annotation) {
-                if ($annotation instanceof GenericAnnotation) {
+                if ($annotation instanceof GenericAnnotation || $annotation instanceof AssertAnnotation) {
                     continue;
                 }
 
