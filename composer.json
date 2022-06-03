@@ -51,7 +51,8 @@
         "cs-check": "vendor/bin/phpcs --extensions=php",
         "cs-fix": "vendor/bin/phpcbf --extensions=php",
         "test": "vendor/bin/phpunit",
-        "stan": "phpstan analyse"
+        "stan": "phpstan analyse",
+        "xml": "tests/xmllint.sh"
     },
     "bin": [
         "bin/tokenize"

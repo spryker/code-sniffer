@@ -57,6 +57,9 @@ jobs:
       - name: CodeStyle checks
         run: composer cs-check
 
+      - name: XML checks
+        run: composer xml
+
   prefer-lowest:
     runs-on: ubuntu-20.04
     strategy:
