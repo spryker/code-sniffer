@@ -1,8 +1,7 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * @license https://github.com/spryker/code-sniffer/blob/master/LICENSE MIT
  */
 
 namespace Spryker\Traits;
