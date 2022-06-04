@@ -40,7 +40,7 @@
         ]
     },
     "scripts": {
-        "docs": "php docs/generate.php",
+        "docs": "bin/generate-docs.sh",
         "docs-listing": "phpcs -e --standard=SprykerStrict/ruleset.xml",
         "add-standard": "phpcs --config-set installed_paths $(pwd)",
         "increase-severity": "sed -i.bak 's/<severity>0<\\/severity>/<!--<severity>0<\\/severity>-->/' Spryker/ruleset.xml",
