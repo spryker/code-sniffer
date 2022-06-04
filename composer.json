@@ -25,6 +25,9 @@
         "phpstan/phpstan": "^1.0.0",
         "phpunit/phpunit": "^9.5"
     },
+    "suggest": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
+    },
     "autoload": {
         "psr-4": {
             "Spryker\\": "Spryker/",
