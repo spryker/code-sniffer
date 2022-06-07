@@ -7,8 +7,8 @@
 
 namespace Spryker\Test\Spryker\Sniffs\Namespaces;
 
-use Spryker\Test\TestCase;
 use Spryker\Sniffs\Namespaces\UseStatementSniff;
+use Spryker\Test\TestCase;
 
 class UseStatementSniffTest extends TestCase
 {

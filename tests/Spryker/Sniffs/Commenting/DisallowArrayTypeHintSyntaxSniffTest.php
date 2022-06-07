@@ -7,8 +7,8 @@
 
 namespace Spryker\Test\Spryker\Sniffs\Commenting;
 
-use Spryker\Test\TestCase;
 use Spryker\Sniffs\Commenting\DisallowArrayTypeHintSyntaxSniff;
+use Spryker\Test\TestCase;
 
 class DisallowArrayTypeHintSyntaxSniffTest extends TestCase
 {

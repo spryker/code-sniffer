@@ -7,8 +7,8 @@
 
 namespace Spryker\Test\Spryker\Sniffs\WhiteSpace;
 
-use Spryker\Test\TestCase;
 use Spryker\Sniffs\WhiteSpace\EmptyLinesSniff;
+use Spryker\Test\TestCase;
 
 class EmptyLinesSniffTest extends TestCase
 {

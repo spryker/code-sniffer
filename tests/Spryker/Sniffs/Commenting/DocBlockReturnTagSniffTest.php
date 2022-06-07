@@ -7,8 +7,8 @@
 
 namespace Spryker\Test\Spryker\Sniffs\Commenting;
 
-use Spryker\Test\TestCase;
 use Spryker\Sniffs\Commenting\DocBlockReturnTagSniff;
+use Spryker\Test\TestCase;
 
 class DocBlockReturnTagSniffTest extends TestCase
 {

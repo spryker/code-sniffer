@@ -7,8 +7,8 @@
 
 namespace Spryker\Test\Spryker\Sniffs\ControlStructures;
 
-use Spryker\Test\TestCase;
 use Spryker\Sniffs\ControlStructures\DisallowCloakingCheckSniff;
+use Spryker\Test\TestCase;
 
 class DisallowCloakingCheckSniffTest extends TestCase
 {

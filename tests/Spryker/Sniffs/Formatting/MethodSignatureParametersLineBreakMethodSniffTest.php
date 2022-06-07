@@ -7,8 +7,8 @@
 
 namespace Spryker\Test\Spryker\Sniffs\Formatting;
 
-use Spryker\Test\TestCase;
 use Spryker\Sniffs\Formatting\MethodSignatureParametersLineBreakMethodSniff;
+use Spryker\Test\TestCase;
 
 class MethodSignatureParametersLineBreakMethodSniffTest extends TestCase
 {

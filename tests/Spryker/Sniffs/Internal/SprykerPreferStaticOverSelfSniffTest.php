@@ -7,8 +7,8 @@
 
 namespace Spryker\Test\Spryker\Sniffs\Internal;
 
-use Spryker\Test\TestCase;
 use Spryker\Sniffs\Internal\SprykerPreferStaticOverSelfSniff;
+use Spryker\Test\TestCase;
 
 class SprykerPreferStaticOverSelfSniffTest extends TestCase
 {

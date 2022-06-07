@@ -99,7 +99,7 @@ class FixMe
 TEXT;
 
 $testDir = __DIR__ . DIRECTORY_SEPARATOR . $org . DIRECTORY_SEPARATOR . 'Sniffs' . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR;
-$fixtureDir = __DIR__ . DIRECTORY_SEPARATOR  . '_data' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR;
+$fixtureDir = __DIR__ . DIRECTORY_SEPARATOR . '_data' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR;
 
 $testClassFile = $testDir . $name . 'SniffTest.php';
 $fixtureBeforeFile = $fixtureDir . 'before.php';
