@@ -5,9 +5,9 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeSnifferTest\Spryker\Sniffs\Internal;
+namespace Spryker\Test\Spryker\Sniffs\Internal;
 
-use CodeSnifferTest\TestCase;
+use Spryker\Test\TestCase;
 use Spryker\Sniffs\Internal\SprykerPreferStaticOverSelfSniff;
 
 class SprykerPreferStaticOverSelfSniffTest extends TestCase

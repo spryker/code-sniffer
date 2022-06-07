@@ -61,9 +61,9 @@ $testClassContent = <<<TEXT
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeSnifferTest\\{$org}\\Sniffs\\{$type};
+namespace Spryker\\Test\\{$org}\\Sniffs\\{$type};
 
-use CodeSnifferTest\TestCase;
+use Spryker\\Test\\TestCase;
 use {$org}\\Sniffs\\{$type}\\{$name}Sniff;
 
 class {$name}SniffTest extends TestCase

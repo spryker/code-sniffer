@@ -5,9 +5,9 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeSnifferTest\Spryker\Sniffs\Commenting;
+namespace Spryker\Test\Spryker\Sniffs\Commenting;
 
-use CodeSnifferTest\TestCase;
+use Spryker\Test\TestCase;
 use Spryker\Sniffs\Commenting\DocBlockReturnTagSniff;
 
 class DocBlockReturnTagSniffTest extends TestCase

@@ -33,7 +33,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "CodeSnifferTest\\": "tests/"
+            "Spryker\\Test\\": "tests/"
         },
         "files": [
             "vendor/squizlabs/php_codesniffer/autoload.php"
