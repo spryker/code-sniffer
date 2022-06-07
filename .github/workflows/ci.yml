@@ -13,17 +13,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [
-            '7.3',
-            '8.0',
-            '8.1',
-        ]
+        php-version: ['7.3', '8.0', '8.1']
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl, pdo_mysql
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate
+      - uses: actions/checkout@v2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -37,16 +36,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Composer install
-        run: |
-          composer --version
-          composer install --optimize-autoloader
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: mbstring, intl, pdo_mysql
+      - name: Composer install
+        run: composer install --optimize-autoloader
 
       - name: Run tests
         run: composer test
@@ -62,15 +56,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [
-            '7.3'
-        ]
+        php-version: ['7.3']
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl, pdo_mysql
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate
+      - uses: actions/checkout@v2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -84,16 +79,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
       - name: Composer prefer lowest
         run: |
           composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable
           composer require --dev dereuromark/composer-prefer-lowest
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: mbstring, intl, pdo_mysql
 
       - name: Validate lowest
         run: vendor/bin/validate-prefer-lowest
