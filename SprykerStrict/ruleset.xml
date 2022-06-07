@@ -14,8 +14,8 @@
         <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.UselessAnnotation"/>
         <exclude name="SprykerStrict.TypeHints.ParameterTypeHint.UselessDocComment"/>
         <properties>
-            <property name="enableMixedTypeHint" type="bool" value="false"/>
-            <property name="enableUnionTypeHint" type="bool" value="false"/>
+            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableUnionTypeHint" value="false"/>
         </properties>
     </rule>
     <rule ref="SprykerStrict.TypeHints.ReturnTypeHint">
@@ -23,9 +23,9 @@
         <exclude name="SprykerStrict.TypeHints.ReturnTypeHint.UselessAnnotation"/>
         <exclude name="SprykerStrict.TypeHints.ReturnTypeHint.UselessDocComment"/>
         <properties>
-            <property name="enableStaticTypeHint" type="bool" value="false"/>
-            <property name="enableMixedTypeHint" type="bool" value="false"/>
-            <property name="enableUnionTypeHint" type="bool" value="false"/>
+            <property name="enableStaticTypeHint" value="false"/>
+            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableUnionTypeHint" value="false"/>
         </properties>
     </rule>
     <rule ref="SprykerStrict.TypeHints.PropertyTypeHint">
@@ -33,10 +33,9 @@
         <exclude name="SprykerStrict.TypeHints.PropertyTypeHint.UselessAnnotation"/>
         <exclude name="SprykerStrict.TypeHints.PropertyTypeHint.UselessDocComment"/>
         <properties>
-            <property name="enableNativeTypeHint" type="bool" value="false"/>
-            <property name="enableMixedTypeHint" type="bool" value="false"/>
-            <property name="enableUnionTypeHint" type="bool" value="false"/>
+            <property name="enableNativeTypeHint" value="false"/>
+            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableUnionTypeHint" value="false"/>
         </properties>
     </rule>
-
 </ruleset>

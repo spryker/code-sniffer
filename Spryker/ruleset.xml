@@ -26,8 +26,8 @@
     <rule ref="SlevomatCodingStandard.Namespaces.UselessAlias"/>
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
         <properties>
-            <property name="allowFallbackGlobalFunctions" type="boolean" value="true"/>
-            <property name="allowFallbackGlobalConstants" type="boolean" value="true"/>
+            <property name="allowFallbackGlobalFunctions" value="true"/>
+            <property name="allowFallbackGlobalConstants" value="true"/>
         </properties>
     </rule>
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName">
@@ -54,12 +54,12 @@
 
     <rule ref="SlevomatCodingStandard.Classes.ConstantSpacing">
         <properties>
-            <property name="minLinesCountBeforeWithoutComment" type="int" value="1"/>
+            <property name="minLinesCountBeforeWithoutComment" value="1"/>
         </properties>
     </rule>
     <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility">
         <properties>
-            <property name="fixable" type="bool" value="true"/>
+            <property name="fixable" value="true"/>
         </properties>
     </rule>
 
@@ -86,7 +86,7 @@
     <rule ref="SlevomatCodingStandard.Commenting.DeprecatedAnnotationDeclaration"/>
     <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration">
         <properties>
-            <property name="allowDocCommentAboveReturn" type="boolean" value="true"/>
+            <property name="allowDocCommentAboveReturn" value="true"/>
         </properties>
     </rule>
 
@@ -98,7 +98,10 @@
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
-            <property name="ignoreIndentationTokens" type="array" value="T_COMMENT,T_DOC_COMMENT_OPEN_TAG"/>
+            <property name="ignoreIndentationTokens" type="array">
+                <element value="T_COMMENT"/>
+                <element value="T_DOC_COMMENT_OPEN_TAG"/>
+            </property>
         </properties>
     </rule>
     <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
