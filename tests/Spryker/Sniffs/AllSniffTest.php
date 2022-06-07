@@ -5,9 +5,9 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeSnifferTest\Spryker\Sniffs;
+namespace Spryker\Test\Spryker\Sniffs;
 
-use CodeSnifferTest\TestCase;
+use Spryker\Test\TestCase;
 
 /**
  * Test integration of all sniffs together.

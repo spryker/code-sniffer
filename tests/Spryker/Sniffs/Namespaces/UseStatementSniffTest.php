@@ -5,10 +5,10 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeSnifferTest\Spryker\Sniffs\Namespaces;
+namespace Spryker\Test\Spryker\Sniffs\Namespaces;
 
-use CodeSnifferTest\TestCase;
 use Spryker\Sniffs\Namespaces\UseStatementSniff;
+use Spryker\Test\TestCase;
 
 class UseStatementSniffTest extends TestCase
 {

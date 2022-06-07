@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeSnifferTest;
+namespace Spryker\Test;
 
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\LocalFile;
