@@ -98,7 +98,6 @@ jobs:
       - name: Validate lowest
         run: vendor/bin/validate-prefer-lowest
 
-jobs:
   xml-validation:
     runs-on: ubuntu-20.04
     steps:
