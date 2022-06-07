@@ -57,9 +57,6 @@ jobs:
       - name: CodeStyle checks
         run: composer cs-check
 
-      - name: XML checks
-        run: composer xml
-
   prefer-lowest:
     runs-on: ubuntu-20.04
     strategy:
@@ -100,3 +97,22 @@ jobs:
 
       - name: Validate lowest
         run: vendor/bin/validate-prefer-lowest
+
+jobs:
+  xml-validation:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install xmllint tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: XML checks
+        run: composer xml
