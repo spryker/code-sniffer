@@ -43,7 +43,7 @@ jobs:
         run: composer validate
 
       - name: Composer install
-        run: composer install --optimize-autoloader
+        run: composer install --optimize-autoloader --ignore-platform-req=php
 
       - name: Run tests
         run: composer test
