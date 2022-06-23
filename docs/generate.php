@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-$phar = file_exists(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'composer.phar');
+
 $command = 'vendor/bin/phpcs -e --standard=SprykerStrict/ruleset.xml';
 
 exec($command, $output, $ret);
