@@ -8,7 +8,7 @@ if (!class_exists(PHP_CodeSniffer\Config::class) && is_file($phpcsAutoload)) {
     unset($phpcsAutoload);
 }
 
-PHP_CodeSniffer\Autoload::load(PHP_CodeSniffer\Util\Tokens:class);
+PHP_CodeSniffer\Autoload::load(PHP_CodeSniffer\Util\Tokens::class);
 
 if (!defined('PHP_CODESNIFFER_CBF')) {
     define('PHP_CODESNIFFER_CBF', false);
