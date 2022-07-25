@@ -205,7 +205,7 @@ trait CommentingTrait
     protected function renderUnionTypes(array $typeNodes): string
     {
         return (string)preg_replace(
-            ['/ ([|&]) /', '/<\(/', '/\)>/', '/\), /', '/, \(/'],
+            ['/ ([\|&]) /', '/<\(/', '/\)>/', '/\), /', '/, \(/'],
             ['${1}', '<', '>', ', ', ', '],
             implode('|', $typeNodes),
         );
