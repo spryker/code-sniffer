@@ -12,6 +12,11 @@ class FixMe
     protected $y = [];
 
     /**
+     * @var array<int, string>
+     */
+    protected $foo = [];
+
+    /**
      * Stack of warnings.
      *
      * @var list<string>
@@ -19,7 +24,9 @@ class FixMe
     protected $warnings = [];
 
     /**
-     * @var array<int, string>
+     * The left parts of the join condition
+     *
+     * @var list<string|null>
      */
-    protected $foo = [];
+    protected $left = [];
 }
