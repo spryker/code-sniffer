@@ -136,7 +136,7 @@ class DocBlockConstSniff extends AbstractSprykerSniff
         if (in_array($defaultValueType, $parts, true)) {
             return;
         }
-        if ($defaultValueType === 'array' && $this->containsTypeArray($parts)) {
+        if ($defaultValueType === 'array' && ($this->containsTypeArray($parts) || $this->containsTypeArray($parts, 'list'))) {
             return;
         }
         if ($defaultValueType === 'false' && in_array('bool', $parts, true)) {

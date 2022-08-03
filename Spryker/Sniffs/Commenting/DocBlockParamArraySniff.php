@@ -71,7 +71,7 @@ class DocBlockParamArraySniff extends AbstractSprykerSniff
             $parts = $this->valueNodeParts($valueNode);
 
             $detectedType = null;
-            $types = ['array', 'iterable'];
+            $types = ['array', 'iterable', 'list'];
             foreach ($types as $type) {
                 if (!in_array($type, $parts, true) || !$this->containsTypeArray($parts, $type)) {
                     continue;
