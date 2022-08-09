@@ -101,7 +101,11 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
             if ($methodSignatureValue['typehint'] && in_array($methodSignatureValue['typehint'], ['array', 'iterable', 'string', 'int', 'bool', 'float', 'self', 'parent'], true)) {
                 $type = $methodSignatureValue['typehint'];
-                if (!$this->containsType($type, $parts) && !$this->isPrimitiveGenerics($type, $parts)) {
+                if (
+                    !$this->containsType($type, $parts)
+                    && !$this->isPrimitiveGenerics($type, $parts)
+                    && !$this->isClassString($type, $parts)
+                ) {
                     $parts[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Typehint');
@@ -120,7 +124,11 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($methodSignatureValue['default']) {
                 $type = $methodSignatureValue['default'];
 
-                if (!in_array($type, $parts, true) && !$this->isPrimitiveGenerics($type, $parts)) {
+                if (
+                    !in_array($type, $parts, true)
+                    && !$this->isPrimitiveGenerics($type, $parts)
+                    && !$this->isClassString($type, $parts)
+                ) {
                     $parts[] = $type;
                     $error = 'Possible doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
                     $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
@@ -220,6 +228,31 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
 
         foreach ($iterableTypes as $iterableType) {
             if ($this->containsTypeArray($parts, $iterableType)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $type
+     * @param array<string> $parts
+     *
+     * @return bool
+     */
+    protected function isClassString(string $type, array $parts): bool
+    {
+        if ($type !== 'string') {
+            return false;
+        }
+
+        if (in_array('class-string', $parts, true)) {
+            return true;
+        }
+
+        foreach ($parts as $part) {
+            if (strpos($part, 'class-string<') === 0) {
                 return true;
             }
         }

@@ -49,4 +49,13 @@ class FixMe
     {
         return array_unique($itemTransfers);
     }
+
+    /**
+     * @param class-string<\Propel\Runtime\Map\TableMap> $tableMapClass The name of the table map to add
+     *
+     * @return void
+     */
+    public function registerTableMapClass(string $tableMapClass): void
+    {
+    }
 }
