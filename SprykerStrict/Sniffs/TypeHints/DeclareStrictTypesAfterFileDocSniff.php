@@ -87,19 +87,17 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         // Check that we are on the right file doc.
         // If there is no declare in the file, before file doc we should have only whitespaces and open tag
         $correctFileDoc = true;
-        if ($declarePointer === null) {
-            $i = $stackPtr;
+        $i = $stackPtr;
 
-            do {
-                if ($tokens[$i]['type'] !== 'T_WHITESPACE' && $tokens[$i]['type'] !== 'T_OPEN_TAG') {
-                    $correctFileDoc = false;
+        do {
+            if ($tokens[$i]['type'] !== 'T_WHITESPACE' && $tokens[$i]['type'] !== 'T_OPEN_TAG') {
+                $correctFileDoc = false;
 
-                    break;
-                }
+                break;
+            }
 
-                --$i;
-            } while ($i >= 0);
-        }
+            --$i;
+        } while ($i >= 0);
 
         if (!$correctFileDoc) {
             return;
