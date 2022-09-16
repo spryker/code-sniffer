@@ -53,6 +53,10 @@ class DeclareNoStrictTypesAfterOpenTagSniff implements Sniff
             }
         }
 
+        if ($tokens[$declarePointer]['type'] !== 'T_DECLARE') {
+            return;
+        }
+
         $declareBeforeFileDoc = true;
         $inSearch = true;
         $declarationEndPointer = $tokens[$declarePointer]['parenthesis_closer'] + 2;
