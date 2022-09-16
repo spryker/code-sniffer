@@ -15,10 +15,10 @@ class DeclareNoStrictTypesAfterOpenTagSniffTest extends TestCase
     /**
      * @return void
      */
-    //public function testDeclareStrictTypesSniffer(): void
-    //{
-    //    $this->assertSnifferFindsErrors(new DeclareNoStrictTypesAfterOpenTagSniff(), 1);
-    //}
+    public function testDeclareStrictTypesSniffer(): void
+    {
+        $this->assertSnifferFindsErrors(new DeclareNoStrictTypesAfterOpenTagSniff(), 1);
+    }
 
     /**
      * @return void

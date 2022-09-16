@@ -195,8 +195,10 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                 for ($i = $pointerBeforeDeclare + 1; $i < $declarePointer; $i++) {
                     $phpcsFile->fixer->replaceToken($i, '');
                 }
-                for ($i = 0; $i <= $this->linesCountBeforeDeclare; $i++) {
-                    $phpcsFile->fixer->addNewline($pointerBeforeDeclare);
+                if ($pointerBeforeDeclare !== null) {
+                    for ($i = 0; $i <= $this->linesCountBeforeDeclare; $i++) {
+                        $phpcsFile->fixer->addNewline($pointerBeforeDeclare);
+                    }
                 }
                 $phpcsFile->fixer->endChangeset();
             }
