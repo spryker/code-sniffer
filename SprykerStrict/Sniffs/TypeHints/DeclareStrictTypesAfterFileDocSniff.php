@@ -5,6 +5,8 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace SprykerStrict\Sniffs\TypeHints;
 
 use PHP_CodeSniffer\Files\File;
@@ -13,21 +15,39 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 class DeclareStrictTypesAfterFileDocSniff implements Sniff
 {
+    /**
+     * @var string
+     */
     public const CODE_DECLARE_STRICT_TYPES_MISSING = 'DeclareStrictTypesMissing';
 
+    /**
+     * @var string
+     */
     public const CODE_INCORRECT_STRICT_TYPES_FORMAT = 'IncorrectStrictTypesFormat';
 
+    /**
+     * @var string
+     */
     public const CODE_INCORRECT_WHITESPACE_BEFORE_DECLARE = 'IncorrectWhitespaceBeforeDeclare';
 
+    /**
+     * @var string
+     */
     public const CODE_INCORRECT_WHITESPACE_AFTER_DECLARE = 'IncorrectWhitespaceAfterDeclare';
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $linesCountBeforeDeclare = 1;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $linesCountAfterDeclare = 1;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $spacesCountAroundEqualsSign = 1;
 
     /**
@@ -64,11 +84,32 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $declarePointer = TokenHelper::findNextEffective($phpcsFile, $stackPtr + 1);
 
+        // Check that we are on the right file doc.
+        // If there is no declare in the file, before file doc we should have only whitespaces and open tag
+        $correctFileDoc = true;
+        if ($declarePointer === null) {
+            $i = $stackPtr;
+
+            do {
+                if ($tokens[$i]['type'] !== 'T_WHITESPACE' && $tokens[$i]['type'] !== 'T_OPEN_TAG') {
+                    $correctFileDoc = false;
+
+                    break;
+                }
+
+                --$i;
+            } while ($i >= 0);
+        }
+
+        if (!$correctFileDoc) {
+            return;
+        }
+
         if ($declarePointer === null || $tokens[$declarePointer]['code'] !== T_DECLARE) {
             $fix = $phpcsFile->addFixableError(
                 sprintf('Missing declare(%s) after file doc.', $this->getStrictTypeDeclaration()),
                 $stackPtr,
-                self::CODE_DECLARE_STRICT_TYPES_MISSING
+                static::CODE_DECLARE_STRICT_TYPES_MISSING,
             );
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
@@ -82,7 +123,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
                 $phpcsFile->fixer->addContent(
                     $declarePointer - 1,
-                    sprintf('declare(%s);%s', $this->getStrictTypeDeclaration(), $phpcsFile->eolChar)
+                    sprintf('declare(%s);%s', $this->getStrictTypeDeclaration(), $phpcsFile->eolChar),
                 );
 
                 if ($this->linesCountAfterDeclare > 0) {
@@ -93,6 +134,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
                 $phpcsFile->fixer->endChangeset();
             }
+
             return;
         }
 
@@ -103,6 +145,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
             }
 
             $strictTypesPointer = (int)$i;
+
             break;
         }
 
@@ -110,16 +153,17 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
             $fix = $phpcsFile->addFixableError(
                 sprintf('Missing declare(%s) after file doc.', $this->getStrictTypeDeclaration()),
                 $declarePointer,
-                self::CODE_DECLARE_STRICT_TYPES_MISSING
+                static::CODE_DECLARE_STRICT_TYPES_MISSING,
             );
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->addContentBefore(
                     $tokens[$declarePointer]['parenthesis_closer'],
-                    ', ' . $this->getStrictTypeDeclaration()
+                    ', ' . $this->getStrictTypeDeclaration(),
                 );
                 $phpcsFile->fixer->endChangeset();
             }
+
             return;
         }
 
@@ -130,16 +174,17 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                 sprintf(
                     'Expected %s, found %s.',
                     $this->getStrictTypeDeclaration(),
-                    TokenHelper::getContent($phpcsFile, $strictTypesPointer, $numberPointer)
+                    TokenHelper::getContent($phpcsFile, $strictTypesPointer, $numberPointer),
                 ),
                 $declarePointer,
-                self::CODE_DECLARE_STRICT_TYPES_MISSING
+                static::CODE_DECLARE_STRICT_TYPES_MISSING,
             );
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
                 $phpcsFile->fixer->replaceToken($numberPointer, '1');
                 $phpcsFile->fixer->endChangeset();
             }
+
             return;
         }
 
@@ -150,10 +195,10 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                 sprintf(
                     'Expected %s, found %s.',
                     $format,
-                    $strictTypesContent
+                    $strictTypesContent,
                 ),
                 $strictTypesPointer,
-                self::CODE_INCORRECT_STRICT_TYPES_FORMAT
+                static::CODE_INCORRECT_STRICT_TYPES_FORMAT,
             );
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
@@ -184,10 +229,10 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                     'Expected %d line%s before declare statement, found %d.',
                     $this->linesCountBeforeDeclare,
                     $this->linesCountBeforeDeclare === 1 ? '' : 's',
-                    $linesCountBefore
+                    $linesCountBefore,
                 ),
                 $declarePointer,
-                self::CODE_INCORRECT_WHITESPACE_BEFORE_DECLARE
+                static::CODE_INCORRECT_WHITESPACE_BEFORE_DECLARE,
             );
             if ($fix) {
                 $phpcsFile->fixer->beginChangeset();
@@ -225,10 +270,10 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                 'Expected %d line%s after declare statement, found %d.',
                 $this->linesCountAfterDeclare,
                 $this->linesCountAfterDeclare === 1 ? '' : 's',
-                $linesCountAfter
+                $linesCountAfter,
             ),
             $declarePointer,
-            self::CODE_INCORRECT_WHITESPACE_AFTER_DECLARE
+            static::CODE_INCORRECT_WHITESPACE_AFTER_DECLARE,
         );
         if (!$fix) {
             return;
@@ -252,16 +297,17 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         return sprintf(
             'strict_types%s=%s1',
             str_repeat(' ', $this->spacesCountAroundEqualsSign),
-            str_repeat(' ', $this->spacesCountAroundEqualsSign)
+            str_repeat(' ', $this->spacesCountAroundEqualsSign),
         );
     }
 
     /**
-     * @param mixed $value  Int value to normalize
+     * @param mixed $value Int value to normalize
+     *
      * @return int
      */
     protected function normalizeIntValue($value): int
     {
-        return (int) trim((string) $value);
+        return (int)trim((string)$value);
     }
 }

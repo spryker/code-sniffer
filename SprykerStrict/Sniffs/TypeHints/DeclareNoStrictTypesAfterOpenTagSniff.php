@@ -5,6 +5,8 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace SprykerStrict\Sniffs\TypeHints;
 
 use PHP_CodeSniffer\Files\File;
@@ -13,6 +15,9 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 class DeclareNoStrictTypesAfterOpenTagSniff implements Sniff
 {
+    /**
+     * @var string
+     */
     public const CODE_DECLARE_STRICT_TYPES_EXISTING = 'DeclareStrictTypesExisting';
 
     /**
@@ -41,10 +46,32 @@ class DeclareNoStrictTypesAfterOpenTagSniff implements Sniff
             return;
         }
 
+        // Don't do anything if there is something else between opening tag and declare statement except of empty line
         for ($i = $stackPtr + 1; $i < $declarePointer; ++$i) {
             if ($tokens[$i]['type'] !== 'T_WHITESPACE') {
                 return;
             }
+        }
+
+        $declareBeforeFileDoc = true;
+        $inSearch = true;
+        $declarationEndPointer = $tokens[$declarePointer]['parenthesis_closer'] + 2;
+
+        do {
+            if ($tokens[$declarationEndPointer]['type'] !== 'T_WHITESPACE'
+                && $tokens[$declarationEndPointer]['type'] !== 'T_DOC_COMMENT_OPEN_TAG') {
+                $inSearch = false;
+                $declareBeforeFileDoc = false;
+            } else if ($tokens[$declarationEndPointer]['type'] === 'T_DOC_COMMENT_OPEN_TAG') {
+                $inSearch = false;
+            }
+
+            ++$declarationEndPointer;
+        } while ($inSearch);
+
+        // Don't do anything if file doc doesn't follow after declare statement
+        if (!$declareBeforeFileDoc) {
+            return;
         }
 
         $strictTypesPointer = null;
@@ -56,6 +83,7 @@ class DeclareNoStrictTypesAfterOpenTagSniff implements Sniff
                 }
 
                 $strictTypesPointer = $i;
+
                 break;
             }
         }
@@ -67,7 +95,7 @@ class DeclareNoStrictTypesAfterOpenTagSniff implements Sniff
         $fix = $phpcsFile->addFixableError(
             'declare(strict_types=1) exists, but shouldn\'t',
             $stackPtr,
-            self::CODE_DECLARE_STRICT_TYPES_EXISTING
+            static::CODE_DECLARE_STRICT_TYPES_EXISTING,
         );
         if ($fix) {
             $phpcsFile->fixer->beginChangeset();
