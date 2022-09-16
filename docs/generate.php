@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 $command = 'vendor/bin/phpcs -e --standard=SprykerStrict/ruleset.xml';
 
 exec($command, $output, $ret);
