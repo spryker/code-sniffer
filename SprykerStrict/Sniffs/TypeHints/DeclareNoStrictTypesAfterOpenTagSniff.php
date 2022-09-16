@@ -58,8 +58,10 @@ class DeclareNoStrictTypesAfterOpenTagSniff implements Sniff
         $declarationEndPointer = $tokens[$declarePointer]['parenthesis_closer'] + 2;
 
         do {
-            if ($tokens[$declarationEndPointer]['type'] !== 'T_WHITESPACE'
-                && $tokens[$declarationEndPointer]['type'] !== 'T_DOC_COMMENT_OPEN_TAG') {
+            if (
+                $tokens[$declarationEndPointer]['type'] !== 'T_WHITESPACE'
+                && $tokens[$declarationEndPointer]['type'] !== 'T_DOC_COMMENT_OPEN_TAG'
+            ) {
                 $inSearch = false;
                 $declareBeforeFileDoc = false;
             } else if ($tokens[$declarationEndPointer]['type'] === 'T_DOC_COMMENT_OPEN_TAG') {
