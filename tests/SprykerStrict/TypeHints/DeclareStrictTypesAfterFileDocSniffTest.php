@@ -15,10 +15,10 @@ class DeclareStrictTypesAfterFileDocSniffTest extends TestCase
     /**
      * @return void
      */
-   // public function testDeclareStrictTypesSniffer(): void
-    //{
-        //$this->assertSnifferFindsErrors(new DeclareStrictTypesAfterFileDocSniff(), 2);
-    //}
+    public function testDeclareStrictTypesSniffer(): void
+    {
+        $this->assertSnifferFindsErrors(new DeclareStrictTypesAfterFileDocSniff(), 1);
+    }
 
     /**
      * @return void

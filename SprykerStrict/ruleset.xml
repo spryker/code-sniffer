@@ -43,6 +43,7 @@
             <property name="enableIntersectionTypeHint" value="false"/>
         </properties>
     </rule>
+    <rule ref="SprykerStrict.TypeHints.DeclareNoStrictTypesAfterOpenTag" />
     <rule ref="SprykerStrict.TypeHints.DeclareStrictTypesAfterFileDoc">
         <properties>
             <property name="linesCountBeforeDeclare" type="int" value="1"/>
