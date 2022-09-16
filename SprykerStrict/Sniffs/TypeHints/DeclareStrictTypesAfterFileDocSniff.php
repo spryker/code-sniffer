@@ -66,7 +66,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
         if ($declarePointer === null || $tokens[$declarePointer]['code'] !== T_DECLARE) {
             $fix = $phpcsFile->addFixableError(
-                sprintf('Missing declare(%s).', $this->getStrictTypeDeclaration()),
+                sprintf('Missing declare(%s) after file doc.', $this->getStrictTypeDeclaration()),
                 $stackPtr,
                 self::CODE_DECLARE_STRICT_TYPES_MISSING
             );
@@ -102,13 +102,13 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                 continue;
             }
 
-            $strictTypesPointer = $i;
+            $strictTypesPointer = (int)$i;
             break;
         }
 
         if ($strictTypesPointer === null) {
             $fix = $phpcsFile->addFixableError(
-                sprintf('Missing declare(%s).', $this->getStrictTypeDeclaration()),
+                sprintf('Missing declare(%s) after file doc.', $this->getStrictTypeDeclaration()),
                 $declarePointer,
                 self::CODE_DECLARE_STRICT_TYPES_MISSING
             );
