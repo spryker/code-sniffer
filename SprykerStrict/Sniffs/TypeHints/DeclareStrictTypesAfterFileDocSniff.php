@@ -24,7 +24,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     public const CODE_DECLARE_STRICT_TYPES_MISSING = 'DeclareStrictTypesMissing';
 
     /**
-     * @var array
+     * @var array<int|string>
      */
     protected const ALLOWED_TOKEN_CODES_BEFORE_FILE_DOC = [
         T_WHITESPACE, T_DECLARE, T_OPEN_PARENTHESIS, T_STRING, T_EQUAL, T_LNUMBER, T_CLOSE_PARENTHESIS, T_SEMICOLON,
