@@ -133,6 +133,9 @@
     <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
         <severity>0</severity>
     </rule>
+    <rule ref="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed">
+        <severity>0</severity>
+    </rule>
 
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
         <properties>
