@@ -255,6 +255,16 @@ If you want to enable `Spryker.Internal.SprykerDisallowFunctions` for your proje
 Set the current PHP version you are using which will disallow methods of the next minors and majors.
 If you already require certain polyfills, you can raise this version or completely disable it (even the core check) by using `'off'` value.
 
+## Enabling `strict_types`
+Projects can - at their own discretion - enable strict mode for PHP files:
+```xml
+    <rule ref="Spryker.PHP.DeclareStrictTypesAfterFileDoc">
+        <properties>
+            <property name="strictTypesMandatory" value="true"/>
+        </properties>
+    </rule>
+```
+Please note: This can have side effects as type casting is now not happening anymore in some cases.
 
 ## Excluding test related comparison files
 If you want to exclude certain generated (e.g. PHP) files, make sure those are in a `test_files` subfolder to be auto-skipped.

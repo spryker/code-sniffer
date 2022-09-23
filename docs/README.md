@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 
 
-The SprykerStrict standard contains 234 sniffs
+The SprykerStrict standard contains 235 sniffs
 
 Generic (25 sniffs)
 -------------------
@@ -127,7 +127,7 @@ SlevomatCodingStandard (48 sniffs)
 - SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable
 - SlevomatCodingStandard.Whitespaces.DuplicateSpaces
 
-Spryker (97 sniffs)
+Spryker (98 sniffs)
 -------------------
 - Spryker.Arrays.DisallowImplicitArrayCreation
 - Spryker.Classes.ClassFileName
@@ -201,6 +201,7 @@ Spryker (97 sniffs)
 - Spryker.Namespaces.SprykerNoPyz
 - Spryker.Namespaces.UseStatement
 - Spryker.Namespaces.UseWithAliasing
+- Spryker.PHP.DeclareStrictTypesAfterFileDoc
 - Spryker.PHP.DisallowFunctions
 - Spryker.PHP.DisallowTrailingCommaInSingleLine
 - Spryker.PHP.Exit
