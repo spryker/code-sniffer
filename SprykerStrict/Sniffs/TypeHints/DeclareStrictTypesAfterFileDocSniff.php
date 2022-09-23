@@ -79,11 +79,12 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         }
 
         $declareStrictTypeTokenPosition = $this->getStrictTypeDeclareTokenPosition($tokens);
+        $strictTypesMandatoryInFile = $this->strictTypesMandatory;
 
         // Don't do anything if file doesn't contain strict_types declaration
         // and strict_types declaration is not mandatory
         if (!$declareStrictTypeTokenPosition) {
-            if (!$this->strictTypesMandatory) {
+            if (!$strictTypesMandatoryInFile) {
                 return;
             }
 
@@ -106,7 +107,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         // Remove strict_types declaration if it is after open tag
         if ($declareStrictTypeTokenPosition && $this->isDeclareAfterOpenTag($tokens, $declareStrictTypeTokenPosition)) {
             // If file contains strict_types declaration, it is mandatory to keep it in the file
-            $this->strictTypesMandatory = true;
+            $strictTypesMandatoryInFile = true;
 
             $fix = $phpcsFile->addFixableError(
                 'declare(strict_types=1) is after PHP open tag, but it should be after file doc',
@@ -123,7 +124,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
         $declarePointer = TokenHelper::findNextEffective($phpcsFile, $stackPtr + 1);
 
-        if ($this->strictTypesMandatory && ($declarePointer === null || $tokens[$declarePointer]['code'] !== T_DECLARE)) {
+        if ($strictTypesMandatoryInFile && ($declarePointer === null || $tokens[$declarePointer]['code'] !== T_DECLARE)) {
             $fix = $phpcsFile->addFixableError(
                 sprintf('Missing declare(%s) after file doc.', $this->getStrictTypeDeclaration()),
                 $stackPtr,
