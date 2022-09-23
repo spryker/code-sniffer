@@ -199,9 +199,9 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         do {
             $tokenCode = $tokens[++$nextIdx]['code'];
             if (in_array($tokenCode, [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM])) {
-                // We are
                 return false;
-            } elseif ($tokenCode !== T_WHITESPACE) {
+            }
+            if ($tokenCode !== T_WHITESPACE) {
                 $nextNonEmptyTokenFound = true;
             }
         } while (!$nextNonEmptyTokenFound);
@@ -211,7 +211,8 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
             $tokenCode = $tokens[$i]['code'];
             if ($tokenCode === T_OPEN_TAG) {
                 return true;
-            } elseif (
+            }
+            if (
                 substr($tokens[$i]['type'], 0, strlen($docTokenPrefix)) === $docTokenPrefix
                 || in_array($tokenCode, static::ALLOWED_TOKEN_CODES_BEFORE_FILE_DOC)
             ) {
@@ -310,13 +311,14 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     {
         for ($i = 0, $max = count($tokens); $i < $max; ++$i) {
             $token = $tokens[$i];
+            if ($token['code'] === T_CLASS) {
+                return null;
+            }
             if ($token['code'] === T_DECLARE) {
                 $declareOpenIdx = $token['parenthesis_opener'] + 1;
                 if ($tokens[$declareOpenIdx]['code'] === T_STRING && $tokens[$declareOpenIdx]['content'] === 'strict_types') {
                     return $i;
                 }
-            } elseif ($token['code'] === T_CLASS) {
-                return null;
             }
         }
 
