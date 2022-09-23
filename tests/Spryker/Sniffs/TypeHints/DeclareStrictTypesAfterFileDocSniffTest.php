@@ -5,10 +5,10 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\SprykerStrict\TypeHints;
+namespace Spryker\Test\Spryker\Sniffs\TypeHints;
 
+use Spryker\Sniffs\TypeHints\DeclareStrictTypesAfterFileDocSniff;
 use Spryker\Test\TestCase;
-use SprykerStrict\Sniffs\TypeHints\DeclareStrictTypesAfterFileDocSniff;
 
 class DeclareStrictTypesAfterFileDocSniffTest extends TestCase
 {

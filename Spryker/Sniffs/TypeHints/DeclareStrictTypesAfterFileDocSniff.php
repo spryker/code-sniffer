@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace SprykerStrict\Sniffs\TypeHints;
+namespace Spryker\Sniffs\TypeHints;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
@@ -48,7 +48,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     /**
      * @var int
      */
-    public $spacesCountAroundEqualsSign = 1;
+    public $spacesCountAroundEqualsSign = 0;
 
     /**
      * @return array<int, (int|string)>
