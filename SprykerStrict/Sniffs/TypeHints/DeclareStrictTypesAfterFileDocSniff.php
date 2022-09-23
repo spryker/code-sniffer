@@ -24,6 +24,13 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     public const CODE_DECLARE_STRICT_TYPES_MISSING = 'DeclareStrictTypesMissing';
 
     /**
+     * @var array
+     */
+    protected const ALLOWED_TOKEN_CODES_BEFORE_FILE_DOC = [
+        T_WHITESPACE, T_DECLARE, T_OPEN_PARENTHESIS, T_STRING, T_EQUAL, T_LNUMBER, T_CLOSE_PARENTHESIS, T_SEMICOLON,
+    ];
+
+    /**
      * @var bool|null
      */
     public $strictTypesMandatory;
@@ -89,6 +96,11 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
             if (!$fix) {
                 return;
             }
+        }
+
+        // Don't do anything if we are after the wrong documentation block
+        if (!$this->isFileDocumentation($tokens, $stackPtr)) {
+            return;
         }
 
         // Remove strict_types declaration if it is after open tag
@@ -161,7 +173,46 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         for ($i = $declarePosition - 1; $i >= 0; --$i) {
             if ($tokens[$i]['code'] === T_OPEN_TAG) {
                 return true;
-            } else if ($tokens[$i]['code'] === T_WHITESPACE) {
+            } elseif ($tokens[$i]['code'] === T_WHITESPACE) {
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $tokens
+     * @param int $stackPtr
+     *
+     * @return bool
+     */
+    protected function isFileDocumentation(array $tokens, int $stackPtr): bool
+    {
+        $nextNonEmptyTokenFound = false;
+        $nextIdx = $stackPtr;
+
+        do {
+            $tokenCode = $tokens[++$nextIdx]['code'];
+            if (in_array($tokenCode, [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM])) {
+                // We are
+                return false;
+            } elseif ($tokenCode !== T_WHITESPACE) {
+                $nextNonEmptyTokenFound = true;
+            }
+        } while (!$nextNonEmptyTokenFound);
+
+        $docTokenPrefix = 'T_DOC_COMMENT_';
+        for ($i = $stackPtr - 1; $i >= 0; --$i) {
+            $tokenCode = $tokens[$i]['code'];
+            if ($tokenCode === T_OPEN_TAG) {
+                return true;
+            } elseif (
+                substr($tokens[$i]['type'], 0, strlen($docTokenPrefix)) === $docTokenPrefix
+                || in_array($tokenCode, static::ALLOWED_TOKEN_CODES_BEFORE_FILE_DOC)
+            ) {
                 continue;
             }
 
@@ -262,7 +313,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                 if ($tokens[$declareOpenIdx]['code'] === T_STRING && $tokens[$declareOpenIdx]['content'] === 'strict_types') {
                     return $i;
                 }
-            } else if ($token['code'] === T_CLASS) {
+            } elseif ($token['code'] === T_CLASS) {
                 return null;
             }
         }
