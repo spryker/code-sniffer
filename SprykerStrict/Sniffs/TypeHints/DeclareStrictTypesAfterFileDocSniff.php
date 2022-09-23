@@ -118,7 +118,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
                 static::CODE_DECLARE_STRICT_TYPES_MISSING,
             );
             if ($fix) {
-                $this->addStrictTypesDeclaration($phpcsFile, $declarePointer, $stackPtr);
+                $this->addStrictTypesDeclaration($phpcsFile, (int)$declarePointer, $stackPtr);
             }
         }
     }
@@ -134,7 +134,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      *
      * @return bool
      */
@@ -151,7 +151,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     }
 
     /**
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $declarePosition
      *
      * @return bool
@@ -173,7 +173,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param array $tokens
+     * @param array<int, array<string, mixed>> $tokens
      * @param int $declareStrictTypeTokenPosition
      *
      * @return void
@@ -249,7 +249,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     }
 
     /**
-     * @param array<array> $tokens
+     * @param array<int, array<string, mixed>> $tokens
      *
      * @return int|null
      */
