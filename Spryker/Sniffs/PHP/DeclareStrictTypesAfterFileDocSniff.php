@@ -174,7 +174,8 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         for ($i = $declarePosition - 1; $i >= 0; --$i) {
             if ($tokens[$i]['code'] === T_OPEN_TAG) {
                 return true;
-            } elseif ($tokens[$i]['code'] === T_WHITESPACE) {
+            }
+            if ($tokens[$i]['code'] === T_WHITESPACE) {
                 continue;
             }
 
