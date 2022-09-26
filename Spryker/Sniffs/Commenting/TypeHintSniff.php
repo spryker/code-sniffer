@@ -22,6 +22,7 @@ use PHP_CodeSniffer\Files\File;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\TypelessParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
@@ -116,7 +117,7 @@ class TypeHintSniff extends AbstractSprykerSniff
 
             $tagComment = $phpcsFile->fixer->getTokenContent($tag + 2);
             $valueNode = static::getValueNode($tokens[$tag]['content'], $tagComment);
-            if ($valueNode instanceof InvalidTagValueNode) {
+            if ($valueNode instanceof InvalidTagValueNode || $valueNode instanceof TypelessParamTagValueNode) {
                 continue;
             }
 
