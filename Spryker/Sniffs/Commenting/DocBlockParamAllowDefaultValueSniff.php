@@ -222,7 +222,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
      */
     protected function isPrimitiveGenerics(string $type, array $parts): bool
     {
-        $iterableTypes = ['array', 'iterable'];
+        $iterableTypes = ['array', 'iterable', 'list'];
         if (!in_array($type, $iterableTypes, true)) {
             return false;
         }
