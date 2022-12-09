@@ -396,7 +396,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param \SlevomatCodingStandard\Helpers\Annotation\VariableAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ParameterAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ReturnAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ThrowsAnnotation|\SlevomatCodingStandard\Helpers\Annotation\PropertyAnnotation|\SlevomatCodingStandard\Helpers\Annotation\MethodAnnotation|\SlevomatCodingStandard\Helpers\Annotation\TemplateAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ExtendsAnnotation|\SlevomatCodingStandard\Helpers\Annotation\ImplementsAnnotation|\SlevomatCodingStandard\Helpers\Annotation\UseAnnotation|\SlevomatCodingStandard\Helpers\Annotation\MixinAnnotation|\SlevomatCodingStandard\Helpers\Annotation\TypeAliasAnnotation|\SlevomatCodingStandard\Helpers\Annotation\TypeImportAnnotation $annotation
+     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation $annotation
      *
      * @return void
      */

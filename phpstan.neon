@@ -6,3 +6,5 @@ parameters:
         - GlueStreamSpecific/
     bootstrapFiles:
         - '%rootDir%/../../../tests/bootstrap.php'
+    ignoreErrors:
+        - '#Parameter \#1 \$annotation of static method .+AnnotationHelper::getAnnotationTypes\(\) expects .+, .+Annotation given\.#'
