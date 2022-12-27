@@ -32,6 +32,15 @@ class FixMe
     }
 
     /**
+     * @param string|null $string
+     * @return string|int|null
+     */
+    public function specialMixed(?string $string = null): mixed
+    {
+        return $string;
+    }
+
+    /**
      * @return array<string, array<string, int|string|null>>
      */
     public function array(): ?array

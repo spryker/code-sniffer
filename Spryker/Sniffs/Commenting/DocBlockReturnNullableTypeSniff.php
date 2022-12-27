@@ -66,7 +66,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
             return;
         }
 
-        if (!$returnType->isNullable()) {
+        if (!$returnType->isNullable() && $returnType->getTypeHint() !== 'mixed') {
             $this->assertNotNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
 
             return;
