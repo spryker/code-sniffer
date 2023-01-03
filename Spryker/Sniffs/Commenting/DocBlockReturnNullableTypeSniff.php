@@ -66,13 +66,17 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
             return;
         }
 
-        if (!$returnType->isNullable() && $returnType->getTypeHint() !== 'mixed') {
-            $this->assertNotNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
+        if ($returnType->isNullable()) {
+            $this->assertRequiredNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
 
             return;
         }
 
-        $this->assertRequiredNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
+        if ($returnType->getTypeHint() === 'mixed') {
+            return;
+        }
+
+        $this->assertNotNullableReturnType($phpCsFile, $stackPointer, $docBlockReturnTypes);
     }
 
     /**

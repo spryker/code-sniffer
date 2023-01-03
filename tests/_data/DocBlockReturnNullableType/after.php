@@ -41,6 +41,15 @@ class FixMe
     }
 
     /**
+     * @param string|null $string
+     * @return string|int
+     */
+    public function specialMixedNotNullable(?string $string = null): mixed
+    {
+        return $string;
+    }
+
+    /**
      * @return array<string, array<string, int|string|null>>|null
      */
     public function array(): ?array
