@@ -58,4 +58,13 @@ class FixMe
     public function registerTableMapClass(string $tableMapClass): void
     {
     }
+
+    /**
+     * @param string|null $value The value to convert.
+     *
+     * @return string|null
+     */
+    public function toPHP(mixed $value): mixed {
+        return $value;
+    }
 }

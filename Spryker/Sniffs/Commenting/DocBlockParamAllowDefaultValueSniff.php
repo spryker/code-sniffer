@@ -152,7 +152,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 if (!in_array($type, $parts, true)) {
                     $parts[] = $type;
                     $error = 'Doc block error: `' . $content . '` seems to be missing type `' . $type . '`.';
-                    $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Default');
+                    $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'Nullable');
                     if ($fix) {
                         $newComment = trim(sprintf(
                             '%s %s%s %s',
@@ -167,24 +167,26 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             }
 
             if (!$methodSignatureValue['default'] && !$methodSignatureValue['nullable']) {
+                if (!in_array('null', $parts, true) || $methodSignatureValue['typehint'] === 'mixed') {
+                    continue;
+                }
+
                 $error = 'Doc block error: `' . $content . '` seems to be having a wrong `null` type hinted, argument is not nullable though.';
-                if (in_array('null', $parts, true)) {
-                    $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'WrongNullable');
-                    if ($fix) {
-                        foreach ($parts as $k => $v) {
-                            if ($v === 'null') {
-                                unset($parts[$k]);
-                            }
+                $fix = $phpCsFile->addFixableError($error, $classNameIndex, 'WrongNullable');
+                if ($fix) {
+                    foreach ($parts as $k => $v) {
+                        if ($v === 'null') {
+                            unset($parts[$k]);
                         }
-                        $newComment = trim(sprintf(
-                            '%s %s%s %s',
-                            implode('|', $parts),
-                            $valueNode->isVariadic ? '...' : '',
-                            $valueNode->parameterName,
-                            $valueNode->description,
-                        ));
-                        $phpCsFile->fixer->replaceToken($classNameIndex, $newComment);
                     }
+                    $newComment = trim(sprintf(
+                        '%s %s%s %s',
+                        implode('|', $parts),
+                        $valueNode->isVariadic ? '...' : '',
+                        $valueNode->parameterName,
+                        $valueNode->description,
+                    ));
+                    $phpCsFile->fixer->replaceToken($classNameIndex, $newComment);
                 }
             }
         }
