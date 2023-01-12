@@ -1,57 +1,5 @@
 # Documentation
 
-## Using own project standard
-You can exchange or extend the Spryker coding standard by providing your own ruleset.xml.
-This can be configured in the Development module config:
-
-```php
-// DevelopmentConfig.php
-
-    /**
-     * Either a relative or full path to the ruleset.xml or a name of an installed
-     * standard (see `phpcs -i` for a list of available ones).
-     *
-     * @return string
-     */
-    public function getCodingStandard()
-    {
-        return '/path/to/your/ruleset.xml';
-    }
-```
-If you use it for custom projects, just use `--standard` to point to your ruleset file.
-
-Make sure that you include the Spryker core standard ruleset in your custom one, e.g.:
-```xml
-<?xml version="1.0"?>
-<ruleset name="SprykerProject">
-    <description>
-        Spryker Coding Standard for Project.
-        Extends main Spryker Coding Standard.
-        All sniffs in ./Sniffs/ will be auto loaded
-    </description>
-
-    <rule ref="vendor/spryker/code-sniffer/Spryker/ruleset.xml"/>
-
-    <exclude-pattern>*/src/Generated/*</exclude-pattern>
-    <exclude-pattern>*/src/Orm/*</exclude-pattern>
-    <exclude-pattern>*/tests/_support/_generated/*</exclude-pattern>
-    <exclude-pattern>*/tests/_helpers/*</exclude-pattern>
-    <exclude-pattern>*/tests/_output/*</exclude-pattern>
-    <exclude-pattern>./data/DE/*</exclude-pattern>
-
-    <!-- Define your own sniffs here -->
-</ruleset>
-```
-If you want to use the `SprykerStrict` standard in your project, you should replace the string:
-```xml
-<rule ref="vendor/spryker/code-sniffer/Spryker/ruleset.xml"/>
-```
-with this one:
-```xml
-<rule ref="vendor/spryker/code-sniffer/SprykerStrict/ruleset.xml"/>
-```
-
-
 ## Custom licensing
 You can provide a custom license via `.license` file in your repository root.
 It must be a PHP doc block (valid PHP) including a trailing new line.
