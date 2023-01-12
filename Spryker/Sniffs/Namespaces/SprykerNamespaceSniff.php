@@ -19,6 +19,11 @@ class SprykerNamespaceSniff implements Sniff
     use BasicsTrait;
 
     /**
+     * @var string Regular expressions allowed, e.g. `Foo|Bar*`
+     */
+    public $namespace = 'Spryker.*';
+
+    /**
      * @inheritDoc
      */
     public function register(): array
@@ -38,7 +43,7 @@ class SprykerNamespaceSniff implements Sniff
 
         $filename = $phpcsFile->getFilename();
 
-        preg_match('#/src/(Spryker.*)/(.+)#', $filename, $matches);
+        preg_match('#/src/(' . $this->namespace . ')/(.+)#', $filename, $matches);
         if (!$matches) {
             return;
         }
