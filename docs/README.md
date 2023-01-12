@@ -84,6 +84,14 @@ It would then validate your class files within `src/`:
 If you do not customize anything here, this sniff will only run through Spryker namespaces/folders,
 and will be ignored for any other repository structure.
 
+In some rare cases, you might also need `rootDir` config, e.g. when `src/` is not your
+default root directory:
+```xml
+        <properties>
+            <property name="rootDir" value="custom"/>
+        </properties>
+```
+
 ## Integrating into CI testing and PRs
 The following is an example for CircleCI but will also be compatible with any other CI system:
 ```

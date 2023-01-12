@@ -33,6 +33,13 @@ class SprykerNamespaceSniff implements Sniff
     public $isRoot = false;
 
     /**
+     * What is the root directoy to look into? Defaults to `src/`
+     *
+     * @var string
+     */
+    public $rootDir = 'src';
+
+    /**
      * @inheritDoc
      */
     public function register(): array
@@ -52,9 +59,9 @@ class SprykerNamespaceSniff implements Sniff
 
         $filename = $phpcsFile->getFilename();
 
-        $pattern = '#/src/(' . $this->namespace . ')/(.+)#';
+        $pattern = '#/' . $this->rootDir . '/(' . $this->namespace . ')/(.+)#';
         if ($this->isRoot) {
-            $pattern = '#/src/(.+)#';
+            $pattern = '#/' . $this->rootDir . '/(.+)#';
         }
 
         preg_match($pattern, $filename, $matches);

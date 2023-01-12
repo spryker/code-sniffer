@@ -16,6 +16,12 @@
 
     <rule ref="SprykerStrict"/>
 
+    <rule ref="Spryker.Namespaces.SprykerNamespace">
+        <properties>
+            <property name="rootDir" value="code-sniffer"/>
+        </properties>
+    </rule>
+
     <exclude-pattern>/Spryker/tests/files/</exclude-pattern>
 
 </ruleset>
