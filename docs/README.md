@@ -93,7 +93,7 @@ want to use all the new language features:
     ...
 </rule>
 ```
-They ship with the core by default to avoid PHP8-creep into PHP7.4+ code.
+They are shipped by default to avoid PHP8-creep into PHP7.4+ code.
 
 ## Configure custom namespaces
 Certain sniffs rely on a list of namespaces, which defaults to `Pyz,SprykerEco,SprykerMiddleware,SprykerSdk,Spryker`, but can be customized like so:
