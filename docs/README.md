@@ -26,7 +26,7 @@ the namespace sniff config:
     </rule>
 ```
 It would then validate your class files within `src/`:
-- file name expected to be `src/App/Some/Sub/MyClass.php`
+- file name expected to be `src/Some/Sub/MyClass.php`
 - FQCN to be `App\\Some\\Sub\\MyClass`
 
 If you do not customize anything here, this sniff will only run through Spryker namespaces/folders,
