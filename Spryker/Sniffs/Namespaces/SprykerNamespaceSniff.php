@@ -19,9 +19,18 @@ class SprykerNamespaceSniff implements Sniff
     use BasicsTrait;
 
     /**
-     * @var string Regular expressions allowed, e.g. `Foo|Bar*`
+     * For non root case: Regular expressions allowed, e.g. `Foo|Bar*`
+     *
+     * @var string
      */
     public $namespace = 'Spryker.*';
+
+    /**
+     * Use this to make the namespace a root namespace, as for most modern PSR-4 packages.
+     *
+     * @var bool
+     */
+    public $isRoot = false;
 
     /**
      * @inheritDoc
@@ -43,12 +52,21 @@ class SprykerNamespaceSniff implements Sniff
 
         $filename = $phpcsFile->getFilename();
 
-        preg_match('#/src/(' . $this->namespace . ')/(.+)#', $filename, $matches);
+        $pattern = '#/src/(' . $this->namespace . ')/(.+)#';
+        if ($this->isRoot) {
+            $pattern = '#/src/(.+)#';
+        }
+
+        preg_match($pattern, $filename, $matches);
         if (!$matches) {
             return;
         }
 
-        $extractedPath = $matches[1] . '/' . $matches[2];
+        if ($this->isRoot) {
+            $extractedPath = $this->namespace . '/' . $matches[1];
+        } else {
+            $extractedPath = $matches[1] . '/' . $matches[2];
+        }
         $pathWithoutFilename = substr($extractedPath, 0, strrpos($extractedPath, DIRECTORY_SEPARATOR) ?: 0);
 
         $namespace = $namespaceStatement['namespace'];
