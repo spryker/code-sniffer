@@ -57,11 +57,18 @@ class SprykerNamespaceSniff implements Sniff
             return;
         }
 
-        $filename = $phpcsFile->getFilename();
-
-        $pattern = '#/' . $this->rootDir . '/(' . $this->namespace . ')/(.+)#';
+        $filename = $fullFilename = $phpcsFile->getFilename();
         if ($this->isRoot) {
-            $pattern = '#/' . $this->rootDir . '/(.+)#';
+            $filename = $this->normalizeFilename($fullFilename);
+        }
+        $start = '/';
+        if ($fullFilename !== $filename) {
+            $start = '^';
+        }
+
+        $pattern = '#' . $start . $this->rootDir . '/(' . $this->namespace . ')/(.+)#';
+        if ($this->isRoot) {
+            $pattern = '#' . $start . $this->rootDir . '/(.+)#';
         }
 
         preg_match($pattern, $filename, $matches);
@@ -84,5 +91,17 @@ class SprykerNamespaceSniff implements Sniff
 
         $error = sprintf('Namespace `%s` does not fit to folder structure `%s`', $namespace, $pathToNamespace);
         $phpcsFile->addError($error, $namespaceStatement['start'], 'NamespaceFolderMismatch');
+    }
+
+    /**
+     * Removes the current working directory (root) if possible.
+     *
+     * @param string $getFilename
+     *
+     * @return string
+     */
+    protected function normalizeFilename(string $getFilename): string
+    {
+        return str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $getFilename);
     }
 }

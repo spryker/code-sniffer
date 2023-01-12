@@ -18,7 +18,9 @@
 
     <rule ref="Spryker.Namespaces.SprykerNamespace">
         <properties>
-            <property name="rootDir" value="code-sniffer"/>
+            <property name="namespace" value="Spryker"/>
+            <property name="rootDir" value="Spryker"/>
+            <property name="isRoot" value="true"/>
         </properties>
     </rule>
 
