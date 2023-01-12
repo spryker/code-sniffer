@@ -23,7 +23,7 @@ $content
 
 TEXT;
 
-$file = __DIR__ . DIRECTORY_SEPARATOR . 'README.md';
+$file = __DIR__ . DIRECTORY_SEPARATOR . 'sniffs.md';
 
 file_put_contents($file, $content);
 exit($ret);
