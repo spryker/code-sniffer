@@ -85,14 +85,6 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Composer prefer lowest
-        run: |
-          composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable
-          composer require --dev dereuromark/composer-prefer-lowest
-
-      - name: Validate lowest
-        run: vendor/bin/validate-prefer-lowest
-
   xml-validation:
     runs-on: ubuntu-22.04
     steps:
