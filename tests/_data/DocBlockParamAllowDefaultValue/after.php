@@ -67,4 +67,14 @@ class FixMe
     public function toPHP(mixed $value): mixed {
         return $value;
     }
+
+    /**
+     * This typehint is correct and should not change. See issue #368.
+     *
+     * @param int|string|null $value
+     * @return void
+     */
+    public function multipleUnion(int|string|null $value): void
+    {
+    }
 }
