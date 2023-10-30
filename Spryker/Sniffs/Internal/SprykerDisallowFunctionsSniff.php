@@ -19,7 +19,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  *
  * <rule ref="Spryker.Internal.SprykerDisallowFunctions">
  *     <properties>
- *         <property name="phpVersion" value="off"/> // Instead of 7.4/8.0/...
+ *         <property name="phpVersion" value="off"/> // Instead of 8.0/8.1/...
  *     </properties>
  * </rule>
  */
@@ -28,11 +28,11 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
     /**
      * @var string
      */
-    protected const PHP_MIN = '7.4';
+    protected const PHP_MIN = '8.0';
 
     /**
      * This property can be filled with the current PHP version in use.
-     * E.g. 7.4 activates 8.0+ checks. Set to string `off` to deactivate whole sniff.
+     * E.g. 8.0 activates 8.1+ checks. Set to string `off` to deactivate whole sniff.
      * If not filled, it will default to core use only.
      *
      * @var string|null
@@ -43,16 +43,6 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
      * @var array<string, array<string>>
      */
     protected static $methods = [
-        // https://github.com/symfony/polyfill-php80
-        '8.0' => [
-            'str_contains',
-            'str_starts_with',
-            'str_ends_with',
-            'get_debug_type',
-            'get_resource_id',
-            'fdiv',
-            'preg_last_error_msg',
-        ],
         // https://github.com/symfony/polyfill-php81
         '8.1' => [
             'array_is_list',
