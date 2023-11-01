@@ -5,19 +5,19 @@ namespace Spryker;
 class FixMe
 {
     /**
-     * @var \ArrayObject<string>
+     * @var \ArrayObject|string[]
      */
     protected $prop;
 
     /**
-     * @var \ArrayObject<string> Some description.
+     * @var \ArrayObject|string[] Some description.
      */
     protected $propWithDescription;
 
     /**
-     * @param array<string> $var
+     * @param string[] $var
      *
-     * @return array<int>
+     * @return int[]
      */
     protected function getSimpleInts(array $var): array
     {
@@ -25,9 +25,9 @@ class FixMe
     }
 
     /**
-     * @param \ArrayObject<string> $var Some comment.
+     * @param \ArrayObject|string[] $var Some comment.
      *
-     * @return \ArrayObject<string>
+     * @return \ArrayObject|string[]
      */
     protected function getSimpleStringCollection($var)
     {
@@ -43,7 +43,7 @@ class FixMe
     }
 
     /**
-     * @return \ArrayObject<string>|array<int>
+     * @return \ArrayObject<string>|int[]
      */
     protected function getArrayObjectOfStringsOrArrayOfInts()
     {
@@ -51,7 +51,7 @@ class FixMe
     }
 
     /**
-     * @return \ArrayObject<string>|null
+     * @return \ArrayObject|string[]|null
      */
     protected function getSimpleStringCollectionOrNull(): ?\ArrayObject
     {
@@ -59,7 +59,7 @@ class FixMe
     }
 
     /**
-     * @return \Iterator<int>
+     * @return \Iterator|int[]
      */
     protected function getSimpleIntCollection(): Iterator
     {
@@ -67,7 +67,7 @@ class FixMe
     }
 
     /**
-     * @return \Iterator<array<\Generated\Shared\Transfer\EventEntityTransfer>>
+     * @return \Iterator|\Generated\Shared\Transfer\EventEntityTransfer[][]
      */
     protected function createEventResourceQueryContainerPluginIterator(): Iterator
     {
@@ -79,11 +79,11 @@ class FixMe
      */
     protected function inlineDocBlock()
     {
-        /** @var \ArrayObject<string> $bar */
+        /** @var \ArrayObject|string[] $bar */
         $bar = $this->foo();
 
         /**
-         * @var \ArrayObject<string> $bar
+         * @var \ArrayObject|string[] $bar
          */
         $bar = $this->foo();
     }
