@@ -21,7 +21,6 @@ use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use SlevomatCodingStandard\Helpers\Annotation;
-use SlevomatCodingStandard\Helpers\Annotation\Annotation as SlevomatCodingStandardAnnotation;
 use SlevomatCodingStandard\Helpers\AnnotationHelper;
 use SlevomatCodingStandard\Helpers\AnnotationTypeHelper;
 use SlevomatCodingStandard\Helpers\DocCommentHelper;
@@ -88,6 +87,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                     continue;
                 }
 
+                /** @var \SlevomatCodingStandard\Helpers\ParsedDocComment $parsedDocComment */
                 $parsedDocComment = DocCommentHelper::parseDocComment($phpcsFile, $docCommentOpenPointer);
 
                 /** @var list<\PHPStan\PhpDocParser\Ast\Type\UnionTypeNode> $unionTypeNodes */
@@ -165,7 +165,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation $annotation
+     * @param \SlevomatCodingStandard\Helpers\Annotation $annotation
      * @param string $fixedAnnotation
      *
      * @return void
@@ -177,6 +177,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         $description = $annotation->getNode()->value->description ?? '';
 
         $fixedAnnotation = sprintf('%s %s %s %s', $fixedAnnotation, $parameterName, $variableName, $description);
+        /** @var string $fixedAnnotation */
         $fixedAnnotation = preg_replace('/\s+/', ' ', trim($fixedAnnotation));
 
         $nextToken = $phpcsFile->fixer->getTokenContent($annotation->getEndPointer() + 1);
@@ -208,7 +209,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 /**
                  * @param \PHPStan\PhpDocParser\Ast\Node $node
                  *
-                 * @return \PHPStan\PhpDocParser\Ast\Node|list<\PHPStan\PhpDocParser\Ast\Node>|\PHPStan\PhpDocParser\Ast\NodeTraverser|null
+                 * @return \PHPStan\PhpDocParser\Ast\Node|list<\PHPStan\PhpDocParser\Ast\Node>|\PHPStan\PhpDocParser\Ast\NodeTraverser|int|null
                  */
                 public function enterNode(Node $node)
                 {
@@ -378,13 +379,12 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
     }
 
     /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation\Annotation $annotation
+     * @param \SlevomatCodingStandard\Helpers\Annotation $annotation
      *
      * @return bool
      */
-    protected function isGenericObjectCollection(SlevomatCodingStandardAnnotation $annotation): bool
+    protected function isGenericObjectCollection(Annotation $annotation): bool
     {
-        //@phpstan-ignore-next-line
         $arrayTypeNodes = $this->getArrayTypeNodes($annotation->getValue());
 
         foreach ($arrayTypeNodes as $arrayTypeNode) {
