@@ -1,10 +1,9 @@
 parameters:
     level: 8
+    checkGenericClassInNonGenericObjectType: false
     paths:
         - Spryker/
         - SprykerStrict/
         - GlueStreamSpecific/
     bootstrapFiles:
         - '%rootDir%/../../../tests/bootstrap.php'
-    ignoreErrors:
-        - '#Parameter \#1 \$annotation of static method .+AnnotationHelper::getAnnotationTypes\(\) expects .+, .+Annotation given\.#'
