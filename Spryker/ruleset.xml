@@ -234,7 +234,6 @@
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
     <rule ref="SlevomatCodingStandard.Functions.DisallowTrailingCommaInClosureUse"/>
     <rule ref="SlevomatCodingStandard.Functions.DisallowNamedArguments"/>
-    <rule ref="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator"/>
 
 </ruleset>
