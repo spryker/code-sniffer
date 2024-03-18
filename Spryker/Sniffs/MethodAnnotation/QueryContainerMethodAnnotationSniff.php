@@ -41,30 +41,6 @@ class QueryContainerMethodAnnotationSniff extends AbstractMethodAnnotationSniff
      */
     protected function getSnifferIsApplicable(File $phpCsFile, int $stackPointer): bool
     {
-        if ($this->isController($phpCsFile, $stackPointer)) {
-            return true;
-        }
-
-        if ($this->isCollectionType($phpCsFile, $stackPointer)) {
-            return true;
-        }
-
-        if ($this->isConsole($phpCsFile, $stackPointer)) {
-            return true;
-        }
-
-        if ($this->isFactory($phpCsFile, $stackPointer)) {
-            return true;
-        }
-
-        if ($this->isPlugin($phpCsFile, $stackPointer)) {
-            return true;
-        }
-
-        if ($this->isType($phpCsFile, $stackPointer)) {
-            return true;
-        }
-
         return false;
     }
 
