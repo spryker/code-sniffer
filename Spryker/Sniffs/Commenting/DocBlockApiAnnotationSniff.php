@@ -23,7 +23,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     /**
      * @var string
      */
-    protected const SPECIFICATION_TAG = 'Specification';
+    protected const SPECIFICATION_TAG = 'Specification:';
 
     /**
      * @inheritDoc
@@ -348,7 +348,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
         $tokenContent = $tokens[$stackPointer]['content'];
-        if ($tokenContent === sprintf('%s:', static::SPECIFICATION_TAG)) {
+        if ($tokenContent === sprintf('%s', static::SPECIFICATION_TAG)) {
             return;
         }
         $this->addTypoInSpecificationTagFixableError($phpCsFile, $stackPointer);
