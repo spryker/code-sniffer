@@ -23,7 +23,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     /**
      * @var string
      */
-    protected const SPECIFICATION_TAG = 'Specification:';
+    protected const SPECIFICATION_TAG = 'Specification';
 
     /**
      * @inheritDoc
@@ -324,11 +324,12 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return null;
         }
 
+        $apiTagPosition = $this->findApiAnnotationIndex($phpCsFile, $stackPointer);
         $specificationPosition = $this->getContentPositionInRange(
             static::SPECIFICATION_TAG,
             $tokens,
             $docCommentOpenerPosition,
-            $docCommentClosingPosition,
+            $apiTagPosition ?? $docCommentClosingPosition,
         );
         if (!$specificationPosition) {
             return null;
@@ -348,7 +349,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     {
         $tokens = $phpCsFile->getTokens();
         $tokenContent = $tokens[$stackPointer]['content'];
-        if ($tokenContent === sprintf('%s', static::SPECIFICATION_TAG)) {
+        if ($tokenContent === sprintf('%s:', static::SPECIFICATION_TAG)) {
             return;
         }
         $this->addTypoInSpecificationTagFixableError($phpCsFile, $stackPointer);
