@@ -324,11 +324,12 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             return null;
         }
 
+        $apiTagPosition = $this->findApiAnnotationIndex($phpCsFile, $stackPointer);
         $specificationPosition = $this->getContentPositionInRange(
             static::SPECIFICATION_TAG,
             $tokens,
             $docCommentOpenerPosition,
-            $docCommentClosingPosition,
+            $apiTagPosition ?? $docCommentClosingPosition,
         );
         if (!$specificationPosition) {
             return null;
