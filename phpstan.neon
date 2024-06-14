@@ -7,3 +7,11 @@ parameters:
         - GlueStreamSpecific/
     bootstrapFiles:
         - '%rootDir%/../../../tests/bootstrap.php'
+    ignoreErrors:
+        -
+            message: '#Access to constant .* on an unknown class Spryker\\Shared\\Kernel\\KernelConstants#'
+            path: 'Spryker/Sniffs/AbstractSniffs/AbstractMethodAnnotationSniff.php'
+        -
+            message: '#Call to static method getInstance\(\) on an unknown class Spryker\\Shared\\Config\\Config#'
+            path: 'Spryker/Sniffs/AbstractSniffs/AbstractMethodAnnotationSniff.php'
+
