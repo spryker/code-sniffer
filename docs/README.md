@@ -136,7 +136,7 @@ If you want to enable `Spryker.Internal.SprykerDisallowFunctions` for your proje
 ```xml
     <rule ref="Spryker.Internal.SprykerDisallowFunctions">
         <properties>
-            <property name="phpVersion" value="8.0"/>
+            <property name="phpVersion" value="8.1"/>
         </properties>
     </rule>
 ```
