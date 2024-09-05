@@ -216,7 +216,7 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         }
 
         if (!preg_match('|^\$[a-z0-9]+$|i', $contentMatches[3])) {
-            $errors['order'] = 'Expected ´{Type} ${var}´, got `' . $contentMatches[1] . $contentMatches[2] ?? '' . $contentMatches[3] ?? '' . '`';
+            $errors['order'] = 'Expected ´{Type} ${var}´, got `' . $contentMatches[1] . (isset($contentMatches[2]) ? $contentMatches[2] : '') . (isset($contentMatches[3]) ? $contentMatches[3] : '') . '`';
         }
 
         return $errors;
