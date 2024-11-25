@@ -7,8 +7,11 @@
 
 namespace Spryker\Sniffs\AbstractSniffs;
 
+use Exception;
 use PHP_CodeSniffer\Files\File;
 use SlevomatCodingStandard\Helpers\DocCommentHelper;
+use Spryker\Shared\Config\Config;
+use Spryker\Shared\Kernel\KernelConstants;
 
 abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSprykerSniff
 {
@@ -116,7 +119,7 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
      */
     protected function getNamespaceForFilename(File $phpCsFile): ?string
     {
-        $namespaces = explode(',', $this->namespaces);
+        $namespaces = $this->getNamespaces();
         foreach ($namespaces as $namespace) {
             if (
                 $this->fileExists(
@@ -130,6 +133,66 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         }
 
         return null;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    protected function getNamespaces(): array
+    {
+        $namespaces = explode(',', $this->namespaces);
+
+        try {
+            $this->defineSprykerConstants();
+            $config = Config::getInstance();
+            $namespaces = array_merge(
+                $config->get(KernelConstants::PROJECT_NAMESPACES),
+                $config->get(KernelConstants::CORE_NAMESPACES),
+                $namespaces,
+            );
+        } catch (Exception $e) {
+            // Do nothing
+        }
+
+        return array_unique($namespaces);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getProjectBasePath(): string
+    {
+        $vendorFolderPosition = (int)strpos(__DIR__, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
+
+        return substr(__DIR__, 0, $vendorFolderPosition);
+    }
+
+    /**
+     * @return void
+     */
+    protected function defineSprykerConstants(): void
+    {
+        if (!defined('APPLICATION_ROOT_DIR')) {
+            define('APPLICATION_ROOT_DIR', $this->getProjectBasePath());
+        }
+        if (!defined('APPLICATION_VENDOR_DIR')) {
+            define('APPLICATION_VENDOR_DIR', APPLICATION_ROOT_DIR . '/vendor');
+        }
+        if (!defined('APPLICATION_SOURCE_DIR')) {
+            define('APPLICATION_SOURCE_DIR', APPLICATION_ROOT_DIR . '/src');
+        }
+        if (!defined('APPLICATION')) {
+            define('APPLICATION', 'FAKE');
+        }
+        if (!defined('APPLICATION_ENV')) {
+            define('APPLICATION_ENV', 'devtest');
+        }
+        if (!defined('APPLICATION_STORE')) {
+            define('APPLICATION_STORE', 'MDE');
+        }
+        if (!defined('APPLICATION_CODE_BUCKET')) {
+            define('APPLICATION_CODE_BUCKET', 'MDE');
+        }
     }
 
     /**
