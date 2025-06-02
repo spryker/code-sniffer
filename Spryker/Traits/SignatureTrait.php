@@ -57,12 +57,24 @@ trait SignatureTrait
                 $typehint = substr($typehint, 1);
             }
 
+            // Determine if parameter accepts null (nullable or explicit null)
+            $nullable = $parameter['nullable_type'];
+            if ($nullable === false && $typehint != '') {
+                for ($i = $parameter['type_hint_token']; $i <= $parameter['type_hint_end_token']; $i++) {
+                    if ($tokens[$i]['code'] === T_NULL) {
+                        $nullable = true;
+
+                        break;
+                    }
+                }
+            }
+
             $arguments[] = [
                 'variableIndex' => $parameter['token'],
                 'variable' => $parameter['name'],
                 'typehint' => $typehint,
                 'typehintFull' => $parameter['type_hint'],
-                'nullable' => $parameter['nullable_type'],
+                'nullable' => $nullable,
                 'defaultIndex' => $defaultIndex,
                 'default' => $default,
             ];
