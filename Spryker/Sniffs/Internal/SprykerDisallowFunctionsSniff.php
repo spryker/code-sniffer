@@ -28,7 +28,7 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
     /**
      * @var string
      */
-    protected const PHP_MIN = '8.1';
+    protected const PHP_MIN = '8.2';
 
     /**
      * This property can be filled with the current PHP version in use.
