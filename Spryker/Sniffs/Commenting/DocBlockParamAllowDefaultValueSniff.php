@@ -54,9 +54,9 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             return;
         }
 
-        $parameterMap = [];
+        $parametersIndexedByName = [];
         foreach ($methodSignature as $parameter) {
-            $parameterMap[$parameter['variable']] = $parameter;
+            $parametersIndexedByName[$parameter['variable']] = $parameter;
         }
 
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
@@ -89,11 +89,11 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             }
             $parts = $this->valueNodeParts($valueNode);
 
-            if (!isset($parameterMap[$valueNode->parameterName])) {
+            if (!isset($parametersIndexedByName[$valueNode->parameterName])) {
                 continue;
             }
 
-            $methodSignatureValue = $parameterMap[$valueNode->parameterName];
+            $methodSignatureValue = $parametersIndexedByName[$valueNode->parameterName];
 
             if (empty($methodSignatureValue['typehint']) && empty($methodSignatureValue['default'])) {
                 continue;
