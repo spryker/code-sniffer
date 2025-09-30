@@ -54,9 +54,13 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             return;
         }
 
+        $parameterMap = [];
+        foreach ($methodSignature as $parameter) {
+            $parameterMap[$parameter['variable']] = $parameter;
+        }
+
         $docBlockStartIndex = $tokens[$docBlockEndIndex]['comment_opener'];
 
-        $paramCount = 0;
         for ($i = $docBlockStartIndex + 1; $i < $docBlockEndIndex; $i++) {
             if ($tokens[$i]['type'] !== 'T_DOC_COMMENT_TAG') {
                 continue;
@@ -64,12 +68,6 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
             if ($tokens[$i]['content'] !== '@param') {
                 continue;
             }
-
-            if (empty($methodSignature[$paramCount])) {
-                continue;
-            }
-            $methodSignatureValue = $methodSignature[$paramCount];
-            $paramCount++;
 
             $classNameIndex = $i + 2;
 
@@ -84,16 +82,22 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
                 continue;
             }
 
-            if (empty($methodSignatureValue['typehint']) && empty($methodSignatureValue['default'])) {
-                continue;
-            }
-
             /** @var \PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\TypelessParamTagValueNode|\PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode $valueNode */
             $valueNode = static::getValueNode($tokens[$i]['content'], $content);
             if ($valueNode instanceof InvalidTagValueNode || $valueNode instanceof TypelessParamTagValueNode) {
                 return;
             }
             $parts = $this->valueNodeParts($valueNode);
+
+            if (!isset($parameterMap[$valueNode->parameterName])) {
+                continue;
+            }
+
+            $methodSignatureValue = $parameterMap[$valueNode->parameterName];
+
+            if (empty($methodSignatureValue['typehint']) && empty($methodSignatureValue['default'])) {
+                continue;
+            }
 
             // We skip for mixed
             if (in_array('mixed', $parts, true)) {
