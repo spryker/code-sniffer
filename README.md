@@ -1,7 +1,7 @@
 # Spryker Code Sniffer
 [![CI](https://github.com/spryker/code-sniffer/workflows/CI/badge.svg)](https://github.com/spryker/code-sniffer/actions?query=workflow%3ACI+branch%3Amaster)
 [![Latest Stable Version](https://poser.pugx.org/spryker/code-sniffer/v/stable.svg)](https://packagist.org/packages/spryker/code-sniffer)
-[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%208.1-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%208.2-8892BF.svg)](https://php.net/)
 [![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](https://phpstan.org/)
 [![License](https://poser.pugx.org/spryker/code-sniffer/license.svg)](https://packagist.org/packages/spryker/code-sniffer)
 [![Total Downloads](https://poser.pugx.org/spryker/code-sniffer/d/total.svg)](https://packagist.org/packages/spryker/code-sniffer)
