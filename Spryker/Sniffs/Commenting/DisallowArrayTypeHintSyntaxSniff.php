@@ -211,7 +211,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                  *
                  * @return int|null
                  */
-                public function enterNode(Node $node)
+                public function enterNode(Node $node): ?int
                 {
                     if ($node instanceof ArrayTypeNode) {
                         $this->nodes[] = $node;
