@@ -209,7 +209,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 /**
                  * @param \PHPStan\PhpDocParser\Ast\Node $node
                  *
-                 * @return \PHPStan\PhpDocParser\Ast\Node|list<\PHPStan\PhpDocParser\Ast\Node>|\PHPStan\PhpDocParser\Ast\NodeTraverser|int|null
+                 * @return int|null
                  */
                 public function enterNode(Node $node)
                 {
@@ -372,7 +372,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                 return NamespaceHelper::isFullyQualifiedName($typeHint)
                     ? $typeHint
                     : sprintf('%s%s', NamespaceHelper::NAMESPACE_SEPARATOR, $typeHint);
-            }, SniffSettingsHelper::normalizeArray($this->traversableTypeHints)));
+            }, SniffSettingsHelper::normalizeArray($this->traversableTypeHints))); // @phpstan-ignore argument.type
         }
 
         return $this->normalizedTraversableTypeHints;
