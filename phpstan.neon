@@ -3,6 +3,10 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.generics
+        -
+            identifier: missingType.iterableValue
+        -
+            identifier: trait.unused
     paths:
         - Spryker/
         - SprykerStrict/
