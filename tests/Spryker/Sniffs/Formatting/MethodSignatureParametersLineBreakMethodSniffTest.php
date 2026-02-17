@@ -5,9 +5,8 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\Formatting;
+namespace Spryker\Sniffs\Formatting;
 
-use Spryker\Sniffs\Formatting\MethodSignatureParametersLineBreakMethodSniff;
 use Spryker\Test\TestCase;
 
 class MethodSignatureParametersLineBreakMethodSniffTest extends TestCase

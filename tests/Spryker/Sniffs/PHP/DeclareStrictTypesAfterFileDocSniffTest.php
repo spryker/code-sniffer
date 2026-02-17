@@ -5,9 +5,8 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\PHP;
+namespace Spryker\Sniffs\PHP;
 
-use Spryker\Sniffs\PHP\DeclareStrictTypesAfterFileDocSniff;
 use Spryker\Test\TestCase;
 
 class DeclareStrictTypesAfterFileDocSniffTest extends TestCase

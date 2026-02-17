@@ -218,6 +218,60 @@ class FileDocBlockSniff extends AbstractSprykerSniff
             return $this->findCustomLicense($path) ?: null;
         }
 
+        if (strpos($path, DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Spryker' . DIRECTORY_SEPARATOR) === 0) {
+            $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
+            array_shift($pathArray);
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
+                . 'Spryker' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
+
+            $customLicense = $this->findCustomLicense($path) ?: null;
+            if ($customLicense) {
+                return $customLicense;
+            }
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
+                . 'Spryker' . DIRECTORY_SEPARATOR;
+
+            return $this->findCustomLicense($path) ?: null;
+        }
+
+        if (strpos($path, DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'SprykerFeature' . DIRECTORY_SEPARATOR) === 0) {
+            $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
+            array_shift($pathArray);
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
+                . 'SprykerFeature' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
+
+            $customLicense = $this->findCustomLicense($path) ?: null;
+            if ($customLicense) {
+                return $customLicense;
+            }
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
+                . 'SprykerFeature' . DIRECTORY_SEPARATOR;
+
+            return $this->findCustomLicense($path) ?: null;
+        }
+
+        if (strpos($path, DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'SprykerShop' . DIRECTORY_SEPARATOR) === 0) {
+            $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
+            array_shift($pathArray);
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
+                . 'SprykerShop' . DIRECTORY_SEPARATOR . array_shift($pathArray) . DIRECTORY_SEPARATOR;
+
+            $customLicense = $this->findCustomLicense($path) ?: null;
+            if ($customLicense) {
+                return $customLicense;
+            }
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
+                . 'SprykerShop' . DIRECTORY_SEPARATOR;
+
+            return $this->findCustomLicense($path) ?: null;
+        }
+
         if (strpos($path, DIRECTORY_SEPARATOR . 'Bundles' . DIRECTORY_SEPARATOR) === 0) {
             $pathArray = explode(DIRECTORY_SEPARATOR, substr($path, 8));
             array_shift($pathArray);
