@@ -143,7 +143,7 @@ class SprykerNamespaceSniff implements Sniff
     {
         $segments = explode('/', $path);
         $filteredSegments = array_filter($segments, function ($segment) {
-            return !empty($segment) && $segment[0] !== '_';
+            return (bool)$segment && $segment[0] !== '_';
         });
 
         return implode('/', $filteredSegments);

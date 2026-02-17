@@ -5,9 +5,8 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\ControlStructures;
+namespace Spryker\Sniffs\ControlStructures;
 
-use Spryker\Sniffs\ControlStructures\DisallowCloakingCheckSniff;
 use Spryker\Test\TestCase;
 
 class DisallowCloakingCheckSniffTest extends TestCase

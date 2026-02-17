@@ -5,9 +5,8 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\WhiteSpace;
+namespace Spryker\Sniffs\WhiteSpace;
 
-use Spryker\Sniffs\WhiteSpace\EmptyLinesSniff;
 use Spryker\Test\TestCase;
 
 class EmptyLinesSniffTest extends TestCase
