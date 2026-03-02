@@ -28,6 +28,9 @@ trait UseStatementsTrait
             }
 
             $useStatementStartIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $index + 1, null, true);
+            if ($useStatementStartIndex === false) {
+                continue;
+            }
 
             // Ignore function () use ($foo) {}
             if ($tokens[$useStatementStartIndex]['content'] === '(') {
@@ -35,7 +38,14 @@ trait UseStatementsTrait
             }
 
             $semicolonIndex = $phpcsFile->findNext(T_SEMICOLON, $useStatementStartIndex + 1);
+            if ($semicolonIndex === false) {
+                continue;
+            }
+
             $useStatementEndIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $semicolonIndex - 1, null, true);
+            if ($useStatementEndIndex === false) {
+                continue;
+            }
 
             $statement = '';
             for ($i = $useStatementStartIndex; $i <= $useStatementEndIndex; $i++) {
