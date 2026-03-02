@@ -235,4 +235,7 @@
         </properties>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.UselessInheritDocComment"/>
+
 </ruleset>
