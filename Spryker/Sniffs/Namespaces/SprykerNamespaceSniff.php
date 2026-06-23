@@ -91,14 +91,12 @@ class SprykerNamespaceSniff implements Sniff
      */
     protected function extractNamespaceFromPath(string $filename): ?string
     {
-        $start = '/';
-        if ($this->isRoot) {
-            $fullFilename = $filename;
-            $filename = $this->normalizeFilename($fullFilename);
-            if ($fullFilename !== $filename) {
-                $start = '^';
-            }
-        }
+        // For a root package process() already normalized the filename to a root-relative path, so
+        // anchor the match at the start. Without the anchor the patterns match a mid-path
+        // `/Spryker/` (e.g. in `tests/Spryker/...`), which skips real src files (they have no
+        // leading slash) and wrongly flags test classes whose namespace is prefixed via the
+        // `Spryker\Test\` autoload mapping.
+        $start = $this->isRoot ? '^' : '/';
 
         // Try monorepo structure: src/Vendor/Module/(src|tests)/Vendor/...
         $monorepoPattern = '#' . $start . $this->rootDir . '/([^/]+)/([^/]+)/(src|tests)/(.+)#';
@@ -143,7 +141,7 @@ class SprykerNamespaceSniff implements Sniff
     {
         $segments = explode('/', $path);
         $filteredSegments = array_filter($segments, function ($segment) {
-            return !empty($segment) && $segment[0] !== '_';
+            return $segment !== '' && $segment[0] !== '_';
         });
 
         return implode('/', $filteredSegments);
