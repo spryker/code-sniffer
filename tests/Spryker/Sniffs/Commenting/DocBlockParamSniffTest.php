@@ -13,13 +13,14 @@ use Spryker\Test\TestCase;
 class DocBlockParamSniffTest extends TestCase
 {
     /**
-     * Two `ExtraParam` (stale + no-arg stray) and two `RequiredParamMissing` (array + untyped).
-     * The documented-subset and fully-omitted-redundant cases must produce no error.
+     * Two `ExtraParam` (stale + no-arg stray) and three `RequiredParamMissing` (array, untyped, and
+     * an `array|string` union whose array member still hides the element type/shape). The
+     * documented-subset, documented-union and fully-omitted-redundant cases must produce no error.
      *
      * @return void
      */
     public function testDocBlockParamSniffer(): void
     {
-        $this->assertSnifferFindsErrors(new DocBlockParamSniff(), 4);
+        $this->assertSnifferFindsErrors(new DocBlockParamSniff(), 5);
     }
 }

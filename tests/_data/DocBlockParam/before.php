@@ -84,4 +84,27 @@ class DocBlockParam
     public function allRedundantOmitted(string $a, \DateTimeInterface $b): void
     {
     }
+
+    /**
+     * A union type that includes `array` still hides the element type/shape, so its `@param` is
+     * required even though the union also has a fully-expressive scalar member.
+     *
+     * @param string $target
+     *
+     * @return void
+     */
+    public function unionArrayUndocumented(string $target, array|string $rows): void
+    {
+    }
+
+    /**
+     * The same union is allowed when documented (backwards compatibility).
+     *
+     * @param array<string>|string $rows
+     *
+     * @return void
+     */
+    public function unionArrayDocumented(array|string $rows): void
+    {
+    }
 }

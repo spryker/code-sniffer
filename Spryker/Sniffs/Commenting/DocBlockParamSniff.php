@@ -144,7 +144,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
             }
 
             $typeHint = $methodParam['typehint'];
-            if ($typeHint !== '' && !in_array($typeHint, static::LOSSY_TYPE_HINTS, true)) {
+            if ($typeHint !== '' && !$this->hasLossyType($typeHint)) {
                 continue;
             }
 
@@ -152,6 +152,25 @@ class DocBlockParamSniff extends AbstractSprykerSniff
                 . ($typeHint !== '' ? $typeHint : 'none') . '` cannot express the element type or shape';
             $phpCsFile->addError($error, $stackPointer, 'RequiredParamMissing');
         }
+    }
+
+    /**
+     * A union type expresses the full type only when none of its members is lossy: `array|string`
+     * still hides the array element type and shape, so it keeps requiring a `@param`.
+     *
+     * @param string $typeHint
+     *
+     * @return bool
+     */
+    protected function hasLossyType(string $typeHint): bool
+    {
+        foreach (explode('|', $typeHint) as $member) {
+            if (in_array(ltrim($member, '?'), static::LOSSY_TYPE_HINTS, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
