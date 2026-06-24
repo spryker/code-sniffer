@@ -258,7 +258,7 @@ class ArrayDeclarationSniff implements Sniff
                 continue;
             }
 
-            if ($tokens[$nextToken]['code'] === T_DOUBLE_ARROW) {
+            if ($tokens[$nextToken]['code'] === T_DOUBLE_ARROW) { // @phpstan-ignore identical.alwaysTrue
                 $currentEntry['arrow'] = $nextToken;
                 $keyUsed = true;
 
@@ -325,7 +325,7 @@ class ArrayDeclarationSniff implements Sniff
         foreach ($indices as $index) {
             if (isset($index['index']) === false) {
                 // Array value only.
-                if ($tokens[$index['value']]['line'] === $tokens[$stackPtr]['line'] && $numValues > 1) {
+                if ($tokens[$index['value']]['line'] === $tokens[$stackPtr]['line'] && $numValues > 1) { // @phpstan-ignore offsetAccess.invalidOffset
                     $error = 'The first value in a multi-value array must be on a new line';
                     //FIXME indentation
                     $phpcsFile->addError($error, $stackPtr, 'FirstValueNoNewline');
