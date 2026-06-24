@@ -13,7 +13,13 @@ use Spryker\Traits\CommentingTrait;
 use Spryker\Traits\SignatureTrait;
 
 /**
- * Makes sure doc block param types match the variable name of the method signature.
+ * Makes sure doc block `@param` tags are consistent with the method signature.
+ *
+ * A `@param` tag is OPTIONAL when it would only repeat the native type hint (e.g. `@param string $x`
+ * for `string $x`). It may be present (backwards compatibility) or omitted. A `@param` tag is
+ * REQUIRED only when the native type cannot express the full type: array/iterable element types and
+ * shapes (`@param array<string> $x`) and parameters with no native type hint at all. Any `@param`
+ * that is present must reference a real parameter.
  *
  * @author Mark Scherer
  * @license MIT
@@ -22,6 +28,14 @@ class DocBlockParamSniff extends AbstractSprykerSniff
 {
     use CommentingTrait;
     use SignatureTrait;
+
+    /**
+     * Native type hints whose `@param` may be omitted carry no element type or shape; everything
+     * else (collections and untyped params) still needs a `@param`.
+     *
+     * @var array<string>
+     */
+    protected const LOSSY_TYPE_HINTS = ['array', 'iterable'];
 
     /**
      * @inheritDoc
@@ -96,29 +110,67 @@ class DocBlockParamSniff extends AbstractSprykerSniff
             ];
         }
 
-        if (count($docBlockParams) !== count($methodSignature)) {
-            $phpCsFile->addError('Doc Block params do not match method signature', $stackPointer, 'SignatureMismatch');
-
-            return;
+        $signatureByName = [];
+        foreach ($methodSignature as $methodParam) {
+            $signatureByName[$tokens[$methodParam['variableIndex']]['content']] = $methodParam;
         }
 
+        // Every `@param` that is present must reference a real parameter. A documented subset is
+        // allowed: redundant scalar/object params may be omitted, so we no longer require a 1:1 count.
+        $documentedNames = [];
         foreach ($docBlockParams as $docBlockParam) {
-            /** @var array<string, mixed> $methodParam */
-            $methodParam = array_shift($methodSignature);
-            $variableName = $tokens[$methodParam['variableIndex']]['content'];
+            $variable = $docBlockParam['variable'];
 
-            if ($docBlockParam['variable'] === $variableName) {
-                continue;
-            }
-            // We let other sniffers take care of missing type for now
-            if (strpos($docBlockParam['type'], '$') !== false) {
+            // Type field actually holds the variable (missing type) - other sniffers report that.
+            if ($variable === '' || strpos($docBlockParam['type'], '$') !== false) {
                 continue;
             }
 
-            $error = 'Doc Block param variable `' . $docBlockParam['variable'] . '` should be `' . $variableName . '`';
-            // For now just report (buggy yet)
-            $phpCsFile->addError($error, $docBlockParam['index'], 'VariableWrong');
+            if (!array_key_exists($variable, $signatureByName)) {
+                $error = 'Doc Block param `' . $variable . '` does not match any method parameter and should be removed';
+                $phpCsFile->addError($error, $docBlockParam['index'], 'ExtraParam');
+
+                continue;
+            }
+
+            $documentedNames[$variable] = true;
         }
+
+        // A `@param` is mandatory only when the native type hint cannot carry the full type:
+        // array/iterable (element type and shape) and parameters with no native type hint at all.
+        foreach ($signatureByName as $variableName => $methodParam) {
+            if (isset($documentedNames[$variableName])) {
+                continue;
+            }
+
+            $typeHint = $methodParam['typehint'];
+            if ($typeHint !== '' && !$this->hasLossyType($typeHint)) {
+                continue;
+            }
+
+            $error = 'Doc Block `@param` for `' . $variableName . '` is required: native type `'
+                . ($typeHint !== '' ? $typeHint : 'none') . '` cannot express the element type or shape';
+            $phpCsFile->addError($error, $stackPointer, 'RequiredParamMissing');
+        }
+    }
+
+    /**
+     * A union type expresses the full type only when none of its members is lossy: `array|string`
+     * still hides the array element type and shape, so it keeps requiring a `@param`.
+     *
+     * @param string $typeHint
+     *
+     * @return bool
+     */
+    protected function hasLossyType(string $typeHint): bool
+    {
+        foreach (explode('|', $typeHint) as $member) {
+            if (in_array(ltrim($member, '?'), static::LOSSY_TYPE_HINTS, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
