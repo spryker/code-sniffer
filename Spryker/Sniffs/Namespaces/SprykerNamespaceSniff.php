@@ -61,19 +61,63 @@ class SprykerNamespaceSniff implements Sniff
         if ($this->isRoot) {
             $filename = $this->normalizeFilename($fullFilename);
         }
-        $start = '/';
-        if ($fullFilename !== $filename) {
-            $start = '^';
+
+        $namespace = $namespaceStatement['namespace'];
+        $pathToNamespace = $this->extractNamespaceFromPath($filename);
+
+        if ($pathToNamespace === null) {
+            return;
         }
 
+        if ($namespace === $pathToNamespace) {
+            return;
+        }
+
+        $error = sprintf('Namespace `%s` does not fit to folder structure `%s`', $namespace, $pathToNamespace);
+        $phpcsFile->addError($error, $namespaceStatement['start'], 'NamespaceFolderMismatch');
+    }
+
+    /**
+     * Extracts the expected namespace from the file path.
+     *
+     * Supports multiple folder structures:
+     * - src/Namespace/Module/src/Namespace/Layer/Module/File.php
+     * - src/Namespace/Module/tests/NamespaceTest/Layer/Module/File.php
+     * - src/Namespace/File.php (standard PSR-4)
+     *
+     * @param string $filename
+     *
+     * @return string|null
+     */
+    protected function extractNamespaceFromPath(string $filename): ?string
+    {
+        // For a root package process() already normalized the filename to a root-relative path, so
+        // anchor the match at the start. Without the anchor the patterns match a mid-path
+        // `/Spryker/` (e.g. in `tests/Spryker/...`), which skips real src files (they have no
+        // leading slash) and wrongly flags test classes whose namespace is prefixed via the
+        // `Spryker\Test\` autoload mapping.
+        $start = $this->isRoot ? '^' : '/';
+
+        // Try monorepo structure: src/Vendor/Module/(src|tests)/Vendor/...
+        $monorepoPattern = '#' . $start . $this->rootDir . '/([^/]+)/([^/]+)/(src|tests)/(.+)#';
+        if (preg_match($monorepoPattern, $filename, $matches)) {
+            $extractedPath = $matches[4];
+            $pathWithoutFilename = substr($extractedPath, 0, strrpos($extractedPath, '/') ?: 0);
+
+            // Remove special directories like _support, _helpers, etc. from the namespace path
+            $pathWithoutFilename = $this->removeSpecialDirectories($pathWithoutFilename);
+
+            return str_replace('/', '\\', $pathWithoutFilename);
+        }
+
+        // Try standard structure
         $pattern = '#' . $start . $this->rootDir . '/(' . $this->namespace . ')/(.+)#';
         if ($this->isRoot) {
             $pattern = '#' . $start . $this->rootDir . '/(.+)#';
         }
 
-        preg_match($pattern, $filename, $matches);
-        if (!$matches) {
-            return;
+        if (!preg_match($pattern, $filename, $matches)) {
+            return null;
         }
 
         if ($this->isRoot) {
@@ -81,16 +125,26 @@ class SprykerNamespaceSniff implements Sniff
         } else {
             $extractedPath = $matches[1] . '/' . $matches[2];
         }
-        $pathWithoutFilename = substr($extractedPath, 0, strrpos($extractedPath, DIRECTORY_SEPARATOR) ?: 0);
+        $pathWithoutFilename = substr($extractedPath, 0, strrpos($extractedPath, '/') ?: 0);
 
-        $namespace = $namespaceStatement['namespace'];
-        $pathToNamespace = str_replace(DIRECTORY_SEPARATOR, '\\', $pathWithoutFilename);
-        if ($namespace === $pathToNamespace) {
-            return;
-        }
+        return str_replace('/', '\\', $pathWithoutFilename);
+    }
 
-        $error = sprintf('Namespace `%s` does not fit to folder structure `%s`', $namespace, $pathToNamespace);
-        $phpcsFile->addError($error, $namespaceStatement['start'], 'NamespaceFolderMismatch');
+    /**
+     * Removes special directories (like _support, _helpers) from the path that should not be part of the namespace.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function removeSpecialDirectories(string $path): string
+    {
+        $segments = explode('/', $path);
+        $filteredSegments = array_filter($segments, function ($segment) {
+            return $segment !== '' && $segment[0] !== '_';
+        });
+
+        return implode('/', $filteredSegments);
     }
 
     /**
