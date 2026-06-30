@@ -107,4 +107,14 @@ class DocBlockParam
     public function unionArrayDocumented(array|string $rows): void
     {
     }
+
+    /**
+     * Inline `{@inheritDoc}` defers entirely to the parent, so the array param needs no `@param`
+     * (the same as the bare `@inheritDoc` tag).
+     *
+     * {@inheritDoc}
+     */
+    public function inlineInheritDocUndocumented(string $target, array $rows): void
+    {
+    }
 }
