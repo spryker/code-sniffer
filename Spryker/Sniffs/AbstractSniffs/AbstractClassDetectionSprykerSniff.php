@@ -107,7 +107,7 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
     protected function isFacade(File $phpCsFile, int $stackPointer): bool
     {
         return $this->hasCorrectName($phpCsFile, 'Facade') &&
-        $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractFacade');
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractFacade');
     }
 
     protected function isFactory(File $phpCsFile, int $stackPointer): bool
@@ -130,19 +130,19 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
     protected function isBusinessFactory(File $phpCsFile, int $stackPointer): bool
     {
         return $this->hasCorrectName($phpCsFile, 'BusinessFactory') &&
-        $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractBusinessFactory');
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractBusinessFactory');
     }
 
     protected function isCommunicationFactory(File $phpCsFile, int $stackPointer): bool
     {
         return $this->hasCorrectName($phpCsFile, 'CommunicationFactory') &&
-        $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractCommunicationFactory');
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractCommunicationFactory');
     }
 
     protected function isPersistenceFactory(File $phpCsFile, int $stackPointer): bool
     {
         return $this->hasCorrectName($phpCsFile, 'PersistenceFactory') &&
-        $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractPersistenceFactory');
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractPersistenceFactory');
     }
 
     protected function isPlugin(File $phpCsFile, int $stackPointer): bool
@@ -171,18 +171,18 @@ abstract class AbstractClassDetectionSprykerSniff extends AbstractSprykerSniff
     protected function isQueryContainer(File $phpCsFile, int $stackPointer): bool
     {
         return $this->hasCorrectName($phpCsFile, 'QueryContainer') &&
-        $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractQueryContainer');
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractQueryContainer');
     }
 
     protected function isRepository(File $phpCsFile, int $stackPointer): bool
     {
         return $this->hasCorrectName($phpCsFile, 'Repository') &&
-        $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractRepository');
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractRepository');
     }
 
     protected function isEntityManager(File $phpCsFile, int $stackPointer): bool
     {
         return $this->hasCorrectName($phpCsFile, 'EntityManager') &&
-        $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractEntityManager');
+            $this->extendsAbstract($phpCsFile, $stackPointer, 'AbstractEntityManager');
     }
 }
