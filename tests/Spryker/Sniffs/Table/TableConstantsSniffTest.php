@@ -12,8 +12,12 @@ use Spryker\Test\TestCase;
 
 class TableConstantsSniffTest extends TestCase
 {
-    public function testTableConstantsSniffer(): void
+    public function testGivenTableConstantsWithWrongVisibilityTypeOrMissingUsesTagWhenSniffedThenViolationsAreReported(): void
     {
-        $this->assertSnifferFindsWarnings(new TableConstantsSniff(), 1, 4);
+        // Arrange
+        $sniff = new TableConstantsSniff();
+
+        // Act & Assert
+        $this->assertSnifferFindsWarnings($sniff, 1, 4);
     }
 }

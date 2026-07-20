@@ -12,8 +12,12 @@ use Spryker\Test\TestCase;
 
 class NoSprintfInMessageSniffTest extends TestCase
 {
-    public function testNoSprintfInMessageSniffer(): void
+    public function testGivenZedCommunicationMessagesBuiltWithSprintfWhenSniffedThenErrorsAreReported(): void
     {
-        $this->assertSnifferFindsErrors(new NoSprintfInMessageSniff(), 2);
+        // Arrange
+        $sniff = new NoSprintfInMessageSniff();
+
+        // Act & Assert
+        $this->assertSnifferFindsErrors($sniff, 2);
     }
 }

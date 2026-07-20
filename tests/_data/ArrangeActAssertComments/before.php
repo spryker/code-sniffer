@@ -4,18 +4,14 @@ namespace PyzTest\Zed\Sales\Business;
 
 class SalesFacadeTest
 {
-    public function testMissingAllSections(): void
+    public function testGivenATestMethodWithoutSectionCommentsWhenSniffedThenAWarningIsReported(): void
     {
         $result = 1 + 1;
+
+        assert($result === 2);
     }
 
-    public function testPartialSections(): void
-    {
-        // Arrange
-        $value = 2;
-    }
-
-    public function testAllSectionsPresent(): void
+    public function testGivenAValueWhenItIsIncrementedThenTheResultIsCorrect(): void
     {
         // Arrange
         $value = 2;
@@ -25,6 +21,18 @@ class SalesFacadeTest
 
         // Assert
         assert($result === 4);
+    }
+
+    public function testGivenAnInvalidInputWhenItIsProcessedThenAnExceptionIsThrown(): void
+    {
+        // Arrange
+        $value = 'invalid';
+
+        // Expect
+        $expectedException = true;
+
+        // Act
+        assert($expectedException === true && $value === 'invalid');
     }
 
     public function helperMethod(): void

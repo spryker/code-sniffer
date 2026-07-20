@@ -12,8 +12,12 @@ use Spryker\Test\TestCase;
 
 class ForbiddenGenericClassNamesSniffTest extends TestCase
 {
-    public function testForbiddenGenericClassNamesSniffer(): void
+    public function testGivenAZedBusinessClassWithAGenericSuffixWhenSniffedThenAWarningIsReported(): void
     {
-        $this->assertSnifferFindsWarnings(new ForbiddenGenericClassNamesSniff(), 1);
+        // Arrange
+        $sniff = new ForbiddenGenericClassNamesSniff();
+
+        // Act & Assert
+        $this->assertSnifferFindsWarnings($sniff, 1);
     }
 }

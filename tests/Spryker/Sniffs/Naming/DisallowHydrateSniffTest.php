@@ -12,8 +12,12 @@ use Spryker\Test\TestCase;
 
 class DisallowHydrateSniffTest extends TestCase
 {
-    public function testDisallowHydrateSniffer(): void
+    public function testGivenSymbolsUsingTheHydrateVocabularyWhenSniffedThenErrorsAreReported(): void
     {
-        $this->assertSnifferFindsErrors(new DisallowHydrateSniff(), 2);
+        // Arrange
+        $sniff = new DisallowHydrateSniff();
+
+        // Act & Assert
+        $this->assertSnifferFindsErrors($sniff, 2);
     }
 }

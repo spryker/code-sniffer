@@ -12,8 +12,12 @@ use Spryker\Test\TestCase;
 
 class ArrangeActAssertCommentsSniffTest extends TestCase
 {
-    public function testArrangeActAssertCommentsSniffer(): void
+    public function testGivenATestMethodWithoutSectionCommentsWhenSniffedThenAWarningIsReported(): void
     {
-        $this->assertSnifferFindsWarnings(new ArrangeActAssertCommentsSniff(), 1);
+        // Arrange
+        $sniff = new ArrangeActAssertCommentsSniff();
+
+        // Act & Assert
+        $this->assertSnifferFindsWarnings($sniff, 1);
     }
 }

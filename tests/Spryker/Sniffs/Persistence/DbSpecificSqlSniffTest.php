@@ -12,8 +12,12 @@ use Spryker\Test\TestCase;
 
 class DbSpecificSqlSniffTest extends TestCase
 {
-    public function testDbSpecificSqlSniffer(): void
+    public function testGivenPersistenceLayerCodeWithDatabaseSpecificSqlWhenSniffedThenErrorsAreReported(): void
     {
-        $this->assertSnifferFindsErrors(new DbSpecificSqlSniff(), 3);
+        // Arrange
+        $sniff = new DbSpecificSqlSniff();
+
+        // Act & Assert
+        $this->assertSnifferFindsErrors($sniff, 3);
     }
 }

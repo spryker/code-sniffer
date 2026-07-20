@@ -12,8 +12,12 @@ use Spryker\Test\TestCase;
 
 class PluginPrePostMethodsSniffTest extends TestCase
 {
-    public function testPluginPrePostMethodsSniffer(): void
+    public function testGivenPluginMethodsPrefixedWithBeforeOrAfterWhenSniffedThenErrorsAreReported(): void
     {
-        $this->assertSnifferFindsErrors(new PluginPrePostMethodsSniff(), 2);
+        // Arrange
+        $sniff = new PluginPrePostMethodsSniff();
+
+        // Act & Assert
+        $this->assertSnifferFindsErrors($sniff, 2);
     }
 }

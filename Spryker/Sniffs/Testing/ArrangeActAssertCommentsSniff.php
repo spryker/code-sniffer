@@ -12,6 +12,8 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Test methods should be structured with // Arrange, // Act, // Assert section comments.
+ * Exception tests use // Arrange, // Expect, // Act (the expectException() setup sits under
+ * // Expect, before the // Act call), so // Expect is also a recognised section.
  */
 class ArrangeActAssertCommentsSniff extends AbstractSprykerSniff
 {
@@ -21,7 +23,7 @@ class ArrangeActAssertCommentsSniff extends AbstractSprykerSniff
 
     protected const string TEST_METHOD_PREFIX = 'test';
 
-    protected const string AAA_COMMENT_PATTERN = '~^//\s*(Arrange|Act|Assert)\b~i';
+    protected const string AAA_COMMENT_PATTERN = '~^//\s*(Arrange|Act|Assert|Expect)\b~i';
 
     protected const int REQUIRED_SECTION_COUNT = 3;
 
