@@ -12,9 +12,6 @@ use Spryker\Test\TestCase;
 
 class TableConstantsSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testTableConstantsSniffer(): void
     {
         $this->assertSnifferFindsWarnings(new TableConstantsSniff(), 1, 4);

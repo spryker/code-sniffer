@@ -18,55 +18,25 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class TableConstantsSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_COL_CONST_VISIBILITY = 'ColConstVisibility';
+    protected const string CODE_COL_CONST_VISIBILITY = 'ColConstVisibility';
 
-    /**
-     * @var string
-     */
-    protected const CODE_COL_CONST_TYPE = 'ColConstType';
+    protected const string CODE_COL_CONST_TYPE = 'ColConstType';
 
-    /**
-     * @var string
-     */
-    protected const CODE_MISSING_USES_ANNOTATION = 'MissingUsesAnnotation';
+    protected const string CODE_MISSING_USES_ANNOTATION = 'MissingUsesAnnotation';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_COL_CONST_VISIBILITY = 'Table constant "%s" must be declared protected, %s given.';
+    protected const string MESSAGE_COL_CONST_VISIBILITY = 'Table constant "%s" must be declared protected, %s given.';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_COL_CONST_TYPE = 'Table constant "%s" must be a typed constant of type string ("protected const string %s = ...").';
+    protected const string MESSAGE_COL_CONST_TYPE = 'Table constant "%s" must be a typed constant of type string ("protected const string %s = ...").';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_MISSING_USES_ANNOTATION = 'URL path constant "%s" must have a @uses tag in its docblock linking the referenced controller action.';
+    protected const string MESSAGE_MISSING_USES_ANNOTATION = 'URL path constant "%s" must have a @uses tag in its docblock linking the referenced controller action.';
 
-    /**
-     * @var string
-     */
-    protected const TABLE_CONSTANT_PREFIX_PATTERN = '/^(COL_|BUTTON_)/';
+    protected const string TABLE_CONSTANT_PREFIX_PATTERN = '/^(COL_|BUTTON_)/';
 
-    /**
-     * @var string
-     */
-    protected const EXPECTED_TYPE = 'string';
+    protected const string EXPECTED_TYPE = 'string';
 
-    /**
-     * @var string
-     */
-    protected const USES_TAG = '@uses';
+    protected const string USES_TAG = '@uses';
 
-    /**
-     * @var string
-     */
-    protected const TABLE_SUFFIX = 'Table';
+    protected const string TABLE_SUFFIX = 'Table';
 
     /**
      * @inheritDoc
@@ -109,11 +79,6 @@ class TableConstantsSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isTable(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);
@@ -127,13 +92,6 @@ class TableConstantsSniff extends AbstractSprykerSniff
         return substr($shortName, -strlen(static::TABLE_SUFFIX)) === static::TABLE_SUFFIX;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $constPtr
-     * @param string $constantName
-     *
-     * @return void
-     */
     protected function assertProtectedVisibility(File $phpcsFile, int $constPtr, string $constantName): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -164,14 +122,6 @@ class TableConstantsSniff extends AbstractSprykerSniff
         );
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $constPtr
-     * @param int $namePtr
-     * @param string $constantName
-     *
-     * @return void
-     */
     protected function assertStringType(File $phpcsFile, int $constPtr, int $namePtr, string $constantName): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -197,14 +147,6 @@ class TableConstantsSniff extends AbstractSprykerSniff
         );
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $constPtr
-     * @param int $equalPtr
-     * @param string $constantName
-     *
-     * @return void
-     */
     protected function assertUsesAnnotationOnUrlConstant(File $phpcsFile, int $constPtr, int $equalPtr, string $constantName): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -231,12 +173,6 @@ class TableConstantsSniff extends AbstractSprykerSniff
         );
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $constPtr
-     *
-     * @return bool
-     */
     protected function hasUsesTagInPrecedingDocBlock(File $phpcsFile, int $constPtr): bool
     {
         $tokens = $phpcsFile->getTokens();

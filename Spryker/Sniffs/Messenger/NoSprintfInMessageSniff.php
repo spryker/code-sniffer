@@ -17,35 +17,20 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class NoSprintfInMessageSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_SPRINTF_IN_MESSAGE = 'SprintfInMessage';
+    protected const string CODE_SPRINTF_IN_MESSAGE = 'SprintfInMessage';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_SPRINTF_IN_MESSAGE = 'Do not pass sprintf() output to %s(); pass the translation key + parameters, never a pre-formatted string.';
+    protected const string MESSAGE_SPRINTF_IN_MESSAGE = 'Do not pass sprintf() output to %s(); pass the translation key + parameters, never a pre-formatted string.';
 
     /**
      * @var array<string>
      */
-    protected const MESSENGER_METHODS = ['addSuccessMessage', 'addErrorMessage', 'addInfoMessage'];
+    protected const array MESSENGER_METHODS = ['addSuccessMessage', 'addErrorMessage', 'addInfoMessage'];
 
-    /**
-     * @var string
-     */
-    protected const SPRINTF_FUNCTION = 'sprintf';
+    protected const string SPRINTF_FUNCTION = 'sprintf';
 
-    /**
-     * @var string
-     */
-    protected const APPLICATION_ZED = 'Zed';
+    protected const string APPLICATION_ZED = 'Zed';
 
-    /**
-     * @var string
-     */
-    protected const LAYER_COMMUNICATION = 'Communication';
+    protected const string LAYER_COMMUNICATION = 'Communication';
 
     /**
      * @inheritDoc
@@ -114,11 +99,6 @@ class NoSprintfInMessageSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isZedCommunication(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);

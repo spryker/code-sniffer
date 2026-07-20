@@ -16,20 +16,11 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DisallowHydrateSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_HYDRATE_FORBIDDEN = 'HydrateForbidden';
+    protected const string CODE_HYDRATE_FORBIDDEN = 'HydrateForbidden';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_HYDRATE_FORBIDDEN = '"%s" uses the forbidden hydrate/Hydrator vocabulary; use expand*/Expander naming instead.';
+    protected const string MESSAGE_HYDRATE_FORBIDDEN = '"%s" uses the forbidden hydrate/Hydrator vocabulary; use expand*/Expander naming instead.';
 
-    /**
-     * @var string
-     */
-    protected const FORBIDDEN_NAME_PATTERN = '/hydrate|hydrator/i';
+    protected const string FORBIDDEN_NAME_PATTERN = '/hydrate|hydrator/i';
 
     /**
      * @inheritDoc
@@ -67,11 +58,6 @@ class DisallowHydrateSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isTest(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);

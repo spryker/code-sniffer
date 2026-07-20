@@ -12,9 +12,6 @@ use Spryker\Test\TestCase;
 
 class ContainerSetClosureSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testContainerSetClosureSniffer(): void
     {
         $this->assertSnifferFindsErrors(new ContainerSetClosureSniff(), 2);

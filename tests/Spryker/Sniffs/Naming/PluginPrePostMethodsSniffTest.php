@@ -12,9 +12,6 @@ use Spryker\Test\TestCase;
 
 class PluginPrePostMethodsSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testPluginPrePostMethodsSniffer(): void
     {
         $this->assertSnifferFindsErrors(new PluginPrePostMethodsSniff(), 2);

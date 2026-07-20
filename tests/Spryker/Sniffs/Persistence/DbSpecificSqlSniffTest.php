@@ -12,9 +12,6 @@ use Spryker\Test\TestCase;
 
 class DbSpecificSqlSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testDbSpecificSqlSniffer(): void
     {
         $this->assertSnifferFindsErrors(new DbSpecificSqlSniff(), 3);

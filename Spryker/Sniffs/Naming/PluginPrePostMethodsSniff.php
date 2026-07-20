@@ -15,30 +15,15 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class PluginPrePostMethodsSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_BEFORE_AFTER_FORBIDDEN = 'BeforeAfterForbidden';
+    protected const string CODE_BEFORE_AFTER_FORBIDDEN = 'BeforeAfterForbidden';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_BEFORE_AFTER_FORBIDDEN = 'Plugin method "%s()" must not start with "%s"; plugin methods use pre*/post* naming.';
+    protected const string MESSAGE_BEFORE_AFTER_FORBIDDEN = 'Plugin method "%s()" must not start with "%s"; plugin methods use pre*/post* naming.';
 
-    /**
-     * @var string
-     */
-    protected const FORBIDDEN_PREFIX_PATTERN = '/^(before|after)(?=[A-Z0-9_]|$)/';
+    protected const string FORBIDDEN_PREFIX_PATTERN = '/^(before|after)(?=[A-Z0-9_]|$)/';
 
-    /**
-     * @var string
-     */
-    protected const SCOPE_PUBLIC = 'public';
+    protected const string SCOPE_PUBLIC = 'public';
 
-    /**
-     * @var string
-     */
-    protected const PLUGIN_SUFFIX = 'Plugin';
+    protected const string PLUGIN_SUFFIX = 'Plugin';
 
     /**
      * @inheritDoc
@@ -82,11 +67,6 @@ class PluginPrePostMethodsSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isPlugin(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);

@@ -19,30 +19,15 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class ContainerSetClosureSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_SET_WITHOUT_CLOSURE = 'SetWithoutClosure';
+    protected const string CODE_SET_WITHOUT_CLOSURE = 'SetWithoutClosure';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_SET_WITHOUT_CLOSURE = 'The second argument of $container->set() must be a closure or arrow function; wrap dependencies in a closure for late binding.';
+    protected const string MESSAGE_SET_WITHOUT_CLOSURE = 'The second argument of $container->set() must be a closure or arrow function; wrap dependencies in a closure for late binding.';
 
-    /**
-     * @var string
-     */
-    protected const CONTAINER_VARIABLE = '$container';
+    protected const string CONTAINER_VARIABLE = '$container';
 
-    /**
-     * @var string
-     */
-    protected const SET_METHOD = 'set';
+    protected const string SET_METHOD = 'set';
 
-    /**
-     * @var string
-     */
-    protected const DEPENDENCY_PROVIDER_SUFFIX = 'DependencyProvider';
+    protected const string DEPENDENCY_PROVIDER_SUFFIX = 'DependencyProvider';
 
     /**
      * @inheritDoc
@@ -107,11 +92,6 @@ class ContainerSetClosureSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isDependencyProvider(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);
@@ -125,12 +105,6 @@ class ContainerSetClosureSniff extends AbstractSprykerSniff
         return substr($shortName, -strlen(static::DEPENDENCY_PROVIDER_SUFFIX)) === static::DEPENDENCY_PROVIDER_SUFFIX;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openParenPtr
-     *
-     * @return int|null
-     */
     protected function findSecondArgumentStart(File $phpcsFile, int $openParenPtr): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -161,12 +135,6 @@ class ContainerSetClosureSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $argumentPtr
-     *
-     * @return bool
-     */
     protected function isClosureOrArrowFunction(File $phpcsFile, int $argumentPtr): bool
     {
         $tokens = $phpcsFile->getTokens();

@@ -15,30 +15,15 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class ArrangeActAssertCommentsSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_MISSING_AAA_COMMENTS = 'MissingAaaComments';
+    protected const string CODE_MISSING_AAA_COMMENTS = 'MissingAaaComments';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_MISSING_AAA_COMMENTS = 'Test method "%s()" has no // Arrange, // Act, // Assert section comments; structure the test with all three.';
+    protected const string MESSAGE_MISSING_AAA_COMMENTS = 'Test method "%s()" has no // Arrange, // Act, // Assert section comments; structure the test with all three.';
 
-    /**
-     * @var string
-     */
-    protected const TEST_METHOD_PREFIX = 'test';
+    protected const string TEST_METHOD_PREFIX = 'test';
 
-    /**
-     * @var string
-     */
-    protected const AAA_COMMENT_PATTERN = '~^//\s*(Arrange|Act|Assert)\b~i';
+    protected const string AAA_COMMENT_PATTERN = '~^//\s*(Arrange|Act|Assert)\b~i';
 
-    /**
-     * @var int
-     */
-    protected const REQUIRED_SECTION_COUNT = 3;
+    protected const int REQUIRED_SECTION_COUNT = 3;
 
     /**
      * @inheritDoc
@@ -98,11 +83,6 @@ class ArrangeActAssertCommentsSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isTest(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);

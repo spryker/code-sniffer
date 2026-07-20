@@ -12,9 +12,6 @@ use Spryker\Test\TestCase;
 
 class NoSprintfInMessageSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testNoSprintfInMessageSniffer(): void
     {
         $this->assertSnifferFindsErrors(new NoSprintfInMessageSniff(), 2);

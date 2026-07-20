@@ -12,9 +12,6 @@ use Spryker\Test\TestCase;
 
 class DisallowHydrateSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testDisallowHydrateSniffer(): void
     {
         $this->assertSnifferFindsErrors(new DisallowHydrateSniff(), 2);

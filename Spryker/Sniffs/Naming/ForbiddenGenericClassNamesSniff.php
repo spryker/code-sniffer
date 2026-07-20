@@ -16,30 +16,18 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class ForbiddenGenericClassNamesSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_GENERIC_NAME = 'GenericName';
+    protected const string CODE_GENERIC_NAME = 'GenericName';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_GENERIC_NAME = 'Zed Business class "%s" ends with the generic suffix "%s"; name the class after its single responsibility (e.g. Reader, Writer, Expander, Mapper, Validator) instead.';
+    protected const string MESSAGE_GENERIC_NAME = 'Zed Business class "%s" ends with the generic suffix "%s"; name the class after its single responsibility (e.g. Reader, Writer, Expander, Mapper, Validator) instead.';
 
     /**
      * @var array<string>
      */
-    protected const FORBIDDEN_SUFFIXES = ['Executor', 'Handler', 'Worker', 'Manager', 'Processor'];
+    protected const array FORBIDDEN_SUFFIXES = ['Executor', 'Handler', 'Worker', 'Manager', 'Processor'];
 
-    /**
-     * @var string
-     */
-    protected const APPLICATION_ZED = 'Zed';
+    protected const string APPLICATION_ZED = 'Zed';
 
-    /**
-     * @var string
-     */
-    protected const LAYER_BUSINESS = 'Business';
+    protected const string LAYER_BUSINESS = 'Business';
 
     /**
      * Class short names exempted from this sniff (configurable via ruleset property).
@@ -88,11 +76,6 @@ class ForbiddenGenericClassNamesSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isZedBusiness(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);

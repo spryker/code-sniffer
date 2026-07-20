@@ -16,30 +16,18 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class DbSpecificSqlSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const CODE_DB_SPECIFIC_SQL = 'DbSpecificSql';
+    protected const string CODE_DB_SPECIFIC_SQL = 'DbSpecificSql';
 
-    /**
-     * @var string
-     */
-    protected const MESSAGE_DB_SPECIFIC_SQL = 'String contains database-specific SQL (%s); this is not portable across MySQL/MariaDB/PostgreSQL.';
+    protected const string MESSAGE_DB_SPECIFIC_SQL = 'String contains database-specific SQL (%s); this is not portable across MySQL/MariaDB/PostgreSQL.';
 
     /**
      * @var array<string>
      */
-    protected const FORBIDDEN_FUNCTIONS = ['GROUP_CONCAT', 'IFNULL('];
+    protected const array FORBIDDEN_FUNCTIONS = ['GROUP_CONCAT', 'IFNULL('];
 
-    /**
-     * @var string
-     */
-    protected const BACKTICK_IDENTIFIER_PATTERN = '/`[^`\s][^`]*`/';
+    protected const string BACKTICK_IDENTIFIER_PATTERN = '/`[^`\s][^`]*`/';
 
-    /**
-     * @var string
-     */
-    protected const LAYER_PERSISTENCE = 'Persistence';
+    protected const string LAYER_PERSISTENCE = 'Persistence';
 
     /**
      * @inheritDoc
@@ -89,11 +77,6 @@ class DbSpecificSqlSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isPersistence(File $phpcsFile): bool
     {
         $className = $this->getClassName($phpcsFile);
