@@ -13,7 +13,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
  * Zed Table constants: COL_ and BUTTON_ constants must be a typed constant of type string
- * declared protected, and URL path constants must carry a @uses annotation linking the
+ * declared protected, and URL_ path constants must carry a @uses annotation linking the
  * referenced controller action.
  */
 class TableConstantsSniff extends AbstractSprykerSniff
@@ -31,6 +31,8 @@ class TableConstantsSniff extends AbstractSprykerSniff
     protected const string MESSAGE_MISSING_USES_ANNOTATION = 'URL path constant "%s" must have a @uses tag in its docblock linking the referenced controller action.';
 
     protected const string TABLE_CONSTANT_PREFIX_PATTERN = '/^(COL_|BUTTON_)/';
+
+    protected const string URL_CONSTANT_PREFIX_PATTERN = '/^URL_/';
 
     protected const string EXPECTED_TYPE = 'string';
 
@@ -149,6 +151,10 @@ class TableConstantsSniff extends AbstractSprykerSniff
 
     protected function assertUsesAnnotationOnUrlConstant(File $phpcsFile, int $constPtr, int $equalPtr, string $constantName): void
     {
+        if (preg_match(static::URL_CONSTANT_PREFIX_PATTERN, $constantName) !== 1) {
+            return;
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         $valuePtr = $phpcsFile->findNext(Tokens::$emptyTokens, $equalPtr + 1, null, true);

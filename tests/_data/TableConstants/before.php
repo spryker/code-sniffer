@@ -14,6 +14,10 @@ class OrdersTable
 
     protected const string COL_OK = 'ok';
 
+    protected const string TEMPLATE_PATH = '/Sales/_partials/table.twig';
+
+    protected const string ASSET_PATH = '/assets/img/icon.png';
+
     /**
      * @uses \Pyz\Zed\Sales\Communication\Controller\DetailController::indexAction()
      */
