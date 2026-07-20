@@ -15,8 +15,6 @@ trait BasicsTrait
     /**
      * @param array<string|int>|string|int $search
      * @param array<string, mixed> $token
-     *
-     * @return bool
      */
     protected function isGivenKind($search, array $token): bool
     {
@@ -33,8 +31,6 @@ trait BasicsTrait
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
      * @return array<string, mixed>
      */
     protected function getNamespaceStatement(File $phpcsFile): array

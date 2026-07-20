@@ -12,17 +12,11 @@ use Spryker\Test\TestCase;
 
 class TypeHintSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testTypeHintSniffer(): void
     {
         $this->assertSnifferFindsErrors(new TypeHintSniff(), 10);
     }
 
-    /**
-     * @return void
-     */
     public function testDocBlockThrowsFixer(): void
     {
         $this->assertSnifferCanFixErrors(new TypeHintSniff());

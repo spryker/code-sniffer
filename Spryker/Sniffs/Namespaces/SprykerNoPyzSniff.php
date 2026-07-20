@@ -18,10 +18,7 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
 {
     use UseStatementsTrait;
 
-    /**
-     * @var string
-     */
-    protected const NAMESPACE_PROJECT = 'Pyz';
+    protected const string NAMESPACE_PROJECT = 'Pyz';
 
     /**
      * @inheritDoc
@@ -51,11 +48,6 @@ class SprykerNoPyzSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param string $fullClassName
-     *
-     * @return string
-     */
     protected function extractNamespace(string $fullClassName): string
     {
         $namespaces = explode('\\', $fullClassName, 2);

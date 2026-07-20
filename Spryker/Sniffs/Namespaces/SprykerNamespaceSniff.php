@@ -84,10 +84,6 @@ class SprykerNamespaceSniff implements Sniff
      * - src/Namespace/Module/src/Namespace/Layer/Module/File.php
      * - src/Namespace/Module/tests/NamespaceTest/Layer/Module/File.php
      * - src/Namespace/File.php (standard PSR-4)
-     *
-     * @param string $filename
-     *
-     * @return string|null
      */
     protected function extractNamespaceFromPath(string $filename): ?string
     {
@@ -132,10 +128,6 @@ class SprykerNamespaceSniff implements Sniff
 
     /**
      * Removes special directories (like _support, _helpers) from the path that should not be part of the namespace.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     protected function removeSpecialDirectories(string $path): string
     {
@@ -149,10 +141,6 @@ class SprykerNamespaceSniff implements Sniff
 
     /**
      * Removes the current working directory (root) if possible.
-     *
-     * @param string $getFilename
-     *
-     * @return string
      */
     protected function normalizeFilename(string $getFilename): string
     {

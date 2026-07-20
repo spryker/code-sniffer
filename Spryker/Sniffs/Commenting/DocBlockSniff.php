@@ -76,13 +76,6 @@ class DocBlockSniff extends AbstractSprykerSniff
         $this->addDocBlock($phpcsFile, $stackPtr, $returnType);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     * @param string $returnType
-     *
-     * @return void
-     */
     protected function addDocBlock(File $phpcsFile, int $index, string $returnType): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -111,12 +104,6 @@ class DocBlockSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkConstructorAndDestructor(File $phpcsFile, int $stackPtr): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $stackPtr);
@@ -133,13 +120,6 @@ class DocBlockSniff extends AbstractSprykerSniff
         $phpcsFile->addError('Missing doc block for method', $stackPtr, 'ConstructDesctructMissingDocBlock');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
-     *
-     * @return int|null
-     */
     protected function findDocBlockReturn(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -160,11 +140,6 @@ class DocBlockSniff extends AbstractSprykerSniff
 
     /**
      * For right now we only try to detect void.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return string|null
      */
     protected function detectReturnTypeVoid(File $phpcsFile, int $index): ?string
     {

@@ -21,15 +21,9 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
     use CommentingTrait;
     use SignatureTrait;
 
-    /**
-     * @var string
-     */
-    protected const INHERIT_DOC = '{@inheritDoc}';
+    protected const string INHERIT_DOC = '{@inheritDoc}';
 
-    /**
-     * @var string
-     */
-    protected const INHERIT_DOC_INVALID = '{inheritDoc}';
+    protected const string INHERIT_DOC_INVALID = '{inheritDoc}';
 
     /**
      * @inheritDoc
@@ -54,13 +48,6 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
         $this->assertOrder($phpcsFile, $stackPtr, $closingTagIndex);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openingTagIndex
-     * @param int $closingTagIndex
-     *
-     * @return void
-     */
     protected function assertType(File $phpcsFile, int $openingTagIndex, int $closingTagIndex): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -94,13 +81,6 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openingTagIndex
-     * @param int $closingTagIndex
-     *
-     * @return void
-     */
     protected function assertOrder(File $phpcsFile, int $openingTagIndex, int $closingTagIndex): void
     {
         $inheritDocIndex = $this->getInheritDocIndex($phpcsFile, $openingTagIndex, $closingTagIndex);
@@ -145,13 +125,6 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openingTagIndex
-     * @param int $closingTagIndex
-     *
-     * @return int|null
-     */
     protected function getInheritDocIndex(File $phpcsFile, int $openingTagIndex, int $closingTagIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -169,13 +142,6 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openingTagIndex
-     * @param int $closingTagIndex
-     *
-     * @return int|null
-     */
     protected function getFirstTagIndex(File $phpcsFile, int $openingTagIndex, int $closingTagIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -191,12 +157,6 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return void
-     */
     protected function assertCasing(File $phpcsFile, int $index): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -219,14 +179,6 @@ class DocBlockInheritSniff extends AbstractApiClassDetectionSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $inheritDocIndex
-     * @param int $closingTagIndex
-     * @param int|null $firstTagIndex
-     *
-     * @return void
-     */
     protected function assertNoFollowingTextForCoreClasses(File $phpcsFile, int $inheritDocIndex, int $closingTagIndex, ?int $firstTagIndex): void
     {
         if ($firstTagIndex) {

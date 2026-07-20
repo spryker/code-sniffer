@@ -93,13 +93,6 @@ class FunctionSpacingSniff extends AbstractSprykerSniff
         $this->assertNewLineAtTheBeginning($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $closingBraceIndex
-     * @param int|null $nextContentIndex
-     *
-     * @return void
-     */
     protected function assertNewLineAtTheEnd(File $phpCsFile, int $closingBraceIndex, ?int $nextContentIndex): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -114,11 +107,6 @@ class FunctionSpacingSniff extends AbstractSprykerSniff
 
     /**
      * Asserts newline at the beginning, including the doc block.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
      */
     protected function assertNewLineAtTheBeginning(File $phpCsFile, int $stackPointer): void
     {

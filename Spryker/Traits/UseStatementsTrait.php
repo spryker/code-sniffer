@@ -13,8 +13,6 @@ use PHP_CodeSniffer\Util\Tokens;
 trait UseStatementsTrait
 {
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
      * @return array<string, array<string, mixed>>
      */
     protected function getUseStatements(File $phpcsFile): array
@@ -88,11 +86,6 @@ trait UseStatementsTrait
         return $statements;
     }
 
-    /**
-     * @param string $statementContent
-     *
-     * @return bool
-     */
     protected function isMultipleUseStatement(string $statementContent): bool
     {
         if (strpos($statementContent, ',') !== false) {

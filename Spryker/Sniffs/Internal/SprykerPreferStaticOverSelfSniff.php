@@ -39,12 +39,6 @@ class SprykerPreferStaticOverSelfSniff extends AbstractSprykerSniff
         $this->assertStatic($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function assertStatic(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();

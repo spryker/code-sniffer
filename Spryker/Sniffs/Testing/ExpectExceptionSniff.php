@@ -18,10 +18,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class ExpectExceptionSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const METHOD_EXPECT_EXCEPTION = 'expectException';
+    protected const string METHOD_EXPECT_EXCEPTION = 'expectException';
 
     /**
      * @inheritDoc
@@ -43,12 +40,6 @@ class ExpectExceptionSniff extends AbstractSprykerSniff
         $this->assertNoAssertsAfterExpectException($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function assertNoAssertsAfterExpectException(
         File $phpcsFile,
         int $stackPtr
@@ -89,13 +80,6 @@ class ExpectExceptionSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $expectationIndex
-     * @param int $endIndex
-     *
-     * @return void
-     */
     protected function assertNoFollowingAsserts(File $phpcsFile, int $expectationIndex, int $endIndex): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -122,12 +106,6 @@ class ExpectExceptionSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return bool
-     */
     protected function isTest(File $phpcsFile, int $stackPtr): bool
     {
         $filename = $phpcsFile->getFilename();

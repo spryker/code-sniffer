@@ -40,12 +40,6 @@ class ExitSniff implements Sniff
         $this->checkExitUsage($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkExitUsage(File $phpcsFile, int $stackPtr): void
     {
         $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];
@@ -71,13 +65,6 @@ class ExitSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'Invalid');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param string $before
-     *
-     * @return void
-     */
     protected function fixAlias(File $phpcsFile, int $stackPtr, string $before): void
     {
         $after = static::$aliases[$before];

@@ -11,42 +11,18 @@ use PHP_CodeSniffer\Files\File;
 
 abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const API_FACADE = 'FACADE';
+    protected const string API_FACADE = 'FACADE';
 
-    /**
-     * @var string
-     */
-    protected const API_SERVICE = 'SERVICE';
+    protected const string API_SERVICE = 'SERVICE';
 
-    /**
-     * @var string
-     */
-    protected const API_CLIENT = 'CLIENT';
+    protected const string API_CLIENT = 'CLIENT';
 
-    /**
-     * @var string
-     */
-    protected const API_QUERY_CONTAINER = 'QUERY_CONTAINER';
+    protected const string API_QUERY_CONTAINER = 'QUERY_CONTAINER';
 
-    /**
-     * @var string
-     */
-    protected const API_PLUGIN = 'PLUGIN';
+    protected const string API_PLUGIN = 'PLUGIN';
 
-    /**
-     * @var string
-     */
-    protected const API_CONFIG = 'CONFIG';
+    protected const string API_CONFIG = 'CONFIG';
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string|null
-     */
     protected function sprykerApiClass(File $phpCsFile, int $stackPointer): ?string
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer) || !$this->hasClassOrInterfaceName($phpCsFile, $stackPointer)) {
@@ -78,12 +54,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isPublicMethod(File $phpCsFile, int $stackPointer): bool
     {
         $publicPosition = $phpCsFile->findFirstOnLine(T_PUBLIC, $stackPointer);
@@ -94,12 +64,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function hasNamespace(File $phpCsFile, int $stackPointer): bool
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
@@ -110,12 +74,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function hasClassOrInterfaceName(File $phpCsFile, int $stackPointer): bool
     {
         $classOrInterfaceNamePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
@@ -126,12 +84,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function extractNamespace(File $phpCsFile, int $stackPointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
@@ -151,12 +103,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return $namespace;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfacePosition = $phpCsFile->findPrevious([T_CLASS, T_INTERFACE], $stackPointer);
@@ -168,12 +114,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return $phpCsFile->getTokens()[$classOrInterfaceNamePosition]['content'];
     }
 
-    /**
-     * @param string $namespace
-     * @param string $name
-     *
-     * @return bool
-     */
     protected function isFacade(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker[a-zA-Z]*\\\\Zed\\\\[a-zA-Z]+\\\\Business$/', $namespace) && preg_match('/^(.*?)(Facade|FacadeInterface)$/', $name)) {
@@ -183,12 +123,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return false;
     }
 
-    /**
-     * @param string $namespace
-     * @param string $name
-     *
-     * @return bool
-     */
     protected function isService(string $namespace, string $name): bool
     {
         if ($name === 'AbstractService') {
@@ -201,12 +135,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return false;
     }
 
-    /**
-     * @param string $namespace
-     * @param string $name
-     *
-     * @return bool
-     */
     protected function isClient(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker[a-zA-Z]*\\\\Client\\\\[a-zA-Z]+$/', $namespace) && preg_match('/^(.+?)(Client|ClientInterface)$/', $name)) {
@@ -216,12 +144,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return false;
     }
 
-    /**
-     * @param string $namespace
-     * @param string $name
-     *
-     * @return bool
-     */
     protected function isPlugin(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker[a-zA-Z]*\\\\[a-zA-Z]+\\\\[a-zA-Z]+\\\\Dependency\\\\Plugin\b/', $namespace) && preg_match('/^\w+Interface$/', $name)) {
@@ -235,12 +157,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return false;
     }
 
-    /**
-     * @param string $namespace
-     * @param string $name
-     *
-     * @return bool
-     */
     protected function isQueryContainer(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker[a-zA-Z]*\\\\Zed\\\(.*?)\\\\Persistence$/', $namespace) && preg_match('/^(.*?)(QueryContainer|QueryContainerInterface)$/', $name)) {
@@ -250,12 +166,6 @@ abstract class AbstractApiClassDetectionSprykerSniff extends AbstractSprykerSnif
         return false;
     }
 
-    /**
-     * @param string $namespace
-     * @param string $name
-     *
-     * @return bool
-     */
     protected function isConfig(string $namespace, string $name): bool
     {
         if (preg_match('/^Spryker[a-zA-Z]*\\\\[a-zA-Z]+\\\\[a-zA-Z]+$/', $namespace) && preg_match('/^\w+Config$/', $name)) {

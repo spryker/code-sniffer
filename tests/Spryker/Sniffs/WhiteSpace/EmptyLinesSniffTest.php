@@ -12,17 +12,11 @@ use Spryker\Test\TestCase;
 
 class EmptyLinesSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testEmptyLinesSniffer(): void
     {
         $this->assertSnifferFindsErrors(new EmptyLinesSniff(), 6);
     }
 
-    /**
-     * @return void
-     */
     public function testEmptyEnclosingLineFixer(): void
     {
         $this->assertSnifferCanFixErrors(new EmptyLinesSniff());

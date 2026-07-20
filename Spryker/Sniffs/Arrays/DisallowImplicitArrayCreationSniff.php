@@ -29,11 +29,6 @@ class DisallowImplicitArrayCreationSniff extends SlevomatDisallowImplicitArrayCr
         parent::process($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param string $fileName
-     *
-     * @return bool
-     */
     protected function hasLegacyImplicitCreation(string $fileName): bool
     {
         if (strpos($fileName, DIRECTORY_SEPARATOR . 'config_') !== false || strpos($fileName, DIRECTORY_SEPARATOR . 'config.') !== false) {

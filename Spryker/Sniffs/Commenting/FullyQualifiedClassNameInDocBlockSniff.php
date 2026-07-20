@@ -98,12 +98,7 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $classNameIndex
      * @param array<string> $classNames
-     * @param \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode $valueNode
-     *
-     * @return void
      */
     protected function fixClassNames(File $phpCsFile, int $classNameIndex, array $classNames, PhpDocTagValueNode $valueNode): void
     {
@@ -126,8 +121,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $classNameIndex
      * @param array<string> $classNames
      *
      * @return array<string>
@@ -174,12 +167,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         return $result;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param string $className
-     *
-     * @return string|null
-     */
     protected function findUseStatementForClassName(File $phpCsFile, string $className): ?string
     {
         $useStatements = $this->parseUseStatements($phpCsFile);
@@ -195,12 +182,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         return $useStatements[$className];
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param string $className
-     *
-     * @return string|null
-     */
     protected function findInSameNameSpace(File $phpCsFile, string $className): ?string
     {
         $currentNameSpace = $this->getNamespace($phpCsFile);
@@ -217,11 +198,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
         return '\\' . $currentNameSpace . '\\' . $className;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getNamespace(File $phpCsFile): string
     {
         $tokens = $phpCsFile->getTokens();
@@ -257,9 +233,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
     protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
@@ -280,8 +253,6 @@ class FullyQualifiedClassNameInDocBlockSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
      * @return array<string>
      */
     protected function parseUseStatements(File $phpCsFile): array

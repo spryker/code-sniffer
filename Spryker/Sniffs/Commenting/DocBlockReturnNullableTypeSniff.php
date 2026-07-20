@@ -80,9 +80,6 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return array<string>|null
      */
     protected function parseDocBlockReturnTypes(File $phpCsFile, int $stackPointer): ?array
@@ -99,13 +96,6 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         return $this->valueNodeParts($valueNode);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
-     *
-     * @return int|null
-     */
     protected function findDocBlockReturn(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -125,11 +115,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
      * @param array<string> $docBlockReturnTypes
-     *
-     * @return void
      */
     public function assertNotNullableReturnType(File $phpCsFile, int $stackPointer, array $docBlockReturnTypes): void
     {
@@ -151,11 +137,7 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
      * @param array<string> $docBlockReturnTypes
-     *
-     * @return void
      */
     public function assertRequiredNullableReturnType(
         File $phpCsFile,
@@ -179,12 +161,6 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         $this->addNullToDocBlockReturnType($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function addNullToDocBlockReturnType(File $phpCsFile, int $stackPointer): void
     {
         $returnTypeToken = $this->getDocBlockReturnTypeToken($phpCsFile, $stackPointer);
@@ -198,12 +174,6 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function removeNullFromDocBlockReturnType(File $phpCsFile, int $stackPointer): void
     {
         $returnTypesToken = $this->getDocBlockReturnTypeToken($phpCsFile, $stackPointer);
@@ -222,9 +192,6 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @throws \RuntimeException
      *
      * @return array<string, mixed>

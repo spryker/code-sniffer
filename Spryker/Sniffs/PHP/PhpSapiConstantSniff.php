@@ -15,10 +15,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class PhpSapiConstantSniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    protected const PHP_SAPI = 'PHP_SAPI';
+    protected const string PHP_SAPI = 'PHP_SAPI';
 
     /**
      * @inheritDoc

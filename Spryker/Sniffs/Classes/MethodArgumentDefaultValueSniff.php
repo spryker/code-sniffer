@@ -73,13 +73,6 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return int|null
-     */
     protected function getLastNonDefaultArgumentIndex(File $phpcsFile, int $startIndex, int $endIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -106,12 +99,6 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $variableIndex
-     *
-     * @return bool
-     */
     protected function isEllipsis(File $phpcsFile, int $variableIndex): bool
     {
         $tokens = $phpcsFile->getTokens();
@@ -124,13 +111,6 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         return $this->isGivenKind(T_ELLIPSIS, $tokens[$prevIndex]);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return void
-     */
     protected function removeDefaultArgument(File $phpcsFile, int $startIndex, int $endIndex): void
     {
         $this->clearWhitespacesBeforeIndex($phpcsFile, $startIndex);
@@ -140,10 +120,7 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param int $index Index of "="
-     *
-     * @return bool
      */
     protected function isTypehintedNullableVariable(File $phpcsFile, int $index): bool
     {
@@ -175,12 +152,6 @@ class MethodArgumentDefaultValueSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return void
-     */
     protected function clearWhitespacesBeforeIndex(File $phpcsFile, int $index): void
     {
         $tokens = $phpcsFile->getTokens();

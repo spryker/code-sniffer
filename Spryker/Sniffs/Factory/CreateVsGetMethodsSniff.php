@@ -59,12 +59,6 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getMethodName(File $phpCsFile, int $stackPointer): string
     {
         $tokens = $phpCsFile->getTokens();
@@ -74,11 +68,6 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
         return $methodName;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isFactory(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
@@ -91,11 +80,6 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
         return (substr($className, -15, -7) === 'Business' || substr($className, -20, -7) === 'Communication');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getClassName(File $phpCsFile): string
     {
         $fileName = $phpCsFile->getFilename();
@@ -108,12 +92,6 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
         return $className;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getClassMethod(File $phpCsFile, int $stackPointer): string
     {
         $className = $this->getClassName($phpCsFile);
@@ -124,13 +102,6 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
         return $classMethod;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     * @param string $newMethodName
-     *
-     * @return void
-     */
     protected function correctMethodName(File $phpCsFile, int $stackPointer, string $newMethodName): void
     {
         $phpCsFile->fixer->beginChangeset();
@@ -140,9 +111,6 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $stackPointer
-     *
-     * @return bool
      */
     protected function containsNew(array $tokens, int $stackPointer): bool
     {
@@ -162,9 +130,6 @@ class CreateVsGetMethodsSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $stackPointer
-     *
-     * @return bool
      */
     protected function containsCreateMethod(array $tokens, int $stackPointer): bool
     {
