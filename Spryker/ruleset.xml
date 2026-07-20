@@ -20,6 +20,25 @@
 
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
+    <!--
+        Opinionated, project-wide convention sniffs that are shipped but disabled by default,
+        because enabling them would flag large amounts of pre-existing code across consumers.
+        Consumers (and this package's maintainers) can opt in by raising the severity.
+
+        Spryker.Naming.DisallowHydrate      - forbids the hydrate/Hydrator vocabulary everywhere.
+        Spryker.Testing.ArrangeActAssertComments - requires // Arrange, // Act, // Assert in test methods.
+
+        All other new convention sniffs (ContainerSetClosure, NoSprintfInMessage,
+        ForbiddenGenericClassNames, PluginPrePostMethods, DbSpecificSql, TableConstants) are
+        narrowly path/layer-scoped and remain active via the standard auto-loading mechanism.
+    -->
+    <rule ref="Spryker.Naming.DisallowHydrate">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Spryker.Testing.ArrangeActAssertComments">
+        <severity>0</severity>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Namespaces.NamespaceDeclaration"/>
     <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation">
         <properties>
