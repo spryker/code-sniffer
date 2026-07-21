@@ -5,10 +5,10 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\Persistence;
+namespace Spryker\Test\SprykerConventions\Sniffs\Persistence;
 
-use Spryker\Sniffs\Persistence\DbSpecificSqlSniff;
 use Spryker\Test\TestCase;
+use SprykerConventions\Sniffs\Persistence\DbSpecificSqlSniff;
 
 class DbSpecificSqlSniffTest extends TestCase
 {

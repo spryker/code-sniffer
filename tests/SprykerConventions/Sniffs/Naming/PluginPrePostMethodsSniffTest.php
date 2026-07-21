@@ -5,10 +5,10 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\Naming;
+namespace Spryker\Test\SprykerConventions\Sniffs\Naming;
 
-use Spryker\Sniffs\Naming\PluginPrePostMethodsSniff;
 use Spryker\Test\TestCase;
+use SprykerConventions\Sniffs\Naming\PluginPrePostMethodsSniff;
 
 class PluginPrePostMethodsSniffTest extends TestCase
 {

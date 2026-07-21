@@ -7,6 +7,7 @@
     <testsuites>
         <testsuite name="spryker-code-sniffer">
             <directory>tests/Spryker/</directory>
+            <directory>tests/SprykerConventions/</directory>
         </testsuite>
     </testsuites>
     <coverage>
@@ -14,6 +15,7 @@
             <directory suffix=".php">Spryker/Sniffs/</directory>
             <directory suffix=".php">SprykerStrict/Sniffs/</directory>
             <directory suffix=".php">GlueStreamSpecific/Sniffs/</directory>
+            <directory suffix=".php">SprykerConventions/Sniffs/</directory>
         </include>
     </coverage>
 </phpunit>

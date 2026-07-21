@@ -57,6 +57,12 @@ You probably want to ignore some folders, e.g. `--ignore=vendor/` or some of you
 You can always switch the standard to the stricter one named `SprykerStrict`.
 It is an extension of the `Spryker` standard with its own (strict) sniffs added on top.
 
+There is also an opt-in `SprykerConventions` standard with opinionated, project-wide
+convention sniffs (e.g. dependency-provider closure registration, plugin pre/post naming,
+non-portable SQL). It is deliberately **not** part of `Spryker`/`SprykerStrict`, so bumping
+the package version never activates these on existing code. Opt in from your own ruleset with
+`<rule ref="SprykerConventions"/>` (or reference individual sniffs) once you are ready to adopt them.
+
 ### How to include in your IDE
 E.g. for PHPStorm:
 * Open Settings -> Tools -> External Tools

@@ -30,7 +30,8 @@
     "autoload": {
         "psr-4": {
             "Spryker\\": "Spryker/",
-            "SprykerStrict\\": "SprykerStrict/"
+            "SprykerStrict\\": "SprykerStrict/",
+            "SprykerConventions\\": "SprykerConventions/"
         }
     },
     "autoload-dev": {

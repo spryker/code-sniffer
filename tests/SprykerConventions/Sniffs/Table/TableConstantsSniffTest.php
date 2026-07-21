@@ -5,10 +5,10 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\Table;
+namespace Spryker\Test\SprykerConventions\Sniffs\Table;
 
-use Spryker\Sniffs\Table\TableConstantsSniff;
 use Spryker\Test\TestCase;
+use SprykerConventions\Sniffs\Table\TableConstantsSniff;
 
 class TableConstantsSniffTest extends TestCase
 {

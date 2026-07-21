@@ -5,10 +5,10 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Test\Spryker\Sniffs\Messenger;
+namespace Spryker\Test\SprykerConventions\Sniffs\Messenger;
 
-use Spryker\Sniffs\Messenger\NoSprintfInMessageSniff;
 use Spryker\Test\TestCase;
+use SprykerConventions\Sniffs\Messenger\NoSprintfInMessageSniff;
 
 class NoSprintfInMessageSniffTest extends TestCase
 {
