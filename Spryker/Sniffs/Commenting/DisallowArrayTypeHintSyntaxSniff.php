@@ -30,6 +30,7 @@ use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\SniffSettingsHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 use SlevomatCodingStandard\Helpers\TypeHintHelper;
+use Spryker\Traits\TokenHelperCompatTrait;
 
 /**
  * Fixed version of Slevomatic, touching collection objects the right way.
@@ -38,6 +39,8 @@ use SlevomatCodingStandard\Helpers\TypeHintHelper;
  */
 class DisallowArrayTypeHintSyntaxSniff implements Sniff
 {
+    use TokenHelperCompatTrait;
+
     /**
      * @var string
      */

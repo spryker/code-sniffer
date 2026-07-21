@@ -16,10 +16,12 @@ use SlevomatCodingStandard\Helpers\EmptyFileException;
 use SlevomatCodingStandard\Helpers\NamespaceHelper;
 use SlevomatCodingStandard\Helpers\TokenHelper;
 use Spryker\Traits\BasicsTrait;
+use Spryker\Traits\TokenHelperCompatTrait;
 
 abstract class AbstractSprykerSniff implements Sniff
 {
     use BasicsTrait;
+    use TokenHelperCompatTrait;
 
     /**
      * @var string
