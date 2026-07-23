@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="SprykerConventions">
+    <description>
+        Opinionated Spryker code-convention sniffs (opt-in).
+
+        This standard is deliberately NOT part of the default Spryker or SprykerStrict standards,
+        because enabling these conventions would flag pre-existing code across consuming projects.
+        Bumping the package version therefore never activates them on its own - a project opts in
+        explicitly by referencing the SprykerConventions standard (or individual sniffs) from its
+        own ruleset once it is ready to adopt them.
+
+        All sniffs in ./Sniffs will be auto loaded.
+    </description>
+
+    <config name="installed_paths" value="../../slevomat/coding-standard"/>
+</ruleset>

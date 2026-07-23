@@ -21,6 +21,7 @@ use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
+use ReflectionClass;
 
 /**
  * Common functionality around commenting.
@@ -36,17 +37,40 @@ trait CommentingTrait
     protected static function getValueNode(string $tagName, string $tagComment): PhpDocTagValueNode
     {
         static $phpDocParser;
-        if (!$phpDocParser) {
-            $constExprParser = new ConstExprParser();
-            $phpDocParser = new PhpDocParser(new TypeParser($constExprParser), $constExprParser);
-        }
-
         static $phpDocLexer;
-        if (!$phpDocLexer) {
-            $phpDocLexer = new Lexer();
+        if (!$phpDocParser || !$phpDocLexer) {
+            [$phpDocParser, $phpDocLexer] = static::createPhpDocParser();
         }
 
         return $phpDocParser->parseTagValue(new TokenIterator($phpDocLexer->tokenize($tagComment)), $tagName);
+    }
+
+    /**
+     * Builds a parser/lexer pair that works with both phpstan/phpdoc-parser v1 and v2.
+     *
+     * v2 requires a `ParserConfig` as the first constructor argument on the lexer and every
+     * parser; v1 has no such argument. The instances are created through reflection so that
+     * neither the v1 nor the v2 call shape appears as a static literal that static analysis
+     * would reject against whichever single version happens to be installed.
+     *
+     * @return array{\PHPStan\PhpDocParser\Parser\PhpDocParser, \PHPStan\PhpDocParser\Lexer\Lexer}
+     */
+    protected static function createPhpDocParser(): array
+    {
+        $parserConfigClass = 'PHPStan\PhpDocParser\ParserConfig';
+
+        $configArguments = [];
+        if (class_exists($parserConfigClass)) {
+            $configArguments[] = (new ReflectionClass($parserConfigClass))
+                ->newInstanceArgs([['lines' => true, 'indexes' => true]]);
+        }
+
+        $constExprParser = (new ReflectionClass(ConstExprParser::class))->newInstanceArgs($configArguments);
+        $typeParser = (new ReflectionClass(TypeParser::class))->newInstanceArgs(array_merge($configArguments, [$constExprParser]));
+        $phpDocParser = (new ReflectionClass(PhpDocParser::class))->newInstanceArgs(array_merge($configArguments, [$typeParser, $constExprParser]));
+        $phpDocLexer = (new ReflectionClass(Lexer::class))->newInstanceArgs($configArguments);
+
+        return [$phpDocParser, $phpDocLexer];
     }
 
     /**

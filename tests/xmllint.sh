@@ -8,6 +8,7 @@
 RULESET1="GlueStreamSpecific/ruleset.xml"
 RULESET2="Spryker/ruleset.xml"
 RULESET3="SprykerStrict/ruleset.xml"
+RULESET4="SprykerConventions/ruleset.xml"
 
 set -e
 
@@ -15,6 +16,7 @@ set -e
 test -r "$RULESET1"
 test -r "$RULESET2"
 test -r "$RULESET3"
+test -r "$RULESET4"
 
 # Check dependency
 hash xmllint
@@ -34,3 +36,6 @@ diff -B "$RULESET2" <(XMLLINT_INDENT="    " xmllint --format "$RULESET2")
 
 xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd "$RULESET3"
 diff -B "$RULESET3" <(XMLLINT_INDENT="    " xmllint --format "$RULESET3")
+
+xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd "$RULESET4"
+diff -B "$RULESET4" <(XMLLINT_INDENT="    " xmllint --format "$RULESET4")
