@@ -38,6 +38,20 @@ class TestCase extends PHPUnitTestCase
     }
 
     /**
+     * This will run code sniffer and assert the number of warnings found.
+     *
+     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
+     * @param int $warningCount
+     * @param int|null $errorCount
+     *
+     * @return array<array>
+     */
+    protected function assertSnifferFindsWarnings(Sniff $sniffer, int $warningCount, ?int $errorCount = null): array
+    {
+        return $this->runFixer($sniffer, $errorCount, null, false, $warningCount);
+    }
+
+    /**
      * This will run code sniffer
      *
      * @return array<array>
@@ -121,7 +135,8 @@ class TestCase extends PHPUnitTestCase
         Sniff $sniffer,
         ?int $errorCount = null,
         ?int $fixableErrorCount = null,
-        bool $fix = false
+        bool $fix = false,
+        ?int $warningCount = null
     ): array {
         $codeSniffer = new Runner();
         $codeSniffer->config = new Config([
@@ -140,6 +155,9 @@ class TestCase extends PHPUnitTestCase
 
         if ($errorCount !== null) {
             $this->assertEquals($errorCount, $file->getErrorCount());
+        }
+        if ($warningCount !== null) {
+            $this->assertEquals($warningCount, $file->getWarningCount());
         }
         if ($fixableErrorCount !== null) {
             $this->assertEquals($fixableErrorCount, $file->getFixableCount());
