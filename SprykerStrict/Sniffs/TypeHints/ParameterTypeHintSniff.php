@@ -10,10 +10,12 @@ namespace SprykerStrict\Sniffs\TypeHints;
 use PHP_CodeSniffer\Files\File;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff as SlevomatParameterTypeHintSniff;
 use Spryker\Traits\BridgeTrait;
+use Spryker\Traits\MixedUnionAnnotationTrait;
 
 class ParameterTypeHintSniff extends SlevomatParameterTypeHintSniff
 {
     use BridgeTrait;
+    use MixedUnionAnnotationTrait;
 
     /**
      * @inheritDoc
@@ -21,6 +23,10 @@ class ParameterTypeHintSniff extends SlevomatParameterTypeHintSniff
     public function process(File $phpcsFile, $pointer): void
     {
         if ($this->isSprykerBridgeConstructor($phpcsFile, $pointer)) {
+            return;
+        }
+
+        if ($this->hasDetailedMixedUnionParameterAnnotation($phpcsFile, $pointer)) {
             return;
         }
 
