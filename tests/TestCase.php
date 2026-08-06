@@ -40,10 +40,6 @@ class TestCase extends PHPUnitTestCase
     /**
      * This will run code sniffer and assert the number of warnings found.
      *
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int $warningCount
-     * @param int|null $errorCount
-     *
      * @return array<array>
      */
     protected function assertSnifferFindsWarnings(Sniff $sniffer, int $warningCount, ?int $errorCount = null): array
