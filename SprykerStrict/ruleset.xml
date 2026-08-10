@@ -42,4 +42,9 @@
             <property name="enableIntersectionTypeHint" value="false"/>
         </properties>
     </rule>
+
+    <!-- Shipped disabled/opt-in (severity 0): high-fallout strictness rule, enabled per project. -->
+    <rule ref="SprykerStrict.TypeHints.ClassConstantTypeHint">
+        <severity>0</severity>
+    </rule>
 </ruleset>

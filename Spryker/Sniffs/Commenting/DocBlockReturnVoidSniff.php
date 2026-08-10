@@ -317,7 +317,7 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
             $typehint = '?' . $typehint;
         }
 
-        if ($documentedReturnType !== 'void' && $typeHintIndex !== 'void') {
+        if ($documentedReturnType !== 'void' && $typehint !== 'void') {
             return;
         }
         if ($documentedReturnType === $typehint) {

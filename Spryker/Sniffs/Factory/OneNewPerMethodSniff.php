@@ -51,7 +51,7 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
     {
         $fileName = $phpCsFile->getFilename();
         $fileNameParts = explode(DIRECTORY_SEPARATOR, $fileName);
-        $sourceDirectoryPosition = array_search('src', array_values($fileNameParts), true);
+        $sourceDirectoryPosition = array_search('src', $fileNameParts, true);
         $classNameParts = array_slice($fileNameParts, $sourceDirectoryPosition + 1);
         $className = implode('\\', $classNameParts);
         $className = str_replace('.php', '', $className);

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ruleset name="code-sniffer">
     <config name="installed_paths" value="../../spryker/code-sniffer"/>
-    <config name="php_version" value="70300"/>
+    <config name="php_version" value="80300"/>
 
     <arg name="tab-width" value="4"/>
     <arg value="nps"/>
@@ -9,12 +9,21 @@
     <file>Spryker/</file>
     <file>SprykerStrict/</file>
     <file>GlueStreamSpecific/</file>
+    <file>SprykerConventions/</file>
     <file>tests/Spryker/</file>
+    <file>tests/SprykerConventions/</file>
     <file>tests/TestCase.php</file>
     <file>docs/</file>
     <file>bin/</file>
 
-    <rule ref="SprykerStrict"/>
+    <rule ref="SprykerStrict">
+        <!-- Self-lint only: this project's own sniff sources use native types on constants
+             and native return types instead of restating them in docblocks, so the
+             mandatory-docblock requirement is lifted here. The shipped Spryker/SprykerStrict
+             rulesets are unchanged; consumers keep the standard as-is. -->
+        <exclude name="Spryker.Commenting.DocBlock.DocBlockMissing"/>
+        <exclude name="Spryker.Commenting.DocBlock.ReturnVoidMissing"/>
+    </rule>
 
     <rule ref="Spryker.Namespaces.SprykerNamespace">
         <properties>

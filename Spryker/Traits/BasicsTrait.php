@@ -35,7 +35,7 @@ trait BasicsTrait
     /**
      * @param \PHP_CodeSniffer\Files\File $phpcsFile
      *
-     * @return array<string, mixed>>
+     * @return array<string, mixed>
      */
     protected function getNamespaceStatement(File $phpcsFile): array
     {
@@ -54,6 +54,10 @@ trait BasicsTrait
         $namespace = '';
         $namespaceStartIndex = $phpcsFile->findNext(Tokens::$emptyTokens, $namespaceIndex + 1, null, true);
         $namespaceEndIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, $endIndex - 1, null, true);
+        if ($namespaceStartIndex === false || $namespaceEndIndex === false) {
+            return [];
+        }
+
         for ($i = $namespaceStartIndex; $i <= $namespaceEndIndex; $i++) {
             $namespace .= $tokens[$i]['content'];
         }

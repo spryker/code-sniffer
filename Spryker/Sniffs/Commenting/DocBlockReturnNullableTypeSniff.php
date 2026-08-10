@@ -236,6 +236,10 @@ class DocBlockReturnNullableTypeSniff extends AbstractSprykerSniff
         $docBlockStartIndex = DocCommentHelper::findDocCommentOpenPointer($phpCsFile, $stackPointer);
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
 
+        if ($docBlockStartIndex === null || !$docBlockEndIndex) {
+            throw new RuntimeException('No token found.');
+        }
+
         for ($i = $docBlockEndIndex; $i >= $docBlockStartIndex; $i--) {
             if ($tokens[$i]['content'] !== '@return') {
                 continue;

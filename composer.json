@@ -19,18 +19,19 @@
     ],
     "require": {
         "php": ">=8.3",
-        "phpstan/phpdoc-parser": "^1.33.0",
+        "phpstan/phpdoc-parser": "^1.33.0 || ^2.1.0",
         "slevomat/coding-standard": "^8.14.0",
         "squizlabs/php_codesniffer": "^3.6.2"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.11.0",
+        "phpstan/phpstan": "^2.1.0",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
             "Spryker\\": "Spryker/",
-            "SprykerStrict\\": "SprykerStrict/"
+            "SprykerStrict\\": "SprykerStrict/",
+            "SprykerConventions\\": "SprykerConventions/"
         }
     },
     "autoload-dev": {
