@@ -144,12 +144,6 @@ class NoIsNullSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return bool
-     */
     protected function leadRequiresBrackets(File $phpcsFile, int $index): bool
     {
         $tokens = $phpcsFile->getTokens();
@@ -169,22 +163,11 @@ class NoIsNullSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
     protected function isCast(int $index): bool
     {
         return in_array($index, Tokens::$castTokens);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return int|null
-     */
     protected function findUnnecessaryLeadingComparisonStart(File $phpcsFile, int $index): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -202,12 +185,6 @@ class NoIsNullSniff extends AbstractSprykerSniff
         return $previous;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return int|null
-     */
     protected function findUnnecessaryTrailingComparisonEnd(File $phpcsFile, int $index): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -225,12 +202,6 @@ class NoIsNullSniff extends AbstractSprykerSniff
         return $next;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return bool
-     */
     protected function hasLeadingComparison(File $phpcsFile, int $stackPtr): bool
     {
         $previous = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
@@ -242,12 +213,6 @@ class NoIsNullSniff extends AbstractSprykerSniff
         return $this->isComparison($phpcsFile, $previous);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return bool
-     */
     protected function hasTrailingComparison(File $phpcsFile, int $stackPtr): bool
     {
         $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
@@ -259,12 +224,6 @@ class NoIsNullSniff extends AbstractSprykerSniff
         return $this->isComparison($phpcsFile, $next);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return bool
-     */
     protected function isComparison(File $phpcsFile, int $index): bool
     {
         $tokens = $phpcsFile->getTokens();

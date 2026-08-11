@@ -18,10 +18,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class AssertPrimitivesSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const METHOD_ASSERT_SAME = 'assertSame';
+    protected const string METHOD_ASSERT_SAME = 'assertSame';
 
     /**
      * @var array<string>
@@ -52,12 +49,6 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
         $this->assertSameUsage($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function assertSameUsage(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -120,12 +111,6 @@ class AssertPrimitivesSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return bool
-     */
     protected function isTest(File $phpcsFile, int $stackPtr): bool
     {
         $filename = $phpcsFile->getFilename();

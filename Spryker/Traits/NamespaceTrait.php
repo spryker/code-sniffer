@@ -16,11 +16,6 @@ trait NamespaceTrait
 {
     /**
      * Checks if this use statement is part of the namespace block.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return bool
      */
     protected function shouldIgnoreUse(File $phpcsFile, int $stackPtr): bool
     {

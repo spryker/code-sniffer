@@ -77,12 +77,6 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isChainingMethod(File $phpCsFile, int $stackPointer): bool
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);
@@ -120,12 +114,6 @@ class ReturnTypeHintSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function assertNotThisOrStatic(File $phpCsFile, int $stackPointer): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $stackPointer);

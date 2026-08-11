@@ -76,11 +76,6 @@ class MethodTypeHintSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->replaceToken($startIndex, 'self');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getCurrentClassName(File $phpCsFile): string
     {
         $fullClassName = parent::getClassName($phpCsFile);

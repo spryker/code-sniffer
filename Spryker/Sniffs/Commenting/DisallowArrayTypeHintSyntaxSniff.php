@@ -41,10 +41,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 {
     use TokenHelperCompatTrait;
 
-    /**
-     * @var string
-     */
-    public const CODE_DISALLOWED_ARRAY_TYPE_HINT_SYNTAX = 'DisallowedArrayTypeHintSyntax';
+    public const string CODE_DISALLOWED_ARRAY_TYPE_HINT_SYNTAX = 'DisallowedArrayTypeHintSyntax';
 
     /**
      * @var array<string>
@@ -166,13 +163,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param \SlevomatCodingStandard\Helpers\Annotation $annotation
-     * @param string $fixedAnnotation
-     *
-     * @return void
-     */
     protected function fixAnnotation(File $phpcsFile, Annotation $annotation, string $fixedAnnotation): void
     {
         $parameterName = $annotation->getNode()->value->parameterName ?? '';
@@ -193,8 +183,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
     }
 
     /**
-     * @param \PHPStan\PhpDocParser\Ast\Node $node
-     *
      * @return list<\PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode>
      */
     public function getArrayTypeNodes(Node $node): array
@@ -209,11 +197,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                  */
                 private $nodes = [];
 
-                /**
-                 * @param \PHPStan\PhpDocParser\Ast\Node $node
-                 *
-                 * @return int|null
-                 */
                 public function enterNode(Node $node): ?int
                 {
                     if ($node instanceof ArrayTypeNode) {
@@ -227,9 +210,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
                     return null;
                 }
 
-                /**
-                 * @return void
-                 */
                 public function cleanNodes(): void
                 {
                     $this->nodes = [];
@@ -256,11 +236,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         return $visitor->getNodes();
     }
 
-    /**
-     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $node
-     *
-     * @return \PHPStan\PhpDocParser\Ast\Type\TypeNode
-     */
     protected function fixArrayNode(TypeNode $node): TypeNode
     {
         if (!$node instanceof ArrayTypeNode) {
@@ -271,10 +246,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
     }
 
     /**
-     * @param \PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode $arrayTypeNode
      * @param array<\PHPStan\PhpDocParser\Ast\Type\UnionTypeNode> $unionTypeNodes
-     *
-     * @return \PHPStan\PhpDocParser\Ast\Type\UnionTypeNode|null
      */
     protected function findUnionTypeThatContainsArrayType(ArrayTypeNode $arrayTypeNode, array $unionTypeNodes): ?UnionTypeNode
     {
@@ -287,14 +259,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docCommentOpenPointer
-     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
-     * @param \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode $annotationValue
-     *
-     * @return string|null
-     */
     protected function findGenericIdentifier(
         File $phpcsFile,
         int $docCommentOpenPointer,
@@ -365,9 +329,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
      * name is resolved dynamically so neither form appears as a static literal that would be
      * rejected by static analysis against whichever Slevomat version is installed.
      *
-     * @param string $constantName
-     * @param string $propertyName
-     *
      * @return array<int|string>
      */
     protected function resolveTokenHelperCodes(string $constantName, string $propertyName): array
@@ -389,11 +350,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         return $result;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return bool
-     */
     protected function isTraversableType(string $type): bool
     {
         return TypeHintHelper::isSimpleIterableTypeHint($type) || array_key_exists($type, $this->getNormalizedTraversableTypeHints());
@@ -415,11 +371,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         return $this->normalizedTraversableTypeHints;
     }
 
-    /**
-     * @param \SlevomatCodingStandard\Helpers\Annotation $annotation
-     *
-     * @return bool
-     */
     protected function isGenericObjectCollection(Annotation $annotation): bool
     {
         $arrayTypeNodes = $this->getArrayTypeNodes($annotation->getValue());
@@ -439,11 +390,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         return false;
     }
 
-    /**
-     * @param \PHPStan\PhpDocParser\Ast\Type\UnionTypeNode $unionTypeNode
-     *
-     * @return bool
-     */
     protected function isUnionTypeGenericObjectCollection(UnionTypeNode $unionTypeNode): bool
     {
         return $this->hasGenericObject($unionTypeNode->types)
@@ -454,8 +400,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
      * These generic object collections are not yet understood by IDEs like PHPStorm.
      *
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
-     *
-     * @return bool
      */
     protected function hasGenericObject(array $types): bool
     {
@@ -472,11 +416,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         return false;
     }
 
-    /**
-     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
-     *
-     * @return bool
-     */
     protected function isGenericObject(TypeNode $typeNode): bool
     {
         return $typeNode instanceof IdentifierTypeNode && strpos((string)$typeNode, '\\') === 0;
@@ -484,8 +423,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
-     *
-     * @return bool
      */
     protected function containsArrayTypeNode(array $types): bool
     {
@@ -502,11 +439,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         return false;
     }
 
-    /**
-     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
-     *
-     * @return bool
-     */
     protected function isArrayTypeNode(TypeNode $typeNode): bool
     {
         return $typeNode instanceof ArrayTypeNode &&
@@ -514,13 +446,7 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param \SlevomatCodingStandard\Helpers\Annotation $annotation
-     * @param int $docCommentOpenPointer
-     * @param \PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode $typeNode
      * @param array<\PHPStan\PhpDocParser\Ast\Type\UnionTypeNode> $unionTypeNodes
-     *
-     * @return void
      */
     protected function fixGenericObjectCollection(
         File $phpcsFile,
@@ -583,11 +509,6 @@ class DisallowArrayTypeHintSyntaxSniff implements Sniff
         $this->fixAnnotation($phpcsFile, $annotation, $fixedType);
     }
 
-    /**
-     * @param \PHPStan\PhpDocParser\Ast\Type\TypeNode $typeNode
-     *
-     * @return string
-     */
     protected function convertTypeToString(TypeNode $typeNode): string
     {
         if ($typeNode instanceof ArrayTypeNode) {

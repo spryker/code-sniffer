@@ -50,11 +50,6 @@ class SprykerNoDemoshopSniff extends AbstractSprykerSniff
         $phpcsFile->addError('No internal "project only" code should be merged into Spryker suite/demoshop.', $stackPtr, 'InvalidContent');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isDemoshopCode(File $phpCsFile): bool
     {
         if (static::$isDemoshop !== null) {

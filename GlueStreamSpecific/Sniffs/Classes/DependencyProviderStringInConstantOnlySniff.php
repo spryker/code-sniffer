@@ -11,11 +11,6 @@ use PHP_CodeSniffer\Files\File;
 
 class DependencyProviderStringInConstantOnlySniff extends AbstractStringInConstantOnlySniff
 {
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isRuleApplicable(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);

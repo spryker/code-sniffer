@@ -45,11 +45,6 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isProvider(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
@@ -62,11 +57,6 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
         return ($relevantClassNamePart === $providerName);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isCoreProvider(File $phpCsFile): bool
     {
         $namespace = $this->getNamespace($phpCsFile);
@@ -74,12 +64,6 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
         return ($namespace === static::NAMESPACE_SPRYKER);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isFacadeNotInBridgeReturned(File $phpCsFile, int $stackPointer): bool
     {
         $tokens = $phpCsFile->getTokens();
@@ -98,8 +82,6 @@ class FacadeNotInBridgeReturnedSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     *
-     * @return string
      */
     protected function parseTokensContent(array $tokens): string
     {

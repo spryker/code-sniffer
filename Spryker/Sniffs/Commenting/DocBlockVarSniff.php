@@ -145,12 +145,6 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string|null
-     */
     protected function findDefaultValueType(File $phpCsFile, int $stackPointer): ?string
     {
         $tokens = $phpCsFile->getTokens();
@@ -170,8 +164,6 @@ class DocBlockVarSniff extends AbstractSprykerSniff
 
     /**
      * @param array<string, mixed> $token
-     *
-     * @return string|null
      */
     protected function detectType(array $token): ?string
     {
@@ -202,14 +194,6 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockEndIndex
-     * @param int $docBlockStartIndex
-     * @param string|null $defaultValueType
-     *
-     * @return void
-     */
     protected function handleMissingVar(
         File $phpCsFile,
         int $docBlockEndIndex,
@@ -246,13 +230,6 @@ class DocBlockVarSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $varIndex
-     * @param string|null $defaultValueType
-     *
-     * @return void
-     */
     protected function handleMissingVarType(File $phpCsFile, int $varIndex, ?string $defaultValueType): void
     {
         $error = 'Doc Block type for property annotation @var missing';

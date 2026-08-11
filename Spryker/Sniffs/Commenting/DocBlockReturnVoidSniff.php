@@ -110,12 +110,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $this->addReturnAnnotation($phpcsFile, $docBlockStartIndex, $docBlockEndIndex, $returnType);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return void
-     */
     protected function checkConstructorAndDestructor(File $phpcsFile, int $index): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $index);
@@ -144,13 +138,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
-     *
-     * @return int|null
-     */
     protected function findDocBlockReturn(File $phpcsFile, int $docBlockStartIndex, int $docBlockEndIndex): ?int
     {
         $tokens = $phpcsFile->getTokens();
@@ -169,14 +156,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
-     * @param string $returnType
-     *
-     * @return void
-     */
     protected function addReturnAnnotation(
         File $phpcsFile,
         int $docBlockStartIndex,
@@ -199,11 +178,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
     /**
      * For right now we only try to detect void inside function/method.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return string|null
      */
     protected function detectReturnTypeVoid(File $phpcsFile, int $index): ?string
     {
@@ -238,14 +212,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         return $type;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $pointer
-     * @param int $docBlockReturnIndex
-     * @param string|null $returnType
-     *
-     * @return void
-     */
     protected function assertExisting(
         File $phpcsFile,
         int $pointer,
@@ -276,13 +242,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $phpcsFile->addError('Method is void, but doc block states otherwise.', $docBlockReturnIndex + 2, 'InvalidVoidBody');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param int $docBlockReturnIndex
-     *
-     * @return void
-     */
     protected function assertTypeHint(File $phpcsFile, int $stackPtr, int $docBlockReturnIndex): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -328,11 +287,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         $phpcsFile->addError($message, $typeHintIndex, 'ReturnTypeMismatch');
     }
 
-    /**
-     * @param string $documentedReturnType
-     *
-     * @return bool
-     */
     protected function documentedTypesContainFuzzyVoid(string $documentedReturnType): bool
     {
         $types = explode('|', $documentedReturnType);
@@ -340,12 +294,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
         return in_array('null', $types, true);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $pointer
-     *
-     * @return bool
-     */
     protected function bodyContainsYield(File $phpcsFile, int $pointer): bool
     {
         $tokens = $phpcsFile->getTokens();
@@ -364,9 +312,6 @@ class DocBlockReturnVoidSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $docBlockReturnIndex
-     *
-     * @return string
      */
     protected function documentedReturnType(array $tokens, int $docBlockReturnIndex): string
     {

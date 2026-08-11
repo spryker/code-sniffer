@@ -42,12 +42,6 @@ class DisallowFunctionsSniff implements Sniff
         $this->checkImplodeUsage($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkForbiddenFunctions(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -72,12 +66,6 @@ class DisallowFunctionsSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'LongInvalid');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkImplodeUsage(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -115,13 +103,6 @@ class DisallowFunctionsSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openingBrace
-     * @param int $closingBrace
-     *
-     * @return int
-     */
     protected function getArgCount(File $phpcsFile, int $openingBrace, int $closingBrace): int
     {
         $tokens = $phpcsFile->getTokens();

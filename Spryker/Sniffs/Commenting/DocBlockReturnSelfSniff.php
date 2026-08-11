@@ -85,13 +85,8 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $classNameIndex
      * @param array<string> $parts
      * @param array<string> $returnTypes
-     * @param string $appendix
-     *
-     * @return void
      */
     protected function assertCorrectDocBlockParts(
         File $phpCsFile,
@@ -130,9 +125,6 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
     protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
@@ -152,12 +144,6 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isStaticMethod(File $phpCsFile, int $stackPointer): bool
     {
         $tokens = $phpCsFile->getTokens();
@@ -172,13 +158,8 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $classNameIndex
      * @param array<string> $parts
-     * @param string $appendix
      * @param array<string> $returnTypes
-     *
-     * @return void
      */
     protected function fixClassToThis(
         File $phpCsFile,
@@ -222,9 +203,6 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
 
     /**
      * We want to skip for static or other non chainable use cases.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
      *
      * @return array<string>
      */
@@ -284,12 +262,8 @@ class DocBlockReturnSelfSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
      * @param array<string> $parts
      * @param array<string> $returnTypes
-     *
-     * @return void
      */
     protected function assertChainableReturnType(
         File $phpCsFile,

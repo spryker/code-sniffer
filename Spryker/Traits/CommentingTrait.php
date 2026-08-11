@@ -31,8 +31,6 @@ trait CommentingTrait
     /**
      * @param string $tagName tag name
      * @param string $tagComment tag comment
-     *
-     * @return \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode
      */
     protected static function getValueNode(string $tagName, string $tagComment): PhpDocTagValueNode
     {
@@ -100,9 +98,6 @@ trait CommentingTrait
 
     /**
      * @param array<string> $parts
-     * @param \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode $valueNode
-     *
-     * @return string
      */
     protected function stringifyValueNode(array $parts, PhpDocTagValueNode $valueNode): string
     {
@@ -182,9 +177,6 @@ trait CommentingTrait
      * Allow \Foo\Bar[] or array<\Foo\Bar> to pass as array.
      *
      * @param array<string> $docBlockTypes
-     * @param string $iterableType
-     *
-     * @return bool
      */
     protected function containsTypeArray(array $docBlockTypes, string $iterableType = 'array'): bool
     {
@@ -201,8 +193,6 @@ trait CommentingTrait
      * Checks for ...<...>.
      *
      * @param array<string> $docBlockTypes
-     *
-     * @return bool
      */
     protected function containsIterableSyntax(array $docBlockTypes): bool
     {
@@ -217,8 +207,6 @@ trait CommentingTrait
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode|string> $typeNodes type nodes
-     *
-     * @return string
      */
     protected function renderUnionTypes(array $typeNodes): string
     {

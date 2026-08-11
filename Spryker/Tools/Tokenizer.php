@@ -57,9 +57,6 @@ class Tokenizer
         $this->verbose = !empty($argv[2]) && in_array($argv[2], ['--verbose', '-v']);
     }
 
-    /**
-     * @return void
-     */
     public function tokenize(): void
     {
         $res = [];

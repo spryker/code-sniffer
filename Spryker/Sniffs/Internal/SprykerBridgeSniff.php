@@ -40,12 +40,6 @@ class SprykerBridgeSniff implements Sniff
         $this->checkBridge($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function checkBridge(File $phpCsFile, int $stackPointer): void
     {
         $index = $stackPointer;
@@ -62,12 +56,6 @@ class SprykerBridgeSniff implements Sniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $index
-     *
-     * @return void
-     */
     protected function assertValidConstructor(File $phpCsFile, int $index): void
     {
         $parameters = $phpCsFile->getMethodParameters($index);
@@ -93,12 +81,6 @@ class SprykerBridgeSniff implements Sniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $methodIndex
-     *
-     * @return void
-     */
     protected function assertValidDocBlock(File $phpCsFile, int $methodIndex): void
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpCsFile, $methodIndex);
@@ -150,9 +132,6 @@ class SprykerBridgeSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
     protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
@@ -172,11 +151,6 @@ class SprykerBridgeSniff implements Sniff
         return null;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return bool
-     */
     protected function isRelevant(string $content): bool
     {
         $whitelist = [

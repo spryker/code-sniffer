@@ -12,17 +12,11 @@ use Spryker\Test\TestCase;
 
 class DocBlockParamAllowDefaultValueSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testDocBlockConstSniffer(): void
     {
         $this->assertSnifferFindsErrors(new DocBlockParamAllowDefaultValueSniff(), 4);
     }
 
-    /**
-     * @return void
-     */
     public function testDocBlockConstFixer(): void
     {
         $this->assertSnifferCanFixErrors(new DocBlockParamAllowDefaultValueSniff());

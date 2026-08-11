@@ -86,12 +86,6 @@ class DocBlockPipeSpacingSniff implements Sniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return bool
-     */
     protected function isInlineDocBlock(File $phpcsFile, int $stackPtr): bool
     {
         $tokens = $phpcsFile->getTokens();

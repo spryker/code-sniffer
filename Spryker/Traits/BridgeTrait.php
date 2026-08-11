@@ -12,12 +12,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 trait BridgeTrait
 {
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $pointer
-     *
-     * @return bool
-     */
     protected function isSprykerBridgeConstructor(File $phpCsFile, int $pointer): bool
     {
         $tokens = $phpCsFile->getTokens();
@@ -45,12 +39,6 @@ trait BridgeTrait
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $pointer
-     *
-     * @return bool
-     */
     protected function isSprykerBridge(File $phpCsFile, int $pointer): bool
     {
         if (!$this->hasNamespace($phpCsFile, $pointer)) {
@@ -70,12 +58,6 @@ trait BridgeTrait
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $pointer
-     *
-     * @return bool
-     */
     protected function hasNamespace(File $phpCsFile, int $pointer): bool
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $pointer);
@@ -86,12 +68,6 @@ trait BridgeTrait
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $pointer
-     *
-     * @return string
-     */
     protected function getNamespace(File $phpCsFile, int $pointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $pointer);
@@ -111,12 +87,6 @@ trait BridgeTrait
         return $namespace;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $pointer
-     *
-     * @return string
-     */
     protected function findClassOrInterfaceName(File $phpCsFile, int $pointer): string
     {
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $pointer);

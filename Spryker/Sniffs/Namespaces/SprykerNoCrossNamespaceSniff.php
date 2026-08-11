@@ -18,20 +18,14 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
 {
     use UseStatementsTrait;
 
-    /**
-     * @var string
-     */
-    protected const NAMESPACE_YVES = 'Yves';
+    protected const string NAMESPACE_YVES = 'Yves';
 
-    /**
-     * @var string
-     */
-    protected const NAMESPACE_ZED = 'Zed';
+    protected const string NAMESPACE_ZED = 'Zed';
 
     /**
      * @var array<int, array<string, string>>
      */
-    protected const INVALID_PAIRS = [
+    protected const array INVALID_PAIRS = [
         [
             'from' => self::NAMESPACE_YVES,
             'to' => self::NAMESPACE_ZED,
@@ -77,11 +71,8 @@ class SprykerNoCrossNamespaceSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param array<string, mixed> $useStatement
      * @param string $applicationLayer Zed, Yves, ...
-     *
-     * @return void
      */
     protected function checkUseStatement(File $phpcsFile, array $useStatement, string $applicationLayer): void
     {

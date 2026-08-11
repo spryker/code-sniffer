@@ -38,12 +38,6 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
         $this->checkAnnotations($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function checkAnnotations(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -81,10 +75,6 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
-     *
      * @return array<int, array<string, mixed>>
      */
     protected function getFixableMethodAnnotations(
@@ -160,11 +150,6 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
         return $annotations;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return string|null
-     */
     protected function findBasePath(string $path): ?string
     {
         preg_match('#^.+/(vendor|spryker)/.+/src/#', $path, $matches);
@@ -175,11 +160,6 @@ class SprykerAnnotationSniff extends AbstractSprykerSniff
         return rtrim($matches[0], DIRECTORY_SEPARATOR);
     }
 
-    /**
-     * @param string $class
-     *
-     * @return bool
-     */
     protected function isAbstract(string $class): bool
     {
         $classPieces = explode('\\', $class);

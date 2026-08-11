@@ -53,12 +53,6 @@ class RemoveFunctionAliasSniff implements Sniff
         $this->checkFixableAliases($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkFixableAliases(File $phpcsFile, int $stackPtr): void
     {
         $wrongTokens = [T_FUNCTION, T_OBJECT_OPERATOR, T_NEW, T_DOUBLE_COLON];

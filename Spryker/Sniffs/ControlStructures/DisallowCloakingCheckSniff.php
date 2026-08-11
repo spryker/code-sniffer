@@ -132,13 +132,6 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param int $previousTokenIndex
-     *
-     * @return bool
-     */
     protected function isSafeToSkipCast(File $phpcsFile, int $stackPtr, int $previousTokenIndex): bool
     {
         $assignmentTokenIndex = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($previousTokenIndex - 1), null, true);
@@ -166,13 +159,6 @@ class DisallowCloakingCheckSniff extends AbstractSprykerSniff
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $valueIndex
-     * @param int $lastValueIndex
-     *
-     * @return bool
-     */
     protected function isValidSilencing(File $phpcsFile, int $valueIndex, int $lastValueIndex): bool
     {
         $tokens = $phpcsFile->getTokens();

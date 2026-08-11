@@ -35,7 +35,7 @@ class DocBlockParamSniff extends AbstractSprykerSniff
      *
      * @var array<string>
      */
-    protected const LOSSY_TYPE_HINTS = ['array', 'iterable'];
+    protected const array LOSSY_TYPE_HINTS = ['array', 'iterable'];
 
     /**
      * @inheritDoc
@@ -157,10 +157,6 @@ class DocBlockParamSniff extends AbstractSprykerSniff
     /**
      * A union type expresses the full type only when none of its members is lossy: `array|string`
      * still hides the array element type and shape, so it keeps requiring a `@param`.
-     *
-     * @param string $typeHint
-     *
-     * @return bool
      */
     protected function hasLossyType(string $typeHint): bool
     {
@@ -173,13 +169,6 @@ class DocBlockParamSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
-     *
-     * @return void
-     */
     protected function assertNoParams(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): void
     {
         $tokens = $phpCsFile->getTokens();

@@ -93,13 +93,6 @@ class MethodSpacingSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $from
-     * @param int $to
-     *
-     * @return void
-     */
     protected function assertNoAdditionalNewlinesForEmptyBody(File $phpcsFile, int $from, int $to): void
     {
         $tokens = $phpcsFile->getTokens();
