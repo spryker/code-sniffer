@@ -104,10 +104,6 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
-     *
      * @return array<int, array<string, mixed>>
      */
     protected function readTags(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex): array
@@ -142,9 +138,6 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $index
-     *
-     * @return int
      */
     protected function getEndIndex(array $tokens, int $index): int
     {
@@ -166,10 +159,6 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $start
-     * @param int $end
-     *
-     * @return int
      */
     protected function getTagEndIndex(array $tokens, int $start, int $end): int
     {
@@ -186,10 +175,6 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $start
-     * @param int $end
-     *
-     * @return string
      */
     protected function getContent(array $tokens, int $start, int $end): string
     {
@@ -202,12 +187,7 @@ class DocBlockTagOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
      * @param array<int, array<string, mixed>> $tags
-     *
-     * @return void
      */
     protected function fixOrder(File $phpCsFile, int $docBlockStartIndex, int $docBlockEndIndex, array $tags): void
     {

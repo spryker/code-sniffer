@@ -20,10 +20,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class MockSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const MOCK_OBJECT = '\PHPUnit\Framework\MockObject\MockObject';
+    protected const string MOCK_OBJECT = '\PHPUnit\Framework\MockObject\MockObject';
 
     /**
      * @inheritDoc
@@ -50,12 +47,7 @@ class MockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param \SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
      * @param array<string> $docBlockReturnTypes
-     *
-     * @return void
      */
     protected function assertNoReturnTypehint(
         File $phpcsFile,
@@ -75,13 +67,6 @@ class MockSniff extends AbstractSprykerSniff
         $this->removeReturnTypeHint($phpcsFile, $stackPtr, $returnTypeHint);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param \SlevomatCodingStandard\Helpers\TypeHint $returnTypeHint
-     *
-     * @return void
-     */
     protected function removeReturnTypeHint(File $phpcsFile, int $stackPtr, TypeHint $returnTypeHint): void
     {
         $colonPointer = $phpcsFile->findPrevious(T_COLON, $returnTypeHint->getStartPointer(), $stackPtr);
@@ -100,12 +85,7 @@ class MockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
      * @param array<string> $docBlockReturnTypes
-     * @param \SlevomatCodingStandard\Helpers\TypeHint|null $returnTypeHint
-     *
-     * @return void
      */
     protected function assertDocBlockReturnAnnotation(
         File $phpcsFile,
@@ -174,13 +154,6 @@ class MockSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param string $returnTypeHint
-     *
-     * @return void
-     */
     protected function addReturnTypeHint(File $phpcsFile, int $stackPtr, string $returnTypeHint): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -200,12 +173,6 @@ class MockSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return bool
-     */
     protected function isTest(File $phpcsFile, int $stackPtr): bool
     {
         $filename = $phpcsFile->getFilename();
@@ -218,8 +185,6 @@ class MockSniff extends AbstractSprykerSniff
 
     /**
      * @param array<string> $docBlockReturnTypes
-     *
-     * @return bool
      */
     protected function hasMockObjectAnnotation(array $docBlockReturnTypes): bool
     {
@@ -234,12 +199,6 @@ class MockSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return int|null
-     */
     protected function getDocBlockReturnTypeContentIndex(File $phpcsFile, int $stackPtr): ?int
     {
         $docBlockEndIndex = $this->findRelatedDocBlock($phpcsFile, $stackPtr);

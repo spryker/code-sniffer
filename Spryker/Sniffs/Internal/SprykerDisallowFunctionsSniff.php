@@ -25,10 +25,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const PHP_MIN = '8.2';
+    protected const string PHP_MIN = '8.2';
 
     /**
      * This property can be filled with the current PHP version in use.
@@ -84,12 +81,6 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
         $this->checkForbiddenFunctions($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkForbiddenFunctions(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -114,11 +105,6 @@ class SprykerDisallowFunctionsSniff extends AbstractSprykerSniff
         $phpcsFile->addError($error, $stackPtr, 'Invalid');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     *
-     * @return bool
-     */
     protected function isEnabled(File $phpcsFile): bool
     {
         $version = $this->phpVersion;

@@ -46,12 +46,6 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isMethodPrivate(File $phpCsFile, int $stackPointer): bool
     {
         $privateTokenPointer = $phpCsFile->findFirstOnLine(T_PRIVATE, $stackPointer);
@@ -62,12 +56,6 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getMethodName(File $phpCsFile, int $stackPointer): string
     {
         $tokens = $phpCsFile->getTokens();
@@ -77,11 +65,6 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
         return $methodName;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isFactory(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
@@ -89,11 +72,6 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
         return (substr($className, -7) === 'Factory');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getClassName(File $phpCsFile): string
     {
         $fileName = $phpCsFile->getFilename();
@@ -106,12 +84,6 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
         return $className;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getClassMethod(File $phpCsFile, int $stackPointer): string
     {
         $className = $this->getClassName($phpCsFile);
@@ -122,12 +94,6 @@ class NoPrivateMethodsSniff extends AbstractSprykerSniff
         return $classMethod;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function makePrivateMethodProtected(File $phpCsFile, int $stackPointer): void
     {
         $phpCsFile->fixer->beginChangeset();

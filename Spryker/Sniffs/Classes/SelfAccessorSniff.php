@@ -70,11 +70,6 @@ class SelfAccessorSniff extends AbstractSprykerSniff
 
     /**
      * Checks casing of self (SELF, ...).
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
      */
     protected function checkSelf(File $phpcsFile, int $stackPtr): void
     {
@@ -91,13 +86,6 @@ class SelfAccessorSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $i
-     * @param string $name
-     *
-     * @return void
-     */
     protected function checkNew(File $phpcsFile, int $i, string $name): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -114,13 +102,6 @@ class SelfAccessorSniff extends AbstractSprykerSniff
         $this->fixNameToSelf($phpcsFile, $nextIndex, $name);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     * @param string $name
-     *
-     * @return void
-     */
     protected function fixNameToSelf(File $phpcsFile, int $index, string $name): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -140,13 +121,6 @@ class SelfAccessorSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $i
-     * @param string $name
-     *
-     * @return void
-     */
     protected function checkDoubleColon(File $phpcsFile, int $i, string $name): void
     {
         $tokens = $phpcsFile->getTokens();

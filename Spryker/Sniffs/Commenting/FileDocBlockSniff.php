@@ -87,13 +87,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         $this->fixFileDocBlock($phpCsFile, $fileDocBlockPointer, $license);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     * @param string $license
-     *
-     * @return void
-     */
     protected function addMissingFileDocBlock(File $phpCsFile, int $stackPointer, string $license): void
     {
         if (!$license) {
@@ -116,22 +109,11 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isIgnorableModule(File $phpCsFile): bool
     {
         return (in_array($this->getModule($phpCsFile), $this->ignorableModules, true));
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $fileDocBlockStartPointer
-     *
-     * @return bool
-     */
     protected function isOwnFileDocBlock(File $phpCsFile, int $fileDocBlockStartPointer): bool
     {
         $fileDockBlockLines = $this->getFileDocBlockLines($phpCsFile, $fileDocBlockStartPointer);
@@ -148,11 +130,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getLicense(File $phpCsFile): string
     {
         $customLicense = $this->findLicense($phpCsFile);
@@ -163,11 +140,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         return $customLicense === 'none' ? '' : $customLicense;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string|null
-     */
     protected function findLicense(File $phpCsFile): ?string
     {
         $currentPath = getcwd();
@@ -298,10 +270,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
 
     /**
      * Gets license header to be used. Returns `none` for no license header as custom license.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     protected function findCustomLicense(string $path): string
     {
@@ -327,10 +295,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
 
     /**
      * Gets default license if the class file is a Spryker namespaced one.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
      */
     protected function getDefaultLicense(File $phpCsFile): string
     {
@@ -341,13 +305,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         return $this->buildLicense(static::$defaultLicense);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $fileDocBlockStartPosition
-     * @param string $license
-     *
-     * @return void
-     */
     protected function fixFileDocBlock(File $phpCsFile, int $fileDocBlockStartPosition, string $license): void
     {
         $fix = $phpCsFile->addFixableError('Wrong file doc block', $fileDocBlockStartPosition, 'FileDocBlockWrong');
@@ -366,12 +323,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return int|null
-     */
     protected function fileDocBlockPointer(File $phpCsFile, int $stackPointer): ?int
     {
         $fileDocBlockStartPosition = $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer);
@@ -379,12 +330,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         return $fileDocBlockStartPosition !== false ? $fileDocBlockStartPosition : null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $fileDocBlockStartPosition
-     *
-     * @return void
-     */
     protected function clearFileDocBlock(File $phpCsFile, int $fileDocBlockStartPosition): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -396,9 +341,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $fileDocBlockStartPosition
-     *
      * @return array<string>
      */
     protected function getFileDocBlockLines(File $phpCsFile, int $fileDocBlockStartPosition): array
@@ -417,12 +359,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
         return $result;
     }
 
-    /**
-     * @param string $currentLicense
-     * @param string $expectedLicense
-     *
-     * @return bool
-     */
     protected function isCorrectFileDocBlock(string $currentLicense, string $expectedLicense): bool
     {
         $currentLicense = str_replace(["\r\n", "\r"], "\n", $currentLicense);
@@ -433,8 +369,6 @@ class FileDocBlockSniff extends AbstractSprykerSniff
 
     /**
      * @param array<string> $licenseLines
-     *
-     * @return string
      */
     protected function buildLicense(array $licenseLines): string
     {

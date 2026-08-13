@@ -12,17 +12,11 @@ use Spryker\Test\TestCase;
 
 class DisallowCloakingCheckSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testDisallowArrayTypeHintSyntaxSniffer(): void
     {
         $this->assertSnifferFindsErrors(new DisallowCloakingCheckSniff(), 10);
     }
 
-    /**
-     * @return void
-     */
     public function testDocBlockThrowsFixer(): void
     {
         $this->assertSnifferCanFixErrors(new DisallowCloakingCheckSniff());

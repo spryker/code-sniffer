@@ -23,21 +23,12 @@ use ReflectionClass;
  */
 class TestCase extends PHPUnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected const FILE_BEFORE = 'before.php';
+    protected const string FILE_BEFORE = 'before.php';
 
-    /**
-     * @var string
-     */
-    protected const FILE_AFTER = 'after.php';
+    protected const string FILE_AFTER = 'after.php';
 
     /**
      * This will run code sniffer
-     *
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int $errorCount
      *
      * @return array<array>
      */
@@ -49,10 +40,6 @@ class TestCase extends PHPUnitTestCase
     /**
      * This will run code sniffer and assert the number of warnings found.
      *
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int $warningCount
-     * @param int|null $errorCount
-     *
      * @return array<array>
      */
     protected function assertSnifferFindsWarnings(Sniff $sniffer, int $warningCount, ?int $errorCount = null): array
@@ -63,10 +50,6 @@ class TestCase extends PHPUnitTestCase
     /**
      * This will run code sniffer
      *
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int|null $errorCount
-     * @param int $fixableErrorCount
-     *
      * @return array<array>
      */
     protected function assertSnifferFindsFixableErrors(Sniff $sniffer, ?int $errorCount, int $fixableErrorCount): array
@@ -76,11 +59,6 @@ class TestCase extends PHPUnitTestCase
 
     /**
      * This will run code sniffer and code fixer.
-     *
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int|null $fixableErrorCount
-     *
-     * @return void
      */
     protected function assertSnifferCanFixErrors(Sniff $sniffer, ?int $fixableErrorCount = null): void
     {
@@ -88,12 +66,6 @@ class TestCase extends PHPUnitTestCase
     }
 
     /**
-     * @param string $pathBefore
-     * @param string $pathAfter
-     * @param int|null $errorCount
-     * @param int|null $fixableErrorCount
-     * @param bool $fix
-     *
      * @return array<array>
      */
     protected function runFullFixer(
@@ -153,12 +125,6 @@ class TestCase extends PHPUnitTestCase
     }
 
     /**
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param int|null $errorCount
-     * @param int|null $fixableErrorCount
-     * @param bool $fix
-     * @param int|null $warningCount
-     *
      * @return array<array>
      */
     protected function runFixer(
@@ -210,32 +176,16 @@ class TestCase extends PHPUnitTestCase
         return $errors;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     *
-     * @return string
-     */
     protected function getDummyFileBefore(Sniff $sniffer): string
     {
         return $this->getDummyFile($sniffer, static::FILE_BEFORE);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     *
-     * @return string
-     */
     protected function getDummyFileAfter(Sniff $sniffer): string
     {
         return $this->getDummyFile($sniffer, static::FILE_AFTER);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Sniffs\Sniff $sniffer
-     * @param string $fileName
-     *
-     * @return string
-     */
     protected function getDummyFile(Sniff $sniffer, string $fileName): string
     {
         $className = (new ReflectionClass($sniffer))->getShortName();
@@ -249,9 +199,6 @@ class TestCase extends PHPUnitTestCase
         return $file;
     }
 
-    /**
-     * @return string
-     */
     protected function testFilePath(): string
     {
         return implode(DIRECTORY_SEPARATOR, [
@@ -300,8 +247,6 @@ class TestCase extends PHPUnitTestCase
 
     /**
      * @param array<array<array<string|int|bool>>> $errors
-     *
-     * @return string
      */
     protected function getFormattedErrors(array $errors): string
     {

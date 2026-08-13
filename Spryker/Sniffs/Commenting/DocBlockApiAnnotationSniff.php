@@ -15,15 +15,9 @@ use Spryker\Sniffs\AbstractSniffs\AbstractApiClassDetectionSprykerSniff;
  */
 class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const INHERIT_DOC = '{@inheritDoc}';
+    protected const string INHERIT_DOC = '{@inheritDoc}';
 
-    /**
-     * @var string
-     */
-    protected const SPECIFICATION_TAG = 'Specification';
+    protected const string SPECIFICATION_TAG = 'Specification';
 
     /**
      * @inheritDoc
@@ -51,12 +45,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         $this->assertSpecification($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return int|null
-     */
     protected function findApiAnnotationIndex(File $phpCsFile, int $stackPointer): ?int
     {
         $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
@@ -80,13 +68,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     * @param string|null $apiClass
-     *
-     * @return void
-     */
     protected function assertApiAnnotation(File $phpCsFile, int $stackPointer, ?string $apiClass): void
     {
         $apiAnnotationIndex = $this->findApiAnnotationIndex($phpCsFile, $stackPointer);
@@ -126,12 +107,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function assertNoApiTag(File $phpCsFile, int $stackPointer): void
     {
         $apiIndex = $this->findApiAnnotationIndex($phpCsFile, $stackPointer);
@@ -209,12 +184,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isInterface(File $phpCsFile, int $stackPointer): bool
     {
         $interfaceIndex = $phpCsFile->findPrevious(T_INTERFACE, $stackPointer);
@@ -225,12 +194,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isConstructor(File $phpCsFile, int $stackPointer): bool
     {
         $methodNameIndex = $phpCsFile->findNext(T_STRING, $stackPointer);
@@ -241,11 +204,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 
     /**
      * Asserts that "Specification:" is used for interface, Plugin or Config, and must not be used for concrete class.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
      */
     protected function assertSpecification(File $phpCsFile, int $stackPointer): void
     {
@@ -275,23 +233,11 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     public function assertSpecificationAllowed(File $phpCsFile, int $stackPointer): void
     {
         $this->validateSpecification($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     public function assertSpecificationRequired(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -306,12 +252,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         );
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return int|null
-     */
     public function validateSpecification(File $phpCsFile, int $stackPointer): ?int
     {
         $tokens = $phpCsFile->getTokens();
@@ -339,12 +279,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         return $specificationPosition;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     public function assertSpecificationFormat(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -355,12 +289,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         $this->addTypoInSpecificationTagFixableError($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     public function addTypoInSpecificationTagFixableError(File $phpCsFile, int $stackPointer): void
     {
         $tokenContent = $phpCsFile->getTokens()[$stackPointer]['content'];
@@ -372,13 +300,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $line
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     public function addWrongSpecificationTagIndentationFixableError(File $phpCsFile, int $line, int $stackPointer): void
     {
         $fix = $phpCsFile->addFixableError(
@@ -393,12 +314,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     public function assertSpecificationForbidden(File $phpCsFile, int $stackPointer): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -412,23 +327,11 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     public function specificationRequiredClass(File $phpCsFile, int $stackPointer): bool
     {
         return $this->isInterface($phpCsFile, $stackPointer) && $this->sprykerApiClass($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     public function specificationAllowedClass(File $phpCsFile, int $stackPointer): bool
     {
         $namespace = $this->extractNamespace($phpCsFile, $stackPointer);
@@ -438,12 +341,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
             $this->isPlugin($namespace, $name);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     public function specificationForbiddenClass(File $phpCsFile, int $stackPointer): bool
     {
         $namespace = $this->extractNamespace($phpCsFile, $stackPointer);
@@ -455,12 +352,7 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
     }
 
     /**
-     * @param string $content
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $beginRange
-     * @param int $endRange
-     *
-     * @return int|null
      */
     protected function getContentPositionInRange(
         string $content,
@@ -479,23 +371,11 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return int|null
-     */
     protected function getDocOpenerPosition(File $phpCsFile, int $stackPointer): ?int
     {
         return $phpCsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPointer) ?: null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return int|null
-     */
     protected function getDocClosingPosition(File $phpCsFile, int $stackPointer): ?int
     {
         $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
@@ -507,12 +387,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
         return $tokens[$docCommentOpenerPosition]['comment_closer'] ?? null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function assertInheritDocTag(File $phpCsFile, int $stackPointer): void
     {
         $docCommentOpenerPosition = $this->getDocOpenerPosition($phpCsFile, $stackPointer);
@@ -568,9 +442,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $currentIndex
-     *
-     * @return int
      */
     protected function lastTokenOnLine(array $tokens, int $currentIndex): int
     {
@@ -584,9 +455,6 @@ class DocBlockApiAnnotationSniff extends AbstractApiClassDetectionSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $currentIndex
-     *
-     * @return int
      */
     protected function firstTokenOnLine(array $tokens, int $currentIndex): int
     {

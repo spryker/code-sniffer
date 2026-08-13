@@ -49,10 +49,5 @@ abstract class AbstractStringInConstantOnlySniff extends AbstractSprykerSniff
         $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     abstract protected function isRuleApplicable(File $phpCsFile): bool;
 }

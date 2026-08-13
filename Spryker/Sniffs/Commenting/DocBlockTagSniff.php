@@ -16,15 +16,9 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  */
 class DocBlockTagSniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    protected const INHERIT_DOC_FULL = '@inheritDoc';
+    protected const string INHERIT_DOC_FULL = '@inheritDoc';
 
-    /**
-     * @var string
-     */
-    protected const INHERIT_DOC_FULL_INVALID = '@inheritdoc';
+    protected const string INHERIT_DOC_FULL_INVALID = '@inheritdoc';
 
     /**
      * @inheritDoc
@@ -60,14 +54,6 @@ class DocBlockTagSniff implements Sniff
         $this->assertInheritDocCasing($phpcsFile, $stackPtr, $tag, $description);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param string $tag
-     * @param string $description
-     *
-     * @return void
-     */
     protected function assertInheritDocCasing(File $phpcsFile, int $stackPtr, string $tag, string $description): void
     {
         if ($tag === static::INHERIT_DOC_FULL) {

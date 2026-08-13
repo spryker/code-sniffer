@@ -55,13 +55,6 @@ class DocBlockTagIterableSniff implements Sniff
         $this->assertType($phpcsFile, $possibleTextIndex, $tag);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param string $tag
-     *
-     * @return void
-     */
     protected function assertType(File $phpcsFile, int $stackPtr, string $tag): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -104,11 +97,6 @@ class DocBlockTagIterableSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param string $definition
-     *
-     * @return string
-     */
     protected function assertDefinition(string $definition): string
     {
         return (string)preg_replace_callback('#,([^ ])#', function ($matches) {

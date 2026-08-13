@@ -89,12 +89,6 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
         $this->makeMethodSignatureSingleLine($phpcsFile, $stackPtr);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function makeMethodSignatureSingleLine(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -127,12 +121,6 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function makeMethodSignatureMultiline(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -165,13 +153,6 @@ class MethodSignatureParametersLineBreakMethodSniff extends AbstractSprykerSniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $fromPosition
-     * @param int $toPosition
-     *
-     * @return void
-     */
     protected function removeEverythingBetweenPositions(File $phpcsFile, int $fromPosition, int $toPosition): void
     {
         for ($i = $fromPosition + 1; $i < $toPosition; $i++) {

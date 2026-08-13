@@ -84,11 +84,6 @@ class ConcatenationSpacingSniff implements Sniff
 
     /**
      * Adds a single space on the right sight.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return void
      */
     protected function addSpace(File $phpcsFile, int $index): void
     {
@@ -97,11 +92,6 @@ class ConcatenationSpacingSniff implements Sniff
 
     /**
      * Replaces whitespace with a single space.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return void
      */
     protected function replaceWithSpace(File $phpcsFile, int $index): void
     {

@@ -14,9 +14,6 @@ use Spryker\Test\TestCase;
  */
 class AllSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testAllSniffs(): void
     {
         $before = $this->testFilePath() . 'All' . DS . 'before.php';

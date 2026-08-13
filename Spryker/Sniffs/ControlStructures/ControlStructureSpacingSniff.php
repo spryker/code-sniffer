@@ -44,12 +44,6 @@ class ControlStructureSpacingSniff implements Sniff
         // Add more later
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkTryToken(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -61,12 +55,6 @@ class ControlStructureSpacingSniff implements Sniff
         $this->expectSingleSpaceAfter($phpcsFile, $stackPtr, 'try');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkCatchToken(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -79,13 +67,6 @@ class ControlStructureSpacingSniff implements Sniff
         $this->expectSingleSpaceAfter($phpcsFile, $stackPtr, 'catch');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param string $tokenName
-     *
-     * @return void
-     */
     protected function expectSingleSpaceBefore(File $phpcsFile, int $stackPtr, string $tokenName): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -112,13 +93,6 @@ class ControlStructureSpacingSniff implements Sniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     * @param string $tokenName
-     *
-     * @return void
-     */
     protected function expectSingleSpaceAfter(File $phpcsFile, int $stackPtr, string $tokenName): void
     {
         $tokens = $phpcsFile->getTokens();

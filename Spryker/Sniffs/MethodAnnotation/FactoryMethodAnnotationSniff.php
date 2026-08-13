@@ -15,30 +15,16 @@ use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
  */
 class FactoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
 {
-    /**
-     * @return string
-     */
     protected function getMethodName(): string
     {
         return 'getFactory';
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getMethodFileAddedName(File $phpCsFile): string
     {
         return $this->getModule($phpCsFile) . $this->getLayer($phpCsFile) . 'Factory';
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function getSnifferIsApplicable(File $phpCsFile, int $stackPointer): bool
     {
         if ($this->isController($phpCsFile, $stackPointer)) {
@@ -80,12 +66,6 @@ class FactoryMethodAnnotationSniff extends AbstractMethodAnnotationSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param string $namespacePart
-     *
-     * @return string
-     */
     protected function getMethodAnnotationFileName(File $phpCsFile, string $namespacePart): string
     {
         $className = $this->getClassName($phpCsFile);

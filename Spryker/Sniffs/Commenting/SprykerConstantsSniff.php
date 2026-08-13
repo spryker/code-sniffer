@@ -15,10 +15,7 @@ use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
  */
 class SprykerConstantsSniff extends AbstractSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const EXPLANATION_CONSTANTS_INTERFACE = 'Declares global environment configuration keys. Do not use it for other class constants.';
+    protected const string EXPLANATION_CONSTANTS_INTERFACE = 'Declares global environment configuration keys. Do not use it for other class constants.';
 
     /**
      * We must support class for now, as well - for BC.
@@ -44,12 +41,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         $this->checkConstantsInterface($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function checkConstantsInterface(File $phpCsFile, int $stackPointer): void
     {
         $docBlockEndIndex = $this->findDocBlock($phpCsFile, $stackPointer);
@@ -63,12 +54,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         $this->checkExistingDocBlock($phpCsFile, $docBlockEndIndex);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function addNewDocBlock(File $phpCsFile, int $stackPointer): void
     {
         $fix = $phpCsFile->addFixableError('Missing Constants interface doc block.', $stackPointer, 'DocBlockMissing');
@@ -90,12 +75,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockEndPosition
-     *
-     * @return void
-     */
     protected function checkExistingDocBlock(File $phpCsFile, int $docBlockEndPosition): void
     {
         if ($this->hasCorrectContent($phpCsFile, $docBlockEndPosition)) {
@@ -120,12 +99,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function isSprykerConstantsInterface(File $phpCsFile, int $stackPointer): bool
     {
         if (!$this->hasNamespace($phpCsFile, $stackPointer)) {
@@ -145,12 +118,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function hasNamespace(File $phpCsFile, int $stackPointer): bool
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
@@ -161,12 +128,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         return true;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getInterfaceNamespace(File $phpCsFile, int $stackPointer): string
     {
         $namespacePosition = $phpCsFile->findPrevious(T_NAMESPACE, $stackPointer);
@@ -186,12 +147,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         return $namespace;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function findClassOrInterfaceName(File $phpCsFile, int $stackPointer): string
     {
         $classOrInterfaceNamePosition = $phpCsFile->findNext(T_STRING, $stackPointer);
@@ -200,9 +155,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return int|null Stack pointer value of docblock end tag, or null if cannot be found
      */
     protected function findDocBlock(File $phpCsFile, int $stackPointer): ?int
@@ -217,12 +169,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         return $index;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockEndPosition
-     *
-     * @return bool
-     */
     protected function hasCorrectContent(File $phpCsFile, int $docBlockEndPosition): bool
     {
         $tokens = $phpCsFile->getTokens();
@@ -244,12 +190,6 @@ class SprykerConstantsSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartPosition
-     *
-     * @return void
-     */
     protected function insertDocBlock(File $phpCsFile, int $docBlockStartPosition): void
     {
         $phpCsFile->fixer->addContent($docBlockStartPosition, '/**');

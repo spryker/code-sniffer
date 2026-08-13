@@ -55,14 +55,6 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
         $phpcsFile->addError('Inline/Conditional assignment not allowed', $stackPtr, 'ConditionalAssignmentNotAllowed');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $startIndex
-     * @param int $endIndex
-     * @param int $indexEqualSign
-     *
-     * @return bool
-     */
     protected function isFixableInlineAssignment(
         File $phpcsFile,
         int $startIndex,
@@ -103,12 +95,6 @@ class NoInlineAssignmentSniff extends AbstractSprykerSniff
         return $hasInlineAssignment;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function checkMethodCalls(File $phpcsFile, int $stackPtr): void
     {
         $tokens = $phpcsFile->getTokens();

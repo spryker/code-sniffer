@@ -42,11 +42,6 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getClassName(File $phpCsFile): string
     {
         $fileName = $phpCsFile->getFilename();
@@ -59,12 +54,6 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
         return $className;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getMethodName(File $phpCsFile, int $stackPointer): string
     {
         $tokens = $phpCsFile->getTokens();
@@ -74,11 +63,6 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
         return $methodName;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isFactory(File $phpCsFile): bool
     {
         $className = $this->getClassName($phpCsFile);
@@ -86,12 +70,6 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
         return (substr($className, -7) === 'Factory');
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function hasMoreThenOneNewInMethod(File $phpCsFile, int $stackPointer): bool
     {
         $openPointer = $phpCsFile->findNext(T_OPEN_CURLY_BRACKET, $stackPointer);
@@ -116,12 +94,6 @@ class OneNewPerMethodSniff extends AbstractSprykerSniff
         return ($secondNewPosition !== false);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return string
-     */
     protected function getClassMethod(File $phpCsFile, int $stackPointer): string
     {
         $className = $this->getClassName($phpCsFile);

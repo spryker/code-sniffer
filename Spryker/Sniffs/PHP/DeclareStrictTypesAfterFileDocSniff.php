@@ -13,20 +13,14 @@ use SlevomatCodingStandard\Helpers\TokenHelper;
 
 class DeclareStrictTypesAfterFileDocSniff implements Sniff
 {
-    /**
-     * @var string
-     */
-    public const CODE_DECLARE_STRICT_TYPES_WRONG_POSITION = 'DeclareStrictTypesWrongPosition';
+    public const string CODE_DECLARE_STRICT_TYPES_WRONG_POSITION = 'DeclareStrictTypesWrongPosition';
 
-    /**
-     * @var string
-     */
-    public const CODE_DECLARE_STRICT_TYPES_MISSING = 'DeclareStrictTypesMissing';
+    public const string CODE_DECLARE_STRICT_TYPES_MISSING = 'DeclareStrictTypesMissing';
 
     /**
      * @var array<int|string>
      */
-    protected const ALLOWED_TOKEN_CODES_BEFORE_FILE_DOC = [
+    protected const array ALLOWED_TOKEN_CODES_BEFORE_FILE_DOC = [
         T_WHITESPACE, T_DECLARE, T_OPEN_PARENTHESIS, T_STRING, T_EQUAL, T_LNUMBER, T_CLOSE_PARENTHESIS, T_SEMICOLON,
     ];
 
@@ -136,9 +130,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         }
     }
 
-    /**
-     * @return void
-     */
     protected function onBeforeProcess(): void
     {
         $this->linesCountBeforeDeclare = $this->normalizeIntValue($this->linesCountBeforeDeclare);
@@ -148,8 +139,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     *
-     * @return bool
      */
     protected function isScript(array $tokens): bool
     {
@@ -165,9 +154,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $declarePosition
-     *
-     * @return bool
      */
     protected function isDeclareAfterOpenTag(array $tokens, int $declarePosition): bool
     {
@@ -187,9 +173,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $stackPtr
-     *
-     * @return bool
      */
     protected function isFileDocumentation(array $tokens, int $stackPtr): bool
     {
@@ -226,11 +209,7 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $declareStrictTypeTokenPosition
-     *
-     * @return void
      */
     protected function removeStrictTypeDeclaration(File $phpcsFile, array $tokens, int $declareStrictTypeTokenPosition): void
     {
@@ -270,13 +249,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $declarePointer
-     * @param int $stackPtr
-     *
-     * @return void
-     */
     protected function addStrictTypesDeclaration(File $phpcsFile, int $declarePointer, int $stackPtr): void
     {
         $phpcsFile->fixer->beginChangeset();
@@ -304,8 +276,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     *
-     * @return int|null
      */
     protected function getStrictTypeDeclareTokenPosition(array $tokens): ?int
     {
@@ -325,9 +295,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
         return null;
     }
 
-    /**
-     * @return string
-     */
     protected function getStrictTypeDeclaration(): string
     {
         return sprintf(
@@ -339,8 +306,6 @@ class DeclareStrictTypesAfterFileDocSniff implements Sniff
 
     /**
      * @param mixed $value Int value to normalize
-     *
-     * @return int
      */
     protected function normalizeIntValue($value): int
     {

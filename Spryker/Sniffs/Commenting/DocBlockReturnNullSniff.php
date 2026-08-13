@@ -100,13 +100,8 @@ class DocBlockReturnNullSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $classNameIndex
      * @param array<string> $returnTypes
      * @param array<string> $parts
-     * @param string $appendix
-     *
-     * @return void
      */
     protected function fixParts(File $phpCsFile, int $classNameIndex, array $returnTypes, array $parts, string $appendix): void
     {
@@ -133,9 +128,6 @@ class DocBlockReturnNullSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
     protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
@@ -157,9 +149,6 @@ class DocBlockReturnNullSniff implements Sniff
 
     /**
      * For right now we only try to detect basic types.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $index
      *
      * @return array<string>
      */

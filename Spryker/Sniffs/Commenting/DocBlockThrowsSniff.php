@@ -87,9 +87,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return array<int, array<string, mixed>>
      */
     protected function extractExceptions(File $phpCsFile, int $stackPointer): array
@@ -160,9 +157,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartIndex
-     *
      * @return array<int, array<string, mixed>>
      */
     protected function extractExceptionAnnotations(File $phpCsFile, int $docBlockStartIndex): array
@@ -213,9 +207,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $contentIndex
-     *
      * @return array<string, mixed>
      */
     protected function extractException(File $phpCsFile, int $contentIndex): array
@@ -245,12 +236,8 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array<int, array<string, mixed>> $exceptions
      * @param array<int, array<string, mixed>> $annotations
-     * @param int $docBlockEndIndex
-     *
-     * @return void
      */
     protected function compareExceptionsAndAnnotations(
         File $phpCsFile,
@@ -331,8 +318,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
      * @param array<string, mixed> $annotation
      * @param array<int, array<string, mixed>> $exceptions
      * @param array<string, array<string, mixed>> $useStatements
-     *
-     * @return bool
      */
     protected function isInCode(array $annotation, array $exceptions, array $useStatements): bool
     {
@@ -350,8 +335,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     /**
      * @param array<string, mixed> $exception
      * @param array<int, array<string, mixed>> $annotations
-     *
-     * @return bool
      */
     protected function isInAnnotation(array $exception, array $annotations): bool
     {
@@ -364,12 +347,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $position
-     *
-     * @return void
-     */
     protected function removeLine(File $phpCsFile, int $position): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -382,13 +359,9 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array<string, array<string, mixed>> $exceptions
-     * @param int $docBlockEndIndex
      *
      * @throws \Exception
-     *
-     * @return void
      */
     protected function addAnnotationLines(File $phpCsFile, array $exceptions, int $docBlockEndIndex): void
     {
@@ -415,9 +388,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $docBlockStartIndex
-     *
-     * @return int
      */
     protected function getThrowAnnotationIndex(array $tokens, int $docBlockStartIndex): int
     {
@@ -452,10 +422,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $scopeOpener
-     * @param int $scopeCloser
-     *
-     * @return bool
      */
     protected function containsComplexThrowToken(array $tokens, int $scopeOpener, int $scopeCloser): bool
     {
@@ -476,10 +442,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $scopeOpener
-     * @param int $scopeCloser
-     *
-     * @return bool
      */
     protected function containsThrowToken(array $tokens, int $scopeOpener, int $scopeCloser): bool
     {
@@ -494,12 +456,6 @@ class DocBlockThrowsSniff extends AbstractSprykerSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $docBlockStartIndex
-     *
-     * @return bool
-     */
     protected function isApiMethod(File $phpCsFile, int $docBlockStartIndex): bool
     {
         $tokens = $phpCsFile->getTokens();

@@ -17,12 +17,16 @@
     <file>bin/</file>
 
     <rule ref="SprykerStrict">
-        <!-- Self-lint only: this project's own sniff sources use native types on constants
-             and native return types instead of restating them in docblocks, so the
+        <!-- Self-lint only: this project's own sources use native types on constants, properties
+             and native parameter/return types instead of restating them in docblocks, so the
              mandatory-docblock requirement is lifted here. The shipped Spryker/SprykerStrict
-             rulesets are unchanged; consumers keep the standard as-is. -->
+             rulesets keep mandating them; consumers are unaffected. -->
         <exclude name="Spryker.Commenting.DocBlock.DocBlockMissing"/>
         <exclude name="Spryker.Commenting.DocBlock.ReturnVoidMissing"/>
+        <!-- Native return types are still mandated (SprykerStrict.TypeHints.ReturnTypeHint), so a
+             `@return void` docblock only restates the native `: void` and is redundant here. -->
+        <exclude name="Spryker.Commenting.DocBlockReturnVoid.ReturnMissing"/>
+        <exclude name="Spryker.Commenting.DocBlockReturnVoid.ReturnVoidMissing"/>
     </rule>
 
     <rule ref="Spryker.Namespaces.SprykerNamespace">

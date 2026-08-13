@@ -44,13 +44,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         $this->checkInlineComments($phpCsFile, $startIndex, $endIndex);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return void
-     */
     protected function fixDocCommentOpenTags(File $phpCsFile, int $startIndex, int $endIndex): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -78,13 +71,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return void
-     */
     protected function checkInlineComments(File $phpCsFile, int $startIndex, int $endIndex): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -147,11 +133,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         }
     }
 
-    /**
-     * @param string $tag
-     *
-     * @return bool
-     */
     protected function isAllowedTag(string $tag): bool
     {
         if (strpos($tag, '@phpstan-') === 0 || strpos($tag, '@psalm-') === 0) {
@@ -163,11 +144,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $from
-     * @param int $to
-     * @param string $tagType
-     *
-     * @return int|null
      */
     protected function findTagIndex(array $tokens, int $from, int $to, string $tagType): ?int
     {
@@ -181,10 +157,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $contentIndex
-     * @param bool $isSingleLine
-     *
      * @return array<string>
      */
     protected function findErrors(File $phpCsFile, int $contentIndex, bool $isSingleLine): array
@@ -222,12 +194,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         return $errors;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $contentIndex
-     *
-     * @return bool
-     */
     protected function hasReturnAsFollowingToken(File $phpCsFile, int $contentIndex): bool
     {
         $nextIndex = $phpCsFile->findNext(Tokens::$emptyTokens, $contentIndex + 1, null, true);
@@ -240,12 +206,6 @@ class InlineDocBlockSniff extends AbstractSprykerSniff
         return $tokens[$nextIndex]['code'] === T_RETURN;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $commentEndTagIndex
-     *
-     * @return bool
-     */
     protected function isNotInline(File $phpCsFile, int $commentEndTagIndex): bool
     {
         $tokens = $phpCsFile->getTokens();

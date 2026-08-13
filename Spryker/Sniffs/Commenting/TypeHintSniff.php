@@ -241,8 +241,6 @@ class TypeHintSniff extends AbstractSprykerSniff
 
     /**
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types node types
-     *
-     * @return string
      */
     protected function getSortedTypeHint(array $types): string
     {
@@ -322,8 +320,6 @@ class TypeHintSniff extends AbstractSprykerSniff
      * Checks if it is an object collection of any type (\FQCN<type>).
      *
      * @param array<\PHPStan\PhpDocParser\Ast\Type\TypeNode> $types
-     *
-     * @return bool
      */
     protected function isObjectCollection(array $types): bool
     {
@@ -343,10 +339,6 @@ class TypeHintSniff extends AbstractSprykerSniff
     /**
      * We do not want to touch stan tags, as they are usually more accurate than normal tags.
      * Normal tags often need legacy syntax for IDEs to understand them.
-     *
-     * @param string $tag
-     *
-     * @return bool
      */
     protected function isStanTag(string $tag): bool
     {
@@ -354,12 +346,7 @@ class TypeHintSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param string $tag
-     * @param string|null $content
      * @param array<int> $commentTags
-     *
-     * @return bool
      */
     protected function isDuplicate(File $phpcsFile, string $tag, ?string $content, array $commentTags): bool
     {
@@ -386,12 +373,7 @@ class TypeHintSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param string $tag
-     * @param string|null $content
      * @param array<int> $commentTags
-     *
-     * @return int|null
      */
     protected function findMerchableTag(File $phpcsFile, string $tag, ?string $content, array $commentTags): ?int
     {

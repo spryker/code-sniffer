@@ -23,10 +23,7 @@ abstract class AbstractSprykerSniff implements Sniff
     use BasicsTrait;
     use TokenHelperCompatTrait;
 
-    /**
-     * @var string
-     */
-    protected const NAMESPACE_SPRYKER = 'Spryker';
+    protected const string NAMESPACE_SPRYKER = 'Spryker';
 
     /**
      * @var array<string> These markers must remain as inline comments
@@ -35,12 +32,6 @@ abstract class AbstractSprykerSniff implements Sniff
         '@noinspection',
     ];
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPtr
-     *
-     * @return bool
-     */
     protected function isPhpStormMarker(File $phpCsFile, int $stackPtr): bool
     {
         $tokens = $phpCsFile->getTokens();
@@ -61,11 +52,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isSprykerNamespace(File $phpCsFile): bool
     {
         $namespace = $this->getNamespace($phpCsFile);
@@ -75,11 +61,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * Get level of indentation, 0 based.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     *
-     * @return int
      */
     protected function getIndentationLevel(File $phpcsFile, int $index): int
     {
@@ -97,11 +78,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return (int)($level / 4);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getNamespace(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
@@ -110,11 +86,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return $classNameParts[0];
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return bool
-     */
     protected function isCore(File $phpCsFile): bool
     {
         $namespace = $this->getNamespace($phpCsFile);
@@ -122,11 +93,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return strpos($namespace, static::NAMESPACE_SPRYKER) === 0;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getModule(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
@@ -139,11 +105,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return $classNameParts[2];
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getLayer(File $phpCsFile): string
     {
         $className = $this->getClassName($phpCsFile);
@@ -156,11 +117,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return $classNameParts[3];
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string|null
-     */
     protected function getClassNameWithNamespace(File $phpCsFile): ?string
     {
         try {
@@ -193,9 +149,6 @@ abstract class AbstractSprykerSniff implements Sniff
      * name is resolved dynamically so neither form appears as a static literal that would be
      * rejected by static analysis against whichever Slevomat version is installed.
      *
-     * @param string $constantName
-     * @param string $propertyName
-     *
      * @return array<int|string>
      */
     protected function resolveTokenHelperCodes(string $constantName, string $propertyName): array
@@ -217,11 +170,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return $result;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getClassName(File $phpCsFile): string
     {
         $namespace = $this->getClassNameWithNamespace($phpCsFile);
@@ -246,13 +194,7 @@ abstract class AbstractSprykerSniff implements Sniff
     /**
      * Checks if the given token scope contains a single or multiple token codes/types.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
      * @param array<string|int>|string|int $search
-     * @param int $start
-     * @param int $end
-     * @param bool $skipNested
-     *
-     * @return bool
      */
     protected function contains(File $phpcsFile, $search, int $start, int $end, bool $skipNested = true): bool
     {
@@ -285,12 +227,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * Checks if the given token scope requires brackets when used standalone.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $openingBraceIndex
-     * @param int $closingBraceIndex
-     *
-     * @return bool
      */
     protected function needsBrackets(File $phpcsFile, int $openingBraceIndex, int $closingBraceIndex): bool
     {
@@ -327,9 +263,6 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return int|null Stackpointer value of docblock end tag, or null if cannot be found
      */
     protected function findRelatedDocBlock(File $phpCsFile, int $stackPointer): ?int
@@ -357,13 +290,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return null;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     * @param int $count
-     *
-     * @return void
-     */
     protected function outdent(File $phpcsFile, int $index, int $count = 1): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -372,13 +298,6 @@ abstract class AbstractSprykerSniff implements Sniff
         $phpcsFile->fixer->replaceToken($index, $this->strReplaceOnce($char, '', $tokens[$index]['content']));
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $index
-     * @param int $count
-     *
-     * @return void
-     */
     protected function indent(File $phpcsFile, int $index, int $count = 1): void
     {
         $tokens = $phpcsFile->getTokens();
@@ -386,13 +305,6 @@ abstract class AbstractSprykerSniff implements Sniff
         $phpcsFile->fixer->replaceToken($index, $this->strReplaceOnce("\t", "\t\t", $tokens[$index]['content']));
     }
 
-    /**
-     * @param string $search
-     * @param string $replace
-     * @param string $subject
-     *
-     * @return string
-     */
     protected function strReplaceOnce(string $search, string $replace, string $subject): string
     {
         $pos = strpos($subject, $search);
@@ -403,12 +315,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return substr($subject, 0, $pos) . $replace . substr($subject, $pos + strlen($search));
     }
 
-    /**
-     * @param string $content
-     * @param bool $correctLength
-     *
-     * @return string
-     */
     protected function getIndentationCharacter(string $content, bool $correctLength = false): string
     {
         if (strpos($content, "\n")) {
@@ -432,12 +338,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return $char;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $prevIndex
-     *
-     * @return string
-     */
     protected function getIndentationWhitespace(File $phpcsFile, int $prevIndex): string
     {
         $tokens = $phpcsFile->getTokens();
@@ -453,9 +353,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $index
-     *
-     * @return int
      */
     protected function getFirstTokenOfLine(array $tokens, int $index): int
     {
@@ -471,9 +368,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $index
-     *
-     * @return int
      */
     protected function getLastTokenOfLine(array $tokens, int $index): int
     {
@@ -488,11 +382,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $stackPointer
-     *
-     * @return bool
      */
     protected function isMarkedAsDeprecated(File $phpCsFile, array $tokens, int $stackPointer): bool
     {
@@ -515,11 +405,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $stackPointer
-     *
-     * @return bool
      */
     protected function isMarkedDeprecatedInDocBlock(File $phpCsFile, array $tokens, int $stackPointer): bool
     {
@@ -543,9 +429,6 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
      * @return array<string>
      */
     protected function getDocBlockReturnTypes(File $phpCsFile, int $stackPointer): array
@@ -569,12 +452,6 @@ abstract class AbstractSprykerSniff implements Sniff
         return $returnTypes;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $fileDocBlockStartPosition
-     *
-     * @return void
-     */
     protected function assertNewlineBefore(File $phpCsFile, int $fileDocBlockStartPosition): void
     {
         $tokens = $phpCsFile->getTokens();
@@ -605,12 +482,7 @@ abstract class AbstractSprykerSniff implements Sniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile
-     * @param int $stackPtr
-     *
      * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
-     *
-     * @return int
      */
     protected function getMethodSignatureLength(File $phpcsFile, int $stackPtr): int
     {
@@ -632,10 +504,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $firstPosition
-     * @param int $secondPosition
-     *
-     * @return bool
      */
     protected function areTokensOnTheSameLine(array $tokens, int $firstPosition, int $secondPosition): bool
     {
@@ -644,9 +512,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $stackPtr
-     *
-     * @return int
      */
     protected function getMethodSingleLineSignatureLength(array $tokens, int $stackPtr): int
     {
@@ -657,9 +522,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $position
-     *
-     * @return int
      */
     protected function getLineEndingPosition(array $tokens, int $position): int
     {
@@ -672,11 +534,8 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $stackPtr
      * @param array<string, mixed> $methodProperties
      * @param array<array<string, mixed>> $methodParameters
-     *
-     * @return int
      */
     protected function getMethodSignatureMultilineLength(
         array $tokens,
@@ -712,8 +571,6 @@ abstract class AbstractSprykerSniff implements Sniff
 
     /**
      * @param array<string, mixed> $methodParameter
-     *
-     * @return int
      */
     protected function getParameterTotalLength(array $methodParameter): int
     {

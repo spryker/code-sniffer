@@ -63,10 +63,7 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
      * @param array<int, array<string, mixed>> $docBlockParams
-     *
-     * @return void
      */
     protected function assertOrder(File $phpCsFile, array $docBlockParams): void
     {
@@ -117,12 +114,6 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
         return $elements;
     }
 
-    /**
-     * @param string $a
-     * @param string $b
-     *
-     * @return int
-     */
     protected function compare(string $a, string $b): int
     {
         global $sortOrder;
@@ -144,8 +135,6 @@ class DocBlockTypeOrderSniff extends AbstractSprykerSniff
 
     /**
      * @param array<int, array<string, mixed>> $tokens
-     * @param int $docBlockStartIndex
-     * @param int $docBlockEndIndex
      *
      * @return array<int, array<string, mixed>>
      */

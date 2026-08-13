@@ -15,30 +15,16 @@ use Spryker\Sniffs\AbstractSniffs\AbstractMethodAnnotationSniff;
  */
 class ConfigMethodAnnotationSniff extends AbstractMethodAnnotationSniff
 {
-    /**
-     * @return string
-     */
     protected function getMethodName(): string
     {
         return 'getConfig';
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     protected function getMethodFileAddedName(File $phpCsFile): string
     {
         return $this->getModule($phpCsFile) . 'Config';
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function getSnifferIsApplicable(File $phpCsFile, int $stackPointer): bool
     {
         if ($this->isProvider($phpCsFile)) {
@@ -64,12 +50,6 @@ class ConfigMethodAnnotationSniff extends AbstractMethodAnnotationSniff
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param string $namespacePart
-     *
-     * @return string
-     */
     protected function getMethodAnnotationFileName(File $phpCsFile, string $namespacePart): string
     {
         $className = $this->getClassName($phpCsFile);

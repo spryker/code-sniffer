@@ -12,17 +12,11 @@ use Spryker\Test\TestCase;
 
 class DocBlockVarSniffTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testDocBlockConstSniffer(): void
     {
         $this->assertSnifferFindsErrors(new DocBlockVarSniff(), 1);
     }
 
-    /**
-     * @return void
-     */
     public function testDocBlockConstFixer(): void
     {
         $this->assertSnifferCanFixErrors(new DocBlockVarSniff());

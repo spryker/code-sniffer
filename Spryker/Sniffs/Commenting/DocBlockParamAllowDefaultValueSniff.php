@@ -197,10 +197,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param string $type
      * @param array<string> $parts
-     *
-     * @return bool
      */
     protected function containsType(string $type, array $parts): bool
     {
@@ -221,10 +218,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param string $type
      * @param array<string> $parts
-     *
-     * @return bool
      */
     protected function isPrimitiveGenerics(string $type, array $parts): bool
     {
@@ -243,10 +237,7 @@ class DocBlockParamAllowDefaultValueSniff extends AbstractSprykerSniff
     }
 
     /**
-     * @param string $type
      * @param array<string> $parts
-     *
-     * @return bool
      */
     protected function isClassString(string $type, array $parts): bool
     {

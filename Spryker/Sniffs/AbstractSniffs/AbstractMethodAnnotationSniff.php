@@ -12,20 +12,11 @@ use SlevomatCodingStandard\Helpers\DocCommentHelper;
 
 abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSprykerSniff
 {
-    /**
-     * @var string
-     */
-    protected const LAYER_PERSISTENCE = 'Persistence';
+    protected const string LAYER_PERSISTENCE = 'Persistence';
 
-    /**
-     * @var string
-     */
-    protected const LAYER_COMMUNICATION = 'Communication';
+    protected const string LAYER_COMMUNICATION = 'Communication';
 
-    /**
-     * @var string
-     */
-    protected const LAYER_BUSINESS = 'Business';
+    protected const string LAYER_BUSINESS = 'Business';
 
     /**
      * @var string
@@ -47,16 +38,8 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         ];
     }
 
-    /**
-     * @return string
-     */
     abstract protected function getMethodName(): string;
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string
-     */
     abstract protected function getMethodFileAddedName(File $phpCsFile): string;
 
     /**
@@ -71,12 +54,6 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         $this->runSniffer($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return void
-     */
     protected function runSniffer(File $phpCsFile, int $stackPointer): void
     {
         $foundInNamespace = $this->getNamespaceForFilename($phpCsFile);
@@ -109,11 +86,6 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         }
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     *
-     * @return string|null
-     */
     protected function getNamespaceForFilename(File $phpCsFile): ?string
     {
         $namespaces = explode(',', $this->namespaces);
@@ -136,13 +108,6 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
      * Checks if the '@method' annotation for the specific method already exists
      * in the class. When $strictCheck is set to true, the method also checks
      * whether the referenced namespace and the class name are as expected.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     * @param string $namespace
-     * @param bool $strictCheck
-     *
-     * @return bool
      */
     protected function hasMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespace, bool $strictCheck = false): bool
     {
@@ -177,25 +142,11 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         return false;
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     * @param string $namespace
-     *
-     * @return bool
-     */
     protected function hasCorrectMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespace): bool
     {
         return $this->hasMethodAnnotation($phpCsFile, $stackPointer, $namespace, true);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     * @param string $namespacePart
-     *
-     * @return void
-     */
     protected function addMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespacePart): void
     {
         $phpCsFile->fixer->beginChangeset();
@@ -226,13 +177,6 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     * @param string $namespacePart
-     *
-     * @return void
-     */
     protected function changeMethodAnnotation(File $phpCsFile, int $stackPointer, string $namespacePart): void
     {
         $phpCsFile->fixer->beginChangeset();
@@ -255,40 +199,15 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         $phpCsFile->fixer->endChangeset();
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     abstract protected function getSnifferIsApplicable(File $phpCsFile, int $stackPointer): bool;
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param string $namespacePart
-     *
-     * @return string
-     */
     abstract protected function getMethodAnnotationFileName(File $phpCsFile, string $namespacePart): string;
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return bool
-     */
     protected function hasDocBlock(File $phpCsFile, int $stackPointer): bool
     {
         return DocCommentHelper::hasDocComment($phpCsFile, $stackPointer);
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param string $className
-     * @param string $namespacePart
-     *
-     * @return bool
-     */
     protected function fileExists(File $phpCsFile, string $className, string $namespacePart): bool
     {
         $fileName = $phpCsFile->getFilename();
@@ -315,22 +234,11 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         return file_exists($fileName) || file_exists($vendorFileName);
     }
 
-    /**
-     * @param string $input
-     *
-     * @return string
-     */
     protected function toDashedCase(string $input): string
     {
         return strtolower((string)preg_replace('/[A-Z]/', '-\\0', lcfirst($input)));
     }
 
-    /**
-     * @param \PHP_CodeSniffer\Files\File $phpCsFile
-     * @param int $stackPointer
-     *
-     * @return int
-     */
     protected function getStackPointerOfClassBegin(File $phpCsFile, int $stackPointer): int
     {
         $abstractPosition = (int)$phpCsFile->findPrevious(T_ABSTRACT, $stackPointer);
@@ -345,13 +253,6 @@ abstract class AbstractMethodAnnotationSniff extends AbstractClassDetectionSpryk
         return $stackPointer;
     }
 
-    /**
-     * @param string $basePath
-     * @param string $namespace
-     * @param string $module
-     *
-     * @return string
-     */
     protected function getVendorPath(string $basePath, string $namespace, string $module): string
     {
         $namespaceElement = $this->toDashedCase($namespace);
