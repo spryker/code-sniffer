@@ -358,7 +358,7 @@ class FileDocBlockSniff extends AbstractSprykerSniff
     /**
      * @return array<string>
      */
-    protected function getFileDocBlockLines(File $phpCsFile, ?int $fileDocBlockStartPosition): array
+    protected function getFileDocBlockLines(File $phpCsFile, int $fileDocBlockStartPosition): array
     {
         $tokens = $phpCsFile->getTokens();
         $fileDocBlockEndPosition = $tokens[$fileDocBlockStartPosition]['comment_closer'];
