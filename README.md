@@ -14,7 +14,7 @@ Please see the Spryker Coding conventions for details.
 ## Documentation
 See **[docs](docs/README.md)**.
 
-Upstream docs: [squizlabs/PHP_CodeSniffer/wiki](https://github.com/squizlabs/PHP_CodeSniffer/wiki)
+Upstream docs: [squizlabs/PHP_CodeSniffer/wiki](https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki)
 
 ## Usage
 
@@ -75,7 +75,7 @@ You can also set up file watchers, but here you should better only whitelist cer
 
 ### How to configure the default rule set
 
-In order to simplify command line interface, `phpcs` allows to specify [default rule set](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-default-coding-standard) in and [standards path](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-installed-standard-paths) the following way.
+In order to simplify command line interface, `phpcs` allows to specify [default rule set](https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-default-coding-standard) in and [standards path](https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-installed-standard-paths) the following way.
 
 Assuming the following directory structure:
 
