@@ -17,9 +17,6 @@ class AttributesSniffTest extends TestCase
      */
     protected const EXPECTED_ERROR_COUNT = 5;
 
-    /**
-     * @return void
-     */
     public function testAttributesSniffer(): void
     {
         $errors = $this->assertSnifferFindsErrors(new AttributesSniff(), static::EXPECTED_ERROR_COUNT);
