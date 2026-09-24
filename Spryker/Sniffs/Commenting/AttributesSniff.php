@@ -80,8 +80,6 @@ class AttributesSniff implements Sniff
     /**
      * The comma that ends one attribute of a group. Argument lists are skipped whole, so a comma
      * between two arguments does not read as the start of the next attribute.
-     *
-     * @return int|null
      */
     protected function findNextAttributeSeparator(File $phpCsFile, int $nameIndex, int $closerIndex): ?int
     {
@@ -120,8 +118,6 @@ class AttributesSniff implements Sniff
     /**
      * A partially qualified attribute such as `#[Attr\Covers]` resolves through the import of its
      * first segment, so only that segment is looked up.
-     *
-     * @return bool
      */
     protected function isImported(File $phpCsFile, int $nameIndex, string $name): bool
     {
