@@ -2,8 +2,20 @@
 
 namespace Pyz\Zed\Sales;
 
+/**
+ * Hashes with SHA-256 per RFC-7518.
+ *
+ * @see https://example.com/issues/42
+ */
 class SalesDependencyProvider
 {
+    /**
+     * Covered by CC-23456.
+     *
+     * @skip Flaky since CC-25718, see the ticket.
+     *
+     * @return array<\Pyz\Zed\Sales\PluginInterface>
+     */
     protected function getPlugins(): array
     {
         // Workaround for CC-12345: drain twice.

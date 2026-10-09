@@ -12,12 +12,12 @@ use SprykerConventions\Sniffs\Commenting\ForbiddenInlineCommentsSniff;
 
 class ForbiddenInlineCommentsSniffTest extends TestCase
 {
-    public function testGivenInlineCommentsWithIssueKeysBannersAndClosingBraceMarkersWhenSniffedThenEachIsReportedAndConventionsAreNot(): void
+    public function testGivenCommentsWithIssueKeysBannersAndClosingBraceMarkersWhenSniffedThenEachIsReportedAndConventionsAreNot(): void
     {
         // Arrange
         $sniff = new ForbiddenInlineCommentsSniff();
 
         // Act & Assert
-        $this->assertSnifferFindsErrors($sniff, 9);
+        $this->assertSnifferFindsErrors($sniff, 11);
     }
 }

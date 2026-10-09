@@ -11,9 +11,9 @@ use PHP_CodeSniffer\Files\File;
 use Spryker\Sniffs\AbstractSniffs\AbstractSprykerSniff;
 
 /**
- * Inline comments (`//`, `#`, `/* *\/`) must not carry issue-tracker keys, section banners
- * or closing-brace markers. Doc comments are covered by Slevomat's ForbiddenComments sniff,
- * which does not look at inline comments.
+ * Comments must not carry issue-tracker keys; inline comments (`//`, `#`, `/* *\/`) must not be
+ * section banners or closing-brace markers either. Doc comments are checked as a whole, annotations
+ * included, which Slevomat's ForbiddenComments sniff does not do: it stops at the first annotation.
  */
 class ForbiddenInlineCommentsSniff extends AbstractSprykerSniff
 {
@@ -23,7 +23,7 @@ class ForbiddenInlineCommentsSniff extends AbstractSprykerSniff
 
     protected const string CODE_CLOSING_BRACE_MARKER = 'ClosingBraceMarker';
 
-    protected const string MESSAGE_ISSUE_KEY = 'Inline comment contains the issue key "%s"; issue keys belong in the commit message.';
+    protected const string MESSAGE_ISSUE_KEY = 'Comment contains the issue key "%s"; issue keys belong in the commit message.';
 
     protected const string MESSAGE_SECTION_BANNER = 'Inline comment is a section banner; extract a method or class instead.';
 
@@ -49,7 +49,7 @@ class ForbiddenInlineCommentsSniff extends AbstractSprykerSniff
      */
     public function register(): array
     {
-        return [T_COMMENT];
+        return [T_COMMENT, T_DOC_COMMENT_STRING];
     }
 
     /**
@@ -57,7 +57,8 @@ class ForbiddenInlineCommentsSniff extends AbstractSprykerSniff
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
-        $text = $this->getCommentText($phpcsFile->getTokens()[$stackPtr]['content']);
+        $token = $phpcsFile->getTokens()[$stackPtr];
+        $text = $this->getCommentText($token['content']);
         if ($text === '') {
             return;
         }
@@ -65,6 +66,10 @@ class ForbiddenInlineCommentsSniff extends AbstractSprykerSniff
         $issueKey = $this->findIssueKey($text);
         if ($issueKey !== null) {
             $phpcsFile->addError(static::MESSAGE_ISSUE_KEY, $stackPtr, static::CODE_ISSUE_KEY, [$issueKey]);
+        }
+
+        if ($token['code'] === T_DOC_COMMENT_STRING) {
+            return;
         }
 
         if (preg_match(static::PATTERN_SECTION_BANNER, $text)) {
